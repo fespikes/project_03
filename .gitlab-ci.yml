@@ -1,0 +1,46 @@
+image: 172.16.1.99/transwarp/ignitor-frontend/build/tdc-eco-ci:latest
+before_script:
+  - echo "Namespace" $CI_PROJECT_NAMESPACE
+  - echo "Project" $CI_PROJECT_NAME
+
+stages:
+  - test
+  - build
+
+build-prod:
+  stage: test
+  script:
+    - echo "build-prod"
+    - cd /$CI_PROJECT_NAMESPACE/$CI_PROJECT_NAME
+    - cp -r /usr/src/app/node_modules /$CI_PROJECT_NAMESPACE/$CI_PROJECT_NAME/node_modules
+    - npm run build:prod
+  only:
+    - /.*_master_\d+/
+  tags:
+    - k8s
+
+unit-test:
+  stage: test
+  script:
+    - echo "unit-test"
+    - cd /$CI_PROJECT_NAMESPACE/$CI_PROJECT_NAME
+    - cp -r /usr/src/app/node_modules /$CI_PROJECT_NAMESPACE/$CI_PROJECT_NAME/node_modules
+    - npm run test:single
+  only:
+    - /.*_master_\d+/
+  tags:
+    - k8s
+
+postcommit:
+  stage: build
+  script:
+    - echo "build artifacts"
+    - cd /$CI_PROJECT_NAMESPACE/$CI_PROJECT_NAME
+    - cp -r /usr/src/app/node_modules /$CI_PROJECT_NAMESPACE/$CI_PROJECT_NAME/node_modules
+    - npm run build:prod
+  artifacts:
+    expire_in: 6 mos
+    paths:
+      - dist
+  only:
+    - master

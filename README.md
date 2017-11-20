@@ -45,3 +45,20 @@ npm run i18n
 ```bash
 npm run build:prod
 ```
+
+### 制作CI build image
+
+当node依赖更新时，需重新制作image。在项目根目录下运行
+
+```
+docker build . -f ci/Dockerfile -t tcc/tdc-eco-ci
+docker tag tcc/tdc-eco-ci 172.16.1.99/transwarp/ignitor-frontend/build/tdc-eco-ci:latest
+docker push 172.16.1.99/transwarp/ignitor-frontend/build/tdc-eco-ci:latest
+```
+
+### 得到最新的artifacts
+
+对于master分支，可由以下链接得到最新的artifacts，即`npm run build:prod`得到的文件。
+```
+http://172.16.1.41:10080/TDC/ignitor-frontend/-/jobs/artifacts/master/download?job=postcommit
+```
