@@ -6,7 +6,7 @@ import { Component, OnInit, HostBinding } from '@angular/core';
   styleUrls: ['./tenant.component.sass'],
 })
 export class TenantComponent implements OnInit {
-  @HostBinding('class.tec-layout-body') hostClass = true;
+  @HostBinding('class.tui-layout-body') hostClass = true;
 
   constructor() { }
 

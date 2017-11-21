@@ -5,7 +5,7 @@ import { Component, HostBinding } from '@angular/core';
   styleUrls: ['./not-found.component.sass'],
 })
 export class NotFoundComponent {
-  @HostBinding('class.tec-layout-body') host = true;
+  @HostBinding('class.tui-layout-body') host = true;
 
   constructor() {}
 }

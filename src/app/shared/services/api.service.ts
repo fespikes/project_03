@@ -33,27 +33,27 @@ export class TecApiService {
     return path.join(environment.apiUrl, url);
   }
 
-  get(path: string, params: Object = {}): Observable<any> {
-    return this.http.get(this.makeUrl(path), { headers: this.headers, search: params })
+  get(url: string, params: Object = {}): Observable<any> {
+    return this.http.get(this.makeUrl(url), { headers: this.headers, search: params })
       .catch(this.formatErrors)
       .map((res: Response) => res.json());
   }
 
-  getAll(path: string, params: Object = {}): Observable<PartialCollection> {
+  getAll(url: string, params: Object = {}): Observable<PartialCollection> {
     params['size'] = Math.pow(2, 31) - 1;
     params['page'] = 1;
-    return this.get(path, params);
+    return this.get(url, params);
   }
 
-  getText(path: string, params: Object = {}): Observable<any> {
-    return this.http.get(this.makeUrl(path), { headers: this.headers, search: params })
+  getText(url: string, params: Object = {}): Observable<any> {
+    return this.http.get(this.makeUrl(url), { headers: this.headers, search: params })
       .catch(this.formatErrors)
       .map((res: Response) => res.text());
   }
 
-  put(path: string, body: Object = {}): Observable<any> {
+  put(url: string, body: Object = {}): Observable<any> {
     return this.http.put(
-      this.makeUrl(path),
+      this.makeUrl(url),
       JSON.stringify(body),
       { headers: this.headers },
     )
@@ -61,9 +61,9 @@ export class TecApiService {
       .map((res: Response) => res.json());
   }
 
-  post(path: string, body: Object = {}): Observable<any> {
+  post(url: string, body: Object = {}): Observable<any> {
     return this.http.post(
-      this.makeUrl(path),
+      this.makeUrl(url),
       JSON.stringify(body),
       { headers: this.headers },
     )
@@ -71,9 +71,9 @@ export class TecApiService {
       .map((res: Response) => res.json());
   }
 
-  postRaw(path: string, body: Object = {}, config: Object = {}): Observable<any> {
+  postRaw(url: string, body: Object = {}, config: Object = {}): Observable<any> {
     return this.http.post(
-      this.makeUrl(path),
+      this.makeUrl(url),
       body,
       config,
     )
@@ -81,9 +81,9 @@ export class TecApiService {
       .map((res: Response) => res.json());
   }
 
-  delete(path): Observable<any> {
+  delete(url): Observable<any> {
     return this.http.delete(
-      this.makeUrl(path),
+      this.makeUrl(url),
       { headers: this.headers },
     )
       .catch(this.formatErrors)

@@ -6,7 +6,7 @@ import { Component, HostBinding } from '@angular/core';
   styleUrls: ['./layout-head.component.sass'],
 })
 export class LayoutHeadComponent {
-  @HostBinding('class.tec-layout-head') hostClass = true;
+  @HostBinding('class.tui-layout-head') hostClass = true;
   navs = ['abstract', 'tenant', 'node', 'system', 'ticket'].map((nav) => {
     return {
       link: '/' + nav,

@@ -23,7 +23,7 @@ import { MessageComponent } from './message.component';
     TranslateDeactivator,
     {
       provide: TranslateToken,
-      useValue: 'abstract',
+      useValue: 'message',
     },
   ],
 })
