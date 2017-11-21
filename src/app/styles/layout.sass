@@ -1,0 +1,61 @@
+$tec-layout-container-margin: 0.75rem
+
+.tec-layout
+  display: flex
+  flex-direction: column
+  width: 100%
+  height: 100%
+  overflow: hidden
+
+  &-head
+    height: 4rem
+    flex-basis: 4rem
+    flex-shrink: 0
+
+  &-body
+    height: calc(100vh - 4rem)
+    display: flex
+    background-color: $bg-main
+
+  &-vertical
+    flex-grow: 1
+    display: flex
+    overflow: auto
+    flex-direction: column
+    padding: 1.5rem 1.5rem 1.5rem 1.5rem
+
+  &-main
+    flex-grow: 1
+    overflow: auto
+
+    &-nav
+      display: inline-block
+      flex-shrink: 0
+      text-decoration: none
+      font-size: $font-md
+      margin-top: -0.75rem
+      margin-bottom: 0.75rem
+
+      > a
+        text-decoration: none
+
+    &-container
+      @include main-container()
+
+    &-title
+      margin: 0
+      padding: 1rem
+      color: $brand-primary
+      font-size: 1rem
+      font-weight: bold
+
+    &-pagination-footer
+      @include flex-align(center, flex-end)
+      padding: .5rem 1rem
+      border-top: 1px solid $lightgrey
+
+      .tec-pagination
+        justify-content: flex-end
+
+.tec-layout-main-container + .tec-layout-main-container
+  margin-top: $tec-layout-container-margin

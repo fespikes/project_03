@@ -1,0 +1,21 @@
+<ul>
+  <li *ngFor="let nav of displayNavs">
+    <a routerLink="{{nav.link}}" routerLinkActive="active">{{nav.name | translate}}</a>
+  </li>
+
+  <li class="fake-nav" #fakeNav>
+    <a>{{fakeNavName | translate}}</a>
+  </li>
+
+  <li *ngIf="overflowNavs.length > 0" [tuiDropdownTrigger]="overflowNavDropdown">
+    <a [class.active]="activeInOverflow">
+      {{'TUI.NAV.MORE' | translate}}
+      <svg class="overflow-icon" tuiIcon="caret-down"></svg>
+    </a>
+    <tui-dropdown #overflowNavDropdown>
+      <tui-dropdown-item *ngFor="let nav of overflowNavs">
+        <a routerLink="{{nav.link}}" routerLinkActive="active">{{nav.name | translate}}</a>
+      </tui-dropdown-item>
+    </tui-dropdown>
+  </li>
+</ul>

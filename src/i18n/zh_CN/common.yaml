@@ -1,0 +1,56 @@
+LAYOUT:
+  MANAGEMENT_CENTER: 后台管理中心
+  ABSTRACT: 概要信息
+  TENANT: 租户
+  NODE: 主机
+  SYSTEM: 系统服务
+  TICKET: 工单
+  ORGANIZATION: 组织结构
+
+NOT_FOUND:
+  ERROR_PROMPT: 抱歉，出现错误了
+  ERROR_POSSIBLE_CAUSE: 这种错误可能是因为
+  ERROR_POSSIBLE_CAUSE_1: 1、您输入的网址不正确；
+  ERROR_POSSIBLE_CAUSE_2: 2、要查找的网页可能已被转移、更新或者删除；
+  ERROR_POSSIBLE_CAUSE_3: 3、过期的书签或搜索引擎链接
+
+
+TUI:
+  CHART:
+    NO_DATA: 没有数据
+
+  TABLE:
+    NO_CONTENT: 没有内容
+
+  PAGINATION:
+    SHOW_ROW_COUNT: 显示行数
+    GO_TO: 跳转至第
+    GO_TO_PAGE: 页
+    CONFIRM: 确定
+
+  FORM:
+    REQUIRED: 必填
+    EMAIL_INVALID_ERROR: 邮箱格式错误
+    MINLENGTH_ERROR: 最小长度限制
+    MAXLENGTH_ERROR: 最大长度限制
+    CHECKBOX_COMPEL_ERROR: 此项必选
+    VALIDATION_FAILED: 非法字段
+    INPUT_MAX_VALUE_ERROR: 不得大于
+    INPUT_MIN_VALUE_ERROR: 不得小于
+
+    PATTERN:
+      COMMON_NAME_ERROR: 允许汉字, 英文, 数字, 下划线和横线. 不超过100字符
+      EN_NAME_ERROR: 允许英文, 数字, 下划线和横线. 不超过100字符
+      EMAIL_ERROR: 邮箱格式错误
+
+  MODAL:
+    CONFIRM: 确认
+    CANCEL: 取消
+    UNKNOWN_ERROR: 未知错误
+    ERROR: 错误
+
+  NAV:
+    MORE: 更多
+
+  SELECT:
+    NO_OPTIONS: -- 没有选项 --

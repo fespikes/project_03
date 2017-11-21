@@ -1,0 +1,23 @@
+@import '../styles/util'
+
+\:host
+  padding: 1.5rem 1.5rem
+  background: $bg-main
+  overflow-x: hidden
+
+.tec-layout-main
+  @include flex-xy-center
+  flex-direction: column
+  padding: 2rem
+  text-align: center
+  background: #FFF
+  border-radius: 0.25rem
+  box-shadow: 0 0.2rem 0.25rem rgba(0, 0, 0, 0.1)
+
+  .error-prompt
+    line-height: 4rem
+    font-size: $font-lg
+
+  .pad-block
+    height: 20%
+    width: 100%
