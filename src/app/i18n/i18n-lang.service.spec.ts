@@ -17,7 +17,7 @@ describe('I18nLangService', () => {
         I18nLangService,
         {
           provide: TecApiService,
-          useClass: TecApiService,
+          useClass: TecApiServiceStub,
         },
       ],
     });

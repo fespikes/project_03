@@ -1,5 +1,8 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 
+import { MockModule } from '../../../mock';
+import { I18nLangService, TranslateService } from '../../../i18n';
 import { LayoutHeadRightComponent } from './layout-head-right.component';
 
 describe('LayoutHeadRightComponent', () => {
@@ -8,7 +11,17 @@ describe('LayoutHeadRightComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ LayoutHeadRightComponent ]
+      schemas: [NO_ERRORS_SCHEMA],
+      imports: [MockModule],
+      declarations: [ LayoutHeadRightComponent ],
+      providers: [
+        {
+          provide: TranslateService,
+          useValue: {
+            use() { },
+          },
+        },
+      ],
     })
     .compileComponents();
   }));

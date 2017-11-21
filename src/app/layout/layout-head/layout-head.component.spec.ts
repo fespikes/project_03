@@ -1,5 +1,7 @@
+import { NO_ERRORS_SCHEMA, Injectable } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
+import { TranslatePipeStub } from '../../mock';
 import { LayoutHeadComponent } from './layout-head.component';
 
 describe('LayoutHeadComponent', () => {
@@ -8,9 +10,10 @@ describe('LayoutHeadComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ LayoutHeadComponent ]
+      schemas: [NO_ERRORS_SCHEMA],
+      declarations: [LayoutHeadComponent, TranslatePipeStub],
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {
@@ -19,7 +22,7 @@ describe('LayoutHeadComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  it('should be created', () => {
     expect(component).toBeTruthy();
   });
 });
