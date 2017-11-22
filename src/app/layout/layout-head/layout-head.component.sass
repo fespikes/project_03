@@ -1,0 +1,28 @@
+@import '../../styles/util'
+
+$border-color: rgba(0,0,0,.1)
+
+\:host
+  display: flex
+  justify-content: space-between
+  box-shadow: 0 0.3rem 0.5rem $border-color
+  z-index: 1
+
+.logo
+  display: flex
+  align-items: center
+  padding: 0.5rem 0.5rem
+
+  img
+    height: 3rem
+
+.left
+  display: flex
+  flex-grow: 1
+
+.right
+  @include flex-xy-center()
+  margin-right: 20px
+
+  button:first-child
+    margin-right: 1rem

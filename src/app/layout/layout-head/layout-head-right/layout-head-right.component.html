@@ -1,0 +1,9 @@
+<div class="op-icon position-relative" [routerLink]="['/message']">
+  <div class="badge" *ngIf="messageCount">
+    {{messageCount}}
+  </div>
+  <svg tuiIcon="bell"></svg>
+</div>
+<div class="org" [routerLink]="['/organization']">
+  {{'LAYOUT.ORGANIZATION' | translate}}
+</div>

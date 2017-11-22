@@ -1,0 +1,57 @@
+LAYOUT:
+  MANAGEMENT_CENTER: Management Center
+  ABSTRACT: Abstract
+  TENANT: Tenant
+  NODE: Node
+  SYSTEM: System Service
+  TICKET: Ticket
+  ORGANIZATION: Organization
+
+
+NOT_FOUND:
+  ERROR_PROMPT: Sorry, something went wrong
+  ERROR_POSSIBLE_CAUSE: The possible cause could be
+  ERROR_POSSIBLE_CAUSE_1: 1.The address you entered is not correct;
+  ERROR_POSSIBLE_CAUSE_2: 2.The page you wished to find could've been transfered, updated or removed;
+  ERROR_POSSIBLE_CAUSE_3: 3.Obselete browser bookmark or search engine link
+
+TUI:
+  CHART:
+    NO_DATA: No Data
+
+  TABLE:
+    NO_CONTENT: No Content
+
+  PAGINATION:
+    SHOW_ROW_COUNT: Row count
+    GO_TO: Go to Page
+    GO_TO_PAGE: ""
+    CONFIRM: Confirm
+
+  FORM:
+    REQUIRED: Required
+    EMAIL_INVALID_ERROR: Invalid Email
+    MINLENGTH_ERROR: Min Length Restrict
+    MAXLENGTH_ERROR: Max Length Restrict
+    CHECKBOX_COMPEL_ERROR: Check it
+    VALIDATION_FAILED: Validation Failed
+    INPUT_MAX_VALUE_ERROR: No bigger than
+    INPUT_MIN_VALUE_ERROR: No smaller than
+
+    PATTERN:
+      COMMON_NAME_ERROR: Allow Chinese, English, Digit, - and _. Max 100 charactor
+      EN_NAME_ERROR: Allow English, Digit, - and _. Max 100 charactor
+      EMAIL_ERROR: Wrong email format
+
+  MODAL:
+    CONFIRM: Confirm
+    CANCEL: Cancel
+    UNKNOWN_ERROR: Unknown Error
+    ERROR: Error
+
+  NAV:
+    MORE: More
+
+  SELECT:
+    NO_OPTIONS: -- No Options --
+
