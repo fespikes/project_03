@@ -1,0 +1,57 @@
+@import '../../styles/util'
+
+\:host /deep/
+  .tui-layout-main-nav
+    span
+      display: flex
+      align-items: center
+      cursor: pointer
+
+    svg
+      fill: $brandblue
+      margin-right: 0.5rem
+
+  .tui-layout-main-container
+    display: flex
+    flex-direction: column
+    margin: 0
+    padding-bottom: 2rem
+    min-width: 50rem
+
+    .tenant-detail
+      display: flex
+      align-items: center
+      margin-top: 1rem
+      padding-left: 1rem
+      padding-bottom: 2rem
+
+      .description
+        flex: 1
+        display: flex
+        height: 6.5rem
+        font-size: 14px
+        padding-right: 1.5rem
+
+      .tenant-property
+        flex: 1
+        display: flex
+        align-items: center
+        padding-left: 2rem
+        border-left: 1px solid $lightgrey
+
+        .tui-property
+          flex: 1
+          min-width: 10rem
+          margin: 0.75rem 5rem 0.75rem 0
+
+  .tui-tab
+    flex: 1
+    display: flex
+    flex-direction: column
+    margin-top: -43px
+
+    .tui-tab-body
+      display: flex
+      flex-direction: column
+      flex: 1
+      margin-top: .5rem

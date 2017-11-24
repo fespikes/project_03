@@ -1,0 +1,35 @@
+@import '../../../styles/util'
+
+\:host
+  display: flex
+  flex-direction: column
+  background-color: white
+  flex: 1
+  @include main-container()
+
+  .operation-bar
+    display: flex
+    justify-content: space-between
+    align-items: center
+    padding: 0px 20px
+    height: 50px
+
+    .left > .tui-select
+      width: 12rem
+
+    .right
+      display: flex
+      button
+        display: flex
+        align-items: center
+        font-size: .875rem
+
+        svg
+          margin-right: 0.4rem
+          fill: white
+
+      .tui-search
+        margin-left: 1rem
+
+  .tui-table-row > div, .tui-table-head > div
+    padding: .5rem 1.5rem

@@ -4,5 +4,5 @@ import { Component, HostBinding } from '@angular/core';
   template: '<tec-layout-head></tec-layout-head><router-outlet></router-outlet>',
 })
 export class LayoutComponent {
-  @HostBinding('class.tec-layout') hostClass = true;
+  @HostBinding('class.tui-layout') hostClass = true;
 }

@@ -1,0 +1,14 @@
+@import '../../../styles/util'
+
+\:host
+  display: flex
+  flex-direction: column
+  background-color: white
+  flex: 1
+  @include main-container()
+
+  .tui-table
+    margin-top: .2rem
+
+  .tui-table-row > div, .tui-table-head > div
+    padding: .5rem 1.5rem
