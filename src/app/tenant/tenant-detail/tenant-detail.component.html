@@ -18,7 +18,7 @@
       </div>
       <div class="tenant-property">
         <tui-property icon="user-slash" label="{{'TENANT.DETAIL.ADMIN' | translate}}" [value]="tenant?.admin"> </tui-property>
-        <tui-property icon="clock" label="{{'TENANT.DETAIL.CREATE_TIME' | translate}}" [value]="tenant?.createTime | date:'y/M/d HH:mm'"></tui-property>
+        <tui-property icon="clock" label="{{'TENANT.DETAIL.CREATE_TIME' | translate}}" [value]="tenant?.created | date:'y/M/d HH:mm'"></tui-property>
       </div>
     </div>
   </div>

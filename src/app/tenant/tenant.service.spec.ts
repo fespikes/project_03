@@ -1,5 +1,5 @@
 import { TestBed, inject } from '@angular/core/testing';
-import { Observable } from 'rxjs/Rx';
+import { Observable } from 'rxjs/Observable';
 
 import { TenantService } from './tenant.service';
 import { TecApiService } from '../shared';

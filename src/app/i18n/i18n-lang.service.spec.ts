@@ -1,5 +1,5 @@
 import { TestBed, inject, fakeAsync, tick } from '@angular/core/testing';
-import { Observable } from 'rxjs/Rx';
+import { Observable } from 'rxjs/Observable';
 
 import { I18nLangService, LANG_KEY, Language } from './i18n-lang.service';
 import { TecApiService } from '../shared';

@@ -27,6 +27,6 @@ export class TenantErrorComponent implements OnInit {
 
   delete() {}
 
-  dateChange() {}
+  dateChange(value, type) {}
 
 }
