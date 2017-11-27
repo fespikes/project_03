@@ -1,0 +1,38 @@
+<tui-table [tuiTableFlex]="[3,4,1]" [loading]="loading">
+  <tui-table-row>
+    <div class="text-ellipsis">{{'TENANT.QUOTA.CPU' | translate}}</div>
+    <div class="text-ellipsis">100 core</div>
+    <div>
+      <span tuiTooltip="{{'TENANT.DETAIL.EDIT' | translate}}">
+        <svg tuiIcon="pencil-square" (click)="edit()"></svg>
+      </span>
+    </div>
+  </tui-table-row>
+  <tui-table-row>
+    <div class="text-ellipsis">{{'TENANT.QUOTA.MEMORY' | translate}}</div>
+    <div class="text-ellipsis">1024 GB</div>
+    <div>
+      <span tuiTooltip="{{'TENANT.DETAIL.EDIT' | translate}}">
+        <svg tuiIcon="pencil-square" (click)="edit()"></svg>
+      </span>
+    </div>
+  </tui-table-row>
+  <tui-table-row>
+    <div class="text-ellipsis">{{'TENANT.QUOTA.STORAGE' | translate}}</div>
+    <div class="text-ellipsis">20TB (已使用: 500GB)</div>
+    <div>
+      <span tuiTooltip="{{'TENANT.DETAIL.EDIT' | translate}}">
+        <svg tuiIcon="pencil-square" (click)="edit()"></svg>
+      </span>
+    </div>
+  </tui-table-row>
+  <tui-table-row>
+    <div class="text-ellipsis">{{'TENANT.QUOTA.NETWORK'| translate}}</div>
+    <div class="text-ellipsis">100 MB/S</div>
+    <div>
+      <span tuiTooltip="{{'TENANT.DETAIL.EDIT' | translate}}">
+        <svg tuiIcon="pencil-square" (click)="edit()"></svg>
+      </span>
+    </div>
+  </tui-table-row>
+</tui-table>

@@ -15,7 +15,6 @@ export class TranslateResolver implements Resolve<Observable<Object>> {
   }
 
   resolve() {
-    // return Observable.of('');
     return this.translate.load(this.translateToken)
     .map(() => null);
   }

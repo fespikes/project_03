@@ -1,2 +1,63 @@
 TENANT:
   NAME: 租户
+
+  OVERVIEW:
+    TOTAL: 租户总计
+    EXPORT: 导出
+    NAME: 租户名
+    DESC: 描述
+    INSTANCE: 实例
+    USER: 用户
+    ADMIN: 管理员
+    CONSUMPTION: 消费额
+    STATUS: 状态
+
+  DETAIL:
+    GO_BACK: 返回
+    ABSTRACT: 概览
+    INSTANCE: 实例信息
+    TICKET: 工单处理
+    ERROR: 故障历史
+    QUOTA: 配额管理
+    ADMIN: 管理员
+    CREATE_TIME: 创建时间
+    NO_DESCRIPTION: 暂无描述
+    EXPORT: 导出
+    STATUS: 状态
+    DESC: 描述
+    OP: 操作
+    DELETE: 删除
+    EDIT: 编辑
+
+  ABSTRACT:
+    PLATFORM_INFO: 平台概览
+    SERVICE_HEALTH: 服务情况
+    INSTANCES_TREND: 云产品实例变化趋势
+    PRODUCTS_TREND: 云产品实例数量
+    CONSUMPTION_TREND: 消费变化趋势
+    CPU_TREND: CPU负载率
+    MEMORY_TREND: 内存使用量
+    STORAGE_TREND: 磁盘使用量
+    NETWORK_TREND: 网络使用量
+    SERVICE_KILL_TREND: 服务Kill情况
+
+  INSTANCE:
+    NAME: 实例名
+    TEMPLATE: 模板
+    STATUSES: 全部状态
+
+  ERROR:
+    LEVEL: 等级
+    TYPE: 分类
+    COMPONENT: 组件
+    TIME: 故障时间
+    DATE_RANGE: 起止时间
+    START_DATE: 起始时间
+    END_DATE: 截止时间
+
+  QUOTA:
+    CPU: CPU上限
+    MEMORY: 内存上限
+    NETWORK: 带宽上限
+    STORAGE: 磁盘上限
+

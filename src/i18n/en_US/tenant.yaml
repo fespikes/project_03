@@ -1,2 +1,62 @@
 TENANT:
   NAME: Tenant
+
+  OVERVIEW:
+    TOTAL: All Tenants
+    EXPORT: Export
+    NAME: Tenant Name
+    DESC: Description
+    INSTANCE: Instance
+    USER: User
+    ADMIN: Admin
+    CONSUMPTION: Consumption
+    STATUS: Status
+
+  DETAIL:
+    GO_BACK: Back
+    ABSTRACT: Abstract
+    INSTANCE: Instance
+    TICKET: Ticket
+    ERROR: Error
+    QUOTA: Quota
+    ADMIN: Admin
+    CREATE_TIME: Create Time
+    NO_DESCRIPTION: No Description
+    EXPORT: Export
+    STATUS: Status
+    DESC: Description
+    OP: Operation
+    DELETE: Delete
+    EDIT: Edit
+
+  ABSTRACT:
+    PLATFORM_INFO: Platform Info
+    SERVICE_HEALTH: Service Health
+    INSTANCES_TREND: Instances Trend
+    PRODUCTS_TREND: Products Trend
+    CONSUMPTION_TREND: Consumption Trend
+    CPU_TREND: CPU Trend
+    MEMORY_TREND: Memory Trend
+    STORAGE_TREND: Storage Trend
+    NETWORK_TREND: Network Trend
+    SERVICE_KILL_TREND: Service Kill Trend
+
+  INSTANCE:
+    NAME: Instance Name
+    TEMPLATE: Template
+    STATUSES: All Statuses
+
+  ERROR:
+    LEVEL: Level
+    CATAGORY: Catagory
+    COMPONENT: Component
+    TIME: Error Time
+    DATE_RANGE: Time Range
+    START_DATE: Start Date
+    END_DATE: End Date
+
+  QUOTA:
+    CPU: CPU Limit
+    MEMORY: Memory Limit
+    NETWORK: Network Limit
+    STORAGE: Storage Limit
