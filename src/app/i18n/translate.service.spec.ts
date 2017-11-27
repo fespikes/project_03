@@ -1,6 +1,6 @@
 import { Http } from '@angular/http';
 import { TestBed, inject } from '@angular/core/testing';
-import { Observable } from 'rxjs/Rx';
+import { Observable } from 'rxjs/Observable';
 
 import { TranslateService, I18nLangService } from '.';
 class I18nLangServiceStub {
