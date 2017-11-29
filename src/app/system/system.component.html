@@ -1,12 +1,12 @@
 <div class="tui-layout-vertical">
-  <div class="tui-layout-main-container tdc-eco-common-list-layout">
+  <div class="tui-layout-main-container">
     <div class="tui-layout-main-title">
       <span>{{'SYSTEM.OVERVIEW.TOTAL' | translate}}:</span>
       <span>21</span>
     </div>
 
     <div class="container-operation-bar">
-      <tui-search (ngModelChange)="search()">
+      <tui-search [(ngModel)]="keyword" (ngModelChange)="search()">
       </tui-search>
     </div>
 

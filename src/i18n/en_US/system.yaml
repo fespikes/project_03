@@ -3,10 +3,10 @@ SYSTEM:
 
   OVERVIEW:
     TOATAL: System Service Number
-    SERVICE_NAME: Service Name
+    NAME: Service Name
     STATUS: Status
     VERSION: Version
-    LABEL: Label
-    CONTAINER_IMAGE: Container Image
-    SURVIVAL_TIME: Survival Time
+    TAG: Label
+    IMAGE: Container Image
+    DURATION: Survival Time
     OPERATION: Operation
