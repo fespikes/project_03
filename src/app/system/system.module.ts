@@ -8,6 +8,8 @@ import { I18nModule } from '../i18n';
 import { SystemRoutingModule } from './system-routing.module';
 import { SystemComponent } from './system.component';
 
+import { SystemService } from './system.service';
+
 @NgModule({
   imports: [
     CommonModule,
@@ -18,6 +20,9 @@ import { SystemComponent } from './system.component';
   ],
   declarations: [
     SystemComponent,
+  ],
+  providers: [
+    SystemService,
   ],
 })
 export class SystemModule { }

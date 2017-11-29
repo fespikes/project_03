@@ -1,2 +1,12 @@
 SYSTEM:
   NAME: System Service
+
+  OVERVIEW:
+    TOATAL: System Service Number
+    NAME: Service Name
+    STATUS: Status
+    VERSION: Version
+    TAG: Label
+    IMAGE: Container Image
+    DURATION: Survival Time
+    OPERATION: Operation
