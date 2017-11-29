@@ -22,8 +22,10 @@ export class SystemComponent implements OnInit {
   ngOnInit() {
   }
 
-  paginationChange() {
+  search() {
+  }
 
+  paginationChange() {
   }
 
 }

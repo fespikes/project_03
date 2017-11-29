@@ -6,7 +6,7 @@
     </div>
 
     <div class="container-operation-bar">
-      <tui-search [(ngModel)]="keyword" (ngModelChange)="search()">
+      <tui-search (ngModelChange)="search()">
       </tui-search>
     </div>
 
@@ -21,7 +21,7 @@
           <div>{{'SYSTEM.OVERVIEW.DURATION' | translate}}</div>
           <div>{{'SYSTEM.OVERVIEW.OPERATION' | translate}}</div>
         </tui-table-head>
-        <tui-table-row *ngFor="let service of service">
+        <tui-table-row *ngFor="let service of services">
           <div class="text-ellipsis">{{service.name}}</div>
           <div>{{service.status}}</div>
           <div class="text-ellipsis">{{service.version}}</div>

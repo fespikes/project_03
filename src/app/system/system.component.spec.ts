@@ -1,6 +1,8 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 
 import { SystemComponent } from './system.component';
+import { TranslatePipeStub } from '../mock';
 
 describe('SystemComponent', () => {
   let component: SystemComponent;
@@ -8,7 +10,11 @@ describe('SystemComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ SystemComponent ]
+      schemas: [NO_ERRORS_SCHEMA],
+      declarations: [
+        SystemComponent,
+        TranslatePipeStub,
+      ],
     })
     .compileComponents();
   }));
