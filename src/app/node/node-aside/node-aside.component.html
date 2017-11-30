@@ -1,0 +1,74 @@
+
+<div class="tui-submenu-header bg" [ngClass]="{'space-between': backUrl}">
+   <a [routerLink]="backUrl" *ngIf="backUrl">
+    <svg class="angle-left" tuiIcon="angle-up"></svg>
+  </a>
+  <svg (click)="toggle()" tuiIcon="menu-collapse" class="tui-submenu-toggle"></svg>
+</div>
+
+<!-- <ng-content></ng-content>
+ -->
+
+<ul class="filter-ul bg">
+	<li class="title">筛选条件<button class="link-color">清除全部</button></li>
+	<li class="title">状态</li>
+	<li>
+		<a>
+			运行健康<span>23452</span>
+		</a>
+	</li>
+	<li>
+		<a>
+			运行故障<span class="error-color">452</span>
+		</a>
+	</li>
+	<li>
+		<a>
+			运行有隐患<span>52</span>
+		</a>
+	</li>
+
+	<li class="title">变化情况</li>
+	<li>
+		<a>
+			本月新增主机<span>52</span>
+		</a>
+	</li>
+	<li>
+		<a>
+			当前空闲主机<span>52</span>
+		</a>
+	</li>
+
+	<li class="title">集群</li>
+	<li>
+		<tui-select
+	    [(ngModel)]="select"
+	    (ngModelChange)="fetchData(true)"
+	    style="width:130px"
+	  >
+	    <tui-select-option
+	      *ngFor="let option of options"
+	      [value]="option.type"
+	    >
+	      {{ option.type }}
+	    </tui-select-option>
+	  </tui-select>
+	</li>
+
+	<li class="title">内核</li>
+	<li>
+		<tui-select
+	    [(ngModel)]="select"
+	    (ngModelChange)="fetchData(true)"
+	    style="width:130px"
+	  >
+	    <tui-select-option
+	      *ngFor="let option of options"
+	      [value]="option.type"
+	    >
+	      {{ option.type }}
+	    </tui-select-option>
+	  </tui-select>
+	</li>
+</ul>

@@ -2,6 +2,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
 import { HttpModule } from '@angular/http';
+import { TuiModule, TuiMessageService } from 'tdc-ui';
 
 import {
   I18nModule,
@@ -29,6 +30,7 @@ import { AppComponent } from './app.component';
     BrowserModule,
     BrowserAnimationsModule,
     HttpModule,
+    TuiModule,
     I18nModule,
     SharedModule,
     LayoutModule,
@@ -38,6 +40,7 @@ import { AppComponent } from './app.component';
   providers: [
     TecApiService,
     I18nLangService,
+    TuiMessageService,
     TranslateService,
   ],
   bootstrap: [AppComponent],

@@ -1,3 +1,59 @@
-<p>
-  node works!
-</p>
+<div class="tui-layout-body">
+  <div class="aside filter">
+    <tec-node-aside [backUrl]="backUrl"></tec-node-aside>
+  </div>
+
+  <div class="tui-layout-vertical">
+    <div class="tui-layout-main-container" style="min-height:100%">
+
+      <div class="maintain">
+        <span class="left">主机总计：{{allData.hostAmount}}</span>
+
+        <span class="right">
+          <button tuiBtn="primary">
+            <svg tuiIcon="export"></svg>
+            <span>EXPORT</span>
+          </button><!-- <span>{{'TENANT.DETAIL.EXPORT' | translate}}</span> -->
+
+          <tui-search
+            [(ngModel)]="search"
+            (ngModelChange)="onSearch(true)"
+          ></tui-search>
+        </span>
+      </div>
+
+      <tui-table class="tui-table" [tuiTableFlex]="[1.5,1,2,2,2,1.5,2,2]" [loading]="loading">
+
+        <tui-table-head>
+          <div>主机</div>
+          <div>状态</div>
+          <div>内存使用量</div>
+          <div>SSD使用量</div>
+          <div>HDD使用量</div>
+          <div>微服务</div>
+          <div>IP</div>
+          <div>加入集群时间</div>
+        </tui-table-head>
+
+        <tui-table-row *ngFor="let instance of allData.tableData">
+          <div class="text-ellipsis">主机</div>
+          <div class="text-ellipsis">状态</div>
+          <div>内存使用量</div>
+          <div>SSD使用量</div>
+          <div>HDD使用量</div>
+          <div>微服务</div>
+          <div>IP</div>
+          <div>加入集群时间</div>
+        </tui-table-row>
+
+      </tui-table>
+      
+      <div class="tui-layout-main-pagination-footer">
+        <tui-pagination [(pagination)]="pagination" (paginationChange)="paginationChange()">
+        </tui-pagination>
+      </div>
+
+    </div>
+
+  </div>
+</div>
