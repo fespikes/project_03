@@ -7,6 +7,9 @@ import { I18nModule } from '../i18n';
 
 import { NodeRoutingModule } from './node-routing.module';
 import { NodeComponent } from './node.component';
+import { NodeAsideComponent } from './node-aside/node-aside.component';
+
+import { NodeService } from './node.service';
 
 @NgModule({
   imports: [
@@ -18,6 +21,10 @@ import { NodeComponent } from './node.component';
   ],
   declarations: [
     NodeComponent,
+    NodeAsideComponent,
   ],
+  providers:[
+    NodeService
+  ]
 })
 export class NodeModule { }
