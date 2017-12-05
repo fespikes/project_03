@@ -1,7 +1,7 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({
-  name: 'tecDefault',
+  name: 'tuiDefault',
 })
 export class DefaultPipeStub implements PipeTransform {
   transform(value) {

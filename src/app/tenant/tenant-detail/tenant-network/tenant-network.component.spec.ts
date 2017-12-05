@@ -1,6 +1,8 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 
 import { TenantNetworkComponent } from './tenant-network.component';
+import { TranslatePipeStub } from '../../../mock';
 
 describe('TenantNetworkComponent', () => {
   let component: TenantNetworkComponent;
@@ -8,7 +10,11 @@ describe('TenantNetworkComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ TenantNetworkComponent ]
+      schemas: [NO_ERRORS_SCHEMA],
+      declarations: [
+        TenantNetworkComponent,
+        TranslatePipeStub,
+      ],
     })
     .compileComponents();
   }));

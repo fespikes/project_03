@@ -1,8 +1,26 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { Observable } from 'rxjs/Observable';
 
 import { TenantListComponent } from './tenant-list.component';
-import { TranslatePipeStub } from '../../mock';
+import { TenantService } from '../tenant.service';
+import { TranslatePipeStub, DefaultPipeStub } from '../../mock';
+
+class TenantServiceStub {
+  fetchSummaries() {
+    return Observable.of({
+      data: [],
+    });
+  }
+  fetchTenantsCount() {
+    return Observable.of({
+      data: {
+        count: 10,
+        time: 0,
+      },
+    });
+  }
+}
 
 describe('TenantListComponent', () => {
   let component: TenantListComponent;
@@ -14,6 +32,13 @@ describe('TenantListComponent', () => {
       declarations: [
         TenantListComponent,
         TranslatePipeStub,
+        DefaultPipeStub,
+      ],
+      providers: [
+        {
+          provide: TenantService,
+          useClass: TenantServiceStub,
+        },
       ],
     })
     .compileComponents();

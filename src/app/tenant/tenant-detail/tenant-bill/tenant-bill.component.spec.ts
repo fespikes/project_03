@@ -1,6 +1,8 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 
 import { TenantBillComponent } from './tenant-bill.component';
+import { TranslatePipeStub } from '../../../mock';
 
 describe('TenantBillComponent', () => {
   let component: TenantBillComponent;
@@ -8,7 +10,11 @@ describe('TenantBillComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ TenantBillComponent ]
+      schemas: [NO_ERRORS_SCHEMA],
+      declarations: [
+        TenantBillComponent,
+        TranslatePipeStub,
+      ],
     })
     .compileComponents();
   }));
