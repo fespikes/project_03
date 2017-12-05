@@ -4,8 +4,12 @@ import { Observable } from 'rxjs/Observable';
 import { TecApiService } from '../shared';
 import { Pagination } from 'tdc-ui';
 import {
-  TenantInfo,
+  TenantInfoWrap,
+  AllTenants,
   TenantSummary,
+  TenantSummaries,
+  TenantCount,
+  Consumption,
   Instance,
   Errors,
   Quota,
@@ -17,12 +21,24 @@ export class TenantService {
 
   constructor(private api: TecApiService) { }
 
-  fetchSummaries(keyword: string): Observable<TenantSummary[]> {
+  fetchAllTenants(): Observable<AllTenants> {
+    return this.api.get('tenants');
+  }
+
+  fetchSummaries(keyword: string): Observable<TenantSummaries> {
     return this.api.get(`tenants/summaries`, {keyword: keyword});
   }
 
-  fetchInfo(name: string): Observable<TenantInfo> {
-    return this.api.get(`tenants/${name}/info`);
+  fetchTenantsCount(): Observable<TenantCount> {
+    return this.api.get(`tenants/count`);
+  }
+
+  fetchConsumption(period: string): Observable<Consumption[]> {
+    return this.api.get(`tenants/consumptions`, {period: period});
+  }
+
+  fetchInfo(uid: string): Observable<TenantInfoWrap> {
+    return this.api.get(`tenants/${uid}`);
   }
 
   fetchInstanceInfos(name, filter): Observable<Instance[]> {

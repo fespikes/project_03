@@ -1,3 +1,5 @@
+@import '../../styles/util'
+
 \:host
   .tui-layout-main-container
     display: flex
@@ -33,3 +35,14 @@
 
   .tui-table-row > div, .tui-table-head > div
     padding: .5rem 1rem
+
+  .status-td
+    display: flex
+    align-items: center
+
+    svg
+      margin-right: .5rem
+
+  .tenant-name
+    color: $royalblue
+    text-decoration: none

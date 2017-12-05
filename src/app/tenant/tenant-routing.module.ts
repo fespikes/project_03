@@ -11,7 +11,7 @@ const tanantChildren = [
     redirectTo: 'overview',
   },
   {
-    path: 'detail',
+    path: 'detail/:uid',
     component: TenantDetailComponent,
   },
   {
