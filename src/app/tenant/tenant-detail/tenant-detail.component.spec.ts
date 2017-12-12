@@ -6,7 +6,7 @@ import { TabPaneDirective, TuiModalService } from 'tdc-ui';
 
 import { TenantDetailComponent } from './tenant-detail.component';
 import { TenantService } from '../tenant.service';
-import { TranslatePipeStub } from '../../mock';
+import { TranslatePipeStub } from 'app/mock';
 
 class RouterStub {
   navigateByUrl() { }

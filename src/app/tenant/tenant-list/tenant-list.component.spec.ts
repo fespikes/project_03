@@ -4,7 +4,7 @@ import { Observable } from 'rxjs/Observable';
 
 import { TenantListComponent } from './tenant-list.component';
 import { TenantService } from '../tenant.service';
-import { TranslatePipeStub, DefaultPipeStub } from '../../mock';
+import { TranslatePipeStub, DefaultPipeStub } from 'app/mock';
 
 class TenantServiceStub {
   fetchSummaries() {
