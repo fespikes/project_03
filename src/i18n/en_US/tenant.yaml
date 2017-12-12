@@ -11,14 +11,18 @@ TENANT:
     ADMIN: Admin
     CONSUMPTION: Consumption
     STATUS: Status
+    CREATE_TIME: Create Time
+    BILL: Bill
 
   DETAIL:
     GO_BACK: Back
     ABSTRACT: Abstract
     INSTANCE: Instance
+    NETWORK: Network
     TICKET: Ticket
     ERROR: Error
     QUOTA: Quota
+    BILL: Bill
     ADMIN: Admin
     CREATE_TIME: Create Time
     NO_DESCRIPTION: No Description
@@ -46,6 +50,13 @@ TENANT:
     TEMPLATE: Template
     STATUSES: All Statuses
 
+  NETWORK:
+    NAME: Network Name
+    GATEWAY: Gateway
+    CREATED: Created User
+    CREATED_DATE: Created Date
+    LIMIT: Network Limit
+
   ERROR:
     LEVEL: Level
     CATAGORY: Catagory
@@ -58,5 +69,10 @@ TENANT:
   QUOTA:
     CPU: CPU Limit
     MEMORY: Memory Limit
-    NETWORK: Network Limit
+    NETWORK: Child Network Limit
     STORAGE: Storage Limit
+
+  STATUS:
+    CREATING: Creating
+    ACTIVATING: Activating
+    CANCELED: Canceled

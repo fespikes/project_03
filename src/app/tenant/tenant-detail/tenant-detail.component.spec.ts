@@ -2,13 +2,41 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
-import { TabPaneDirective } from 'tdc-ui';
+import { TabPaneDirective, TuiModalService } from 'tdc-ui';
 
 import { TenantDetailComponent } from './tenant-detail.component';
-import { TranslatePipeStub } from '../../mock';
+import { TenantService } from '../tenant.service';
+import { TranslatePipeStub } from 'app/mock';
 
 class RouterStub {
   navigateByUrl() { }
+}
+
+class TuiModalServiceStub {
+  apiError() { }
+}
+
+class TenantServiceStub {
+  fetchAllTenants() {
+    return Observable.of({
+      data: [],
+    });
+  }
+  fetchTenantsCount() {
+    return Observable.of({
+      data: {
+        count: 10,
+        time: 0,
+      },
+    });
+  }
+  fetchInfo() {
+    return Observable.of({
+      data: {
+        name: 'tenant',
+      },
+    });
+  }
 }
 
 describe('TenantDetailComponent', () => {
@@ -29,6 +57,14 @@ describe('TenantDetailComponent', () => {
           useValue: {
             params: Observable.of({ name: 'tenant1' }),
           },
+        },
+        {
+          provide: TuiModalService,
+          useClass: TuiModalServiceStub,
+        },
+        {
+          provide: TenantService,
+          useClass: TenantServiceStub,
         },
         {
           provide: Router,

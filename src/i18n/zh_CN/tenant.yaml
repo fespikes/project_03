@@ -9,16 +9,21 @@ TENANT:
     INSTANCE: 实例
     USER: 用户
     ADMIN: 管理员
-    CONSUMPTION: 消费额
+    CONSUMPTION: 待付费金额
     STATUS: 状态
+    CREATE_TIME: 创建时间
+    BILL: 总账单金额
+
 
   DETAIL:
     GO_BACK: 返回
     ABSTRACT: 概览
     INSTANCE: 实例信息
+    NETWORK: 网络管理
     TICKET: 工单处理
     ERROR: 故障历史
     QUOTA: 配额管理
+    BILL: 账单信息
     ADMIN: 管理员
     CREATE_TIME: 创建时间
     NO_DESCRIPTION: 暂无描述
@@ -46,6 +51,13 @@ TENANT:
     TEMPLATE: 模板
     STATUSES: 全部状态
 
+  NETWORK:
+    NAME: 网络名
+    GATEWAY: 网关
+    CREATED: 创建者
+    CREATED_DATE: 创建时间
+    LIMIT: 带宽上限
+
   ERROR:
     LEVEL: 等级
     TYPE: 分类
@@ -58,6 +70,11 @@ TENANT:
   QUOTA:
     CPU: CPU上限
     MEMORY: 内存上限
-    NETWORK: 带宽上限
+    NETWORK: 子网络上限
     STORAGE: 磁盘上限
+
+  STATUS:
+    CREATING: 创建中
+    ACTIVATING: 运行中
+    CANCELED: 已注销
 
