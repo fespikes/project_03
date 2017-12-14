@@ -4,15 +4,40 @@ export class TenantInfo {
   name = '';
   description = '';
   admin = '';
-  created = '';
+  createTime = '';
+  status = '';
+  uid = '';
+}
+
+export class AllTenants {
+  data: TenantInfo[];
+}
+
+export class TenantInfoWrap {
+  data: TenantInfo;
 }
 
 export class TenantSummary {
-  name = '';
-  description = '';
-  admin = '';
-  instances = 0;
-  users = 0;
+  billMonth = '';
+  unpaid = 0;
+  instanceCount = 0;
+  userCount = 0;
+  consumption = 0;
+  tenantInfo: TenantInfo;
+}
+
+export class TenantSummaries {
+  data: {
+    data: TenantSummary[],
+    pagination: Pagination,
+  };
+}
+
+export class TenantCount {
+  data: {
+    count: 0,
+    time: 0,
+  };
 }
 
 export class Consumption {
@@ -36,7 +61,7 @@ export class Error {
   type = '';
   status = '';
   description = '';
-  created = '';
+  time = '';
 }
 
 export class Errors {

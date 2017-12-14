@@ -1,7 +1,7 @@
 <tui-submenu>
-  <tui-submenu-list menuTitle="{{'TENANT.OVERVIEW.TOTAL' | translate}}" [items]='submenuItems'></tui-submenu-list>
+  <tui-submenu-list menuTitle="{{'TENANT.OVERVIEW.TOTAL' | translate}}: {{tenantsCount}}" [items]='submenuItems'></tui-submenu-list>
 </tui-submenu>
-<div class="tui-layout-vertical">
+<div class="tui-layout-vertical" [tuiLoading]="loading" tccLoadingHeight="600px">
   <div class="tui-layout-main-nav">
     <span (click)="navigateBack()">
       <svg tuiIcon="angle-left"></svg>{{'TENANT.DETAIL.GO_BACK' | translate}}
@@ -9,7 +9,7 @@
   </div>
   <div class="tui-layout-main-container">
     <div class="tui-layout-main-title">
-      金融租户1
+      {{tenant.name}}
     </div>
     <div class="tenant-detail">
       <div class="description">
@@ -17,8 +17,8 @@
         <span *ngIf="!tenant.description">{{'TENANT.DETAIL.NO_DESCRIPTION' | translate}}</span>
       </div>
       <div class="tenant-property">
-        <tui-property icon="user-slash" label="{{'TENANT.DETAIL.ADMIN' | translate}}" [value]="tenant?.admin"> </tui-property>
-        <tui-property icon="clock" label="{{'TENANT.DETAIL.CREATE_TIME' | translate}}" [value]="tenant?.created | date:'y/M/d HH:mm'"></tui-property>
+        <tui-property icon="user-slash" label="{{'TENANT.DETAIL.ADMIN' | translate}}" [value]="tenant.admin"> </tui-property>
+        <tui-property icon="clock" label="{{'TENANT.DETAIL.CREATE_TIME' | translate}}" [value]="tenant.createTime | date:'y/M/d HH:mm'"></tui-property>
       </div>
     </div>
   </div>
@@ -26,9 +26,11 @@
   <tui-tab>
     <tec-tenant-abstract *tuiTabPane="'TENANT.DETAIL.ABSTRACT' | translate"></tec-tenant-abstract>
     <tec-tenant-instance *tuiTabPane="'TENANT.DETAIL.INSTANCE' | translate"></tec-tenant-instance>
+    <tec-tenant-network *tuiTabPane="'TENANT.DETAIL.NETWORK' | translate"></tec-tenant-network>
     <tec-tenant-ticket *tuiTabPane="'TENANT.DETAIL.TICKET' | translate"></tec-tenant-ticket>
     <tec-tenant-error *tuiTabPane="'TENANT.DETAIL.ERROR' | translate"></tec-tenant-error>
     <tec-tenant-quota *tuiTabPane="'TENANT.DETAIL.QUOTA' | translate"></tec-tenant-quota>
+    <tec-tenant-bill *tuiTabPane="'TENANT.DETAIL.BILL' | translate"></tec-tenant-bill>
   </tui-tab>
 </div>
 

@@ -1,18 +1,18 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 
-import { TenantErrorComponent } from './tenant-error.component';
+import { TenantNetworkComponent } from './tenant-network.component';
 import { TranslatePipeStub } from 'app/mock';
 
-describe('TenantErrorComponent', () => {
-  let component: TenantErrorComponent;
-  let fixture: ComponentFixture<TenantErrorComponent>;
+describe('TenantNetworkComponent', () => {
+  let component: TenantNetworkComponent;
+  let fixture: ComponentFixture<TenantNetworkComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       schemas: [NO_ERRORS_SCHEMA],
       declarations: [
-        TenantErrorComponent,
+        TenantNetworkComponent,
         TranslatePipeStub,
       ],
     })
@@ -20,7 +20,7 @@ describe('TenantErrorComponent', () => {
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(TenantErrorComponent);
+    fixture = TestBed.createComponent(TenantNetworkComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

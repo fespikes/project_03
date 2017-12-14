@@ -2,6 +2,8 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
+import { TuiModalService } from 'tdc-ui';
+
 import { SharedModule } from '../shared';
 import { I18nModule } from '../i18n';
 
@@ -14,6 +16,8 @@ import { TenantInstanceComponent } from './tenant-detail/tenant-instance/tenant-
 import { TenantTicketComponent } from './tenant-detail/tenant-ticket/tenant-ticket.component';
 import { TenantErrorComponent } from './tenant-detail/tenant-error/tenant-error.component';
 import { TenantQuotaComponent } from './tenant-detail/tenant-quota/tenant-quota.component';
+import { TenantNetworkComponent } from './tenant-detail/tenant-network/tenant-network.component';
+import { TenantBillComponent } from './tenant-detail/tenant-bill/tenant-bill.component';
 
 @NgModule({
   imports: [
@@ -31,9 +35,12 @@ import { TenantQuotaComponent } from './tenant-detail/tenant-quota/tenant-quota.
     TenantTicketComponent,
     TenantErrorComponent,
     TenantQuotaComponent,
+    TenantNetworkComponent,
+    TenantBillComponent,
   ],
   providers: [
     TenantService,
+    TuiModalService,
   ],
 })
 export class TenantModule { }

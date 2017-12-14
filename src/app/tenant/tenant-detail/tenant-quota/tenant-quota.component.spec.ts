@@ -2,7 +2,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 
 import { TenantQuotaComponent } from './tenant-quota.component';
-import { TranslatePipeStub } from '../../../mock';
+import { TranslatePipeStub } from 'app/mock';
 
 describe('TenantQuotaComponent', () => {
   let component: TenantQuotaComponent;

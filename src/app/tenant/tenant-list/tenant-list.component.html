@@ -2,7 +2,7 @@
   <div class="tui-layout-main-container">
     <div class="tui-layout-main-title">
       <span>{{'TENANT.OVERVIEW.TOTAL' | translate}}:</span>
-      <span>62</span>
+      <span>{{tenantsCount}}</span>
     </div>
 
     <div class="container-operation-bar">
@@ -15,24 +15,33 @@
     </div>
 
     <div class="container-content">
-      <tui-table [tuiTableFlex]="[2,2,1,1,2,2,1]" [loading]="loading">
+      <tui-table [tuiTableFlex]="[2,2,1,1,2,1,1,2,1]" [loading]="loading">
         <tui-table-head>
           <div>{{'TENANT.OVERVIEW.NAME' | translate}}</div>
           <div>{{'TENANT.OVERVIEW.DESC' | translate}}</div>
           <div>{{'TENANT.OVERVIEW.INSTANCE' | translate}}</div>
           <div>{{'TENANT.OVERVIEW.USER' | translate}}</div>
           <div>{{'TENANT.OVERVIEW.ADMIN' | translate}}</div>
+          <div>{{'TENANT.OVERVIEW.CREATE_TIME' | translate}}</div>
+          <div>{{'TENANT.OVERVIEW.BILL' | translate}}</div>
           <div>{{'TENANT.OVERVIEW.CONSUMPTION' | translate}}</div>
           <div>{{'TENANT.OVERVIEW.STATUS' | translate}}</div>
         </tui-table-head>
         <tui-table-row *ngFor="let tenant of tenants">
-          <div class="text-ellipsis">{{tenant.name}}</div>
-          <div class="text-ellipsis">{{tenant.description}}</div>
-          <div>{{tenant.instances}}</div>
-          <div>{{tenant.users}}</div>
-          <div class="text-ellipsis">{{tenant.admin}}</div>
-          <div class="text-ellipsis">{{tenant.consumption}}</div>
-          <div>{{tenant.status}}</div>
+          <div class="text-ellipsis">
+            <a [routerLink]="'/tenant/detail/' + tenant.tenantInfo.uid" class="tenant-name">{{tenant.tenantInfo.name}}</a>
+          </div>
+          <div class="text-ellipsis">{{tenant.tenantInfo.description | tuiDefault}}</div>
+          <div>{{tenant.instanceCount}}</div>
+          <div>{{tenant.userCount}}</div>
+          <div class="text-ellipsis">{{tenant.tenantInfo.admin}}</div>
+          <div class="text-ellipsis">{{tenant.tenantInfo.createTime | date:'y/M/d'}}</div>
+          <div class="text-ellipsis">{{tenant.billMonth | tuiDefault}}</div>
+          <div class="text-ellipsis">{{tenant.consumption | tuiDefault}}</div>
+          <div class="status-td">
+            <svg tuiIcon [tecIconStatus]="tenant.tenantInfo.status" size="sm"></svg>
+            <span>{{'TENANT.STATUS.' + tenant.tenantInfo.status | translate}}</span>
+          </div>
         </tui-table-row>
       </tui-table>
     </div>
