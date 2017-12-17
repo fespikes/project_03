@@ -1,9 +1,11 @@
 import { Injectable, EventEmitter } from '@angular/core';
 
+import { TecApiService } from '../shared';
+
 @Injectable()
 export class NodeService {
 
-  constructor() { }
+  constructor(private api: TecApiService) { }
 
   onToggle = new EventEmitter();
 
@@ -12,6 +14,14 @@ export class NodeService {
     setTimeout(() => {
       this.onToggle.emit();
     });
+  }
+
+  fetchNodeList() {
+  	return this.api.get(`nodes`);
+  }
+
+  fetchNodeSummary() {
+  	return this.api.get('nodes/summaries');
   }
 
 }

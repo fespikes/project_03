@@ -7,7 +7,7 @@
     <div class="tui-layout-main-container" style="min-height:100%">
 
       <div class="maintain">
-        <span class="left">主机总计：{{allData.hostAmount}}</span>
+        <span class="left">主机总计：{{total}}</span>
 
         <span class="right">
           <button tuiBtn="primary">
@@ -35,15 +35,16 @@
           <div>加入集群时间</div>
         </tui-table-head>
 
-        <tui-table-row *ngFor="let instance of allData.tableData">
-          <div class="text-ellipsis">主机</div>
-          <div class="text-ellipsis">状态</div>
+        <tui-table-row *ngFor="let instance of tableData">
+          <div class="text-ellipsis">{{instance.name}}</div>
+          <div class="text-ellipsis">{{instance.status}}</div>
+<!--           <div>{{instance.resources.memory.usage+ ' '+ instance.resources.memory.usagePercent + '%'}}</div> -->
           <div>内存使用量</div>
           <div>SSD使用量</div>
           <div>HDD使用量</div>
-          <div>微服务</div>
-          <div>IP</div>
-          <div>加入集群时间</div>
+          <div>{{instance.microServicesCount}}</div>
+          <div>{{instance.ip}}</div>
+          <div>{{instance.joinTime | date: 'yyyy/MM/dd h:mm a'}}</div>
         </tui-table-row>
 
       </tui-table>

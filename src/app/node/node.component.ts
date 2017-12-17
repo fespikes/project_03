@@ -1,6 +1,7 @@
 import { Component, OnInit, HostBinding } from '@angular/core';
 import { Pagination } from 'tdc-ui';
 
+import { NodeService } from './node.service';
 
 @Component({
   selector: 'tec-node',
@@ -13,33 +14,40 @@ export class NodeComponent implements OnInit {
 
   backUrl = '../';
 
+  private loading = true;
+
   tableData = [
     {id: 1, name: 'cat', type: 'limb', desc: 'miao'},
     {id: 2, name: 'dog', type: 'limb', desc: 'wuf'},
     {id: 3, name: 'fish', type: 'no-limb', desc: 'blue'},
   ];
+  total;
 
-  data: any;
-
-  allData: any;
+  current: any;
 
   search: any;
 
+  private select;
+
   pagination = new Pagination();
 
-  constructor() { }
+  constructor(
+    private nodeService: NodeService
+  ) { }
 
   ngOnInit() {
-    this.allData = {
-      hostAmount: 222,
 
-      tableData: []
-    }
+    this.nodeService.fetchNodeList().subscribe(response=>{
+      this.tableData = response.data.data;
+      this.total = response.data.pagination.total;
+      // this.pagination = response.data.pagination;
+      this.loading = false;
+    })
 
   }
   
   selectChange(data) {
-    console.log('selectChange', data, 'this.data:', this.data);
+    console.log('selectChange', data, 'this.current:', this.current);
   }
 
   onSearch(fromStart = false) {
@@ -55,7 +63,7 @@ export class NodeComponent implements OnInit {
     const size = this.pagination.size;
     const start = (this.pagination.page - 1) * size;
 
-    this.data = this.allData.filter((datum) => {
+    this.tableData = this.tableData.filter((datum) => {
       let match = true;
       if (this.search) {
         match = match && !!~datum.name.indexOf(this.search);
@@ -67,13 +75,12 @@ export class NodeComponent implements OnInit {
     })
     .slice(start, start + size);
 
-    // 模仿请求中给pagination赋值
     this.pagination = {
       ...this.pagination,
-      total: this.allData.length,
+      total: this.tableData.length,
     };
 
-    console.log('this.data', this.allData);
+    console.log('this.data', this.tableData);
   }
 
   paginationChange() {

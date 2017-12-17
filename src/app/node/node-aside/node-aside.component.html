@@ -14,29 +14,30 @@
 	<li class="title">状态</li>
 	<li>
 		<a>
-			运行健康<span>23452</span>
+			运行健康<span>{{asideData.healthyCount}}</span>
 		</a>
 	</li>
 	<li>
 		<a>
-			运行故障<span class="error-color">452</span>
+			运行故障<span class="error-color">{{asideData.brokenCount}}</span>
 		</a>
 	</li>
 	<li>
 		<a>
-			运行有隐患<span>52</span>
+			运行有隐患<span>{{asideData.riskyCount}}</span>
 		</a>
 	</li>
 
 	<li class="title">变化情况</li>
 	<li>
 		<a>
-			本月新增主机<span>52</span>
+			本月新增主机<span>{{asideData.addedCount}}</span>
+			<!--to be confirmed-->
 		</a>
 	</li>
 	<li>
 		<a>
-			当前空闲主机<span>52</span>
+			当前空闲主机<span>{{asideData.freeCount}}</span>
 		</a>
 	</li>
 

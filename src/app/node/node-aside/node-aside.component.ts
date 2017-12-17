@@ -18,11 +18,17 @@ export class NodeAsideComponent implements OnInit {
   ];
   select;
 
+  asideData: object;
+
   constructor(
     private service: NodeService,
   ) { }
 
   ngOnInit() {
+    this.service.fetchNodeSummary().subscribe(response=>{
+      console.log({...response.data});
+      this.asideData = {...response.data};
+    })
   }
 
   toggle() {
