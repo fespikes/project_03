@@ -13,7 +13,6 @@
     "**/*.spec.ts"
   ],
   "include": [
-    "**/*.ts",
-    "../node_modules/tdc-ui/index.ts"
+    "**/*.ts"
   ]
 }
