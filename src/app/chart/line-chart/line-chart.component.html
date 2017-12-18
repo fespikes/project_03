@@ -1,0 +1,19 @@
+<div class="tui-layout-main-container flex-auto">
+  <div class="tui-layout-main-title">
+    Line chart
+  </div>
+  <div #lineChart class="tdc-chart-line" style="width:100%;height:600px"></div>
+  <form #form="ngForm" tuiForm labelFlex="1" inputFlex="8">
+    <tui-form-item label="data">
+      <tui-textarea name="data" rows="10" [(ngModel)]="chartDataJson"></tui-textarea>
+    </tui-form-item>
+    <tui-form-item label="config">
+      <tui-textarea name="config" rows="10" [(ngModel)]="configJson"></tui-textarea>
+    </tui-form-item>
+    <tui-form-item>
+      <div class="foot">
+        <button tuiBtn="primary" (click)="draw()">Redraw</button>
+      </div>
+    </tui-form-item>
+  </form>
+</div>
