@@ -9,38 +9,42 @@
 <!-- <ng-content></ng-content>
  -->
 
-<ul class="filter-ul bg">
-	<li class="title">筛选条件<button class="link-color">清除全部</button></li>
+<ul class="filter-ul bg" 
+  (click)="onScreen($event)"
+>
+	<li class="title">
+	  筛选条件
+	  <button class="link-color" type-ref="reset">清除全部</button></li>
 	<li class="title">状态</li>
-	<li>
-		<a>
-			运行健康<span>{{asideData.healthyCount}}</span>
+	<li type-ref="HEALTHY">
+		<a [ngClass]="{'current': filter.status==='HEALTHY'}">
+			运行健康<span>{{asideData.healthyCount||''}}</span>
 		</a>
 	</li>
-	<li>
-		<a>
+	<li type-ref="BROKEN">
+		<a [ngClass]="{'current': filter.status==='BROKEN'}">
 			运行故障<span class="error-color">{{asideData.brokenCount}}</span>
 		</a>
 	</li>
-	<li>
-		<a>
+	<li type-ref="RISKY">
+		<a [ngClass]="{'current': filter.status==='RISKY'}">
 			运行有隐患<span>{{asideData.riskyCount}}</span>
 		</a>
 	</li>
 
 	<li class="title">变化情况</li>
-	<li>
-		<a>
+	<li type-ref="newJoined">
+		<a [ngClass]="{'current': (filter.newJoined===true)}">
 			本月新增主机<span>{{asideData.addedCount}}</span>
-			<!--to be confirmed-->
 		</a>
 	</li>
+
+	<!-- 
 	<li>
 		<a>
 			当前空闲主机<span>{{asideData.freeCount}}</span>
 		</a>
 	</li>
-
 	<li class="title">集群</li>
 	<li>
 		<tui-select
@@ -56,19 +60,20 @@
 	    </tui-select-option>
 	  </tui-select>
 	</li>
+	 -->
 
 	<li class="title">内核</li>
-	<li>
+	<li class="ui-select-box">
 		<tui-select
-	    [(ngModel)]="select"
+	    [(ngModel)]="this.filter.coreNum"
 	    (ngModelChange)="fetchData(true)"
 	    style="width:130px"
 	  >
 	    <tui-select-option
-	      *ngFor="let option of options"
-	      [value]="option.type"
+	      *ngFor="let option of coreOptions"
+	      [value]="option"
 	    >
-	      {{ option.type }}
+	      {{ option }}
 	    </tui-select-option>
 	  </tui-select>
 	</li>

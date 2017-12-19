@@ -1,7 +1,9 @@
 import { Component, OnInit, HostBinding } from '@angular/core';
 import { Pagination } from 'tdc-ui';
+import debounce from 'lodash/debounce';
 
 import { NodeService } from './node.service';
+import { NodeFilter } from './node.model';
 
 @Component({
   selector: 'tec-node',
@@ -27,9 +29,13 @@ export class NodeComponent implements OnInit {
 
   search: any;
 
+  filter = new NodeFilter;
+
   private select;
 
   pagination = new Pagination();
+
+  debounced: any;
 
   constructor(
     private nodeService: NodeService
@@ -41,15 +47,56 @@ export class NodeComponent implements OnInit {
       this.tableData = response.data.data;
       this.total = response.data.pagination.total;
       // this.pagination = response.data.pagination;
-      this.loading = false;
-    })
+      this.hideLoading();
+    });
 
+  }
+
+  fetchTableData(filter?) {
+    this.loading = true;
+
+    console.log('this.filter:', this.filter);
+
+    this.debounced = debounce(
+      ()=>{
+        this.nodeService.fetchNodeList(this.filter).subscribe(response=>{
+          this.tableData = response.data.data;
+          this.total = response.data.pagination.total;
+          // this.pagination = response.data.pagination;
+          this.hideLoading();
+        })
+      }, 300, {
+        'leading': true,
+        'trailing': false
+      }
+    );
+    this.debounced();
   }
   
-  selectChange(data) {
-    console.log('selectChange', data, 'this.current:', this.current);
+  onFilterSelectStatus($event: string) {
+    this.filter.status = $event;
+    this.fetchTableData();
   }
 
+  onFilterSelectNewJoined($event: boolean) {
+    $event? (this.filter.newJoined = true)
+      : (delete this.filter.newJoined) ;
+    this.fetchTableData();
+  }
+
+  onFilterReset($event) {
+    this.filter.reset();
+    this.hideLoading();
+    // this.debounced.cancel();
+    this.fetchTableData();
+  }
+
+  onReselect($event: number) {
+    this.filter.coreNum = $event;
+    this.fetchTableData();
+  }
+
+  //search current page data
   onSearch(fromStart = false) {
     // 如果搜索或者过滤，则重置页码
     if (fromStart) {
@@ -79,12 +126,14 @@ export class NodeComponent implements OnInit {
       ...this.pagination,
       total: this.tableData.length,
     };
-
-    console.log('this.data', this.tableData);
   }
 
   paginationChange() {
 
+  }
+
+  hideLoading() {
+    this.loading = false;
   }
 
 }

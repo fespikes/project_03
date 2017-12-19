@@ -16,8 +16,8 @@ export class NodeService {
     });
   }
 
-  fetchNodeList() {
-  	return this.api.get(`nodes`);
+  fetchNodeList(filter?) {
+  	return this.api.get(`nodes`, {...filter});
   }
 
   fetchNodeSummary() {

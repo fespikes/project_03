@@ -17,8 +17,8 @@
 
 
 .filter-ul
+  // height: calc(100vh - 4rem - 40px)
   height: 100%
-  height: calc(100vh - 4rem - 40px)
   overflow-y: auto
 
   li
@@ -33,7 +33,7 @@
       line-height: 52px
       text-indent: 30px
 
-      &:hover
+      &:hover, &.current
         color: #fff
         background: #305ab5
 
@@ -49,7 +49,7 @@
     background: transparent
     font-size: 1.3rem
     position: relative
-    left: 30px
+    left: 16px
 
   span
     float: right

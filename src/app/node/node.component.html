@@ -1,6 +1,13 @@
 <div class="tui-layout-body">
   <div class="aside filter">
-    <tec-node-aside [backUrl]="backUrl"></tec-node-aside>
+    <tec-node-aside
+      (filterReset) = "onFilterReset($event)"
+      (filterSelectStatus) = "onFilterSelectStatus($event)"
+      (filterSelectNewJoined) = "onFilterSelectNewJoined($event)"
+      (reselect) = "onReselect($event)"
+
+      [filter] = "this.filter"
+      [backUrl]="backUrl"></tec-node-aside>
   </div>
 
   <div class="tui-layout-vertical">
