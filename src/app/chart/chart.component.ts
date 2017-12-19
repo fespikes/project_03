@@ -29,8 +29,16 @@ export class ChartComponent implements OnInit {
   genMenuItems() {
     this.menuItems = [
       {
-        name: 'Line chart',
+        name: 'Line Chart',
         url: `${this.routePrefix}/line`,
+      },
+      {
+        name: 'Bar Chart',
+        url: `${this.routePrefix}/bar`,
+      },
+      {
+        name: 'Donut Chart',
+        url: `${this.routePrefix}/donut`,
       },
     ];
   }

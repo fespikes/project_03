@@ -8,6 +8,8 @@ import { I18nModule } from 'app/i18n';
 import { ChartRoutingModule } from './chart-routing.module';
 import { ChartComponent } from './chart.component';
 import { LineChartComponent } from './line-chart/line-chart.component';
+import { BarChartComponent } from './bar-chart/bar-chart.component';
+import { DonutChartComponent } from './donut-chart/donut-chart.component';
 
 @NgModule({
   imports: [
@@ -20,6 +22,8 @@ import { LineChartComponent } from './line-chart/line-chart.component';
   declarations: [
     ChartComponent,
     LineChartComponent,
+    BarChartComponent,
+    DonutChartComponent,
   ],
 })
 export class ChartModule { }

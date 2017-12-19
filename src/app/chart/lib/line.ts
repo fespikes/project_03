@@ -117,7 +117,6 @@ export class LineChart implements ChartBase {
   private ypAxis: Axis<any>;
   private container: SelectionType;
   private canvas: SelectionType;
-  private line: SelectionType;
 
   constructor() {
   }

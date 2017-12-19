@@ -4,6 +4,8 @@ import { RouterModule } from '@angular/router';
 import { I18nModule, TranslateDeactivator, TranslateResolver, TranslateToken } from '../i18n';
 import { ChartComponent } from './chart.component';
 import { LineChartComponent } from './line-chart/line-chart.component';
+import { BarChartComponent } from './bar-chart/bar-chart.component';
+import { DonutChartComponent } from './donut-chart/donut-chart.component';
 
 @NgModule({
   imports: [
@@ -15,8 +17,21 @@ import { LineChartComponent } from './line-chart/line-chart.component';
         canDeactivate: [TranslateDeactivator],
         children: [
           {
+            path: '',
+            redirectTo: 'line',
+            pathMatch: 'prefix',
+          },
+          {
             path: 'line',
             component: LineChartComponent,
+          },
+          {
+            path: 'bar',
+            component: BarChartComponent,
+          },
+          {
+            path: 'donut',
+            component: DonutChartComponent,
           },
         ],
       },
