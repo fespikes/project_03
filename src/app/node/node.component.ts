@@ -18,20 +18,17 @@ export class NodeComponent implements OnInit {
 
   private loading = true;
 
-  tableData = [
-    {id: 1, name: 'cat', type: 'limb', desc: 'miao'},
-    {id: 2, name: 'dog', type: 'limb', desc: 'wuf'},
+  private tableData = [
     {id: 3, name: 'fish', type: 'no-limb', desc: 'blue'},
   ];
-  total;
 
-  current: any;
+  private constantData ;
 
-  search: any;
+  private total;
+  private current: any;
+  private search: any;
 
-  filter = new NodeFilter;
-
-  private select;
+  private filter = new NodeFilter;
 
   pagination = new Pagination();
 
@@ -44,7 +41,7 @@ export class NodeComponent implements OnInit {
   ngOnInit() {
 
     this.nodeService.fetchNodeList().subscribe(response=>{
-      this.tableData = response.data.data;
+      this.constantData = this.tableData = response.data.data;
       this.total = response.data.pagination.total;
       // this.pagination = response.data.pagination;
       this.hideLoading();
@@ -96,7 +93,7 @@ export class NodeComponent implements OnInit {
     this.fetchTableData();
   }
 
-  //search current page data
+  //search current page data of name
   onSearch(fromStart = false) {
     // 如果搜索或者过滤，则重置页码
     if (fromStart) {
@@ -110,21 +107,20 @@ export class NodeComponent implements OnInit {
     const size = this.pagination.size;
     const start = (this.pagination.page - 1) * size;
 
-    this.tableData = this.tableData.filter((datum) => {
+    this.tableData = this.constantData.filter((datum) => {
       let match = true;
+
       if (this.search) {
         match = match && !!~datum.name.indexOf(this.search);
       }
-      if (this.select) {
-        match = match && datum.type === this.select;
-      }
+
       return match;
     })
     .slice(start, start + size);
 
     this.pagination = {
       ...this.pagination,
-      total: this.tableData.length,
+      total: this.total
     };
   }
 
