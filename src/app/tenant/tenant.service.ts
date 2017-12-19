@@ -10,9 +10,11 @@ import {
   TenantSummaries,
   TenantCount,
   Consumption,
-  Instance,
+  InstanceInfo,
   Errors,
   Quota,
+  Bills,
+  OperationResult,
 } from './tenant-model';
 
 
@@ -41,8 +43,14 @@ export class TenantService {
     return this.api.get(`tenants/${uid}`);
   }
 
-  fetchInstanceInfos(name, filter): Observable<Instance[]> {
-    return this.api.get(`tenant/${name}`, filter);
+  fetchInstanceInfos(uid, pagination, filter): Observable<InstanceInfo> {
+    const { page, size } = pagination;
+    const params = {
+      page: page,
+      size: size,
+      ...filter,
+    };
+    return this.api.get(`tenants/${uid}/instances`, params);
   }
 
   fetchErrors(name, filter): Observable<Errors> {
@@ -51,6 +59,24 @@ export class TenantService {
 
   fetchQuota(name): Observable<Quota> {
     return this.api.get(`tenant/${name}/quota`);
+  }
+
+  fetchBills(uid, pagination, keyword): Observable<Bills> {
+    const { page, size } = pagination;
+    const params = {
+      page: page,
+      size: size,
+      keyword: keyword,
+    };
+    return this.api.get(`tenants/${uid}/bills`, params);
+  }
+
+  clearBill(id): Observable<OperationResult> {
+    return this.api.put(`bills/${id}`);
+  }
+
+  correctBill(id, corrections): Observable<OperationResult> {
+    return this.api.post(`bills/${id}/corrections`, corrections);
   }
 
 }

@@ -1,8 +1,26 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Observable } from 'rxjs/Observable';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { TuiModalService } from 'tdc-ui';
 
+import { TranslateService } from 'app/i18n';
+import { TenantService } from 'app/tenant/tenant.service';
 import { TenantInstanceComponent } from './tenant-instance.component';
-import { TranslatePipeStub } from 'app/mock';
+import { MockModule } from 'app/mock';
+
+class TenantServiceStub {
+  fetchInstanceInfos() {
+    return Observable.of({
+      data: {},
+    });
+  }
+}
+
+class TuiModalServiceStub {
+  apiError() { }
+}
 
 describe('TenantInstanceComponent', () => {
   let component: TenantInstanceComponent;
@@ -11,9 +29,25 @@ describe('TenantInstanceComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       schemas: [NO_ERRORS_SCHEMA],
+      imports: [MockModule],
       declarations: [
         TenantInstanceComponent,
-        TranslatePipeStub,
+      ],
+      providers: [
+        {
+          provide: ActivatedRoute,
+          useValue: {
+            params: Observable.of({ uid: 123 }),
+          },
+        },
+        {
+          provide: TuiModalService,
+          useClass: TuiModalServiceStub,
+        },
+        {
+          provide: TenantService,
+          useClass: TenantServiceStub,
+        },
       ],
     })
     .compileComponents();
@@ -22,6 +56,7 @@ describe('TenantInstanceComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(TenantInstanceComponent);
     component = fixture.componentInstance;
+    component.uid = new BehaviorSubject<string>('222');
     fixture.detectChanges();
   });
 

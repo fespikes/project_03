@@ -22,15 +22,13 @@
       </div>
     </div>
   </div>
-
   <tui-tab>
     <tec-tenant-abstract *tuiTabPane="'TENANT.DETAIL.ABSTRACT' | translate"></tec-tenant-abstract>
-    <tec-tenant-instance *tuiTabPane="'TENANT.DETAIL.INSTANCE' | translate"></tec-tenant-instance>
+    <tec-tenant-instance *tuiTabPane="'TENANT.DETAIL.INSTANCE' | translate" [uid]="uidSubject"></tec-tenant-instance>
     <tec-tenant-network *tuiTabPane="'TENANT.DETAIL.NETWORK' | translate"></tec-tenant-network>
     <tec-tenant-ticket *tuiTabPane="'TENANT.DETAIL.TICKET' | translate"></tec-tenant-ticket>
     <tec-tenant-error *tuiTabPane="'TENANT.DETAIL.ERROR' | translate"></tec-tenant-error>
     <tec-tenant-quota *tuiTabPane="'TENANT.DETAIL.QUOTA' | translate"></tec-tenant-quota>
-    <tec-tenant-bill *tuiTabPane="'TENANT.DETAIL.BILL' | translate"></tec-tenant-bill>
+    <tec-tenant-bill *tuiTabPane="'TENANT.DETAIL.BILL' | translate" [uid]="uidSubject"></tec-tenant-bill>
   </tui-tab>
 </div>
-

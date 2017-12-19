@@ -49,6 +49,11 @@ TENANT:
     NAME: Instance Name
     TEMPLATE: Template
     STATUSES: All Statuses
+    DEPLOYING: Deploying
+    READY: Ready
+    UNDEPLOYED: Undeployed
+    FATALERROR: Error
+    ALL: All
 
   NETWORK:
     NAME: Network Name
@@ -76,3 +81,22 @@ TENANT:
     CREATING: Creating
     ACTIVATING: Activating
     CANCELED: Canceled
+
+  BILL:
+    ID: Bill Id
+    TIME: Time
+    CHARGE_AMOUNT: Charge Amount
+    CORRECT_AMOUNT  : Correct Amount
+    TOTAL_AMOUNT: Total Amount
+    STATUS: Status
+    PAID: Paid
+    UNPAID: Unpaid
+    OP: Operations
+    CLEAR: Clear Amount
+    CORRECT: Correct Amount
+    CONFIRM_CLEAR_BILL: Confirm to Clear Bill
+    DEDUCT: Deduct
+    ADD: Add
+    CORRECTION_TYPE: Type
+    CORRECTION_AMOUNT: Amount
+    CORRECTION_REASON: Reason

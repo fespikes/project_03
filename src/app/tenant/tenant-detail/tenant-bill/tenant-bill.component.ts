@@ -1,4 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { BehaviorSubject } from 'rxjs//Rx';
+
+import { Pagination, TuiModalService, TuiModalConfig } from 'tdc-ui';
+import { TranslateService } from 'app/i18n';
+import { TenantService } from 'app/tenant/tenant.service';
+import { ModalBillClearComponent, ModalBillCorrectComponent } from './';
 
 @Component({
   selector: 'tec-tenant-bill',
@@ -6,15 +13,70 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./tenant-bill.component.sass'],
 })
 export class TenantBillComponent implements OnInit {
+  @Input() uid: BehaviorSubject<string>;
+  pagination = new Pagination();
   loading;
   keyword;
 
   bills = [];
-  constructor() { }
+  constructor(
+    private route: ActivatedRoute,
+    private tenantService: TenantService,
+    private modal: TuiModalService,
+    private translate: TranslateService,
+  ) { }
 
   ngOnInit() {
+    this.uid
+      .asObservable()
+      .subscribe((uid) => {
+        this.fetchBills().subscribe();
+      });
   }
 
-  search() {}
+  paginationChange() {
+    this.fetchBills().subscribe();
+  }
+
+  search() {
+    this.fetchBills().subscribe();
+  }
+
+  fetchBills() {
+    this.loading = true;
+    const uid = this.uid.getValue();
+    return this.tenantService.fetchBills(uid, this.pagination, this.keyword)
+      .map((result) => {
+        this.bills = result.data.data;
+        this.pagination = result.data.pagination;
+        this.loading = false;
+      }, this.modal.apiError);
+  }
+
+  openClearBillModal(bill) {
+    const config: TuiModalConfig = {
+      title: this.translate.translateKey('TENANT.BILL.CLEAR'),
+      data: bill,
+    };
+
+    this.modal.open(ModalBillClearComponent, config)
+      .filter(result => result)
+      .subscribe(() => {
+        this.fetchBills().subscribe();
+      });
+  }
+
+  openCorrectBillModal(bill) {
+    const config: TuiModalConfig = {
+      title: this.translate.translateKey('TENANT.BILL.CORRECT'),
+      data: bill,
+    };
+
+    this.modal.open(ModalBillCorrectComponent, config)
+      .filter(result => result)
+      .subscribe(() => {
+        this.fetchBills().subscribe();
+      });
+  }
 
 }
