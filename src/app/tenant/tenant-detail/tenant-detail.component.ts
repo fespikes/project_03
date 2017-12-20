@@ -26,9 +26,9 @@ export class TenantDetailComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.loading = true;
     this.route.params
       .subscribe((params) => {
+        this.loading = true;
         this.tenantService.fetchInfo(params['uid'])
           .subscribe((result) => {
             this.tenant = result.data;

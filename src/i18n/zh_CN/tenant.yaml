@@ -50,6 +50,11 @@ TENANT:
     NAME: 实例名
     TEMPLATE: 模板
     STATUSES: 全部状态
+    DEPLOYING: 部署中
+    READY: 运行中
+    UNDEPLOYED: 未部署
+    FATALERROR: 失败
+    ALL: 全部
 
   NETWORK:
     NAME: 网络名
@@ -77,4 +82,24 @@ TENANT:
     CREATING: 创建中
     ACTIVATING: 运行中
     CANCELED: 已注销
+
+  BILL:
+    ID: 账单号
+    TIME: 账单日期
+    CHARGE_AMOUNT: 消费金额
+    CORRECT_AMOUNT  : 对账金额
+    TOTAL_AMOUNT: 账单总金额
+    STATUS: 状态
+    PAID: 已销账
+    UNPAID: 待付费
+    OP: 操作
+    CLEAR: 销账
+    CORRECT: 补账
+    CONFIRM_CLEAR_BILL: 确认销账
+    DEDUCT: 追缴
+    ADD: 返现
+    CORRECTION_TYPE: 补账类型
+    CORRECTION_AMOUNT: 补账金额
+    CORRECTION_REASON: 补账原因
+
 

@@ -1,7 +1,7 @@
 <div class="operation-bar">
   <div class="left">
     <tui-select placeholder="{{'TENANT.INSTANCE.STATUSES' | translate}}" [(ngModel)]="filter.status" (ngModelChange)="filterChange()">
-      <tui-select-option *ngFor="let status of statuses" [value]="status">{{status | translate}}</tui-select-option>
+      <tui-select-option *ngFor="let status of statuses" [value]="status" label="{{'TENANT.INSTANCE.' + status | translate}}">{{'TENANT.INSTANCE.' + status | translate}}</tui-select-option>
     </tui-select>
   </div>
   <div class="right">
@@ -9,7 +9,7 @@
       <svg tuiIcon="export"></svg>
       <span>{{'TENANT.DETAIL.EXPORT' | translate}}</span>
     </button>
-    <tui-search [(ngModel)]="filter.keyword" (ngModelChange)="search()">
+    <tui-search [(ngModel)]="filter.keyword" (ngModelChange)="filterChange()">
     </tui-search>
   </div>
 </div>
@@ -23,9 +23,13 @@
   </tui-table-head>
   <tui-table-row *ngFor="let instance of instances">
     <div class="text-ellipsis">{{instance.name}}</div>
-    <div class="text-ellipsis">{{instance.status}}</div>
-    <div>{{instance.template}}</div>
-    <div>{{instance.tcu}}</div>
-    <div class="text-ellipsis">{{instance.description}}</div>
+    <div class="text-ellipsis">{{'TENANT.INSTANCE.' + instance.status | translate}}</div>
+    <div>{{instance.templateName | tuiDefault}}</div>
+    <div>{{instance.tcuCount}}</div>
+    <div class="text-ellipsis">{{instance.description | tuiDefault}}</div>
   </tui-table-row>
 </tui-table>
+<div class="tui-layout-main-pagination-footer">
+  <tui-pagination [(pagination)]="pagination" (paginationChange)="paginationChange()">
+  </tui-pagination>
+</div>

@@ -45,13 +45,19 @@ export class Consumption {
   sum = 0;
 }
 
+export class InstanceInfo {
+  data: {
+    data: Instance[],
+    pagination: Pagination,
+  };
+}
+
 export class Instance {
   name = '';
   description = '';
   status = '';
-  tcu = 0;
-  templare = '';
-  product = '';
+  tcuCount = 0;
+  templateName = '';
 }
 
 export class Error {
@@ -86,4 +92,35 @@ export class Quota {
     limit: 0,
     unit: '',
   };
+}
+
+export class Bills {
+  data: {
+    data: {
+      id: string,
+      chargeAmount: number,
+      correctAmount: number,
+      time: number,
+      totalAmount: number,
+      status: string,
+      tenantUid: string,
+    }[],
+    pagination: Pagination,
+  };
+}
+
+export class Bill {
+  id: string;
+  chargeAmount: number;
+  correctAmount: number;
+  time: number;
+  totalAmount: number;
+  status: string;
+  tenantUid: string;
+}
+
+export class OperationResult {
+  messgae: string;
+  resultCode: string;
+  data: {};
 }

@@ -1,43 +1,43 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { Observable } from 'rxjs/Observable';
-import { TuiModalService } from 'tdc-ui';
+import { TuiModalService, TUI_MODAL_DATA, TuiModalRef } from 'tdc-ui';
 
-import { TranslateService } from 'app/i18n';
 import { TenantService } from 'app/tenant/tenant.service';
-import { TenantInstanceComponent } from './tenant-instance.component';
-import { MockModule } from 'app/mock';
+import { TranslatePipeStub } from 'app/mock';
+import { ModalBillClearComponent } from './modal-bill-clear.component';
+
+class TuiModalServiceStub {
+  apiError() { }
+}
 
 class TenantServiceStub {
-  fetchInstanceInfos() {
+  clearBill() {
     return Observable.of({
       data: {},
     });
   }
 }
 
-class TuiModalServiceStub {
-  apiError() { }
-}
-
-describe('TenantInstanceComponent', () => {
-  let component: TenantInstanceComponent;
-  let fixture: ComponentFixture<TenantInstanceComponent>;
+describe('ModalBillClearComponent', () => {
+  let component: ModalBillClearComponent;
+  let fixture: ComponentFixture<ModalBillClearComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       schemas: [NO_ERRORS_SCHEMA],
-      imports: [MockModule],
       declarations: [
-        TenantInstanceComponent,
+        ModalBillClearComponent,
+        TranslatePipeStub,
       ],
       providers: [
         {
-          provide: ActivatedRoute,
-          useValue: {
-            params: Observable.of({ uid: 123 }),
-          },
+          provide: TuiModalRef,
+          useValue: {},
+        },
+        {
+          provide: TUI_MODAL_DATA,
+          useValue: {},
         },
         {
           provide: TuiModalService,
@@ -53,7 +53,7 @@ describe('TenantInstanceComponent', () => {
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(TenantInstanceComponent);
+    fixture = TestBed.createComponent(ModalBillClearComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
