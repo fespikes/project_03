@@ -1,5 +1,5 @@
 import { Injectable, EventEmitter } from '@angular/core';
-
+import { Observable } from 'rxjs/Observable';
 import { TecApiService } from '../shared';
 
 @Injectable()
@@ -16,11 +16,11 @@ export class NodeService {
     });
   }
 
-  fetchNodeList(filter?) {
+  fetchNodeList(filter?): Observable<any> {
   	return this.api.get(`nodes`, {...filter});
   }
 
-  fetchNodeSummary() {
+  fetchNodeSummary(): Observable<any> {
   	return this.api.get('nodes/summaries');
   }
 

@@ -30,12 +30,12 @@ export class NodeAsideComponent implements OnInit {
   asideData = new NodeListSummary;
 
   constructor(
-    private service: NodeService,
+    private nodeService: NodeService,
     private el: ElementRef
   ) { }
 
   ngOnInit() {
-    this.service.fetchNodeSummary().subscribe(response=>{
+    this.nodeService.fetchNodeSummary().subscribe(response=>{
       console.log({...response.data});
       this.asideData = {...response.data};
       this.coreOptions = response.data.coreOptions;
@@ -78,9 +78,8 @@ export class NodeAsideComponent implements OnInit {
   }
 
   toggle() {
-    //TODO:
     this.collapsed = !this.collapsed;
-    this.service.notifyToggle();
+    this.nodeService.notifyToggle();
   }
 
   fetchData() {

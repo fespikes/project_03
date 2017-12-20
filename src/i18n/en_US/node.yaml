@@ -1,6 +1,7 @@
 NODE:
   NAME: node
-
+  
+  TOTALNODES: nodes amount:
   STATUS: status
   MEMORYUSED: memory used
   SSDUSED: SSD used
