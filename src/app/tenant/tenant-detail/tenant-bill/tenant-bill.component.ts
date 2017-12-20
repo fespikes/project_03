@@ -1,6 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { BehaviorSubject } from 'rxjs//Rx';
 
 import { Pagination, TuiModalService, TuiModalConfig } from 'tdc-ui';
 import { TranslateService } from 'app/i18n';
@@ -13,7 +12,7 @@ import { ModalBillClearComponent, ModalBillCorrectComponent } from './';
   styleUrls: ['./tenant-bill.component.sass'],
 })
 export class TenantBillComponent implements OnInit {
-  @Input() uid: BehaviorSubject<string>;
+  @Input() uid: string;
   pagination = new Pagination();
   loading;
   keyword;
@@ -27,11 +26,7 @@ export class TenantBillComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.uid
-      .asObservable()
-      .subscribe((uid) => {
-        this.fetchBills().subscribe();
-      });
+    this.fetchBills().subscribe();
   }
 
   paginationChange() {
@@ -44,8 +39,7 @@ export class TenantBillComponent implements OnInit {
 
   fetchBills() {
     this.loading = true;
-    const uid = this.uid.getValue();
-    return this.tenantService.fetchBills(uid, this.pagination, this.keyword)
+    return this.tenantService.fetchBills(this.uid, this.pagination, this.keyword)
       .map((result) => {
         this.bills = result.data.data;
         this.pagination = result.data.pagination;

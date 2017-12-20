@@ -1,6 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { BehaviorSubject } from 'rxjs//Rx';
 
 import { TenantService } from 'app/tenant/tenant.service';
 import { Pagination, TuiModalService } from 'tdc-ui';
@@ -11,7 +10,7 @@ import { Pagination, TuiModalService } from 'tdc-ui';
   styleUrls: ['./tenant-instance.component.sass'],
 })
 export class TenantInstanceComponent implements OnInit {
-  @Input() uid: BehaviorSubject<string>;
+  @Input() uid: string;
   loading;
   pagination = new Pagination();
   instances = [];
@@ -35,11 +34,7 @@ export class TenantInstanceComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.uid
-      .asObservable()
-      .subscribe((uid) => {
-        this.fetchInstances().subscribe();
-      });
+    this.fetchInstances().subscribe();
   }
 
   filterChange() {
@@ -55,8 +50,7 @@ export class TenantInstanceComponent implements OnInit {
 
   fetchInstances() {
     this.loading = true;
-    const uid = this.uid.getValue();
-    return this.tenantService.fetchInstanceInfos(uid, this.pagination, this.filter)
+    return this.tenantService.fetchInstanceInfos(this.uid, this.pagination, this.filter)
       .map((result) => {
         this.instances = result.data.data;
         this.pagination = result.data.pagination;

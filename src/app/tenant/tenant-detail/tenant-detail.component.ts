@@ -1,6 +1,5 @@
 import { Component, OnInit, HostBinding } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { BehaviorSubject } from 'rxjs//Rx';
 
 import { TuiModalService } from 'tdc-ui';
 
@@ -15,7 +14,6 @@ export class TenantDetailComponent implements OnInit {
   @HostBinding('class.tui-layout-body') hostClass = true;
   submenuItems = [];
   tenant = new TenantInfo();
-  uidSubject = new BehaviorSubject<string>(null);
 
   tenantsCount = 0;
   loading;
@@ -28,12 +26,11 @@ export class TenantDetailComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.loading = true;
     this.route.params
       .subscribe((params) => {
+        this.loading = true;
         this.tenantService.fetchInfo(params['uid'])
           .subscribe((result) => {
-            this.uidSubject.next(result.data.uid);
             this.tenant = result.data;
             this.loading = false;
           });

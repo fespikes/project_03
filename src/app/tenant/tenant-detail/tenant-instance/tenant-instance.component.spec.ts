@@ -2,7 +2,6 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { TuiModalService } from 'tdc-ui';
 
 import { TranslateService } from 'app/i18n';
@@ -56,7 +55,6 @@ describe('TenantInstanceComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(TenantInstanceComponent);
     component = fixture.componentInstance;
-    component.uid = new BehaviorSubject<string>('222');
     fixture.detectChanges();
   });
 
