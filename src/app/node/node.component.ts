@@ -93,7 +93,7 @@ export class NodeComponent implements OnInit {
     this.fetchTableData();
   }
 
-  //search current page data of name
+  //search name in loaded data
   onSearch(fromStart = false) {
     // 如果搜索或者过滤，则重置页码
     if (fromStart) {
@@ -125,7 +125,9 @@ export class NodeComponent implements OnInit {
   }
 
   paginationChange() {
-
+    this.filter.page = this.pagination.page;
+    this.filter.size = this.pagination.size;
+    this.fetchTableData();
   }
 
   hideLoading() {
