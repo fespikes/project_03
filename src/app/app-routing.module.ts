@@ -51,6 +51,10 @@ const routes: Routes = [
         loadChildren: './organization/organization.module#OrganizationModule',
       },
       {
+        path: 'chart',
+        loadChildren: './chart/chart.module#ChartModule',
+      },
+      {
         path: '',
         redirectTo: 'abstract',
         pathMatch: 'full',
