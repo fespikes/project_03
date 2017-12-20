@@ -1,2 +1,20 @@
 NODE:
   NAME: 主机
+
+  STATUS: 状态
+  MEMORYUSED: 内存使用量
+  SSDUSED: SSD使用量
+  HDDUSED: HDD使用量
+  MICROSERVICE: 微服务
+  IP: IP
+  JOINTIME: 加入集群时间
+
+  FILTER_CONDITION: 筛选条件
+
+  CLEAN_ALL: 清除全部
+  RUN_SMOOTHLY: 运行健康
+  RUN_FAULT: 运行故障
+  RUN_RISKY: 运行有隐患
+  CHANG_STATUS: 变化情况
+  NEW_JOINED_CUR_MONTH: 本月新增主机
+  CORE: 内核

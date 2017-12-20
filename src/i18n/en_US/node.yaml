@@ -1,2 +1,20 @@
 NODE:
-  NAME: Node
+  NAME: node
+
+  STATUS: status
+  MEMORYUSED: memory used
+  SSDUSED: SSD used
+  HDDUSED: HDD used
+  MICROSERVICE: micro service
+  IP: IP
+  JOINTIME: join time
+
+  FILTER_CONDITION: filter condition
+
+  CLEAN_ALL: clean all
+  RUN_SMOOTHLY: run smoothly
+  RUN_FAULT: run faulty
+  RUN_RISKY: run risky
+  CHANG_STATUS: change status
+  NEW_JOINED_CUR_MONTH: joined current month
+  CORE: core

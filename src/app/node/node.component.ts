@@ -16,19 +16,19 @@ export class NodeComponent implements OnInit {
 
   backUrl = '../';
 
-  private loading = true;
+  loading = true;
 
-  private tableData = [
+  tableData = [
     {id: 3, name: 'fish', type: 'no-limb', desc: 'blue'},
   ];
 
-  private constantData ;
+  constantData ;
 
-  private total;
-  private current: any;
-  private search: any;
+  total;
+  current: any;
+  search: any;
 
-  private filter = new NodeFilter;
+  filter = new NodeFilter;
 
   pagination = new Pagination();
 

@@ -13,29 +13,29 @@
   (click)="onScreen($event)"
 >
 	<li class="title">
-	  筛选条件
-	  <button class="link-color" type-ref="reset">清除全部</button></li>
-	<li class="title">状态</li>
+	  {{'NODE.FILTER_CONDITION' | translate}}
+	  <button class="link-color" type-ref="reset">{{'NODE.CLEAN_ALL' | translate}}</button></li>
+	<li class="title">{{'NODE.STATUS' | translate}}</li>
 	<li type-ref="HEALTHY">
 		<a [ngClass]="{'current': filter.status==='HEALTHY'}">
-			运行健康<span>{{asideData.healthyCount||''}}</span>
+			{{'NODE.RUN_SMOOTHLY' | translate}}<span>{{asideData.healthyCount||''}}</span>
 		</a>
 	</li>
 	<li type-ref="BROKEN">
 		<a [ngClass]="{'current': filter.status==='BROKEN'}">
-			运行故障<span class="error-color">{{asideData.brokenCount}}</span>
+			{{'NODE.RUN_FAULT' | translate}}<span class="error-color">{{asideData.brokenCount}}</span>
 		</a>
 	</li>
 	<li type-ref="RISKY">
 		<a [ngClass]="{'current': filter.status==='RISKY'}">
-			运行有隐患<span>{{asideData.riskyCount}}</span>
+			{{'NODE.RUN_RISKY' | translate}}<span>{{asideData.riskyCount}}</span>
 		</a>
 	</li>
 
-	<li class="title">变化情况</li>
+	<li class="title">{{'NODE.CHANG_STATUS' | translate}}</li>
 	<li type-ref="newJoined">
 		<a [ngClass]="{'current': (filter.newJoined===true)}">
-			本月新增主机<span>{{asideData.addedCount}}</span>
+			{{'NODE.NEW_JOINED_CUR_MONTH' | translate}}<span>{{asideData.addedCount}}</span>
 		</a>
 	</li>
 
@@ -62,11 +62,11 @@
 	</li>
 	 -->
 
-	<li class="title">内核</li>
+	<li class="title">{{'NODE.CORE' | translate}}</li>
 	<li class="ui-select-box">
 		<tui-select
 	    [(ngModel)]="this.filter.coreNum"
-	    (ngModelChange)="fetchData(true)"
+	    (ngModelChange)="fetchData()"
 	    style="width:130px"
 	  >
 	    <tui-select-option

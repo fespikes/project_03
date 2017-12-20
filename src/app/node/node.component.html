@@ -20,7 +20,7 @@
           <button tuiBtn="primary">
             <svg tuiIcon="export"></svg>
             <span>EXPORT</span>
-          </button><!-- <span>{{'TENANT.DETAIL.EXPORT' | translate}}</span> -->
+          </button>
 
           <tui-search
             [(ngModel)]="search"
@@ -32,14 +32,14 @@
       <tui-table class="tui-table" [tuiTableFlex]="[1.5,1,2,2,2,1.5,2,2]" [loading]="loading">
 
         <tui-table-head>
-          <div>主机</div>
-          <div>状态</div>
-          <div>内存使用量</div>
-          <div>SSD使用量</div>
-          <div>HDD使用量</div>
-          <div>微服务</div>
-          <div>IP</div>
-          <div>加入集群时间</div>
+          <div>{{'NODE.NAME' | translate}}</div>
+          <div>{{'NODE.STATUS' | translate}}</div>
+          <div>{{'NODE.MEMORYUSED' | translate}}</div>
+          <div>{{'NODE.SSDUSED' | translate}}</div>
+          <div>{{'NODE.HDDUSED' | translate}}</div>
+          <div>{{'NODE.MICROSERVICE' | translate}}</div>
+          <div>{{'NODE.IP' | translate}}</div>
+          <div>{{'NODE.JOINTIME' | translate}}</div>
         </tui-table-head>
 
         <tui-table-row *ngFor="let instance of tableData">
