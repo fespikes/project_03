@@ -2,8 +2,7 @@ import * as d3 from 'd3';
 import * as moment from 'moment';
 
 import { ChartBase } from './chart-base';
-import { Selection } from 'd3-selection';
-import { ScaleTime, ScaleLinear, Axis, Line } from 'd3';
+import { Selection, ScaleTime, ScaleLinear, Axis, Line } from 'd3';
 
 export class LinePoint {
   x: Date;
@@ -114,7 +113,7 @@ export class LineChart implements ChartBase {
   private xScale: ScaleTime<any, any>;
   private yScale: ScaleLinear<any, any>;
   private xAxis: Axis<any>;
-  private ypAxis: Axis<any>;
+  private yAxis: Axis<any>;
   private container: SelectionType;
   private canvas: SelectionType;
 
@@ -138,7 +137,7 @@ export class LineChart implements ChartBase {
 
   draw() {
     if (this.container) {
-      this.container.selectAll('g').remove();
+      this.clear();
     }
 
     this.initCanvas();
@@ -206,7 +205,7 @@ export class LineChart implements ChartBase {
       .tickPadding(10)
       .tickFormat(d3.timeFormat('%x'));
 
-    this.ypAxis = d3.axisLeft(this.yScale)
+    this.yAxis = d3.axisLeft(this.yScale)
       .ticks(this.config.yTicks)
       .tickPadding(10);
   }
@@ -221,7 +220,7 @@ export class LineChart implements ChartBase {
     // 纵坐标
     this.canvas.append('g')
       .attr('class', 'yp axis')
-      .call(this.ypAxis);
+      .call(this.yAxis);
   }
 
   drawBackgroud() {
