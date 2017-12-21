@@ -34,7 +34,7 @@ export class BarChartComponent implements OnInit, AfterViewInit {
   chart = new BarChart();
 
   constructor() {
-    this.chartDataJson = JSON.stringify(BarChartBuilder.getMockChartData());
+    this.chartDataJson = JSON.stringify(BarChartBuilder.getMockChartData(), null, 2);
     this.configJson = BarChartConfig.toJson(new BarChartConfig());
   }
 

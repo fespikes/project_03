@@ -1,6 +1,4 @@
 import * as d3 from 'd3';
-
-import { ChartBase } from './chart-base';
 import {
   ScaleLinear,
   ScaleBand,
@@ -10,12 +8,17 @@ import {
   Selection,
 } from 'd3';
 
+import { ChartBase, SelectionType } from './chart-base';
+import { ColorSchema } from './color-schema';
+import { Legend, LegendConfig } from './legend';
+import { GeoService } from './geo-service';
+
+
 export class BarChartData {
   xs: string[];
-  stack = false;
-  data: {
+  series: {
     topic: string;
-    ys: number[],
+    data: number[],
   }[];
 
   static create(data) {
@@ -26,13 +29,11 @@ export class BarChartData {
 
   get top() {
     const yMax = [];
-    this.data.forEach((d) => {
-      const ys = d.ys;
+    this.series.forEach((d) => {
+      const ys = d.data;
       ys.forEach((y, i) => {
         if (yMax.length <= i) {
           yMax.push(y);
-        } else if (this.stack) {
-          yMax[i] += y;
         } else {
           yMax[i] = yMax[i] > y ? yMax[i] : y;
         }
@@ -41,84 +42,68 @@ export class BarChartData {
 
     return d3.max(yMax);
   }
+
+  get stackTop() {
+    const tops = this.xs.map((x) => this.getTotal(x));
+    return d3.max(tops);
+  }
+
+  get topics() {
+    return this.series.map((s) => s.topic);
+  }
+
+  get dataByTopic(): {[key: string]: number}[] {
+    return this.xs.map((x, i) => {
+      return this.series.reduce((accum, s) => {
+        accum[s.topic] = s.data[i];
+        return accum;
+      }, {});
+    });
+  }
+
+  getDataAt(x: string, topic: string) {
+    const xIdx = this.xs.indexOf(x);
+    const yIdx = this.series.findIndex(d => d.topic === topic);
+
+    return this.series[yIdx].data[xIdx];
+  }
+
+  getTotal(x: string) {
+    return this.series.reduce((accum, d) => {
+      return accum + this.getDataAt(x, d.topic);
+    }, 0);
+  }
 }
 
 export class BarChartConfig {
   width: number;
   height: number;
-  yTicks: number;
+  stack = false;
+  // TODO
   hasAnimation = false;
   background: string;
   margin = {top: 20, right: 50, bottom: 40, left: 50};
-  colorSchema = ['#305ab5', '#5e8ce9', '#4aa3d6', '#ab7ad5', '#42c0df', '#8b7ad5', '#336fd3', '#5eade9'];
-  legendAlign = 'left';
-  legendWidth = 150;
-  legendHeight = 30;
-  legendAreaHeight = 30;
+  colorSchema = new ColorSchema();
+  legend = new LegendConfig();
 
   static from(config) {
     const _config = new BarChartConfig();
     Object.assign(_config, config);
+    _config.colorSchema = ColorSchema.from(_config.colorSchema);
+    _config.legend = LegendConfig.form(_config.legend);
     return _config;
   }
 
   static toJson(config: BarChartConfig) {
     return JSON.stringify(config, null, 2);
   }
-
-  get canvasWidth(): number {
-    return this.width - this.margin.left - this.margin.right;
-  }
-  get canvasHeight(): number {
-    return this.height - this.margin.bottom - this.marginTop;
-  }
-
-  get marginTop() {
-    return this.margin.top + this.legendAreaHeight;
-  }
-
-  get canvasTranslate() {
-    return `translate(${this.margin.left}, ${this.marginTop})`;
-  }
-
-  get legendTranslate() {
-    let legendTranslate = `translate(60, ${this.margin.top})`;
-    if (this.legendAlign === 'right') {
-      // 需要考虑legend自身的长度
-      const toLeft = this.width - this.legendWidth - this.margin.right;
-      legendTranslate = `translate(${toLeft}, ${this.margin.top})`;
-    }
-
-    return legendTranslate;
-  }
-
-  /**
-   * 从colorSchma返回对应的颜色
-   * @param  {number} index
-   */
-  getColor(index: number) {
-    const rounded = index % this.colorSchema.length;
-    return this.colorSchema[rounded];
-  }
-
-  getLegendTranslate(index: number) {
-    const legendPerCol = Math.floor(this.legendAreaHeight / this.legendHeight);
-    const col = Math.floor(index / legendPerCol);
-    const idx = index % legendPerCol;
-    if (this.legendAlign === 'left') {
-      return `translate(${col * this.legendWidth}, ${this.legendHeight * idx})`;
-    } else {
-      return `translate(${- col * this.legendWidth}, ${this.legendHeight * idx})`;
-    }
-  }
 }
-
-export type SelectionType = Selection<any, any, any, any>;
 
 export class BarChart implements ChartBase {
   data: BarChartData;
   config: BarChartConfig;
   element: HTMLElement;
+  geo: GeoService;
 
   private xScale: ScaleBand<any>;
   private yScale: ScaleLinear<any, any>;
@@ -131,6 +116,9 @@ export class BarChart implements ChartBase {
 
   setConfig(config: BarChartConfig) {
     this.config = config;
+    const { width, height, margin, legend } = this.config;
+    this.geo = GeoService.fromMarginContainer({width, height}, margin);
+    this.geo.insertLegend(legend);
     return this;
   }
 
@@ -151,9 +139,16 @@ export class BarChart implements ChartBase {
 
     this.initCanvas();
     this.initScale();
-    this.initAxis();
-    this.drawAxis();
-    this.drawBar();
+
+    if (this.config.stack) {
+      this.drawAxisStack();
+      this.drawBarStack();
+    } else {
+      this.drawAxis();
+      this.drawBarGrouped();
+    }
+
+    this.drawLegend();
 
     return this;
   }
@@ -169,7 +164,7 @@ export class BarChart implements ChartBase {
     if (!this.container) {
       this.container = d3.select(this.element)
         .append('svg')
-        .attr('class', 'tdc-chart-bar');
+        .attr('class', 'chart tdc-chart-bar');
     }
 
     this.container
@@ -177,35 +172,41 @@ export class BarChart implements ChartBase {
       .attr('height', this.config.height);
 
     this.canvas = this.container.append('g')
-      .attr('transform', this.config.canvasTranslate);
+      .attr('transform', this.geo.canvasTranslate);
   }
 
   initScale() {
     this.xScale = d3.scaleBand()
       .domain(this.data.xs)
-      .rangeRound([0, this.config.canvasWidth])
+      .rangeRound([0, this.geo.canvas.width])
       .paddingInner(0.5)
       .paddingOuter(0.2);
 
-    this.yScale = d3.scaleLinear()
-      .domain([0, this.data.top])
-      .rangeRound([0, this.config.canvasHeight]);
+    if (this.config.stack) {
+      this.yScale = d3.scaleLinear()
+        .domain([0, this.data.stackTop])
+        .rangeRound([this.geo.canvas.height, 0])
+        .nice();
+    } else {
+      this.yScale = d3.scaleLinear()
+        .domain([0, this.data.top])
+        .rangeRound([this.geo.canvas.height, 0])
+        .nice();
+    }
 
     this.ordinalScale = d3.scaleOrdinal()
-      .range(['#f7f8fc']);
+      .range(this.config.colorSchema.palette);
 
     this.stack = d3.stack();
   }
 
-  initAxis() {
+  drawAxis() {
     this.xAxis = d3.axisBottom(this.xScale);
     this.yAxis = d3.axisLeft(this.yScale);
-  }
 
-  drawAxis() {
     this.canvas.append('g')
       .attr('class', 'x axis')
-      .attr('transform', `translate(0, ${this.config.canvasHeight})`)
+      .attr('transform', `translate(0, ${this.geo.canvas.height})`)
       .call(this.xAxis);
 
     this.canvas.append('g')
@@ -213,18 +214,79 @@ export class BarChart implements ChartBase {
       .call(this.yAxis);
   }
 
-  drawBar() {
-    console.log('this.data.data[0]', this.data.data[0]);
+  drawAxisStack() {
+    this.xAxis = d3.axisBottom(this.xScale);
+    this.yAxis = d3.axisLeft(this.yScale);
+    this.canvas.append('g')
+      .attr('class', 'x axis')
+      .attr('transform', `translate(0, ${this.geo.canvas.height})`)
+      .call(this.xAxis);
 
     this.canvas.append('g')
-      .selectAll('.bar')
+      .attr('class', 'y axis')
+      .call(this.yAxis);
+  }
+
+  drawBarGrouped() {
+    const xSubScale = d3.scaleBand().domain(this.data.topics).rangeRound([0, this.xScale.bandwidth()]);
+
+    this.canvas.append('g')
+      .selectAll('g')
       .data(this.data.xs)
       .enter()
+      .append('g')
+        .attr('transform', (x, i) => {
+          return `translate(${this.xScale(x)}, 0)`;
+        })
+      .selectAll('rect')
+      .data((x, i) => {
+        return this.data.series.map((d) => {
+          return {
+            x: d.topic,
+            y: d.data[i],
+          };
+        });
+      })
+      .enter()
       .append('rect')
-      .attr('class', 'bar')
-      .attr('x', (x) => this.xScale(x))
-      .attr('y', (d, i) => this.config.canvasHeight - this.yScale(this.data.data[0].ys[i]))
-      .attr('width', this.xScale.bandwidth())
-      .attr('height', (d, i) => this.yScale(this.data.data[0].ys[i]));
+        .attr('class', 'bar')
+        .attr('x', (d) => xSubScale(d.x))
+        .attr('y', (d) => this.yScale(d.y))
+        .attr('width', xSubScale.bandwidth())
+        .attr('height', (d) => this.geo.canvas.height - this.yScale(d.y))
+        .attr('fill', (d, i) => this.ordinalScale(d.x));
+  }
+
+  drawBarStack() {
+    const dataByTopic = this.data.dataByTopic;
+    this.canvas.append('g')
+      .selectAll('g')
+      .data(d3.stack().keys(this.data.topics)(dataByTopic))
+      .enter()
+      .append('g')
+        .attr('fill', (d) => {
+          return this.ordinalScale(d.key);
+        })
+      .selectAll('rect')
+      .data((d) => d)
+      .enter()
+      .append('rect')
+        .attr('x', (d, i) => {
+          const x = this.data.xs[i];
+          return this.xScale(x);
+        })
+        .attr('y', (d, i) => {
+          return this.yScale(d[1]);
+        })
+        .attr('width', this.xScale.bandwidth)
+        .attr('height', (d, i) => {
+          return this.yScale(d[0]) - this.yScale(d[1]);
+        });
+  }
+
+  drawLegend() {
+    const legend = new Legend(this.config.colorSchema, this.config.legend);
+    const legendContainer = this.container.append('g').attr('transform', this.geo.legendTranslate);
+    legend.draw(legendContainer, this.data.topics);
   }
 }

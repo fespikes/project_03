@@ -1,8 +1,11 @@
 import * as d3 from 'd3';
 import * as moment from 'moment';
-
-import { ChartBase } from './chart-base';
 import { Selection, ScaleTime, ScaleLinear, Axis, Line } from 'd3';
+
+import { ChartBase, SelectionType } from './chart-base';
+import { Legend, LegendConfig } from './legend';
+import { ColorSchema } from './color-schema';
+import { GeoService } from './geo-service';
 
 export class LinePoint {
   x: Date;
@@ -27,8 +30,6 @@ export class LineChartData {
   }
 }
 
-export type SelectionType = Selection<any, any, any, any>;
-
 export class LineChartConfig {
   width: number;
   height: number;
@@ -39,69 +40,22 @@ export class LineChartConfig {
   hasArea = false;
   areaColor = 'rgba(227,230,237, 0.5)';
   margin = {top: 20, right: 50, bottom: 40, left: 50};
-  colorSchema = ['#336fd3', '#42c0df', '#9784eb', '#39c2c9', '#39c2c9', '#ffce00', '#ffa71a', '#f866b9'];
   gridType: 'vertical'|'horizontal'|'full';
   gridStyle: 'solid' | 'dash';
   background: string;
-  legendAlign = 'left';
-  legendWidth = 150;
-  legendHeight = 30;
-  legendAreaHeight = 30;
+  colorSchema = new ColorSchema();
+  legend = new LegendConfig();
 
   static from(config) {
     const _config = new LineChartConfig();
     Object.assign(_config, config);
+    _config.colorSchema = ColorSchema.from(_config.colorSchema);
+    _config.legend = LegendConfig.form(_config.legend);
     return _config;
   }
 
   static toJson(config: LineChartConfig) {
     return JSON.stringify(config, null, 2);
-  }
-
-  get canvasWidth(): number {
-    return this.width - this.margin.left - this.margin.right;
-  }
-  get canvasHeight(): number {
-    return this.height - this.margin.bottom - this.marginTop;
-  }
-
-  get marginTop() {
-    return this.margin.top + this.legendAreaHeight;
-  }
-
-  get canvasTranslate() {
-    return `translate(${this.margin.left}, ${this.marginTop})`;
-  }
-
-  get legendTranslate() {
-    let legendTranslate = `translate(60, ${this.margin.top})`;
-    if (this.legendAlign === 'right') {
-      // 需要考虑legend自身的长度
-      const toLeft = this.width - this.legendWidth - this.margin.right;
-      legendTranslate = `translate(${toLeft}, ${this.margin.top})`;
-    }
-
-    return legendTranslate;
-  }
-
-  /**
-   * 从colorSchma返回对应的颜色
-   * @param  {number} index
-   */
-  getColor(index: number) {
-    const rounded = index % this.colorSchema.length;
-    return this.colorSchema[rounded];
-  }
-
-  getLegendTranslate(index: number) {
-    const legendPerCol = Math.floor(this.legendAreaHeight / this.legendHeight);
-    const col = Math.floor(index / legendPerCol);
-    const idx = index % legendPerCol;
-    if (this.legendAlign === 'left') {
-      return `translate(${col * this.legendWidth}, ${this.legendHeight * idx})`;
-    } else {
-      return `translate(${- col * this.legendWidth}, ${this.legendHeight * idx})`;
-    }
   }
 }
 
@@ -109,6 +63,7 @@ export class LineChart implements ChartBase {
   data: LineChartData[] = [];
   config: LineChartConfig;
   element: HTMLElement;
+  geo: GeoService;
 
   private xScale: ScaleTime<any, any>;
   private yScale: ScaleLinear<any, any>;
@@ -122,6 +77,9 @@ export class LineChart implements ChartBase {
 
   setConfig(config: LineChartConfig) {
     this.config = config;
+    const { width, height, margin, legend } = this.config;
+    this.geo = GeoService.fromMarginContainer({width, height}, margin);
+    this.geo.insertLegend(legend);
     return this;
   }
 
@@ -174,7 +132,7 @@ export class LineChart implements ChartBase {
     if (!this.container) {
       this.container = d3.select(this.element)
         .append('svg')
-        .attr('class', 'chart');
+        .attr('class', 'chart tdc-chart-line');
     }
 
     this.container
@@ -182,7 +140,7 @@ export class LineChart implements ChartBase {
       .attr('height', this.config.height);
 
     this.canvas = this.container.append('g')
-      .attr('transform', this.config.canvasTranslate);
+      .attr('transform', this.geo.canvasTranslate);
   }
 
   initScale() {
@@ -192,11 +150,11 @@ export class LineChart implements ChartBase {
 
     this.xScale = d3.scaleTime()
       .domain(d3.extent(allData, d => d.x))
-      .rangeRound([0, this.config.canvasWidth]);
+      .rangeRound([0, this.geo.canvas.width]);
 
     this.yScale = d3.scaleLinear()
       .domain([0, d3.max(allData, d => d.y)])
-      .range([this.config.canvasHeight, 0]);
+      .range([this.geo.canvas.height, 0]);
   }
 
   initAxis() {
@@ -214,7 +172,7 @@ export class LineChart implements ChartBase {
     // 横坐标
     this.canvas.append('g')
       .attr('class', 'x axis')
-      .attr('transform', `translate(0, ${this.config.canvasHeight})`)
+      .attr('transform', `translate(0, ${this.geo.canvas.height})`)
       .call(this.xAxis);
 
     // 纵坐标
@@ -227,8 +185,8 @@ export class LineChart implements ChartBase {
     if (this.config.background) {
       const background = this.canvas
         .append('rect')
-        .attr('width', this.config.canvasWidth)
-        .attr('height', this.config.canvasHeight)
+        .attr('width', this.geo.canvas.width)
+        .attr('height', this.geo.canvas.height)
         .attr('fill', this.config.background);
     }
   }
@@ -248,7 +206,7 @@ export class LineChart implements ChartBase {
           .append('line')
             .attr('class', 'grid-horizontal-line')
             .attr('x1', 0)
-            .attr('x2', this.config.canvasWidth)
+            .attr('x2', this.geo.canvas.width)
             .attr('y1', (d) => this.yScale(d))
             .attr('y2', (d) => this.yScale(d));
 
@@ -265,7 +223,7 @@ export class LineChart implements ChartBase {
             .append('line')
               .attr('class', 'grid-vertical-line')
               .attr('y1', 0)
-              .attr('y2', this.config.canvasHeight)
+              .attr('y2', this.geo.canvas.height)
               .attr('x1', (d) => this.xScale(d))
               .attr('x2', (d) => this.xScale(d));
 
@@ -276,32 +234,9 @@ export class LineChart implements ChartBase {
   }
 
   drawLegend() {
-    const legendHeight = 30;
-    const legendTranslate = this.config.legendTranslate;
-
-    const legend = this.container.append('g')
-      .attr('font-family', 'sans-serif')
-      .attr('font-size', 14)
-      .attr('text-anchor', 'start')
-      .attr('transform', legendTranslate)
-      .selectAll('g')
-      .data(this.data)
-      .enter().append('g')
-      .attr('transform', (d, i) => {
-        return this.config.getLegendTranslate(i);
-      });
-
-    legend.append('rect')
-      .attr('x', 0)
-      .attr('width', 16)
-      .attr('height', 16)
-      .attr('fill', (d, idx) => this.config.getColor(idx));
-
-    legend.append('text')
-      .attr('x', 20)
-      .attr('y', 9)
-      .attr('dy', '0.32em')
-      .text((d) => d.topic);
+    const legend = new Legend(this.config.colorSchema, this.config.legend);
+    const legendContainer = this.container.append('g').attr('transform', this.geo.legendTranslate);
+    legend.draw(legendContainer, this.data.map((d) => d.topic));
   }
 
   drawLines() {
@@ -327,7 +262,7 @@ export class LineChart implements ChartBase {
     const line = this.canvas.append('path')
       .attr('class', 'line')
       .attr('d', finishLine(data))
-      .style('stroke', this.config.getColor(idx))
+      .style('stroke', this.config.colorSchema.getColor(idx))
       .style('stroke-width', '2px');
 
     if (this.config.hasAnimation) {
@@ -385,13 +320,13 @@ export class LineChart implements ChartBase {
   appendArea(data: LinePoint[]) {
     const startArea = d3.area<LinePoint>()
       .x((d: any) => this.xScale(d.x))
-      .y0(this.config.canvasHeight)
+      .y0(this.geo.canvas.height)
       .y1((d: any) => this.yScale(0))
       .curve(d3.curveMonotoneX);
 
     const finishArea = d3.area<LinePoint>()
       .x((d: any) => this.xScale(d.x))
-      .y0(this.config.canvasHeight)
+      .y0(this.geo.canvas.height)
       .y1((d: any) => this.yScale(d.y))
       .curve(d3.curveMonotoneX);
 
