@@ -6,6 +6,7 @@ export class NodeFilter {
   status?: string; // options: brokenCount healthyCount riskyCount
   newJoined?: any;
   freeCount?: number;
+  keyword?: string;
 }
 
 export class NodeListSummary {

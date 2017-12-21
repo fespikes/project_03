@@ -17,7 +17,7 @@
           </button>
 
           <tui-search
-            [(ngModel)]="search"
+            [(ngModel)]="this.filter.keyword"
             (ngModelChange)="onSearch(true)"
           ></tui-search>
         </span>

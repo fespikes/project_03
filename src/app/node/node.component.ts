@@ -1,6 +1,5 @@
 import { Component, OnInit, HostBinding } from '@angular/core';
 import { Pagination } from 'tdc-ui';
-import debounce from 'lodash/debounce';
 
 import { NodeService } from './node.service';
 import { NodeFilter } from './node.model';
@@ -18,8 +17,6 @@ export class NodeComponent implements OnInit {
 
   tableData: any;
 
-  search: any;
-
   filter = new NodeFilter();
 
   pagination = new Pagination();
@@ -30,31 +27,21 @@ export class NodeComponent implements OnInit {
     private nodeService: NodeService,
   ) { }
 
-  ngOnInit() { console.log(debounce);
-
-    this.debounced = debounce(
-      () => {
-        this.nodeService.fetchNodeList(this.filter).subscribe(response => {
-          this.tableData = response.data.data;
-          this.pagination = response.data.pagination;
-          this.loading = false;
-        });
-      }, 300, {
-        'leading': true,
-        'trailing': false,
-      },
-    );
-
-    this.debounced();
+  ngOnInit() {
+    this.fetchTableData();
   }
 
   fetchTableData() {
     this.loading = true;
-    this.debounced();
+    this.nodeService.fetchNodeList(this.filter).subscribe(response => {
+      this.tableData = response.data.data;
+      this.pagination = response.data.pagination;
+      this.loading = false;
+    });
   }
 
   onSearch(fromStart = false) {
-    // 需要后端接口支持搜索
+    this.fetchTableData();
   }
 
   parseFloat(i: any, key: string) {
