@@ -1,6 +1,6 @@
 import { async, fakeAsync, ComponentFixture, TestBed, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { DebugElement,NO_ERRORS_SCHEMA } from '@angular/core';
+import { DebugElement, NO_ERRORS_SCHEMA } from '@angular/core';
 
 import { NodeComponent } from './node.component';
 import { NodeAsideComponent } from './node-aside/node-aside.component';
@@ -8,7 +8,7 @@ import { NodeService } from './node.service';
 
 import { Observable } from 'rxjs/Observable';
 import { TranslatePipeStub, DefaultPipeStub } from 'app/mock';
-import { NodeServiceStub } from './node-aside/node-aside.component.spec'
+import { NodeServiceStub } from './node.service.stub';
 
 describe('NodeComponent', () => {
   let nodeComponent: NodeComponent;
@@ -19,7 +19,7 @@ describe('NodeComponent', () => {
     TestBed.configureTestingModule({
       schemas: [NO_ERRORS_SCHEMA],
 
-      declarations: [ 
+      declarations: [
         NodeComponent,
         NodeAsideComponent,
         TranslatePipeStub,
@@ -28,8 +28,8 @@ describe('NodeComponent', () => {
 
       providers: [{
         provide: NodeService,
-        useClass: NodeServiceStub
-      }]
+        useClass: NodeServiceStub,
+      }],
     })
     .compileComponents();
   }));
@@ -43,5 +43,5 @@ describe('NodeComponent', () => {
   it('should create', () => {
     expect(nodeComponent).toBeTruthy();
   });
-  
+
 });

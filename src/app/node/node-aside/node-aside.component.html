@@ -1,80 +1,67 @@
+<tui-submenu>
+  <ul class="filter-ul">
+    <li class="title">
+      {{'NODE.FILTER_CONDITION' | translate}}
+      <button
+        class="link-color"
+        (click)="onReset($event)"
+      >{{'NODE.CLEAN_ALL' | translate}}</button>
+    </li>
+    <li class="title">{{'NODE.STATUS' | translate}}</li>
+    <li>
+      <a
+      [ngClass]="{'current': filter.status==='HEALTHY'}"
+      (click)="onFilterOptionsSelect($event, 'HEALTHY')"
+      >
+        {{'NODE.RUN_SMOOTHLY' | translate}}
+        <span>{{asideData.healthyCount||''}}</span>
+      </a>
+    </li>
+    <li>
+    <a
+      [ngClass]="{'current': filter.status==='BROKEN'}"
+      (click)="onFilterOptionsSelect($event, 'BROKEN')"
+    >
+      {{'NODE.RUN_FAULT' | translate}}
+      <span class="error-color">{{asideData.brokenCount}}</span>
+    </a>
+    </li>
+    <li>
+    <a
+      [ngClass]="{'current': filter.status==='RISKY'}"
+      (click)="onFilterOptionsSelect($event, 'RISKY')"
+    >
+      {{'NODE.RUN_RISKY' | translate}}
+      <span>{{asideData.riskyCount}}</span>
+    </a>
+    </li>
 
-<div class="tui-submenu-header bg" [ngClass]="{'space-between': backUrl}">
-   <a [routerLink]="backUrl" *ngIf="backUrl">
-    <svg class="angle-left" tuiIcon="angle-up"></svg>
-  </a>
-  <svg (click)="toggle()" tuiIcon="menu-collapse" class="tui-submenu-toggle"></svg>
-</div>
+    <li class="title">{{'NODE.CHANG_STATUS' | translate}}</li>
+    <li>
+      <a
+        [ngClass]="{'current': (filter.newJoined===true)}"
+        (click)="toggleNewJoined()"
+      >
+        {{'NODE.NEW_JOINED_CUR_MONTH' | translate}}
+        <span>{{asideData.addedCount}}</span>
+      </a>
+    </li>
 
-<!-- <ng-content></ng-content>
- -->
+    <li class="title">{{'NODE.CORE' | translate}}</li>
+    <li class="ui-select-box">
+    <tui-select
+      [(ngModel)]="this.filter.coreNum"
+      (ngModelChange)="onSelectCoreNum()"
+      style="width:130px"
+    >
+      <tui-select-option
+        *ngFor="let option of coreOptions"
+        [value]="option"
+      >
+        {{ option }}
+      </tui-select-option>
+    </tui-select>
+    </li>
+  </ul>
 
-<ul class="filter-ul bg" 
-  (click)="onScreen($event)"
->
-	<li class="title">
-	  {{'NODE.FILTER_CONDITION' | translate}}
-	  <button class="link-color" type-ref="reset">{{'NODE.CLEAN_ALL' | translate}}</button></li>
-	<li class="title">{{'NODE.STATUS' | translate}}</li>
-	<li type-ref="HEALTHY">
-		<a [ngClass]="{'current': filter.status==='HEALTHY'}">
-			{{'NODE.RUN_SMOOTHLY' | translate}}<span>{{asideData.healthyCount||''}}</span>
-		</a>
-	</li>
-	<li type-ref="BROKEN">
-		<a [ngClass]="{'current': filter.status==='BROKEN'}">
-			{{'NODE.RUN_FAULT' | translate}}<span class="error-color">{{asideData.brokenCount}}</span>
-		</a>
-	</li>
-	<li type-ref="RISKY">
-		<a [ngClass]="{'current': filter.status==='RISKY'}">
-			{{'NODE.RUN_RISKY' | translate}}<span>{{asideData.riskyCount}}</span>
-		</a>
-	</li>
-
-	<li class="title">{{'NODE.CHANG_STATUS' | translate}}</li>
-	<li type-ref="newJoined">
-		<a [ngClass]="{'current': (filter.newJoined===true)}">
-			{{'NODE.NEW_JOINED_CUR_MONTH' | translate}}<span>{{asideData.addedCount}}</span>
-		</a>
-	</li>
-
-	<!-- 
-	<li>
-		<a>
-			当前空闲主机<span>{{asideData.freeCount}}</span>
-		</a>
-	</li>
-	<li class="title">集群</li>
-	<li>
-		<tui-select
-	    [(ngModel)]="select"
-	    (ngModelChange)="fetchData(true)"
-	    style="width:130px"
-	  >
-	    <tui-select-option
-	      *ngFor="let option of options"
-	      [value]="option.type"
-	    >
-	      {{ option.type }}
-	    </tui-select-option>
-	  </tui-select>
-	</li>
-	 -->
-
-	<li class="title">{{'NODE.CORE' | translate}}</li>
-	<li class="ui-select-box">
-		<tui-select
-	    [(ngModel)]="this.filter.coreNum"
-	    (ngModelChange)="fetchData()"
-	    style="width:130px"
-	  >
-	    <tui-select-option
-	      *ngFor="let option of coreOptions"
-	      [value]="option"
-	    >
-	      {{ option }}
-	    </tui-select-option>
-	  </tui-select>
-	</li>
-</ul>
+</tui-submenu>

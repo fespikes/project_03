@@ -24,9 +24,9 @@ import { NodeService } from './node.service';
     NodeComponent,
     NodeAsideComponent,
   ],
-  providers:[
+  providers: [
     NodeService,
     TuiModalService,
-  ]
+  ],
 })
 export class NodeModule { }

@@ -1,11 +1,11 @@
 NODE:
   NAME: node
   
-  TOTALNODES: nodes amount:
+  TOTALNODES: 'nodes amount:'
   STATUS: status
   MEMORYUSED: memory used
-  SSDUSED: SSD used
-  HDDUSED: HDD used
+  STORAGEUSED: storage used
+  CPUUSED: CPU used
   MICROSERVICE: micro service
   IP: IP
   JOINTIME: join time

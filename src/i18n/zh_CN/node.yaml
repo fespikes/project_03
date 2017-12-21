@@ -1,11 +1,11 @@
 NODE:
   NAME: 主机
 
-  TOTALNODES: 主机总计：
+  TOTALNODES: '主机总计：'
   STATUS: 状态
   MEMORYUSED: 内存使用量
-  SSDUSED: SSD使用量
-  HDDUSED: HDD使用量
+  STORAGEUSED: 硬盘使用量
+  CPUUSED: CPU使用量
   MICROSERVICE: 微服务
   IP: IP
   JOINTIME: 加入集群时间

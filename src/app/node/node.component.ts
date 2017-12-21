@@ -14,124 +14,62 @@ export class NodeComponent implements OnInit {
 
   @HostBinding('class.tui-layout-body') hostClass = true;
 
-  backUrl = '../';
-
   loading = true;
 
-  tableData = [
-    {id: 3, name: 'fish', type: 'no-limb', desc: 'blue'},
-  ];
+  tableData: any;
 
-  constantData ;
-
-  total;
-  current: any;
   search: any;
 
-  filter = new NodeFilter;
+  filter = new NodeFilter();
 
   pagination = new Pagination();
 
   debounced: any;
 
   constructor(
-    private nodeService: NodeService
+    private nodeService: NodeService,
   ) { }
 
-  ngOnInit() {
-
-    this.nodeService.fetchNodeList().subscribe(response=>{
-      this.constantData = this.tableData = response.data.data;
-      this.total = response.data.pagination.total;
-      // this.pagination = response.data.pagination;
-      this.hideLoading();
-    });
-
-  }
-
-  fetchTableData(filter?) {
-    this.loading = true;
-
-    console.log('this.filter:', this.filter);
+  ngOnInit() { console.log(debounce);
 
     this.debounced = debounce(
-      ()=>{
-        this.nodeService.fetchNodeList(this.filter).subscribe(response=>{
+      () => {
+        this.nodeService.fetchNodeList(this.filter).subscribe(response => {
           this.tableData = response.data.data;
-          this.total = response.data.pagination.total;
-          // this.pagination = response.data.pagination;
-          this.hideLoading();
-        })
+          this.pagination = response.data.pagination;
+          this.loading = false;
+        });
       }, 300, {
         'leading': true,
-        'trailing': false
-      }
+        'trailing': false,
+      },
     );
+
     this.debounced();
   }
-  
-  onFilterSelectStatus($event: string) {
-    this.filter.status = $event;
-    this.fetchTableData();
+
+  fetchTableData() {
+    this.loading = true;
+    this.debounced();
   }
 
-  onFilterSelectNewJoined($event: boolean) {
-    $event? (this.filter.newJoined = true)
-      : (delete this.filter.newJoined) ;
-    this.fetchTableData();
-  }
-
-  onFilterReset($event) {
-    this.filter.reset();
-    this.hideLoading();
-    // this.debounced.cancel();
-    this.fetchTableData();
-  }
-
-  onReselect($event: number) {
-    this.filter.coreNum = $event;
-    this.fetchTableData();
-  }
-
-  //search name in loaded data
   onSearch(fromStart = false) {
-    // 如果搜索或者过滤，则重置页码
-    if (fromStart) {
-      this.pagination = {
-        ...this.pagination,
-        page: 1,
-      };
-    }
-
-    // 模仿请求
-    const size = this.pagination.size;
-    const start = (this.pagination.page - 1) * size;
-
-    this.tableData = this.constantData.filter((datum) => {
-      let match = true;
-
-      if (this.search) {
-        match = match && !!~datum.name.indexOf(this.search);
-      }
-
-      return match;
-    })
-    .slice(start, start + size);
-
-    this.pagination = {
-      ...this.pagination,
-      total: this.total
-    };
+    // 需要后端接口支持搜索
   }
 
-  paginationChange() {
-    this.filter.page = this.pagination.page;
-    this.filter.size = this.pagination.size;
-    this.fetchTableData();
-  }
+  parseFloat(i: any, key: string) {
+    const resources = i.resources;
+    if (!resources) { return ''; }
 
-  hideLoading() {
-    this.loading = false;
+    const sub = resources[key];
+    if (!sub) { return ''; }
+
+    let usage = sub['usage'];
+    let usagePercent = sub['usagePercent'];
+
+    usage = usage ? (Math.round(usage / 1e4) / 100 + 'G') : '';
+    usagePercent = usagePercent ? (usagePercent + '%') : '';
+    return usage + ' ' + usagePercent;
   }
 
 }

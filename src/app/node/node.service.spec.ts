@@ -7,14 +7,14 @@ import { TecApiService } from '../shared';
 describe('NodeService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [NodeService,{
+      providers: [NodeService, {
           provide: TecApiService,
           useValue: {
             get() {
               return Observable.of();
             },
           },
-        },]
+        } ],
     });
   });
 
