@@ -9,14 +9,6 @@ export class TenantInfo {
   uid = '';
 }
 
-export class AllTenants {
-  data: TenantInfo[];
-}
-
-export class TenantInfoWrap {
-  data: TenantInfo;
-}
-
 export class TenantSummary {
   billMonth = '';
   unpaid = 0;
@@ -27,17 +19,13 @@ export class TenantSummary {
 }
 
 export class TenantSummaries {
-  data: {
-    data: TenantSummary[],
-    pagination: Pagination,
-  };
+  data: TenantSummary[];
+  pagination: Pagination;
 }
 
 export class TenantCount {
-  data: {
-    count: 0,
-    time: 0,
-  };
+  count: 0;
+  time: 0;
 }
 
 export class Consumption {
@@ -46,10 +34,8 @@ export class Consumption {
 }
 
 export class InstanceInfo {
-  data: {
-    data: Instance[],
-    pagination: Pagination,
-  };
+  data: Instance[];
+  pagination: Pagination;
 }
 
 export class Instance {
@@ -96,17 +82,15 @@ export class Quota {
 
 export class Bills {
   data: {
-    data: {
-      id: string,
-      chargeAmount: number,
-      correctAmount: number,
-      time: number,
-      totalAmount: number,
-      status: string,
-      tenantUid: string,
-    }[],
-    pagination: Pagination,
-  };
+    id: string,
+    chargeAmount: number,
+    correctAmount: number,
+    time: number,
+    totalAmount: number,
+    status: string,
+    tenantUid: string,
+  }[];
+  pagination: Pagination;
 }
 
 export class Bill {
@@ -120,7 +104,5 @@ export class Bill {
 }
 
 export class OperationResult {
-  messgae: string;
-  resultCode: string;
   data: {};
 }

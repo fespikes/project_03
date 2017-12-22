@@ -1,0 +1,67 @@
+<tui-submenu>
+  <ul class="filter-ul">
+    <li class="title">
+      {{'NODE.FILTER_CONDITION' | translate}}
+      <button
+        class="link-color"
+        (click)="onReset($event)"
+      >{{'NODE.CLEAN_ALL' | translate}}</button>
+    </li>
+    <li class="title">{{'NODE.STATUS' | translate}}</li>
+    <li>
+      <a
+      [ngClass]="{'current': filter.status==='HEALTHY'}"
+      (click)="onFilterOptionsSelect($event, 'HEALTHY')"
+      >
+        {{'NODE.RUN_SMOOTHLY' | translate}}
+        <span>{{asideData.healthyCount||''}}</span>
+      </a>
+    </li>
+    <li>
+    <a
+      [ngClass]="{'current': filter.status==='BROKEN'}"
+      (click)="onFilterOptionsSelect($event, 'BROKEN')"
+    >
+      {{'NODE.RUN_FAULT' | translate}}
+      <span class="error-color">{{asideData.brokenCount}}</span>
+    </a>
+    </li>
+    <li>
+    <a
+      [ngClass]="{'current': filter.status==='RISKY'}"
+      (click)="onFilterOptionsSelect($event, 'RISKY')"
+    >
+      {{'NODE.RUN_RISKY' | translate}}
+      <span>{{asideData.riskyCount}}</span>
+    </a>
+    </li>
+
+    <li class="title">{{'NODE.CHANG_STATUS' | translate}}</li>
+    <li>
+      <a
+        [ngClass]="{'current': (filter.newJoined===true)}"
+        (click)="toggleNewJoined()"
+      >
+        {{'NODE.NEW_JOINED_CUR_MONTH' | translate}}
+        <span>{{asideData.addedCount}}</span>
+      </a>
+    </li>
+
+    <li class="title">{{'NODE.CORE' | translate}}</li>
+    <li class="ui-select-box">
+    <tui-select
+      [(ngModel)]="this.filter.coreNum"
+      (ngModelChange)="onSelectCoreNum()"
+      style="width:130px"
+    >
+      <tui-select-option
+        *ngFor="let option of coreOptions"
+        [value]="option"
+      >
+        {{ option }}
+      </tui-select-option>
+    </tui-select>
+    </li>
+  </ul>
+
+</tui-submenu>

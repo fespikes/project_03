@@ -1,3 +1,60 @@
-<p>
-  node works!
-</p>
+<div class="tui-layout-body">
+  <tec-node-aside
+    [(filter)] = "this.filter"
+    (filterChange)="fetchTableData()"
+  ></tec-node-aside>
+
+  <div class="tui-layout-vertical">
+    <div class="tui-layout-main-container" style="min-height:100%">
+
+      <div class="maintain">
+        <span class="left">{{'NODE.TOTALNODES' | translate}}{{pagination.total}}</span>
+
+        <span class="right">
+          <button tuiBtn="primary" size="md">
+            <svg tuiIcon="export" color="white"></svg>
+            <span>EXPORT</span>
+          </button>
+
+          <tui-search
+            [(ngModel)]="this.filter.keyword"
+            (ngModelChange)="onSearch(true)"
+          ></tui-search>
+        </span>
+      </div>
+
+      <tui-table class="tui-table" [tuiTableFlex]="[2,1.5,2,2,2,1,2,3]" [loading]="loading">
+
+        <tui-table-head>
+          <div>{{'NODE.NAME' | translate}}</div>
+          <div>{{'NODE.STATUS' | translate}}</div>
+          <div>{{'NODE.MEMORYUSED' | translate}}</div>
+          <div>{{'NODE.STORAGEUSED' | translate}}</div>
+          <div>{{'NODE.CPUUSED' | translate}}</div>
+          <div>{{'NODE.MICROSERVICE' | translate}}</div>
+          <div>{{'NODE.IP' | translate}}</div>
+          <div>{{'NODE.JOINTIME' | translate}}</div>
+        </tui-table-head>
+
+        <tui-table-row *ngFor="let instance of tableData">
+          <div class="text-ellipsis">{{instance.name}}</div>
+          <div class="text-ellipsis">{{instance.status}}</div>
+          <div>{{parseFloat(instance, 'memory')}}</div>
+          <div>{{parseFloat(instance, 'storage')}}</div>
+          <div>{{parseFloat(instance, 'cpu')}}</div>
+          <div>{{instance.microServicesCount}}</div>
+          <div>{{instance.ip}}</div>
+          <div>{{instance.joinTime | date: 'yyyy/MM/dd h:mm a'}}</div>
+        </tui-table-row>
+
+      </tui-table>
+
+      <div class="tui-layout-main-pagination-footer">
+        <tui-pagination [(pagination)]="pagination" (paginationChange)="fetchTableData()">
+        </tui-pagination>
+      </div>
+
+    </div>
+
+  </div>
+</div>

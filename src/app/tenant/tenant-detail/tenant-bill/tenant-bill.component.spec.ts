@@ -12,7 +12,8 @@ import { TranslatePipeStub, TranslateServiceMock } from 'app/mock';
 class TenantServiceStub {
   fetchBills() {
     return Observable.of({
-      data: {},
+      data: [],
+      pagination: {},
     });
   }
 }

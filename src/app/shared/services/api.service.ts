@@ -8,6 +8,10 @@ import 'rxjs/add/operator/catch';
 
 import { PartialCollection } from '../models';
 
+export class ApiConfig {
+  fullResponse = false;
+}
+
 @Injectable()
 export class TecApiService {
   constructor(private http: Http) { }
@@ -29,26 +33,29 @@ export class TecApiService {
     return Observable.throw(data);
   }
 
+  private formatResponse(res: Response, config = new ApiConfig()) {
+    const json = res.json();
+    if (config.fullResponse) {
+      return json;
+    } else {
+      return json.data;
+    }
+  }
+
   makeUrl(url) {
     return path.join(environment.apiUrl, url);
   }
 
-  get(url: string, params: Object = {}): Observable<any> {
+  get(url: string, params: Object = {}, config?: ApiConfig): Observable<any> {
     return this.http.get(this.makeUrl(url), { headers: this.headers, search: params })
       .catch(this.formatErrors)
-      .map((res: Response) => res.json());
+      .map((res: Response) => this.formatResponse(res, config));
   }
 
-  getAll(url: string, params: Object = {}): Observable<PartialCollection> {
+  getAll(url: string, params: Object = {}, config?: ApiConfig): Observable<PartialCollection> {
     params['size'] = Math.pow(2, 31) - 1;
     params['page'] = 1;
-    return this.get(url, params);
-  }
-
-  getText(url: string, params: Object = {}): Observable<any> {
-    return this.http.get(this.makeUrl(url), { headers: this.headers, search: params })
-      .catch(this.formatErrors)
-      .map((res: Response) => res.text());
+    return this.get(url, params, config);
   }
 
   put(url: string, body: Object = {}): Observable<any> {
@@ -58,7 +65,7 @@ export class TecApiService {
       { headers: this.headers },
     )
       .catch(this.formatErrors)
-      .map((res: Response) => res.json());
+      .map((res: Response) => this.formatResponse(res));
   }
 
   post(url: string, body: Object = {}): Observable<any> {
@@ -68,17 +75,7 @@ export class TecApiService {
       { headers: this.headers },
     )
       .catch(this.formatErrors)
-      .map((res: Response) => res.json());
-  }
-
-  postRaw(url: string, body: Object = {}, config: Object = {}): Observable<any> {
-    return this.http.post(
-      this.makeUrl(url),
-      body,
-      config,
-    )
-      .catch(this.formatErrors)
-      .map((res: Response) => res.json());
+      .map((res: Response) => this.formatResponse(res));
   }
 
   delete(url): Observable<any> {
@@ -87,6 +84,6 @@ export class TecApiService {
       { headers: this.headers },
     )
       .catch(this.formatErrors)
-      .map((res: Response) => res.json());
+      .map((res: Response) => this.formatResponse(res));
   }
 }
