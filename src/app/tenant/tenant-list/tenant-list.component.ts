@@ -27,7 +27,7 @@ export class TenantListComponent implements OnInit {
   ngOnInit() {
     this.tenantService.fetchTenantsCount()
       .subscribe((result) => {
-        this.tenantsCount = result.data.count;
+        this.tenantsCount = result.count;
       });
     this.getTenants().subscribe();
   }
@@ -42,8 +42,8 @@ export class TenantListComponent implements OnInit {
     this.loading = true;
     return this.tenantService.fetchSummaries(this.keyword)
       .map((result) => {
-        this.tenants = result.data.data;
-        this.pagination = result.data.pagination;
+        this.tenants = result.data;
+        this.pagination = result.pagination;
         this.loading = false;
       });
   }

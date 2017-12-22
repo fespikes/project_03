@@ -12,7 +12,8 @@ import { MockModule } from 'app/mock';
 class TenantServiceStub {
   fetchInstanceInfos() {
     return Observable.of({
-      data: {},
+      data: [],
+      pagination: {},
     });
   }
 }

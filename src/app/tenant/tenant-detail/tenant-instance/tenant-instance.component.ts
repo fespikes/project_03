@@ -52,8 +52,8 @@ export class TenantInstanceComponent implements OnInit {
     this.loading = true;
     return this.tenantService.fetchInstanceInfos(this.uid, this.pagination, this.filter)
       .map((result) => {
-        this.instances = result.data.data;
-        this.pagination = result.data.pagination;
+        this.instances = result.data;
+        this.pagination = result.pagination;
         this.loading = false;
       }, this.modal.apiError);
   }

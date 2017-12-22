@@ -4,8 +4,7 @@ import { Observable } from 'rxjs/Observable';
 import { TecApiService } from '../shared';
 import { Pagination } from 'tdc-ui';
 import {
-  TenantInfoWrap,
-  AllTenants,
+  TenantInfo,
   TenantSummary,
   TenantSummaries,
   TenantCount,
@@ -23,7 +22,7 @@ export class TenantService {
 
   constructor(private api: TecApiService) { }
 
-  fetchAllTenants(): Observable<AllTenants> {
+  fetchAllTenants(): Observable<TenantInfo[]> {
     return this.api.get('tenants');
   }
 
@@ -39,7 +38,7 @@ export class TenantService {
     return this.api.get(`tenants/consumptions`, {period: period});
   }
 
-  fetchInfo(uid: string): Observable<TenantInfoWrap> {
+  fetchInfo(uid: string): Observable<TenantInfo> {
     return this.api.get(`tenants/${uid}`);
   }
 
