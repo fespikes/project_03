@@ -19,9 +19,7 @@ import { ElementWidthListener } from '../element-width-listener';
 export class LineChartComponent implements OnInit, AfterViewInit {
   @HostBinding('class.tui-layout-vertical') hostClass = true;
 
-  @ViewChild('lineChart') lineChartHolder: ElementRef;
-
-  config: LineChartConfig;
+  @ViewChild('chart') chartHolder: ElementRef;
 
   line = new LineChart();
 
@@ -31,8 +29,7 @@ export class LineChartComponent implements OnInit, AfterViewInit {
 
   constructor() {
     this.chartDataJson = JSON.stringify(LineChartBuilder.getMockChartData(), null, 2);
-    this.config = new LineChartConfig();
-    this.configJson = LineChartConfig.toJson(this.config);
+    this.configJson = LineChartConfig.toJson(new LineChartConfig());
   }
 
   ngOnInit() {
@@ -42,7 +39,7 @@ export class LineChartComponent implements OnInit, AfterViewInit {
     setTimeout(() => {
       this.draw();
 
-      const listener = new ElementWidthListener(this.lineChartHolder);
+      const listener = new ElementWidthListener(this.chartHolder);
       listener.startListen().subscribe(() => {
         this.draw();
       });
@@ -51,16 +48,16 @@ export class LineChartComponent implements OnInit, AfterViewInit {
 
   draw() {
     this.line.clear();
-    const element: HTMLElement = this.lineChartHolder.nativeElement;
+    const element: HTMLElement = this.chartHolder.nativeElement;
     const { clientWidth, clientHeight } = element;
     const configParsed = JSON.parse(this.configJson);
-    this.config = LineChartConfig.from(configParsed);
-    Object.assign(this.config, {
+    const config = LineChartConfig.from(configParsed);
+    Object.assign(config, {
       width: clientWidth,
       height: clientHeight,
     });
 
-    this.line.setConfig(this.config)
+    this.line.setConfig(config)
       .select(element)
       .datum(LineChartBuilder.parseChartData(this.chartDataJson));
 
