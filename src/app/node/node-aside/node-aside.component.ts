@@ -21,8 +21,8 @@ export class NodeAsideComponent implements OnInit {
 
   ngOnInit() {
     this.nodeService.fetchNodeSummary().subscribe(response => {
-      this.asideData = {...response.data};
-      this.coreOptions = response.data.coreOptions;
+      this.asideData = response;
+      this.coreOptions = response.coreOptions;
     });
   }
 

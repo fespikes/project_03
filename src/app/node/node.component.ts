@@ -34,8 +34,8 @@ export class NodeComponent implements OnInit {
   fetchTableData() {
     this.loading = true;
     this.nodeService.fetchNodeList(this.filter).subscribe(response => {
-      this.tableData = response.data.data;
-      this.pagination = response.data.pagination;
+      this.tableData = response.data;
+      this.pagination = response.pagination;
       this.loading = false;
     });
   }
