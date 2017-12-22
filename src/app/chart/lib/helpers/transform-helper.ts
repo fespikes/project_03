@@ -30,6 +30,12 @@ export class Transform2D {
  * 操作各种transform, 包括translate, rotate等
  */
 export class TransformHelper {
+  /**
+   * 在container内平移child，relative为相对container的四个边距的距离
+   * @param  {Container2D} container
+   * @param  {Container2D} child
+   * @param  {RelativePosition} relative
+   */
   static translateInContainer(container: Container2D, child: Container2D, relative: RelativePosition) {
     let xOffset = 0;
     let yOffset = 0;

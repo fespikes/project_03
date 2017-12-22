@@ -6,6 +6,9 @@ import {
 import { Margin } from './chart-base';
 import { LegendConfig } from './legend';
 
+/**
+ * 负责chart container 内的各种transform操作
+ */
 export class GeoService {
   container: Container2D;
   canvas: Container2D;
@@ -27,6 +30,10 @@ export class GeoService {
     return geo;
   }
 
+  /**
+   * 若插入legend，则要缩小canvas面积
+   * @param legend
+   */
   insertLegend(legend: LegendConfig) {
     this.legend = legend;
     this.canvas.height = this.canvas.height - this.legend.areaHeight;

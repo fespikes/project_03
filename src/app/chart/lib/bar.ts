@@ -26,7 +26,9 @@ export class BarChartData {
     Object.assign(barData, data);
     return barData;
   }
-
+  /**
+   * series里最大值
+   */
   get top() {
     const yMax = [];
     this.series.forEach((d) => {
@@ -42,7 +44,9 @@ export class BarChartData {
 
     return d3.max(yMax);
   }
-
+  /**
+   * stack时每个bar的最大值
+   */
   get stackTop() {
     const tops = this.xs.map((x) => this.getTotal(x));
     return d3.max(tops);
@@ -52,6 +56,10 @@ export class BarChartData {
     return this.series.map((s) => s.topic);
   }
 
+
+  /**
+   * xs长度的数组，每组为各个topic在该x的值
+   */
   get dataByTopic(): {[key: string]: number}[] {
     return this.xs.map((x, i) => {
       return this.series.reduce((accum, s) => {
@@ -60,7 +68,11 @@ export class BarChartData {
       }, {});
     });
   }
-
+  /**
+   * 获取在x，top的值
+   * @param  {string} x
+   * @param  {string} topic
+   */
   getDataAt(x: string, topic: string) {
     const xIdx = this.xs.indexOf(x);
     const yIdx = this.series.findIndex(d => d.topic === topic);
@@ -259,6 +271,7 @@ export class BarChart implements ChartBase {
 
   drawBarStack() {
     const dataByTopic = this.data.dataByTopic;
+
     this.canvas.append('g')
       .selectAll('g')
       .data(d3.stack().keys(this.data.topics)(dataByTopic))
