@@ -34,7 +34,7 @@ export class GeoService {
    * 若插入legend，则要缩小canvas面积
    * @param legend
    */
-  insertLegend(legend: LegendConfig) {
+  placeLegend(legend: LegendConfig) {
     this.legend = legend;
     this.canvas.height = this.canvas.height - this.legend.areaHeight;
   }
@@ -57,5 +57,9 @@ export class GeoService {
     }
     const t2d = TransformHelper.translateInContainer(this.container, this.legend.container, relativePosition);
     return t2d.toTranslate();
+  }
+
+  get xAxisTranslate() {
+    return `translate(0, ${this.canvas.height})`;
   }
 }

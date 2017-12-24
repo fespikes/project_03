@@ -12,6 +12,13 @@ import { ChartBase, SelectionType } from './chart-base';
 import { ColorSchema } from './color-schema';
 import { Legend, LegendConfig } from './legend';
 import { GeoService } from './geo-service';
+import {
+  LinearAxis,
+  LinearAxisConfig,
+  BandAxis,
+  BandAxisConfig,
+} from './axis';
+import { Grid } from './grid';
 
 
 export class BarChartData {
@@ -68,6 +75,7 @@ export class BarChartData {
       }, {});
     });
   }
+
   /**
    * 获取在x，top的值
    * @param  {string} x
@@ -91,6 +99,8 @@ export class BarChartConfig {
   width: number;
   height: number;
   stack = false;
+  xAxis = new BandAxisConfig();
+  yAxis = new LinearAxisConfig();
   // TODO
   hasAnimation = false;
   background: string;
@@ -116,13 +126,11 @@ export class BarChart implements ChartBase {
   config: BarChartConfig;
   element: HTMLElement;
   geo: GeoService;
+  xAxis: BandAxis;
+  yAxis: LinearAxis;
 
-  private xScale: ScaleBand<any>;
-  private yScale: ScaleLinear<any, any>;
   private ordinalScale: ScaleOrdinal<any, any>;
   private stack: Stack<any, any, any>;
-  private xAxis: Axis<any>;
-  private yAxis: Axis<any>;
   private container: SelectionType;
   private canvas: SelectionType;
 
@@ -130,7 +138,7 @@ export class BarChart implements ChartBase {
     this.config = config;
     const { width, height, margin, legend } = this.config;
     this.geo = GeoService.fromMarginContainer({width, height}, margin);
-    this.geo.insertLegend(legend);
+    this.geo.placeLegend(legend);
     return this;
   }
 
@@ -150,13 +158,12 @@ export class BarChart implements ChartBase {
     }
 
     this.initCanvas();
-    this.initScale();
+    this.drawAxis();
+    this.drawGrid();
 
     if (this.config.stack) {
-      this.drawAxisStack();
       this.drawBarStack();
     } else {
-      this.drawAxis();
       this.drawBarGrouped();
     }
 
@@ -187,60 +194,44 @@ export class BarChart implements ChartBase {
       .attr('transform', this.geo.canvasTranslate);
   }
 
-  initScale() {
-    this.xScale = d3.scaleBand()
-      .domain(this.data.xs)
-      .rangeRound([0, this.geo.canvas.width])
-      .paddingInner(0.5)
-      .paddingOuter(0.2);
-
-    if (this.config.stack) {
-      this.yScale = d3.scaleLinear()
-        .domain([0, this.data.stackTop])
-        .rangeRound([this.geo.canvas.height, 0])
-        .nice();
-    } else {
-      this.yScale = d3.scaleLinear()
-        .domain([0, this.data.top])
-        .rangeRound([this.geo.canvas.height, 0])
-        .nice();
-    }
-
-    this.ordinalScale = d3.scaleOrdinal()
-      .range(this.config.colorSchema.palette);
-
-    this.stack = d3.stack();
-  }
-
   drawAxis() {
-    this.xAxis = d3.axisBottom(this.xScale);
-    this.yAxis = d3.axisLeft(this.yScale);
-
-    this.canvas.append('g')
+    const xContainer = this.canvas.append('g')
       .attr('class', 'x axis')
-      .attr('transform', `translate(0, ${this.geo.canvas.height})`)
-      .call(this.xAxis);
+      .attr('transform', this.geo.xAxisTranslate);
+    const yContainer = this.canvas.append('g')
+      .attr('class', 'y axis');
 
-    this.canvas.append('g')
-      .attr('class', 'y axis')
-      .call(this.yAxis);
+      const { xAxis, yAxis } = this.config;
+      this.xAxis = new BandAxis(xAxis, xContainer, 'bottom');
+      this.yAxis = new LinearAxis(yAxis, yContainer, 'left');
+
+      const { width, height } = this.geo.canvas;
+      let yTop;
+      if (this.config.stack) {
+        yTop = this.data.stackTop;
+      } else {
+        yTop = this.data.top;
+      }
+      this.xAxis.draw(this.data.xs, [0, width]);
+      this.yAxis.draw([0, yTop], [height, 0]);
+
+      this.ordinalScale = d3.scaleOrdinal()
+        .range(this.config.colorSchema.palette);
   }
 
-  drawAxisStack() {
-    this.xAxis = d3.axisBottom(this.xScale);
-    this.yAxis = d3.axisLeft(this.yScale);
-    this.canvas.append('g')
-      .attr('class', 'x axis')
-      .attr('transform', `translate(0, ${this.geo.canvas.height})`)
-      .call(this.xAxis);
-
-    this.canvas.append('g')
-      .attr('class', 'y axis')
-      .call(this.yAxis);
+  drawGrid() {
+    const gridRoot = this.canvas.append('g').attr('class', 'grid-container');
+    const gridContainer = gridRoot.append('g').attr('class', 'grid-vertical');
+    const { canvas } = this.geo;
+    const gridRenderer = new Grid(gridContainer, canvas);
+    const { grid, tick } = this.config.yAxis;
+    gridRenderer.draw(grid, tick.count, this.yAxis.scale);
   }
 
   drawBarGrouped() {
-    const xSubScale = d3.scaleBand().domain(this.data.topics).rangeRound([0, this.xScale.bandwidth()]);
+    const { scale: xScale } = this.xAxis;
+    const { scale: yScale } = this.yAxis;
+    const xSubScale = d3.scaleBand().domain(this.data.topics).rangeRound([0, xScale.bandwidth()]);
 
     this.canvas.append('g')
       .selectAll('g')
@@ -248,7 +239,7 @@ export class BarChart implements ChartBase {
       .enter()
       .append('g')
         .attr('transform', (x, i) => {
-          return `translate(${this.xScale(x)}, 0)`;
+          return `translate(${xScale(x)}, 0)`;
         })
       .selectAll('rect')
       .data((x, i) => {
@@ -263,13 +254,15 @@ export class BarChart implements ChartBase {
       .append('rect')
         .attr('class', 'bar')
         .attr('x', (d) => xSubScale(d.x))
-        .attr('y', (d) => this.yScale(d.y))
+        .attr('y', (d) => yScale(d.y))
         .attr('width', xSubScale.bandwidth())
-        .attr('height', (d) => this.geo.canvas.height - this.yScale(d.y))
+        .attr('height', (d) => this.geo.canvas.height - yScale(d.y))
         .attr('fill', (d, i) => this.ordinalScale(d.x));
   }
 
   drawBarStack() {
+    const { scale: xScale } = this.xAxis;
+    const { scale: yScale } = this.yAxis;
     const dataByTopic = this.data.dataByTopic;
 
     this.canvas.append('g')
@@ -286,14 +279,14 @@ export class BarChart implements ChartBase {
       .append('rect')
         .attr('x', (d, i) => {
           const x = this.data.xs[i];
-          return this.xScale(x);
+          return xScale(x);
         })
         .attr('y', (d, i) => {
-          return this.yScale(d[1]);
+          return yScale(d[1]);
         })
-        .attr('width', this.xScale.bandwidth)
+        .attr('width', xScale.bandwidth)
         .attr('height', (d, i) => {
-          return this.yScale(d[0]) - this.yScale(d[1]);
+          return yScale(d[0]) - yScale(d[1]);
         });
   }
 
