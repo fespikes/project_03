@@ -12,7 +12,6 @@ import {
   DonutChartConfig,
   DonutChartDataBuilder,
 } from '../lib';
-import * as lib from '../lib';
 
 /**
 @desc: this is the container component of Donut chart
@@ -49,7 +48,6 @@ export class DonutChartComponent implements OnInit {
   }
 
   ngOnInit() {
-    console.log(lib);
 
     const element: HTMLElement = this.donutChartHolder.nativeElement;
     const { clientWidth, clientHeight } = element;
