@@ -10,4 +10,16 @@ SYSTEM:
     IMAGE: 容器镜像
     DURATION: 存活时间
     OPERATION: 操作
+    EDIT: 编辑Yarml
+    UPDATE: 更新Image
+    DELETE: 删除服务
+    YEAR: 年
+    MONTH: 月
+    DAY: 天
+    HOUR: 小时
+    MINUTE: 分钟
+    SECOND: 秒
+    MILLISECOND: 毫秒
+    HEALTH: 健康
+    ERROR: 故障
 
