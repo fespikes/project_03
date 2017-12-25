@@ -8,6 +8,7 @@ import {
 
 import {
   DonutChart,
+  DonutChartData,
   DonutChartConfig,
   DonutChartDataBuilder,
 } from '../lib';
@@ -23,19 +24,28 @@ import * as lib from '../lib';
 })
 export class DonutChartComponent implements OnInit {
 
-  private el: ElementRef;
-
   @HostBinding('class.tui-layout-vertical') hostClass = true;
 
   @ViewChild('donutChart') donutChartHolder: ElementRef;
 
-  config: any = new DonutChartConfig();
+  donutChartData: DonutChartData;
+  donutChartDataJson: string;
+
+  donutChartConfig: DonutChartConfig = new DonutChartConfig();
+  donutChartConfigJson: string;
 
   donut: DonutChart = new DonutChart();
 
   constructor(
-    el: ElementRef,
   ) {
+    const jsonStringify = function(data) {
+      return JSON.stringify( data, null, '  ');
+    };
+
+    this.donutChartData = DonutChartDataBuilder.getMockData();
+
+    this.donutChartDataJson = jsonStringify(this.donutChartData);
+    this.donutChartConfigJson = jsonStringify(this.donutChartConfig);
   }
 
   ngOnInit() {
@@ -44,18 +54,16 @@ export class DonutChartComponent implements OnInit {
     const element: HTMLElement = this.donutChartHolder.nativeElement;
     const { clientWidth, clientHeight } = element;
 
-    this.config.style = Object.assign(this.config.style, {
+    this.donutChartConfig.style = Object.assign(this.donutChartConfig.style, {
       width: clientWidth,
       height: clientHeight,
     });
 
-    this.config.donutChartHolder = element;
+    this.donutChartConfig.donutChartHolder = element;
 
-    this.donut.setConfig(this.config).datum(DonutChartDataBuilder.getMockData() );
-
+    this.donut.setConfig(this.donutChartConfig).datum(this.donutChartData);
 
     this.donut.draw();
-
   }
 
   type(d) {

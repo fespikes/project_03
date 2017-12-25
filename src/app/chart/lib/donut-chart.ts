@@ -2,7 +2,7 @@ import * as d3 from 'd3';
 
 import { ChartBase } from './chart-base';
 
-class DonutChart implements ChartBase {
+export class DonutChart implements ChartBase {
 
   data: DonutChartData;
   config: DonutChartConfig;
@@ -48,6 +48,8 @@ class DonutChart implements ChartBase {
     this.color = d3.scaleOrdinal()
       .range(this.config.style.colorRange);
     this.color.domain(columns);
+
+    this.config.donutChartHolder.innerHTML = '';
 
     this.drawLegend();
     this.drawTire();
@@ -154,7 +156,7 @@ class DonutChart implements ChartBase {
 
 }
 
-class DonutChartConfig {
+export class DonutChartConfig {
 
   donutChartHolder: any; // className of donut's container
 
@@ -183,7 +185,7 @@ class DonutChartConfig {
 
 }
 
-class DonutChartData {
+export class DonutChartData {
 
   columns?: Array<string>;
 
@@ -195,9 +197,3 @@ class DonutChartData {
   }
 
 }
-
-export {
-  DonutChart,
-  DonutChartData,
-  DonutChartConfig,
-};
