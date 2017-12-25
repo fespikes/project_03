@@ -23,7 +23,7 @@ export class ActiveI18n {
 
   remove(token: string) {
     const index = this.store.indexOf(token);
-    if (~index) {
+    if (index >= 0) {
       this.store.splice(index, 1);
     }
   }

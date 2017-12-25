@@ -18,23 +18,19 @@ class TuiModalServiceStub {
 
 class TenantServiceStub {
   fetchAllTenants() {
-    return Observable.of({
-      data: [],
-    });
+    return Observable.of([{
+      uid: 123,
+    }]);
   }
   fetchTenantsCount() {
     return Observable.of({
-      data: {
-        count: 10,
-        time: 0,
-      },
+      count: 10,
+      time: 0,
     });
   }
   fetchInfo() {
     return Observable.of({
-      data: {
-        name: 'tenant',
-      },
+      name: 'tenant',
     });
   }
 }

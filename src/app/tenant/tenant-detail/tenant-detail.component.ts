@@ -31,19 +31,19 @@ export class TenantDetailComponent implements OnInit {
         this.loading = true;
         this.tenantService.fetchInfo(params['uid'])
           .subscribe((result) => {
-            this.tenant = result.data;
+            this.tenant = result;
             this.loading = false;
           });
       }, this.modal.apiError);
 
     this.tenantService.fetchTenantsCount()
       .subscribe((result) => {
-        this.tenantsCount = result.data.count;
+        this.tenantsCount = result.count;
       });
 
     this.tenantService.fetchAllTenants()
       .subscribe((result) => {
-        this.submenuItems = result.data.map((tenant) => ({
+        this.submenuItems = result.map((tenant) => ({
           name: tenant.name,
           url: `/tenant/detail/${tenant.uid}`,
           icon: '',
