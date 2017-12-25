@@ -1,6 +1,6 @@
 import { ScaleLinear, ScaleTime, AxisScale } from 'd3';
 
-import { Container2D } from './helpers/transform-helper';
+import { Rect2D } from './helpers/transform-helper';
 import { SelectionType } from './chart-base';
 import { AxisGridConfig } from './axis/axis-base';
 
@@ -14,7 +14,7 @@ export type GridOrientation = 'horizontal' | 'vertical';
 export class Grid {
   constructor(
     private container: SelectionType,
-    private canvas: Container2D,
+    private canvas: Rect2D,
   ) {}
 
   draw(
@@ -54,6 +54,8 @@ export class Grid {
               .attr('x2', (d) => scale(d));
     }
 
+    line.attr('stroke', config.color);
+    line.attr('stroke-width', config.strokeWidth);
     if (config.style === 'dash') {
       line.attr('stroke-dasharray', '8, 4');
     }

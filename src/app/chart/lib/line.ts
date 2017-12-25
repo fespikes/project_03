@@ -72,17 +72,11 @@ export class LineChart implements ChartBase {
   xAxis: TimeAxis;
   yAxis: LinearAxis;
 
-  private container: SelectionType;
-  private canvas: SelectionType;
-
   constructor() {
   }
 
   setConfig(config: LineChartConfig) {
     this.config = config;
-    const { width, height, margin, legend } = this.config;
-    this.geo = GeoService.fromMarginContainer({width, height}, margin);
-    this.geo.placeLegend(legend);
     return this;
   }
 
@@ -97,11 +91,7 @@ export class LineChart implements ChartBase {
   }
 
   draw() {
-    if (this.container) {
-      this.clear();
-    }
-
-    this.initCanvas();
+    this.initGeo();
     this.drawAxis();
     this.drawBackgroud();
     this.drawGrid();
@@ -122,72 +112,56 @@ export class LineChart implements ChartBase {
     console.error('TODO');
   }
 
-  clear() {
-    if (this.container) {
-      this.container.remove();
-      this.container = null;
+  initGeo() {
+    if (this.geo) {
+      this.geo.clear();
     }
-  }
+    const rootContainer = d3.select(this.element).append('svg')
+    .attr('class', 'chart tdc-chart-line')
+    .style('width', '100%')
+    .style('height', '100%');
 
-  initCanvas() {
-    if (!this.container) {
-      this.container = d3.select(this.element)
-        .append('svg')
-        .attr('class', 'chart tdc-chart-line');
-    }
-
-    this.container
-      .attr('width', this.config.width)
-      .attr('height', this.config.height);
-
-    this.canvas = this.container.append('g')
-      .attr('transform', this.geo.canvasTranslate);
+    const { width, height, margin, legend } = this.config;
+    this.geo = GeoService.fromMarginContainer(rootContainer, {width, height}, margin);
+    this.geo.placeLegend(legend)
+      .placeGrid()
+      .placeXAxis()
+      .placeYAxis()
+      .placeBackground();
   }
 
   drawAxis() {
-    const xContainer = this.canvas.append('g')
-      .attr('class', 'x axis')
-      .attr('transform', this.geo.xAxisTranslate);
-    const yContainer = this.canvas.append('g')
-      .attr('class', 'y axis');
-
     const { xAxis, yAxis } = this.config;
-    this.xAxis = new TimeAxis(xAxis, xContainer, 'bottom');
-    this.yAxis = new LinearAxis(yAxis, yContainer, 'left');
+    this.xAxis = new TimeAxis(xAxis, this.geo.xAxis, 'bottom');
+    this.yAxis = new LinearAxis(yAxis, this.geo.yAxis, 'left');
 
     const allData = this.data.reduce((accum, d) => {
       return accum.concat(d.data);
     }, []);
     const allDataX = allData.map(d => d.x);
     const allDataY = allData.map(d => d.y);
-    const { width, height } = this.geo.canvas;
+    const { width, height } = this.geo.canvas2d;
     this.xAxis.draw(allDataX, [0, width]);
     this.yAxis.draw([0, d3.max(allDataY)], [height, 0]);
   }
 
   drawBackgroud() {
     if (this.config.background) {
-      const background = this.canvas
-        .append('rect')
-        .attr('width', this.geo.canvas.width)
-        .attr('height', this.geo.canvas.height)
+      this.geo.background
         .attr('fill', this.config.background);
     }
   }
 
   drawGrid() {
-    const gridRoot = this.canvas.append('g').attr('class', 'grid-container');
-    const { canvas } = this.geo;
+    const { canvas2d, gridVertical, gridHorizontal } = this.geo;
 
     {
-      const gridContainer = gridRoot.append('g').attr('class', 'grid-vertical');
-      const gridRenderer = new Grid(gridContainer, canvas);
+      const gridRenderer = new Grid(gridVertical, canvas2d);
       const { grid, tick } = this.config.xAxis;
       gridRenderer.draw(grid, tick.count, this.xAxis.scale, 'vertical');
     }
     {
-      const gridContainer = gridRoot.append('g').attr('class', 'grid-horizontal');
-      const gridRenderer = new Grid(gridContainer, canvas);
+      const gridRenderer = new Grid(gridHorizontal, canvas2d);
       const { grid, tick } = this.config.yAxis;
       gridRenderer.draw(grid, tick.count, this.yAxis.scale);
     }
@@ -195,8 +169,7 @@ export class LineChart implements ChartBase {
 
   drawLegend() {
     const legend = new Legend(this.config.colorSchema, this.config.legend);
-    const legendContainer = this.container.append('g').attr('transform', this.geo.legendTranslate);
-    legend.draw(legendContainer, this.data.map((d) => d.topic));
+    legend.draw(this.geo.legend, this.data.map((d) => d.topic));
   }
 
   drawLines() {
@@ -222,11 +195,12 @@ export class LineChart implements ChartBase {
       .y((d: any) => yScale(d.y))
       .curve(d3.curveMonotoneX);
 
-    const line = this.canvas.append('path')
+    const line = this.geo.canvas.append('path')
       .attr('class', 'line')
       .attr('d', finishLine(data))
       .style('stroke', this.config.colorSchema.getColor(idx))
-      .style('stroke-width', '2px');
+      .style('stroke-width', '2px')
+      .style('fill', 'none');
 
     if (this.config.hasAnimation) {
       line
@@ -244,10 +218,9 @@ export class LineChart implements ChartBase {
   }
 
   appendShadow(line: SelectionType) {
-    const defs = this.canvas.append('defs');
-
     // 如果没有定义shadow样式，则定义
-    if (this.container.selectAll('#line-shadow')) {
+    if (this.geo.container.selectAll('#line-shadow')) {
+      const defs = this.geo.canvas.append('defs');
       const filter = defs.append('filter')
         .attr('id', 'line-shadow')
         .attr('height', '130%');
@@ -283,21 +256,22 @@ export class LineChart implements ChartBase {
   appendArea(data: LinePoint[]) {
     const { scale: xScale } = this.xAxis;
     const { scale: yScale } = this.yAxis;
+    const { canvas2d } = this.geo;
 
     const startArea = d3.area<LinePoint>()
       .x((d: any) => xScale(d.x))
-      .y0(this.geo.canvas.height)
+      .y0(canvas2d.height)
       .y1((d: any) => yScale(0))
       .curve(d3.curveMonotoneX);
 
     const finishArea = d3.area<LinePoint>()
       .x((d: any) => xScale(d.x))
-      .y0(this.geo.canvas.height)
+      .y0(canvas2d.height)
       .y1((d: any) => yScale(d.y))
       .curve(d3.curveMonotoneX);
 
     if (this.config.hasArea) {
-      const area = this.canvas.append('path')
+      const area = this.geo.canvas.append('path')
       .attr('class', 'area')
       .attr('d', finishArea(data))
       .attr('fill', this.config.areaColor);

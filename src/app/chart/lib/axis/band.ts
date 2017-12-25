@@ -5,8 +5,8 @@ import { SelectionType } from '../chart-base';
 import {
   AxisBase,
   AxisPosition,
-  AxisTickConfig,
-  AxisGridConfig,
+  AxisLineStyle,
+  AxisTextStyle,
 } from './axis-base';
 
 export class BandAxisConfig {
@@ -14,6 +14,8 @@ export class BandAxisConfig {
     inner: 0.5,
     outer: 0.2,
   };
+  lineStyle = new AxisLineStyle();
+  textStyle = new AxisTextStyle();
 }
 
 export class BandAxis extends AxisBase {
@@ -21,11 +23,11 @@ export class BandAxis extends AxisBase {
   axis: Axis<any>;
 
   constructor(
-    private config: BandAxisConfig,
+    public config: BandAxisConfig,
     container: SelectionType,
     position: AxisPosition,
   ) {
-    super(container, position);
+    super(container, position, config);
   }
 
   draw(domain: any[], range: [number, number]) {
@@ -41,5 +43,8 @@ export class BandAxis extends AxisBase {
     this.container.append('g')
       .attr('class', 'band-axis')
       .call(this.axis);
+
+    this.styleLine();
+    this.styleText();
   }
 }

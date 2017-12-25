@@ -7,11 +7,15 @@ import {
   AxisPosition,
   AxisTickConfig,
   AxisGridConfig,
+  AxisLineStyle,
+  AxisTextStyle,
 } from './axis-base';
 
 export class TimeAxisConfig {
   tick = new AxisTickConfig();
   grid = new AxisGridConfig();
+  lineStyle = new AxisLineStyle();
+  textStyle = new AxisTextStyle();
 }
 
 export class TimeAxis extends AxisBase {
@@ -19,11 +23,11 @@ export class TimeAxis extends AxisBase {
   axis: Axis<any>;
 
   constructor(
-    private config: TimeAxisConfig,
+    public config: TimeAxisConfig,
     container: SelectionType,
     position: AxisPosition,
   ) {
-    super(container, position);
+    super(container, position, config);
   }
 
   draw(domain: any[], range: [number, number]) {
@@ -42,5 +46,8 @@ export class TimeAxis extends AxisBase {
     this.container.append('g')
       .attr('class', 'time-axis')
       .call(this.axis);
+
+    this.styleLine();
+    this.styleText();
   }
 }

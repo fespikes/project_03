@@ -7,11 +7,15 @@ import {
   AxisPosition,
   AxisTickConfig,
   AxisGridConfig,
+  AxisLineStyle,
+  AxisTextStyle,
 } from './axis-base';
 
 export class LinearAxisConfig {
   tick = new AxisTickConfig();
   grid = new AxisGridConfig();
+  lineStyle = new AxisLineStyle();
+  textStyle = new AxisTextStyle();
 }
 
 export class LinearAxis extends AxisBase {
@@ -19,11 +23,11 @@ export class LinearAxis extends AxisBase {
   axis: Axis<any>;
 
   constructor(
-    private config: LinearAxisConfig,
+    public config: LinearAxisConfig,
     container: SelectionType,
     position: AxisPosition,
   ) {
-    super(container, position);
+    super(container, position, config);
   }
 
   draw(domain: any[], range: [number, number]) {
@@ -31,7 +35,8 @@ export class LinearAxis extends AxisBase {
 
     this.scale = d3.scaleLinear()
       .domain(d3.extent(domain))
-      .rangeRound(range);
+      .rangeRound(range)
+      .nice();
 
     this.axis = this.initAxis(this.position);
     this.axis.ticks(tick.count)
@@ -40,5 +45,8 @@ export class LinearAxis extends AxisBase {
     this.container.append('g')
       .attr('class', 'linear-axis')
       .call(this.axis);
+
+    this.styleLine();
+    this.styleText();
   }
 }
