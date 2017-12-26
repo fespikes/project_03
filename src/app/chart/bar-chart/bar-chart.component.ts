@@ -53,7 +53,6 @@ export class BarChartComponent implements OnInit, AfterViewInit {
   }
 
   draw() {
-    this.chart.clear();
     const element: HTMLElement = this.chartHolder.nativeElement;
     const { clientHeight, clientWidth } = element;
     const config = BarChartConfig.from(JSON.parse(this.configJson));

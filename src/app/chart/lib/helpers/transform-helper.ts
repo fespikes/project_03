@@ -1,4 +1,6 @@
-export class Container2D {
+import { SelectionType } from '../chart-base';
+
+export class Rect2D {
   width: number;
   height: number;
 }
@@ -11,18 +13,24 @@ export class RelativePosition {
 }
 
 export class Transform2D {
-  xOffset: number;
-  yOffset: number;
+  // x方向平移
+  x = 0;
+
+  // y方向平移
+  y = 0;
+
+  // 旋转
+  r = 0;
 
   static fromOffset(xOffset, yOffset) {
     const transform = new Transform2D();
-    transform.xOffset = xOffset;
-    transform.yOffset = yOffset;
+    transform.x = xOffset;
+    transform.y = yOffset;
     return transform;
   }
 
   toTranslate() {
-    return `translate(${this.xOffset}, ${this.yOffset})`;
+    return `translate(${this.x}, ${this.y})`;
   }
 }
 
@@ -32,11 +40,11 @@ export class Transform2D {
 export class TransformHelper {
   /**
    * 在container内平移child，relative为相对container的四个边距的距离
-   * @param  {Container2D} container
-   * @param  {Container2D} child
+   * @param  {Rect2D} container
+   * @param  {Rect2D} child
    * @param  {RelativePosition} relative
    */
-  static translateInContainer(container: Container2D, child: Container2D, relative: RelativePosition) {
+  static translateInContainer(container: Rect2D, child: Rect2D, relative: RelativePosition) {
     let xOffset = 0;
     let yOffset = 0;
     if (relative.top) {
