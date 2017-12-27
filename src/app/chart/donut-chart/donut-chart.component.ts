@@ -1,6 +1,7 @@
 import {
   Component,
   OnInit,
+  AfterViewInit,
   ElementRef,
   HostBinding,
   ViewChild,
@@ -13,6 +14,8 @@ import {
   DonutChartDataBuilder,
 } from '../lib';
 
+import { ElementWidthListener } from '../element-width-listener';
+
 /**
 @desc: this is the container component of Donut chart
 */
@@ -21,7 +24,7 @@ import {
   templateUrl: './donut-chart.component.html',
   styleUrls: ['./donut-chart.component.sass'],
 })
-export class DonutChartComponent implements OnInit {
+export class DonutChartComponent implements OnInit, AfterViewInit {
 
   @HostBinding('class.tui-layout-vertical') hostClass = true;
 
@@ -62,6 +65,16 @@ export class DonutChartComponent implements OnInit {
     this.donut.setConfig(this.donutChartConfig).datum(this.donutChartData);
 
     this.donut.draw();
+  }
+
+  ngAfterViewInit() {
+    setTimeout(() => {
+
+      const listener = new ElementWidthListener(this.donutChartConfig.donutChartHolder);
+      listener.startListen().subscribe(() => {
+        this.donut.draw();
+      });
+    });
   }
 
   type(d) {

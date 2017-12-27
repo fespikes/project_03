@@ -1,4 +1,4 @@
-import { DonutChartData } from '../donut-chart';
+import { DonutChartData } from '../donut';
 import * as d3 from 'd3';
 
 let mockData ;
