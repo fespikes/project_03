@@ -1,3 +1,19 @@
-<p>
-  donut-chart works!
-</p>
+
+<div class="tui-layout-main-container flex-auto">
+  <div class="tui-layout-main-title">
+    Donut chart
+  </div>
+  <div #donutChart class="donut-chart"></div>
+  <form #form="ngForm" tuiForm labelFlex="1" inputFlex="8">
+    <tui-form-item label="data">
+      <tui-textarea name="data" rows="10" [(ngModel)]="donutChartDataJson"></tui-textarea>
+    </tui-form-item>
+    <tui-form-item label="config">
+      <tui-textarea name="config" rows="10" [(ngModel)]="donutChartConfigJson"></tui-textarea>
+    </tui-form-item>
+    <tui-form-item>
+      <button tuiBtn="primary" (click)="draw()">Redraw</button>
+    </tui-form-item>
+  </form>
+</div>
+
