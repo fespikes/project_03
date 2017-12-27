@@ -52,8 +52,25 @@ export class DonutChartComponent implements OnInit, AfterViewInit {
 
   ngOnInit() {
 
+
+  }
+
+  ngAfterViewInit() {
+    setTimeout(() => {
+      this.draw();
+
+      const listener = new ElementWidthListener(this.donutChartHolder);
+      listener.startListen().subscribe(() => {
+        this.draw();
+      });
+    });
+  }
+
+  draw() {
     const element: HTMLElement = this.donutChartHolder.nativeElement;
     const { clientWidth, clientHeight } = element;
+
+    this.donutChartConfig = DonutChartConfig.from(JSON.parse(this.donutChartConfigJson));
 
     this.donutChartConfig.style = Object.assign(this.donutChartConfig.style, {
       width: clientWidth,
@@ -64,24 +81,9 @@ export class DonutChartComponent implements OnInit, AfterViewInit {
 
     const config = DonutChartConfig.from(this.donutChartConfig);
 
-    this.donut.setConfig(config).datum(this.donutChartData);
+    this.donut.setConfig(config).datum(JSON.parse(this.donutChartDataJson));
 
     this.donut.draw();
-  }
-
-  ngAfterViewInit() {
-    setTimeout(() => {
-
-      const listener = new ElementWidthListener(this.donutChartConfig.donutChartHolder);
-      listener.startListen().subscribe(() => {
-        this.donut.draw();
-      });
-    });
-  }
-
-  type(d) {
-    d.population = +d.population;
-    return d;
   }
 
 }

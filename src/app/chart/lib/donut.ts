@@ -47,7 +47,7 @@ export class DonutChart implements ChartBase {
       });
 
     this.color = d3.scaleOrdinal()
-      .range(this.config.style.colorSchema.getAllPalette());
+      .range(this.config.style.colorSchema.palette);
     this.color.domain(columns);
 
     this.config.donutChartHolder.innerHTML = '';
