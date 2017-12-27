@@ -15,4 +15,9 @@ export class ColorSchema {
     const rounded = index % this.palette.length;
     return this.palette[rounded];
   }
+
+  getAllPalette() {
+    const { palette } = this;
+    return palette;
+  }
 }

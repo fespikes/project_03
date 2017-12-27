@@ -62,7 +62,9 @@ export class DonutChartComponent implements OnInit, AfterViewInit {
 
     this.donutChartConfig.donutChartHolder = element;
 
-    this.donut.setConfig(this.donutChartConfig).datum(this.donutChartData);
+    const config = DonutChartConfig.from(this.donutChartConfig);
+
+    this.donut.setConfig(config).datum(this.donutChartData);
 
     this.donut.draw();
   }

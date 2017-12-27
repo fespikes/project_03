@@ -1,6 +1,7 @@
 import * as d3 from 'd3';
 
 import { ChartBase } from './chart-base';
+import { ColorSchema } from './color-schema';
 
 export class DonutChart implements ChartBase {
 
@@ -46,7 +47,7 @@ export class DonutChart implements ChartBase {
       });
 
     this.color = d3.scaleOrdinal()
-      .range(this.config.style.colorRange);
+      .range(this.config.style.colorSchema.getAllPalette());
     this.color.domain(columns);
 
     this.config.donutChartHolder.innerHTML = '';
@@ -161,16 +162,7 @@ export class DonutChartConfig {
   donutChartHolder: any; // className of donut's container
 
   style: any = {
-
-    colorRange: [ // matching the columns in data
-      '#98abc5',
-      '#8a89a6',
-      '#7b6888',
-      '#6b486b',
-      '#a05d56',
-      '#d0743c',
-      '#ff8c00',
-    ],
+    colorSchema: new ColorSchema(),
     thickness: 50,
     maxRadius: 100,
     width: 100,
@@ -183,6 +175,12 @@ export class DonutChartConfig {
     rectHeight: 16,
   };
 
+  static from(config) {
+    const _config = new DonutChartConfig();
+    Object.assign(_config, config);
+    _config.style.colorSchema = ColorSchema.from(_config.style.colorSchema);
+    return _config;
+  }
 }
 
 export class DonutChartData {
