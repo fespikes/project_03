@@ -1,5 +1,5 @@
 import { ColorSchema } from './color-schema';
-import { Container2D } from './helpers/transform-helper';
+import { Rect2D } from './helpers/transform-helper';
 import { SelectionType } from './chart-base';
 
 export class LegendConfig {
@@ -15,7 +15,7 @@ export class LegendConfig {
   }
 
   // TODO: inaccurate
-  get container(): Container2D {
+  get rect2D(): Rect2D {
     const { width, height } = this;
     return {
       width,

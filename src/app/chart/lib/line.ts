@@ -6,6 +6,13 @@ import { ChartBase, SelectionType } from './chart-base';
 import { Legend, LegendConfig } from './legend';
 import { ColorSchema } from './color-schema';
 import { GeoService } from './geo-service';
+import { Grid } from './grid';
+import {
+  LinearAxis,
+  LinearAxisConfig,
+  TimeAxis,
+  TimeAxisConfig,
+} from './axis';
 
 export class LinePoint {
   x: Date;
@@ -33,15 +40,13 @@ export class LineChartData {
 export class LineChartConfig {
   width: number;
   height: number;
-  xTicks: number;
-  yTicks: number;
+  xAxis = new TimeAxisConfig();
+  yAxis = new LinearAxisConfig();
   hasAnimation = false;
   hasShadow = false;
   hasArea = false;
   areaColor = 'rgba(227,230,237, 0.5)';
   margin = {top: 20, right: 50, bottom: 40, left: 50};
-  gridType: 'vertical'|'horizontal'|'full';
-  gridStyle: 'solid' | 'dash';
   background: string;
   colorSchema = new ColorSchema();
   legend = new LegendConfig();
@@ -64,22 +69,14 @@ export class LineChart implements ChartBase {
   config: LineChartConfig;
   element: HTMLElement;
   geo: GeoService;
-
-  private xScale: ScaleTime<any, any>;
-  private yScale: ScaleLinear<any, any>;
-  private xAxis: Axis<any>;
-  private yAxis: Axis<any>;
-  private container: SelectionType;
-  private canvas: SelectionType;
+  xAxis: TimeAxis;
+  yAxis: LinearAxis;
 
   constructor() {
   }
 
   setConfig(config: LineChartConfig) {
     this.config = config;
-    const { width, height, margin, legend } = this.config;
-    this.geo = GeoService.fromMarginContainer({width, height}, margin);
-    this.geo.insertLegend(legend);
     return this;
   }
 
@@ -94,13 +91,7 @@ export class LineChart implements ChartBase {
   }
 
   draw() {
-    if (this.container) {
-      this.clear();
-    }
-
-    this.initCanvas();
-    this.initScale();
-    this.initAxis();
+    this.initGeo();
     this.drawAxis();
     this.drawBackgroud();
     this.drawGrid();
@@ -121,122 +112,64 @@ export class LineChart implements ChartBase {
     console.error('TODO');
   }
 
-  clear() {
-    if (this.container) {
-      this.container.remove();
-      this.container = null;
+  initGeo() {
+    if (this.geo) {
+      this.geo.clear();
     }
-  }
+    const rootContainer = d3.select(this.element).append('svg')
+    .attr('class', 'chart tdc-chart-line')
+    .style('width', '100%')
+    .style('height', '100%');
 
-  initCanvas() {
-    if (!this.container) {
-      this.container = d3.select(this.element)
-        .append('svg')
-        .attr('class', 'chart tdc-chart-line');
-    }
-
-    this.container
-      .attr('width', this.config.width)
-      .attr('height', this.config.height);
-
-    this.canvas = this.container.append('g')
-      .attr('transform', this.geo.canvasTranslate);
-  }
-
-  initScale() {
-    const allData = this.data.reduce((accum, d) => {
-      return accum.concat(d.data);
-    }, []);
-
-    this.xScale = d3.scaleTime()
-      .domain(d3.extent(allData, d => d.x))
-      .rangeRound([0, this.geo.canvas.width]);
-
-    this.yScale = d3.scaleLinear()
-      .domain([0, d3.max(allData, d => d.y)])
-      .range([this.geo.canvas.height, 0]);
-  }
-
-  initAxis() {
-    this.xAxis = d3.axisBottom(this.xScale)
-      .ticks(this.config.xTicks)
-      .tickPadding(10)
-      .tickFormat(d3.timeFormat('%x'));
-
-    this.yAxis = d3.axisLeft(this.yScale)
-      .ticks(this.config.yTicks)
-      .tickPadding(10);
+    const { width, height, margin, legend } = this.config;
+    this.geo = GeoService.fromMarginContainer(rootContainer, {width, height}, margin);
+    this.geo.placeLegend(legend)
+      .placeGrid()
+      .placeXAxis()
+      .placeYAxis()
+      .placeBackground();
   }
 
   drawAxis() {
-    // 横坐标
-    this.canvas.append('g')
-      .attr('class', 'x axis')
-      .attr('transform', `translate(0, ${this.geo.canvas.height})`)
-      .call(this.xAxis);
+    const { xAxis, yAxis } = this.config;
+    this.xAxis = new TimeAxis(xAxis, this.geo.xAxis, 'bottom');
+    this.yAxis = new LinearAxis(yAxis, this.geo.yAxis, 'left');
 
-    // 纵坐标
-    this.canvas.append('g')
-      .attr('class', 'yp axis')
-      .call(this.yAxis);
+    const allData = this.data.reduce((accum, d) => {
+      return accum.concat(d.data);
+    }, []);
+    const allDataX = allData.map(d => d.x);
+    const allDataY = allData.map(d => d.y);
+    const { width, height } = this.geo.canvas2d;
+    this.xAxis.draw(allDataX, [0, width]);
+    this.yAxis.draw([0, d3.max(allDataY)], [height, 0]);
   }
 
   drawBackgroud() {
     if (this.config.background) {
-      const background = this.canvas
-        .append('rect')
-        .attr('width', this.geo.canvas.width)
-        .attr('height', this.geo.canvas.height)
+      this.geo.background
         .attr('fill', this.config.background);
     }
   }
 
   drawGrid() {
-    const yTicks = this.config.yTicks;
-    const xTicks = this.config.xTicks;
+    const { canvas2d, gridVertical, gridHorizontal } = this.geo;
 
-    const grid = this.canvas.append('g').attr('class', 'grid-group');
-    const horizontalGrid = grid.append('g').attr('class', 'grid-horizontal');
-    const verticalGrid = grid.append('g').attr('class', 'grid-vertical');
-    if (this.config.gridType === 'horizontal' || this.config.gridType === 'full') {
-      const line = horizontalGrid
-        .selectAll('g')
-        .data(this.yScale.ticks(yTicks))
-        .enter()
-          .append('line')
-            .attr('class', 'grid-horizontal-line')
-            .attr('x1', 0)
-            .attr('x2', this.geo.canvas.width)
-            .attr('y1', (d) => this.yScale(d))
-            .attr('y2', (d) => this.yScale(d));
-
-      if (this.config.gridStyle === 'dash') {
-        line.attr('stroke-dasharray', '8, 4');
-      }
+    {
+      const gridRenderer = new Grid(gridVertical, canvas2d);
+      const { grid, tick } = this.config.xAxis;
+      gridRenderer.draw(grid, tick.count, this.xAxis.scale, 'vertical');
     }
-
-    if (this.config.gridType === 'vertical' || this.config.gridType === 'full') {
-        const line = verticalGrid
-          .selectAll('g')
-          .data(this.xScale.ticks(xTicks))
-          .enter()
-            .append('line')
-              .attr('class', 'grid-vertical-line')
-              .attr('y1', 0)
-              .attr('y2', this.geo.canvas.height)
-              .attr('x1', (d) => this.xScale(d))
-              .attr('x2', (d) => this.xScale(d));
-
-        if (this.config.gridStyle === 'dash') {
-          line.attr('stroke-dasharray', '8, 4');
-        }
+    {
+      const gridRenderer = new Grid(gridHorizontal, canvas2d);
+      const { grid, tick } = this.config.yAxis;
+      gridRenderer.draw(grid, tick.count, this.yAxis.scale);
     }
   }
 
   drawLegend() {
     const legend = new Legend(this.config.colorSchema, this.config.legend);
-    const legendContainer = this.container.append('g').attr('transform', this.geo.legendTranslate);
-    legend.draw(legendContainer, this.data.map((d) => d.topic));
+    legend.draw(this.geo.legend, this.data.map((d) => d.topic));
   }
 
   drawLines() {
@@ -249,21 +182,25 @@ export class LineChart implements ChartBase {
   }
 
   drawLine(data: LinePoint[], idx = 0) {
+    const { scale: xScale } = this.xAxis;
+    const { scale: yScale } = this.yAxis;
+
     const startLine = d3.line<LinePoint>()
-      .x((d: any) => this.xScale(d.x))
-      .y((d: any) => this.yScale(0))
+      .x((d: any) => xScale(d.x))
+      .y((d: any) => yScale(0))
       .curve(d3.curveMonotoneX);
 
     const finishLine = d3.line<LinePoint>()
-      .x((d: any) => this.xScale(d.x))
-      .y((d: any) => this.yScale(d.y))
+      .x((d: any) => xScale(d.x))
+      .y((d: any) => yScale(d.y))
       .curve(d3.curveMonotoneX);
 
-    const line = this.canvas.append('path')
+    const line = this.geo.canvas.append('path')
       .attr('class', 'line')
       .attr('d', finishLine(data))
       .style('stroke', this.config.colorSchema.getColor(idx))
-      .style('stroke-width', '2px');
+      .style('stroke-width', '2px')
+      .style('fill', 'none');
 
     if (this.config.hasAnimation) {
       line
@@ -281,10 +218,9 @@ export class LineChart implements ChartBase {
   }
 
   appendShadow(line: SelectionType) {
-    const defs = this.canvas.append('defs');
-
     // 如果没有定义shadow样式，则定义
-    if (this.container.selectAll('#line-shadow')) {
+    if (this.geo.container.selectAll('#line-shadow')) {
+      const defs = this.geo.canvas.append('defs');
       const filter = defs.append('filter')
         .attr('id', 'line-shadow')
         .attr('height', '130%');
@@ -318,20 +254,24 @@ export class LineChart implements ChartBase {
   }
 
   appendArea(data: LinePoint[]) {
+    const { scale: xScale } = this.xAxis;
+    const { scale: yScale } = this.yAxis;
+    const { canvas2d } = this.geo;
+
     const startArea = d3.area<LinePoint>()
-      .x((d: any) => this.xScale(d.x))
-      .y0(this.geo.canvas.height)
-      .y1((d: any) => this.yScale(0))
+      .x((d: any) => xScale(d.x))
+      .y0(canvas2d.height)
+      .y1((d: any) => yScale(0))
       .curve(d3.curveMonotoneX);
 
     const finishArea = d3.area<LinePoint>()
-      .x((d: any) => this.xScale(d.x))
-      .y0(this.geo.canvas.height)
-      .y1((d: any) => this.yScale(d.y))
+      .x((d: any) => xScale(d.x))
+      .y0(canvas2d.height)
+      .y1((d: any) => yScale(d.y))
       .curve(d3.curveMonotoneX);
 
     if (this.config.hasArea) {
-      const area = this.canvas.append('path')
+      const area = this.geo.canvas.append('path')
       .attr('class', 'area')
       .attr('d', finishArea(data))
       .attr('fill', this.config.areaColor);
