@@ -1,7 +1,10 @@
 import * as d3 from 'd3';
+import * as _ from 'lodash';
 
 import { ChartBase } from './chart-base';
 import { ColorSchema } from './color-schema';
+import { Legend, LegendConfig } from './legend';
+import { GeoService } from './geo-service';
 
 export class DonutChart implements ChartBase {
 
@@ -34,8 +37,6 @@ export class DonutChart implements ChartBase {
   }
 
   draw() {
-    const columns = this.data.columns;
-
     this.arc = d3.arc()
       .padRadius(50);
 
@@ -43,38 +44,66 @@ export class DonutChart implements ChartBase {
       .sort(null)
       .padAngle(0.02)
       .value(function(d) {
-        return d.population;
+        return d.value;
       });
-
-    this.color = d3.scaleOrdinal()
-      .range(this.config.style.colorSchema.palette);
-    this.color.domain(columns);
 
     this.config.donutChartHolder.innerHTML = '';
 
-    this.drawLegend();
+    this.manipulateData();
+
     this.drawTire();
 
     return this;
   }
 
-  drawLegend() {
+  manipulateData() {
+    const donuts: any = this.data.donuts;
+    const stack: any[] = [];
+
+    donuts.map((item: any) => {
+      let sum = 0;
+      const arr = [];
+
+      _.each(item.parts, (part) => {
+        sum += part.value;
+        arr.push(part.title);
+      });
+
+      stack.push({
+        state: item.state,
+        sum: sum,
+        columns: arr,
+        parts: item.parts,
+      });
+
+    });
+
+    this.data.donuts = stack;
+  }
+
+  drawLegend(data, n) {
     const config = this.config;
     const legendStyle = this.config.legendStyle;
-    console.log(config.legendStyle.rectHeight * this.data.columns.length);
 
+    console.log('fuck you:', data, n, legendStyle.width , config.style.width);
     const legend = d3.select(config.donutChartHolder).append('svg')
       .attr('class', 'legend')
       .attr('width', legendStyle.width)
-      .attr('height', (legendStyle.rectHeight + 4) * this.data.columns.length )
-      .attr('transform', 'matrix(1, 0, 0, 1, ' + 20 + ', 0)')
+      .attr('height', (legendStyle.rectHeight + 4) * data.columns.length )
+      .style('position', 'absolute')
+      .style('left', config.style.left + n * (config.style.left + legendStyle.width + 2 * config.style.maxRadius))
+      .style('top', config.style.top)
 
     .selectAll('g')
-      .data(this.data.columns.reverse())
+      .data(data.columns.reverse())
     .enter().append('g')
       .attr('transform', function(d, i) {
         return 'translate(0,' + i * 20 + ')';
       });
+
+    this.color = d3.scaleOrdinal()
+      .range(config.style.colorSchema.palette);
+    this.color.domain(data.columns);
 
     legend.append('rect')
       .attr('width', legendStyle.rectWidth)
@@ -105,30 +134,34 @@ export class DonutChart implements ChartBase {
 
 
     const svg = d3.select(config.donutChartHolder).selectAll('.pie')
-      .data(donuts.sort((a, b) => {
-        return b.sum - a.sum;
-      }))
+      .data(donuts)
       .enter().append('svg')
       .attr('class', 'pie')
-      .each(function(d) {
+      .each(function(d, idx) {
+
+        me.drawLegend(d, idx);
 
         const r: any = radius(d.sum);
         const path: any = d3.select(this)
           .attr('width', r * 2)
           .attr('height', r * 2)
-          .attr('transform', 'matrix(1, 0, 0, 1, ' + 50 + ', ' + 50 + ')')
+          .style('position', 'absolute')
+          .style('left',
+            config.style.left + config.legendStyle.width +
+            idx * (config.style.left + config.legendStyle.width + 2 * config.style.maxRadius))
+          .style('top', config.style.top - 20)
           .append('g')
           .attr('transform', 'translate(' + r + ',' + r + ')');
 
         path.selectAll('.arc')
           .data((da: any) => {
-            return me.pie(da.ages);
+            return me.pie(da.parts);
           })
           .enter().append('path')
           .attr('class', 'arc')
           .attr('d', me.arc.outerRadius(r).innerRadius(r * 0.6))
           .style('fill', (da: any) => {
-            return me.color(da.data.age);
+            return me.color(da.data.title);
         });
 
       })
@@ -160,6 +193,7 @@ export class DonutChart implements ChartBase {
 export class DonutChartConfig {
 
   donutChartHolder: any; // className of donut's container
+  legend = new LegendConfig();
 
   style: any = {
     colorSchema: new ColorSchema(),
@@ -167,10 +201,12 @@ export class DonutChartConfig {
     maxRadius: 100,
     width: 100,
     height: 100,
+    left: 30,
+    top: 30,
   };
 
   legendStyle: any = {
-    width: 150,
+    width: 160,
     rectWidth: 18,
     rectHeight: 16,
   };
@@ -179,18 +215,17 @@ export class DonutChartConfig {
     const _config = new DonutChartConfig();
     Object.assign(_config, config);
     _config.style.colorSchema = ColorSchema.from(_config.style.colorSchema);
+    _config.legend = LegendConfig.form(_config.legend);
+
     return _config;
   }
 }
 
 export class DonutChartData {
 
-  columns?: Array<string>;
-
   donuts?: Array<Donut>;
 
   constructor(data: DonutChartData) {
-    this.columns = data.columns;
     this.donuts = data.donuts;
   }
 
@@ -199,10 +234,11 @@ export class DonutChartData {
 class Donut {
   state?: string;
   sum?: number;
-  ages?: Array<Age>;
+  columns?: string[];
+  parts?: Part[];
 }
 
-class Age {
-  age?: string;
-  population?: number;
+class Part {
+  title?: string;
+  value?: number;
 }
