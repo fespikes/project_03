@@ -187,11 +187,22 @@ export class DonutChartData {
 
   columns?: Array<string>;
 
-  donuts?: Array<any>;
+  donuts?: Array<Donut>;
 
   constructor(data: DonutChartData) {
     this.columns = data.columns;
     this.donuts = data.donuts;
   }
 
+}
+
+class Donut {
+  state?: string;
+  sum?: number;
+  ages?: Array<Age>;
+}
+
+class Age {
+  age?: string;
+  population?: number;
 }
