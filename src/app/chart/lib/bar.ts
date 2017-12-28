@@ -131,6 +131,7 @@ export class BarChart implements ChartBase {
 
   private ordinalScale: ScaleOrdinal<any, any>;
   private stack: Stack<any, any, any>;
+  private tooltip;
 
   setConfig(config: BarChartConfig) {
     this.config = config;
@@ -159,8 +160,50 @@ export class BarChart implements ChartBase {
     }
 
     this.drawLegend();
+    this.drawTooltip();
 
     return this;
+  }
+
+  drawTooltip() {
+    this.tooltip = d3.select('body')
+      .append('div')
+      .style('position', 'absolute')
+      .style('width', 'auto')
+      .style('z-index', '1000')
+      .style('background', 'rgba(0,0,0,0.6)')
+      .style('color', 'white')
+      .style('padding', '10px')
+      .style('border-radius', '5px')
+      .style('display', 'none');
+
+    this.tooltip.append('div')
+      .attr('class', 'axis-label')
+      .style('padding', '0 10px 0 0')
+      .style('font-size', '14px')
+      .style('font-weight', 'bold');
+
+    this.tooltip
+    .selectAll('.value')
+    .data(this.data.topics)
+    .enter()
+    .append('div')
+      .attr('class', 'value')
+      .style('padding', '10 10px 0 0')
+      .style('display', 'flex')
+      .style('align-items', 'center')
+      .html((d, i) => {
+        return `<span class="legend-label" style="color:${this.ordinalScale(d)}">●</span> <span class="value-label"></span>`;
+      });
+
+    this.tooltip.selectAll('.legend-label')
+      .style('font-size', '24px');
+
+    this.tooltip.selectAll('.value-label')
+      .style('white-space', 'nowrap')
+      .style('font-size', '14px')
+      .style('font-weight', 'bold');
+
   }
 
   initGeo() {
@@ -227,6 +270,8 @@ export class BarChart implements ChartBase {
           return {
             x: d.topic,
             y: d.data[i],
+            xs: this.data.xs[i],
+            xIndex: i,
           };
         });
       })
@@ -237,7 +282,18 @@ export class BarChart implements ChartBase {
         .attr('y', (d) => yScale(d.y))
         .attr('width', xSubScale.bandwidth())
         .attr('height', (d) => this.geo.canvas2d.height - yScale(d.y))
-        .attr('fill', (d, i) => this.ordinalScale(d.x));
+        .attr('fill', (d, i) => this.ordinalScale(d.x))
+        .on('mouseover', () => this.tooltip.style('display', 'block'))
+        .on('mouseout', () => this.tooltip.style('display', 'none'))
+        .on('mousemove', (d) => {
+          this.tooltip.style('top', (d3.event.pageY - 10) + 'px').style('left', (d3.event.pageX + 10) + 'px');
+          this.tooltip.select('.axis-label').html(d.xs);
+          this.tooltip.selectAll('.value-label')
+            .html((value, index) => {
+              const topic = this.data.topics[index];
+              return `${topic}: ${this.data.dataByTopic[d.xIndex][topic]}`;
+            });
+        });
   }
 
   drawBarStack() {
@@ -267,7 +323,18 @@ export class BarChart implements ChartBase {
         .attr('width', xScale.bandwidth)
         .attr('height', (d, i) => {
           return yScale(d[0]) - yScale(d[1]);
-        });
+        })
+      .on('mouseover', () => this.tooltip.style('display', 'block'))
+      .on('mouseout', () => this.tooltip.style('display', 'none'))
+      .on('mousemove', (d, i) => {
+        this.tooltip.style('top', (d3.event.pageY - 10) + 'px').style('left', (d3.event.pageX + 10) + 'px');
+        this.tooltip.select('.axis-label').html(this.data.xs[i]);
+        this.tooltip.selectAll('.value-label')
+          .html((value, index) => {
+            const topic = this.data.topics[index];
+            return `${topic}: ${d.data[topic]}`;
+          });
+      });
   }
 
   drawLegend() {
