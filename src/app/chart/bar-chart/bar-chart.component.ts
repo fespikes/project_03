@@ -40,6 +40,11 @@ export class BarChartComponent implements OnInit, AfterViewInit {
   draw = debounce(() => {
     const element: HTMLElement = this.chartHolder.nativeElement;
     const { clientHeight, clientWidth } = element;
+
+    if (clientHeight < 1 || clientWidth < 1) {
+      return;
+    }
+
     const config = BarChartConfig.from(JSON.parse(this.configJson));
     Object.assign(config, {
       width: clientWidth,
@@ -53,7 +58,7 @@ export class BarChartComponent implements OnInit, AfterViewInit {
     setTimeout(() => {
       this.chart.draw();
     }, 100);
-  }, 200);
+  }, 250);
 
   constructor() {
     this.chartDataJson = JSON.stringify(BarChartBuilder.getMockChartData(), null, 2);

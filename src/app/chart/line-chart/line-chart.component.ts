@@ -49,6 +49,11 @@ export class LineChartComponent implements OnInit, AfterViewInit {
   draw() {
     const element: HTMLElement = this.chartHolder.nativeElement;
     const { clientWidth, clientHeight } = element;
+
+    if (clientHeight < 1 || clientWidth < 1) {
+      return;
+    }
+
     const configParsed = JSON.parse(this.configJson);
     const config = LineChartConfig.from(configParsed);
     Object.assign(config, {
