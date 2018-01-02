@@ -7,6 +7,8 @@ import {
   AfterViewInit,
 } from '@angular/core';
 
+import * as debounce from 'lodash/debounce';
+
 import {
   BarChartConfig,
   BarChartData,
@@ -33,6 +35,26 @@ export class BarChartComponent implements OnInit, AfterViewInit {
 
   chart = new BarChart();
 
+  mode = 'group';
+
+  draw = debounce(() => {
+    const element: HTMLElement = this.chartHolder.nativeElement;
+    const { clientHeight, clientWidth } = element;
+    const config = BarChartConfig.from(JSON.parse(this.configJson));
+    Object.assign(config, {
+      width: clientWidth,
+      height: clientHeight,
+    });
+
+    this.chart.setConfig(config)
+      .select(element)
+      .datum(BarChartBuilder.parseChartData(this.chartDataJson));
+
+    setTimeout(() => {
+      this.chart.draw();
+    }, 100);
+  }, 200);
+
   constructor() {
     this.chartDataJson = JSON.stringify(BarChartBuilder.getMockChartData(), null, 2);
     this.configJson = BarChartConfig.toJson(new BarChartConfig());
@@ -50,24 +72,6 @@ export class BarChartComponent implements OnInit, AfterViewInit {
         this.draw();
       });
     });
-  }
-
-  draw() {
-    const element: HTMLElement = this.chartHolder.nativeElement;
-    const { clientHeight, clientWidth } = element;
-    const config = BarChartConfig.from(JSON.parse(this.configJson));
-    Object.assign(config, {
-      width: clientWidth,
-      height: clientHeight,
-    });
-
-    this.chart.setConfig(config)
-      .select(element)
-      .datum(BarChartBuilder.parseChartData(this.chartDataJson));
-
-    setTimeout(() => {
-      this.chart.draw();
-    }, 100);
   }
 
 }

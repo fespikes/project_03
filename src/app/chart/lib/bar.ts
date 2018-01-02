@@ -256,15 +256,16 @@ export class BarChart implements ChartBase {
     const { scale: yScale } = this.yAxis;
     const xSubScale = d3.scaleBand().domain(this.data.topics).rangeRound([0, xScale.bandwidth()]);
 
-    this.geo.canvas.append('g')
+    const groupSections = this.geo.canvas.append('g')
       .selectAll('g')
       .data(this.data.xs)
       .enter()
       .append('g')
         .attr('transform', (x, i) => {
           return `translate(${xScale(x)}, 0)`;
-        })
-      .selectAll('rect')
+        });
+
+    const bars = groupSections.selectAll('rect')
       .data((x, i) => {
         return this.data.series.map((d) => {
           return {
@@ -278,22 +279,28 @@ export class BarChart implements ChartBase {
       .enter()
       .append('rect')
         .attr('class', 'bar')
-        .attr('x', (d) => xSubScale(d.x))
-        .attr('y', (d) => yScale(d.y))
-        .attr('width', xSubScale.bandwidth())
-        .attr('height', (d) => this.geo.canvas2d.height - yScale(d.y))
         .attr('fill', (d, i) => this.ordinalScale(d.x))
-        .on('mouseover', () => this.tooltip.style('display', 'block'))
-        .on('mouseout', () => this.tooltip.style('display', 'none'))
-        .on('mousemove', (d) => {
-          this.tooltip.style('top', (d3.event.pageY - 10) + 'px').style('left', (d3.event.pageX + 10) + 'px');
-          this.tooltip.select('.axis-label').html(d.xs);
-          this.tooltip.selectAll('.value-label')
-            .html((value, index) => {
-              const topic = this.data.topics[index];
-              return `${topic}: ${this.data.dataByTopic[d.xIndex][topic]}`;
-            });
-        });
+        .attr('x', (d) => xSubScale(d.x))
+        .attr('width', xSubScale.bandwidth())
+        .attr('y', (d) => yScale(0))
+        .attr('height', 0);
+
+    bars.transition()
+        .delay((d, i) => i * 10)
+        .attr('y', (d) => yScale(d.y))
+        .attr('height', (d) => this.geo.canvas2d.height - yScale(d.y));
+
+    bars.on('mouseover', () => this.tooltip.style('display', 'block'))
+      .on('mouseout', () => this.tooltip.style('display', 'none'))
+      .on('mousemove', (d) => {
+        this.tooltip.style('top', (d3.event.pageY - 10) + 'px').style('left', (d3.event.pageX + 10) + 'px');
+        this.tooltip.select('.axis-label').html(d.xs);
+        this.tooltip.selectAll('.value-label')
+          .html((value, index) => {
+            const topic = this.data.topics[index];
+            return `${topic}: ${this.data.dataByTopic[d.xIndex][topic]}`;
+          });
+      });
   }
 
   drawBarStack() {
@@ -301,30 +308,37 @@ export class BarChart implements ChartBase {
     const { scale: yScale } = this.yAxis;
     const dataByTopic = this.data.dataByTopic;
 
-    this.geo.canvas.append('g')
+    const barSections = this.geo.canvas.append('g')
       .selectAll('g')
       .data(d3.stack().keys(this.data.topics)(dataByTopic))
       .enter()
       .append('g')
         .attr('fill', (d) => {
           return this.ordinalScale(d.key);
-        })
-      .selectAll('rect')
+        });
+
+    const bars = barSections.selectAll('rect')
       .data((d) => d)
       .enter()
       .append('rect')
-        .attr('x', (d, i) => {
-          const x = this.data.xs[i];
-          return xScale(x);
-        })
-        .attr('y', (d, i) => {
-          return yScale(d[1]);
-        })
-        .attr('width', xScale.bandwidth)
-        .attr('height', (d, i) => {
-          return yScale(d[0]) - yScale(d[1]);
-        })
-      .on('mouseover', () => this.tooltip.style('display', 'block'))
+      .attr('x', (d, i) => {
+        const x = this.data.xs[i];
+        return xScale(x);
+      })
+      .attr('y', this.geo.canvas2d.height)
+      .attr('width', xScale.bandwidth)
+      .attr('height', 0);
+
+    bars.transition()
+      .delay((d, i) => i * 10)
+      .attr('y', (d, i) => {
+        return yScale(d[1]);
+      })
+      .attr('height', (d, i) => {
+        return yScale(d[0]) - yScale(d[1]);
+      });
+
+    bars.on('mouseover', () => this.tooltip.style('display', 'block'))
       .on('mouseout', () => this.tooltip.style('display', 'none'))
       .on('mousemove', (d, i) => {
         this.tooltip.style('top', (d3.event.pageY - 10) + 'px').style('left', (d3.event.pageX + 10) + 'px');
