@@ -10,3 +10,17 @@ SYSTEM:
     IMAGE: Container Image
     DURATION: Survival Time
     OPERATION: Operation
+    EDIT: Edit Yarml
+    UPDATE: Update Image
+    DELETE: Delete Service
+    YEAR: Year
+    MONTH: Month
+    DAY: Day
+    HOUR: Hour
+    MINUTE: Minute
+    SECOND: Second
+    MILLISECOND: Millisecond
+    HEALTH: Health
+    ERROR: Error
+
+

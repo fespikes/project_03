@@ -2,7 +2,7 @@ import { TestBed, inject } from '@angular/core/testing';
 import { Observable } from 'rxjs/Observable';
 
 import { SystemService } from './system.service';
-import { TecApiService } from '../shared';
+import { TecApiService } from '../../shared';
 
 describe('TenantService', () => {
   beforeEach(() => {

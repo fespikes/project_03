@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
 import { I18nModule, TranslateDeactivator, TranslateResolver, TranslateToken } from '../i18n';
-import { SystemComponent } from './system.component';
+import { SystemComponent } from './overview/system.component';
 
 @NgModule({
   imports: [

@@ -6,9 +6,11 @@ import { SharedModule } from '../shared';
 import { I18nModule } from '../i18n';
 
 import { SystemRoutingModule } from './system-routing.module';
-import { SystemComponent } from './system.component';
+import { SystemComponent } from './overview/system.component';
+import { ServiceTagComponent } from './tag/service-tag.component';
 
-import { SystemService } from './system.service';
+import { SystemService } from './service/system.service';
+import { ServiceDurationPipe } from './pipe/duration.pipe';
 
 @NgModule({
   imports: [
@@ -20,6 +22,8 @@ import { SystemService } from './system.service';
   ],
   declarations: [
     SystemComponent,
+    ServiceTagComponent,
+    ServiceDurationPipe,
   ],
   providers: [
     SystemService,
