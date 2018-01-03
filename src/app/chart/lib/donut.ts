@@ -59,23 +59,34 @@ export class DonutChart implements ChartBase {
   manipulateData() {
     const donuts: any = this.data.donuts;
     const stack: any[] = [];
+    let dataType = '';
 
     donuts.map((item: any) => {
       let sum = 0;
-      const arr = [];
+      const columns = [];
 
       _.each(item.parts, (part) => {
         sum += part.value;
-        arr.push(part.title);
+        columns.push(part.title);
       });
+
+      if ( sum !== item.sum ) {
+        item.parts.unshift({
+          'title': '',
+          'value': item.sum - sum,
+        });
+
+        columns.unshift('blank');
+        dataType = 'blank'; // TODO
+      }
 
       stack.push({
         state: item.state,
-        sum: sum,
-        columns: arr,
+        sum: (item.sum || sum),
+        columns: columns,
         parts: item.parts,
+        type: dataType,
       });
-
     });
 
     this.data.donuts = stack;
@@ -84,8 +95,18 @@ export class DonutChart implements ChartBase {
   drawLegend(data, n) {
     const config = this.config;
     const legendStyle = this.config.legendStyle;
+    let palette: string[] = [];
+    let columns;
 
-    console.log('fuck you:', data, n, legendStyle.width , config.style.width);
+    if (data.type === 'blank') {
+      palette = this.config.style.colorSchema.palette.slice(0, data.columns.length - 1);
+      palette = palette.concat(['#edf2ff']).reverse();
+      columns = data.columns.slice(1);
+    } else {
+      palette = this.config.style.colorSchema.palette;
+      columns = data.columns;
+    }
+
     const legend = d3.select(config.donutChartHolder).append('svg')
       .attr('class', 'legend')
       .attr('width', legendStyle.width)
@@ -95,14 +116,14 @@ export class DonutChart implements ChartBase {
       .style('top', config.style.top)
 
     .selectAll('g')
-      .data(data.columns.reverse())
+      .data(columns.reverse())
     .enter().append('g')
       .attr('transform', function(d, i) {
         return 'translate(0,' + i * 20 + ')';
       });
 
-    this.color = d3.scaleOrdinal()
-      .range(config.style.colorSchema.palette);
+    this.color = d3.scaleOrdinal().range(palette);
+
     this.color.domain(data.columns);
 
     legend.append('rect')
@@ -115,13 +136,12 @@ export class DonutChart implements ChartBase {
       .attr('y', 9)
       .attr('dy', '.35em')
       .text(function(d) {
-        return d;
+        return d !== 'blank' ? d : '';
       });
   }
 
   drawTire() {
     const me = this;
-    const formatSum = d3.format('.1s');
     const config = this.config;
     const style = config.style;
     const donuts = this.data.donuts;
@@ -133,7 +153,7 @@ export class DonutChart implements ChartBase {
     })]);
 
 
-    const svg = d3.select(config.donutChartHolder).selectAll('.pie')
+    this.svg = d3.select(config.donutChartHolder).selectAll('.pie')
       .data(donuts)
       .enter().append('svg')
       .attr('class', 'pie')
@@ -141,7 +161,8 @@ export class DonutChart implements ChartBase {
 
         me.drawLegend(d, idx);
 
-        const r: any = radius(d.sum);
+        const r: any = 100; // radius(d.sum);
+
         const path: any = d3.select(this)
           .attr('width', r * 2)
           .attr('height', r * 2)
@@ -162,30 +183,49 @@ export class DonutChart implements ChartBase {
           .attr('d', me.arc.outerRadius(r).innerRadius(r * 0.6))
           .style('fill', (da: any) => {
             return me.color(da.data.title);
-        });
+          }).on('mouseover', dt => {
+            me.drawCenterLabel(dt);
+          });
 
       })
       .select('g');
 
+      this.drawCenterLabel();
+  }
 
-    const label: any = svg.append('text')
+  drawCenterLabel(part?) { console.log(part);
+    if ( part && part.data.title === '' ) {
+      return;
+    }
+
+    const p = Math.max(0, d3.precisionFixed(0.05) - 2),
+      f = d3.format('.' + p + '%');
+
+    this.svg.select('.label').remove();
+
+    const label: any = this.svg.append('text')
       .attr('class', 'label');
 
     label.append('tspan')
       .attr('class', 'label-name')
-      .attr('x', 0)
-      .attr('dy', '-.2em')
+      // .attr('x', '-20px')
+      // .attr('dy', '100px')
       .text(function(d) {
         return d.state;
-      });
+      }).style('position', 'absolute')
+      .style('left', '-20px')
+      .style('top', '100px');
 
     label.append('tspan')
       .attr('class', 'label-value')
       .attr('x', 0)
       .attr('dy', '1.1em')
       .text(function(d) {
-        return formatSum(d.sum);
+        const value: any = d.parts[0]['value'];
+        const formated = f((part ? part.value : value) / d.sum );
+        return formated;
       });
+
   }
 
 }
@@ -236,6 +276,7 @@ class Donut {
   sum?: number;
   columns?: string[];
   parts?: Part[];
+  type?: string;
 }
 
 class Part {
