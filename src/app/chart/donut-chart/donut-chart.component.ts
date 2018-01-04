@@ -1,11 +1,13 @@
 import {
   Component,
-  OnInit,
+  OnDestroy,
   AfterViewInit,
   ElementRef,
   HostBinding,
   ViewChild,
 } from '@angular/core';
+
+import { Subscription } from 'rxjs/Subscription';
 
 import {
   DonutChart,
@@ -24,7 +26,7 @@ import { ElementWidthListener } from '../element-width-listener';
   templateUrl: './donut-chart.component.html',
   styleUrls: ['./donut-chart.component.sass'],
 })
-export class DonutChartComponent implements OnInit, AfterViewInit {
+export class DonutChartComponent implements OnDestroy, AfterViewInit {
 
   @HostBinding('class.tui-layout-vertical') hostClass = true;
 
@@ -38,6 +40,8 @@ export class DonutChartComponent implements OnInit, AfterViewInit {
 
   donut: DonutChart = new DonutChart();
 
+  listener: Subscription;
+
   constructor(
   ) {
     const jsonStringify = function(data) {
@@ -50,20 +54,20 @@ export class DonutChartComponent implements OnInit, AfterViewInit {
     this.donutChartConfigJson = jsonStringify(this.donutChartConfig);
   }
 
-  ngOnInit() {
-
-
-  }
-
   ngAfterViewInit() {
     setTimeout(() => {
       this.draw();
 
-      const listener = new ElementWidthListener(this.donutChartHolder);
-      listener.startListen().subscribe(() => {
-        this.draw();
-      });
+      const widthListener = new ElementWidthListener(this.donutChartHolder);
+      this.listener = widthListener.startListen()
+        .subscribe(() => {
+          this.draw();
+        });
     });
+  }
+
+  ngOnDestroy() {
+    this.listener.unsubscribe();
   }
 
   draw() {
