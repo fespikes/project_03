@@ -17,10 +17,6 @@ export class DonutChart implements ChartBase {
   private pie: any;
   private svg: any;
 
-  constructor() {
-    console.log('creat donutChart');
-  }
-
   setConfig(config: DonutChartConfig ) {
     this.config = config;
     return this;
@@ -59,9 +55,9 @@ export class DonutChart implements ChartBase {
   manipulateData() {
     const donuts: any = this.data.donuts;
     const stack: any[] = [];
-    let dataType = '';
 
     donuts.map((item: any) => {
+      let dataType = '';
       let sum = 0;
       const columns = [];
 
@@ -70,7 +66,7 @@ export class DonutChart implements ChartBase {
         columns.push(part.title);
       });
 
-      if ( sum !== item.sum ) {
+      if ( item.sum && sum !== item.sum ) {
         item.parts.unshift({
           'title': '',
           'value': item.sum - sum,
@@ -146,22 +142,16 @@ export class DonutChart implements ChartBase {
     const style = config.style;
     const donuts = this.data.donuts;
 
-    const radius = d3.scaleSqrt()
-      .range([0, style.maxRadius]);
-    radius.domain([0, d3.max(donuts, function(d) {
-      return d.sum;
-    })]);
-
-
     this.svg = d3.select(config.donutChartHolder).selectAll('.pie')
       .data(donuts)
       .enter().append('svg')
       .attr('class', 'pie')
       .each(function(d, idx) {
+        const currentSvg = this;
 
         me.drawLegend(d, idx);
 
-        const r: any = 100; // radius(d.sum);
+        const r: any = style.maxRadius; // radius(d.sum);
 
         const path: any = d3.select(this)
           .attr('width', r * 2)
@@ -184,16 +174,18 @@ export class DonutChart implements ChartBase {
           .style('fill', (da: any) => {
             return me.color(da.data.title);
           }).on('mouseover', dt => {
-            me.drawCenterLabel(dt);
-          });
+            me.drawCenterLabel(currentSvg, dt);
+          }, this);
 
+        me.drawCenterLabel(currentSvg);
       })
       .select('g');
 
-      this.drawCenterLabel();
   }
 
-  drawCenterLabel(part?) { console.log(part);
+  drawCenterLabel(svg, part?) {
+    const currentSvg = d3.select(svg);
+
     if ( part && part.data.title === '' ) {
       return;
     }
@@ -201,20 +193,18 @@ export class DonutChart implements ChartBase {
     const p = Math.max(0, d3.precisionFixed(0.05) - 2),
       f = d3.format('.' + p + '%');
 
-    this.svg.select('.label').remove();
+    currentSvg.select('.label').remove();
 
-    const label: any = this.svg.append('text')
+    const label: any = currentSvg.select('g').append('text')
       .attr('class', 'label');
 
     label.append('tspan')
       .attr('class', 'label-name')
-      // .attr('x', '-20px')
-      // .attr('dy', '100px')
+      .attr('x', 0)
+      .attr('dy', '-.2em')
       .text(function(d) {
         return d.state;
-      }).style('position', 'absolute')
-      .style('left', '-20px')
-      .style('top', '100px');
+      });
 
     label.append('tspan')
       .attr('class', 'label-value')
