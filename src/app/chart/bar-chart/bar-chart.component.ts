@@ -1,13 +1,14 @@
 import {
   Component,
-  OnInit,
   HostBinding,
   ViewChild,
   ElementRef,
   AfterViewInit,
+  OnDestroy,
 } from '@angular/core';
 
 import * as debounce from 'lodash/debounce';
+import { Subscription } from 'rxjs/Subscription';
 
 import {
   BarChartConfig,
@@ -22,7 +23,7 @@ import { ElementWidthListener } from '../element-width-listener';
   templateUrl: './bar-chart.component.html',
   styleUrls: ['./bar-chart.component.sass'],
 })
-export class BarChartComponent implements OnInit, AfterViewInit {
+export class BarChartComponent implements AfterViewInit, OnDestroy {
   @HostBinding('class.tui-layout-vertical') hostClass = true;
 
   @ViewChild('chart') chartHolder: ElementRef;
@@ -35,7 +36,7 @@ export class BarChartComponent implements OnInit, AfterViewInit {
 
   chart = new BarChart();
 
-  mode = 'group';
+  listener: Subscription;
 
   draw = debounce(() => {
     const element: HTMLElement = this.chartHolder.nativeElement;
@@ -49,29 +50,28 @@ export class BarChartComponent implements OnInit, AfterViewInit {
     this.chart.setConfig(config)
       .select(element)
       .datum(BarChartBuilder.parseChartData(this.chartDataJson));
-
-    setTimeout(() => {
-      this.chart.draw();
-    }, 100);
-  }, 200);
+    this.chart.draw();
+  }, 250);
 
   constructor() {
     this.chartDataJson = JSON.stringify(BarChartBuilder.getMockChartData(), null, 2);
     this.configJson = BarChartConfig.toJson(new BarChartConfig());
   }
 
-  ngOnInit() {
-  }
-
   ngAfterViewInit() {
     setTimeout(() => {
       this.draw();
 
-      const listener = new ElementWidthListener(this.chartHolder);
-      listener.startListen().subscribe(() => {
-        this.draw();
-      });
+      const widthListener = new ElementWidthListener(this.chartHolder);
+      this.listener = widthListener.startListen()
+        .subscribe(() => {
+          this.draw();
+        });
     });
+  }
+
+  ngOnDestroy() {
+    this.listener.unsubscribe();
   }
 
 }

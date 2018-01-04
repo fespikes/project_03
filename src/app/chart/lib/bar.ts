@@ -154,9 +154,13 @@ export class BarChart implements ChartBase {
     this.drawGrid();
 
     if (this.config.stack) {
-      this.drawBarStack();
+      const bars = this.drawBarStack();
+      this.appendAnimationStack(bars);
+      this.appendTooltipStack(bars);
     } else {
-      this.drawBarGrouped();
+      const bars = this.drawBarGrouped();
+      this.appendAnimationGrouped(bars);
+      this.appendTooltipGrouped(bars);
     }
 
     this.drawLegend();
@@ -256,16 +260,15 @@ export class BarChart implements ChartBase {
     const { scale: yScale } = this.yAxis;
     const xSubScale = d3.scaleBand().domain(this.data.topics).rangeRound([0, xScale.bandwidth()]);
 
-    const groupSections = this.geo.canvas.append('g')
+    return this.geo.canvas.append('g')
       .selectAll('g')
       .data(this.data.xs)
       .enter()
       .append('g')
         .attr('transform', (x, i) => {
           return `translate(${xScale(x)}, 0)`;
-        });
-
-    const bars = groupSections.selectAll('rect')
+        })
+      .selectAll('rect')
       .data((x, i) => {
         return this.data.series.map((d) => {
           return {
@@ -284,12 +287,57 @@ export class BarChart implements ChartBase {
         .attr('width', xSubScale.bandwidth())
         .attr('y', (d) => yScale(0))
         .attr('height', 0);
+  }
 
+  drawBarStack() {
+    const { scale: xScale } = this.xAxis;
+    const { scale: yScale } = this.yAxis;
+    const dataByTopic = this.data.dataByTopic;
+
+    return this.geo.canvas.append('g')
+      .selectAll('g')
+      .data(d3.stack().keys(this.data.topics)(dataByTopic))
+      .enter()
+      .append('g')
+        .attr('fill', (d) => {
+          return this.ordinalScale(d.key);
+        })
+      .selectAll('rect')
+      .data((d) => d)
+      .enter()
+      .append('rect')
+      .attr('x', (d, i) => {
+        const x = this.data.xs[i];
+        return xScale(x);
+      })
+      .attr('y', this.geo.canvas2d.height)
+      .attr('width', xScale.bandwidth)
+      .attr('height', 0);
+  }
+
+  appendAnimationGrouped(bars) {
+    const { scale: xScale } = this.xAxis;
+    const { scale: yScale } = this.yAxis;
     bars.transition()
-        .delay((d, i) => i * 10)
-        .attr('y', (d) => yScale(d.y))
-        .attr('height', (d) => this.geo.canvas2d.height - yScale(d.y));
+      .delay((d, i) => i * 10)
+      .attr('y', (d) => yScale(d.y))
+      .attr('height', (d) => this.geo.canvas2d.height - yScale(d.y));
+  }
 
+  appendAnimationStack(bars) {
+    const { scale: xScale } = this.xAxis;
+    const { scale: yScale } = this.yAxis;
+    bars.transition()
+      .delay((d, i) => i * 10)
+      .attr('y', (d, i) => {
+        return yScale(d[1]);
+      })
+      .attr('height', (d, i) => {
+        return yScale(d[0]) - yScale(d[1]);
+      });
+  }
+
+  appendTooltipGrouped(bars) {
     bars.on('mouseover', () => this.tooltip.style('display', 'block'))
       .on('mouseout', () => this.tooltip.style('display', 'none'))
       .on('mousemove', (d) => {
@@ -303,41 +351,7 @@ export class BarChart implements ChartBase {
       });
   }
 
-  drawBarStack() {
-    const { scale: xScale } = this.xAxis;
-    const { scale: yScale } = this.yAxis;
-    const dataByTopic = this.data.dataByTopic;
-
-    const barSections = this.geo.canvas.append('g')
-      .selectAll('g')
-      .data(d3.stack().keys(this.data.topics)(dataByTopic))
-      .enter()
-      .append('g')
-        .attr('fill', (d) => {
-          return this.ordinalScale(d.key);
-        });
-
-    const bars = barSections.selectAll('rect')
-      .data((d) => d)
-      .enter()
-      .append('rect')
-      .attr('x', (d, i) => {
-        const x = this.data.xs[i];
-        return xScale(x);
-      })
-      .attr('y', this.geo.canvas2d.height)
-      .attr('width', xScale.bandwidth)
-      .attr('height', 0);
-
-    bars.transition()
-      .delay((d, i) => i * 10)
-      .attr('y', (d, i) => {
-        return yScale(d[1]);
-      })
-      .attr('height', (d, i) => {
-        return yScale(d[0]) - yScale(d[1]);
-      });
-
+  appendTooltipStack(bars) {
     bars.on('mouseover', () => this.tooltip.style('display', 'block'))
       .on('mouseout', () => this.tooltip.style('display', 'none'))
       .on('mousemove', (d, i) => {

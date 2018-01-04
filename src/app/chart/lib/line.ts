@@ -14,6 +14,9 @@ import {
   TimeAxisConfig,
 } from './axis';
 
+export type curveStyle = 'curveLinear' | 'curveStep' | 'curveBasis'
+  | 'curveCardinal' | 'curveMonotoneX' | 'curveCatmullRom';
+
 export class LinePoint {
   x: Date;
   y: number;
@@ -46,6 +49,7 @@ export class LineChartConfig {
   hasShadow = false;
   hasArea = false;
   areaColor = 'rgba(227,230,237, 0.5)';
+  curveStyle: curveStyle = 'curveMonotoneX';
   margin = {top: 20, right: 50, bottom: 40, left: 50};
   background: string;
   colorSchema = new ColorSchema();
@@ -188,12 +192,12 @@ export class LineChart implements ChartBase {
     const startLine = d3.line<LinePoint>()
       .x((d: any) => xScale(d.x))
       .y((d: any) => yScale(0))
-      .curve(d3.curveMonotoneX);
+      .curve(d3[this.config.curveStyle]);
 
     const finishLine = d3.line<LinePoint>()
       .x((d: any) => xScale(d.x))
       .y((d: any) => yScale(d.y))
-      .curve(d3.curveMonotoneX);
+      .curve(d3[this.config.curveStyle]);
 
     const line = this.geo.canvas.append('path')
       .attr('class', 'line')
@@ -262,13 +266,13 @@ export class LineChart implements ChartBase {
       .x((d: any) => xScale(d.x))
       .y0(canvas2d.height)
       .y1((d: any) => yScale(0))
-      .curve(d3.curveMonotoneX);
+      .curve(d3[this.config.curveStyle]);
 
     const finishArea = d3.area<LinePoint>()
       .x((d: any) => xScale(d.x))
       .y0(canvas2d.height)
       .y1((d: any) => yScale(d.y))
-      .curve(d3.curveMonotoneX);
+      .curve(d3[this.config.curveStyle]);
 
     if (this.config.hasArea) {
       const area = this.geo.canvas.append('path')
