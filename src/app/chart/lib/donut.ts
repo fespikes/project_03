@@ -2,6 +2,8 @@ import * as d3 from 'd3';
 
 import { ChartBase } from './chart-base';
 import { ColorSchema } from './color-schema';
+import { Legend, LegendConfig } from './legend';
+import { GeoService } from './geo-service';
 
 export class DonutChart implements ChartBase {
 
@@ -13,10 +15,6 @@ export class DonutChart implements ChartBase {
   private arc: any;
   private pie: any;
   private svg: any;
-
-  constructor() {
-    console.log('creat donutChart');
-  }
 
   setConfig(config: DonutChartConfig ) {
     this.config = config;
@@ -34,47 +32,84 @@ export class DonutChart implements ChartBase {
   }
 
   draw() {
-    const columns = this.data.columns;
-
     this.arc = d3.arc()
       .padRadius(50);
 
     this.pie = d3.pie()
       .sort(null)
-      .padAngle(0.02)
-      .value(function(d) {
-        return d.population;
-      });
-
-    this.color = d3.scaleOrdinal()
-      .range(this.config.style.colorSchema.palette);
-    this.color.domain(columns);
+      .padAngle(0.02);
 
     this.config.donutChartHolder.innerHTML = '';
 
-    this.drawLegend();
+    this.manipulateData();
+
     this.drawTire();
 
     return this;
   }
 
-  drawLegend() {
+  manipulateData() {
+    const donuts: any = this.data.donuts;
+    const stack: any[] = [];
+
+    donuts.map((item: any) => {
+      let dataType = '';
+      let sum = 0;
+
+      item.parts.forEach((part) => {
+        sum += part;
+      });
+
+      if ( item.sum && sum !== item.sum ) {
+        item.parts = item.parts.concat([item.sum - sum]);
+        item.columns = item.columns.concat(['blank']);
+        dataType = 'blank';
+      }
+
+      stack.push({
+        state: item.state,
+        sum: (item.sum || sum),
+        columns: item.columns,
+        parts: item.parts,
+        type: dataType,
+      });
+    });
+
+    this.data.donuts = stack;
+  }
+
+  drawLegend(data, n) {
     const config = this.config;
     const legendStyle = this.config.legendStyle;
-    console.log(config.legendStyle.rectHeight * this.data.columns.length);
+    let palette: string[] = [];
+    const columns = data.columns;
+
+    if (data.type === 'blank') {
+      palette = this.config.style.colorSchema.palette.slice(0, data.columns.length - 1);
+      palette = palette.concat(['#edf2ff']);
+      data.columns.pop();
+    } else {
+      palette = this.config.style.colorSchema.palette;
+    }
 
     const legend = d3.select(config.donutChartHolder).append('svg')
       .attr('class', 'legend')
       .attr('width', legendStyle.width)
-      .attr('height', (legendStyle.rectHeight + 4) * this.data.columns.length )
-      .attr('transform', 'matrix(1, 0, 0, 1, ' + 20 + ', 0)')
+      .attr('height', (legendStyle.rectHeight + 4) * data.columns.length )
+      .style('position', 'absolute')
+      .style('left', config.style.left + n * (config.style.left + legendStyle.width + 2 * config.style.maxRadius))
+      .style('top', config.style.top)
 
     .selectAll('g')
-      .data(this.data.columns.reverse())
+      .data(data.columns)
     .enter().append('g')
       .attr('transform', function(d, i) {
         return 'translate(0,' + i * 20 + ')';
       });
+
+    this.color = d3.scaleOrdinal().range(palette);
+
+    this.color.domain(columns);
 
     legend.append('rect')
       .attr('width', legendStyle.rectWidth)
@@ -85,57 +120,73 @@ export class DonutChart implements ChartBase {
       .attr('x', legendStyle.rectWidth + 2)
       .attr('y', 9)
       .attr('dy', '.35em')
-      .text(function(d) {
-        return d;
+      .text(function(d: any, num: number) {
+        return d !== 'blank' ? d : '';
       });
   }
 
   drawTire() {
     const me = this;
-    const formatSum = d3.format('.1s');
     const config = this.config;
     const style = config.style;
     const donuts = this.data.donuts;
 
-    const radius = d3.scaleSqrt()
-      .range([0, style.maxRadius]);
-    radius.domain([0, d3.max(donuts, function(d) {
-      return d.sum;
-    })]);
-
-
-    const svg = d3.select(config.donutChartHolder).selectAll('.pie')
-      .data(donuts.sort((a, b) => {
-        return b.sum - a.sum;
-      }))
+    this.svg = d3.select(config.donutChartHolder).selectAll('.pie')
+      .data(donuts)
       .enter().append('svg')
       .attr('class', 'pie')
-      .each(function(d) {
+      .each(function(d: any, idx) {
+        const currentSvg = this;
 
-        const r: any = radius(d.sum);
+        if (d.columns) {
+          me.drawLegend(d, idx);
+        }
+
+        const r: any = style.maxRadius; // radius(d.sum);
+
         const path: any = d3.select(this)
           .attr('width', r * 2)
           .attr('height', r * 2)
-          .attr('transform', 'matrix(1, 0, 0, 1, ' + 50 + ', ' + 50 + ')')
+          .style('position', 'absolute')
+          .style('left',
+            config.style.left + config.legendStyle.width +
+            idx * (config.style.left + config.legendStyle.width + 2 * config.style.maxRadius))
+          .style('top', config.style.top - 20)
           .append('g')
           .attr('transform', 'translate(' + r + ',' + r + ')');
 
         path.selectAll('.arc')
           .data((da: any) => {
-            return me.pie(da.ages);
+            return me.pie(da.parts);
           })
           .enter().append('path')
           .attr('class', 'arc')
           .attr('d', me.arc.outerRadius(r).innerRadius(r * 0.6))
-          .style('fill', (da: any) => {
-            return me.color(da.data.age);
-        });
+          .style('fill', (da: any, n: number) => {
+            return me.color(d.columns[n]);
+          }).on('mouseover', dt => {
+            me.drawCenterLabel(currentSvg, dt);
+          }, this);
 
+        me.drawCenterLabel(currentSvg);
       })
       .select('g');
 
+  }
 
-    const label: any = svg.append('text')
+  drawCenterLabel(svg, part?) {
+    const currentSvg = d3.select(svg);
+
+    if ( part && part.data.title === '' ) {
+      return;
+    }
+
+    const p = Math.max(0, d3.precisionFixed(0.05) - 2),
+      f = d3.format('.' + p + '%');
+
+    currentSvg.select('.label').remove();
+
+    const label: any = currentSvg.select('g').append('text')
       .attr('class', 'label');
 
     label.append('tspan')
@@ -143,7 +194,7 @@ export class DonutChart implements ChartBase {
       .attr('x', 0)
       .attr('dy', '-.2em')
       .text(function(d) {
-        return d.state;
+        return d.type === 'blank' ? '' : d.state;
       });
 
     label.append('tspan')
@@ -151,8 +202,11 @@ export class DonutChart implements ChartBase {
       .attr('x', 0)
       .attr('dy', '1.1em')
       .text(function(d) {
-        return formatSum(d.sum);
+        const value: any = d.parts[0];
+        const formated = f((part ? part.data : value) / d.sum );
+        return formated;
       });
+
   }
 
 }
@@ -160,6 +214,7 @@ export class DonutChart implements ChartBase {
 export class DonutChartConfig {
 
   donutChartHolder: any; // className of donut's container
+  legend = new LegendConfig();
 
   style: any = {
     colorSchema: new ColorSchema(),
@@ -167,10 +222,12 @@ export class DonutChartConfig {
     maxRadius: 100,
     width: 100,
     height: 100,
+    left: 30,
+    top: 30,
   };
 
   legendStyle: any = {
-    width: 150,
+    width: 160,
     rectWidth: 18,
     rectHeight: 16,
   };
@@ -179,19 +236,26 @@ export class DonutChartConfig {
     const _config = new DonutChartConfig();
     Object.assign(_config, config);
     _config.style.colorSchema = ColorSchema.from(_config.style.colorSchema);
+    _config.legend = LegendConfig.form(_config.legend);
+
     return _config;
   }
 }
 
 export class DonutChartData {
 
-  columns?: Array<string>;
-
-  donuts?: Array<any>;
+  donuts?: Array<Donut>;
 
   constructor(data: DonutChartData) {
-    this.columns = data.columns;
     this.donuts = data.donuts;
   }
 
+}
+
+class Donut {
+  state?: string;
+  sum?: number;
+  columns?: string[];
+  parts?: number[];
+  type?: string;
 }

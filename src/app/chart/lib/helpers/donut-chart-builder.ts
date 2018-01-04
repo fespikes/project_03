@@ -13,46 +13,37 @@ export class DonutChartDataBuilder {
 
 mockData = {
 
-  columns: [
-    'Under 5 Years', '5 to 13 Years', '14 to 17 Years', '18 to 24 Years',
-    '25 to 44 Years', '45 to 64 Years', '65 Years and Over',
-  ],
-
   donuts: [
     {
-      'state': 'AL',
-      'sum': 4661900,
-      'ages': [
-        {
-          'age': 'Under 5 Years',
-          'population': 310504,
-        },
-        {
-          'age': '5 to 13 Years',
-          'population': 552339,
-        },
-        {
-          'age': '14 to 17 Years',
-          'population': 259034,
-        },
-        {
-          'age': '18 to 24 Years',
-          'population': 450818,
-        },
-        {
-          'age': '25 to 44 Years',
-          'population': 1231572,
-        },
-        {
-          'age': '45 to 64 Years',
-          'population': 1215966,
-        },
-        {
-          'age': '65 Years and Over',
-          'population': 641667,
-        },
+      state: 'no1',
+      sum: 10,
+      columns: [
+        'Under 2 Years',
+        'Under 3 Years',
+        'Under 5 Years',
       ],
+      parts: [2, 2, 5],
+    },
+    {
+      state: 'AL',
+      sum: 10,
+      columns: ['Under 5 Years'],
+      parts: [5],
+    },
+    {
+      state: 'Bl',
+      columns: [
+        'Under 5 Years',
+        '5 to 13 Years',
+        '14 to 17 Years',
+        '18 to 24 Years',
+        '25 to 44 Years',
+        '45 to 64 Years',
+        '65 Years and Over',
+      ],
+      parts: [310504, 552339, 379034, 450818, 1231572, 2015966, 641667],
     },
   ],
+
 };
 
