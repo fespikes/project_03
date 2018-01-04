@@ -17,63 +17,31 @@ mockData = {
     {
       state: 'no1',
       sum: 10,
-      parts: [
-        {
-          'title': 'Under 2 Years',
-          'value': 2,
-        },
-        {
-          'title': 'Under 3 Years',
-          'value': 3,
-        },
-        {
-          'title': 'Under 5 Years',
-          'value': 5,
-        },
+      columns: [
+        'Under 2 Years',
+        'Under 3 Years',
+        'Under 5 Years',
       ],
+      parts: [2, 2, 5],
     },
     {
       state: 'AL',
       sum: 10,
-      parts: [
-        {
-          'title': 'Under 5 Years',
-          'value': 5,
-        },
-      ],
+      columns: ['Under 5 Years'],
+      parts: [5],
     },
     {
       state: 'Bl',
-      parts: [
-        {
-          'title': 'Under 5 Years',
-          'value': 310504,
-        },
-        {
-          'title': '5 to 13 Years',
-          'value': 552339,
-        },
-        {
-          'title': '14 to 17 Years',
-          'value': 379034,
-        },
-        {
-          'title': '18 to 24 Years',
-          'value': 450818,
-        },
-        {
-          'title': '25 to 44 Years',
-          'value': 1231572,
-        },
-        {
-          'title': '45 to 64 Years',
-          'value': 2015966,
-        },
-        {
-          'title': '65 Years and Over',
-          'value': 641667,
-        },
+      columns: [
+        'Under 5 Years',
+        '5 to 13 Years',
+        '14 to 17 Years',
+        '18 to 24 Years',
+        '25 to 44 Years',
+        '45 to 64 Years',
+        '65 Years and Over',
       ],
+      parts: [310504, 552339, 379034, 450818, 1231572, 2015966, 641667],
     },
   ],
 

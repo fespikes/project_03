@@ -38,10 +38,7 @@ export class DonutChart implements ChartBase {
 
     this.pie = d3.pie()
       .sort(null)
-      .padAngle(0.02)
-      .value(function(d) {
-        return d.value;
-      });
+      .padAngle(0.02);
 
     this.config.donutChartHolder.innerHTML = '';
 
@@ -59,27 +56,21 @@ export class DonutChart implements ChartBase {
     donuts.map((item: any) => {
       let dataType = '';
       let sum = 0;
-      const columns = [];
 
-      _.each(item.parts, (part) => {
-        sum += part.value;
-        columns.push(part.title);
+      item.parts.forEach((part) => {
+        sum += part;
       });
 
       if ( item.sum && sum !== item.sum ) {
-        item.parts.unshift({
-          'title': '',
-          'value': item.sum - sum,
-        });
-
-        columns.unshift('blank');
-        dataType = 'blank'; // TODO
+        item.parts = item.parts.concat([item.sum - sum]);
+        item.columns = item.columns.concat(['blank']);
+        dataType = 'blank';
       }
 
       stack.push({
         state: item.state,
         sum: (item.sum || sum),
-        columns: columns,
+        columns: item.columns,
         parts: item.parts,
         type: dataType,
       });
@@ -92,15 +83,14 @@ export class DonutChart implements ChartBase {
     const config = this.config;
     const legendStyle = this.config.legendStyle;
     let palette: string[] = [];
-    let columns;
+    const columns = data.columns;
 
     if (data.type === 'blank') {
       palette = this.config.style.colorSchema.palette.slice(0, data.columns.length - 1);
-      palette = palette.concat(['#edf2ff']).reverse();
-      columns = data.columns.slice(1);
+      palette = palette.concat(['#edf2ff']);
+      data.columns.pop();
     } else {
       palette = this.config.style.colorSchema.palette;
-      columns = data.columns;
     }
 
     const legend = d3.select(config.donutChartHolder).append('svg')
@@ -112,7 +102,7 @@ export class DonutChart implements ChartBase {
       .style('top', config.style.top)
 
     .selectAll('g')
-      .data(columns.reverse())
+      .data(data.columns)
     .enter().append('g')
       .attr('transform', function(d, i) {
         return 'translate(0,' + i * 20 + ')';
@@ -120,7 +110,7 @@ export class DonutChart implements ChartBase {
 
     this.color = d3.scaleOrdinal().range(palette);
 
-    this.color.domain(data.columns);
+    this.color.domain(columns);
 
     legend.append('rect')
       .attr('width', legendStyle.rectWidth)
@@ -131,7 +121,7 @@ export class DonutChart implements ChartBase {
       .attr('x', legendStyle.rectWidth + 2)
       .attr('y', 9)
       .attr('dy', '.35em')
-      .text(function(d) {
+      .text(function(d: any, num: number) {
         return d !== 'blank' ? d : '';
       });
   }
@@ -146,10 +136,12 @@ export class DonutChart implements ChartBase {
       .data(donuts)
       .enter().append('svg')
       .attr('class', 'pie')
-      .each(function(d, idx) {
+      .each(function(d: any, idx) {
         const currentSvg = this;
 
-        me.drawLegend(d, idx);
+        if (d.columns) {
+          me.drawLegend(d, idx);
+        }
 
         const r: any = style.maxRadius; // radius(d.sum);
 
@@ -171,8 +163,8 @@ export class DonutChart implements ChartBase {
           .enter().append('path')
           .attr('class', 'arc')
           .attr('d', me.arc.outerRadius(r).innerRadius(r * 0.6))
-          .style('fill', (da: any) => {
-            return me.color(da.data.title);
+          .style('fill', (da: any, n: number) => {
+            return me.color(d.columns[n]);
           }).on('mouseover', dt => {
             me.drawCenterLabel(currentSvg, dt);
           }, this);
@@ -203,7 +195,7 @@ export class DonutChart implements ChartBase {
       .attr('x', 0)
       .attr('dy', '-.2em')
       .text(function(d) {
-        return d.state;
+        return d.type === 'blank' ? '' : d.state;
       });
 
     label.append('tspan')
@@ -211,8 +203,8 @@ export class DonutChart implements ChartBase {
       .attr('x', 0)
       .attr('dy', '1.1em')
       .text(function(d) {
-        const value: any = d.parts[0]['value'];
-        const formated = f((part ? part.value : value) / d.sum );
+        const value: any = d.parts[0];
+        const formated = f((part ? part.data : value) / d.sum );
         return formated;
       });
 
@@ -265,11 +257,6 @@ class Donut {
   state?: string;
   sum?: number;
   columns?: string[];
-  parts?: Part[];
+  parts?: number[];
   type?: string;
-}
-
-class Part {
-  title?: string;
-  value?: number;
 }
