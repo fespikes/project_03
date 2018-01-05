@@ -5,9 +5,23 @@ export type AxisPosition = 'top' | 'right' | 'bottom' | 'left';
 
 export type GridStyle = 'solid' | 'dash';
 
+export type TimeInterval = 'timeSecond' | 'timeMinute' | 'timeHour' | 'timeDay' | 'timeMonth';
+
 export class AxisTickConfig {
   count: number;
   padding = 10;
+}
+
+export class AxisTimeTickConfig implements AxisTickConfig {
+  useTimeInterval = false;
+  count: number;
+  timeInterval: TimeInterval = 'timeMinute';
+  interval = 10;
+  padding = 10;
+  timeFormat = '%x';
+
+  // timeFormat examples and interval examples
+  // https://github.com/xswei/d3js_doc/tree/master/API/d3-scale-master#time_domain
 }
 
 export class AxisGridConfig {

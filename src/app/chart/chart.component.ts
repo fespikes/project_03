@@ -37,6 +37,10 @@ export class ChartComponent implements OnInit {
         url: `${this.routePrefix}/bar`,
       },
       {
+        name: 'Bar Time Chart',
+        url: `${this.routePrefix}/bartime`,
+      },
+      {
         name: 'Donut Chart',
         url: `${this.routePrefix}/donut`,
       },

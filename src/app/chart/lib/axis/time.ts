@@ -5,14 +5,14 @@ import { SelectionType } from '../chart-base';
 import {
   AxisBase,
   AxisPosition,
-  AxisTickConfig,
+  AxisTimeTickConfig,
   AxisGridConfig,
   AxisLineStyle,
   AxisTextStyle,
 } from './axis-base';
 
 export class TimeAxisConfig {
-  tick = new AxisTickConfig();
+  tick = new AxisTimeTickConfig();
   grid = new AxisGridConfig();
   lineStyle = new AxisLineStyle();
   textStyle = new AxisTextStyle();
@@ -32,6 +32,7 @@ export class TimeAxis extends AxisBase {
 
   draw(domain: any[], range: [number, number]) {
     const { tick } = this.config;
+    const count = tick.useTimeInterval ? d3[tick.timeInterval].every(tick.interval) : tick.count;
 
     this.scale = d3.scaleTime()
       .domain(d3.extent(domain))
@@ -39,9 +40,9 @@ export class TimeAxis extends AxisBase {
       .nice();
 
     this.axis = this.initAxis(this.position);
-    this.axis.ticks(tick.count)
+    this.axis.ticks(count)
       .tickPadding(tick.padding)
-      .tickFormat(d3.timeFormat('%x'));
+      .tickFormat(d3.timeFormat(tick.timeFormat));
 
     this.container.append('g')
       .attr('class', 'time-axis')
