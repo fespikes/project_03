@@ -7,6 +7,7 @@ import { I18nModule } from '../i18n';
 
 import { AbstractRoutingModule } from './abstract-routing.module';
 import { AbstractComponent } from './abstract.component';
+import { AbstractService } from './abstract.service';
 
 @NgModule({
   imports: [
@@ -18,6 +19,9 @@ import { AbstractComponent } from './abstract.component';
   ],
   declarations: [
     AbstractComponent,
+  ],
+  providers: [
+    AbstractService,
   ],
 })
 export class AbstractModule { }
