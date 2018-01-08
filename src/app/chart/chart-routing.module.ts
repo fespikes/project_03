@@ -6,6 +6,7 @@ import { ChartComponent } from './chart.component';
 import { LineChartComponent } from './line-chart/line-chart.component';
 import { BarChartComponent } from './bar-chart/bar-chart.component';
 import { DonutChartComponent } from './donut-chart/donut-chart.component';
+import { BarTimeChartComponent } from './bar-time-chart/bar-time-chart.component';
 
 @NgModule({
   imports: [
@@ -28,6 +29,10 @@ import { DonutChartComponent } from './donut-chart/donut-chart.component';
           {
             path: 'bar',
             component: BarChartComponent,
+          },
+          {
+            path: 'bartime',
+            component: BarTimeChartComponent,
           },
           {
             path: 'donut',
