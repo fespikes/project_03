@@ -19,8 +19,39 @@ export class AbstractService {
     return this.api.get(`platforms/count/summaries`, this.config);
   }
 
-  getLoadSummary(): Observable<any> {
-    return this.api.get(`platforms/loads/summaries`, this.config);
+  getLoadSummary(callback) {
+    this.api.get(`platforms/loads/summaries`, this.config).subscribe(response => {
+      callback(this.adaptLoadSummary(response));
+    });
+  }
+
+  adaptLoadSummary(quantitySummary) {
+    const obj = {...quantitySummary};
+    const result = [];
+
+    delete obj.startTime;
+    delete obj.endTime;
+
+    Object.keys(obj).forEach(key => {
+
+      const parts = [];
+      const columns = [];
+
+      obj[key].forEach(part => {
+        parts.push(part.value);
+        columns.push(part.title);
+      });
+
+      result.push({
+        state: key,
+        columns: columns,
+        parts: parts,
+      });
+
+    });
+    return {
+      donuts: result,
+    };
   }
 
 }

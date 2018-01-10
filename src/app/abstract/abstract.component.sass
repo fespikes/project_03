@@ -24,11 +24,15 @@ $blue: #2481e3
 .sub-title, .f14b
   @extend .f14, .fb
 
-.flex-colunn
+.flex
   display: flex
+  align-items: stretch
+
+.flex-colunn
+  @extend .flex
   flex-direction: column
 .flex-row
-  display: flex
+  @extend .flex
   flex-direction: row
 
 .margin-right
@@ -135,6 +139,13 @@ $blue: #2481e3
   @extend .flex-colunn
   height: 200px
 
+.platform-summary-donuts
+  height: 140px
+
+/* E: section0 */
+
+/*  */
+
 .section1
 
 .node-load-trend, .products-instances-trend
@@ -157,3 +168,4 @@ $blue: #2481e3
   flex-basis: 820px
   flex-grow: 1
 
+/*  */

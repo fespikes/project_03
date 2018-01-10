@@ -1,43 +1,52 @@
-import { Component, OnInit, HostBinding } from '@angular/core';
+import {
+  Component,
+  OnInit, AfterViewInit, OnDestroy,
+  HostBinding,
+  ViewChild, ElementRef,
+} from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-
+import { Subscription } from 'rxjs/Subscription';
 
 import { AbstractService } from './abstract.service';
+import {
+  DonutChart,
+  DonutChartData,
+  DonutChartConfig,
+} from '../chart/lib';
+import { ElementWidthListener } from '../chart/element-width-listener';
 
-const monthlyOptions = [
-  'last month',
-  'last 2 months',
-  'last 3 months',
-  'last 4 months',
-  'last 5 months',
-  'last 6 months',
-  'last 7 months',
-  'last 8 months',
-  'last 9 months',
-  'last 10 months',
-  'last 11 months',
-  'last 12 months',
-];
+const getSelectOptions = function(type?: string, num?: number) {
+  let result: any[] = [];
+  const len = num || 12;
 
-const length = 12;
-let result: any[] = [];
-for (let i = length; i > 0; i--) {
-  const str: string = i === 1 ? ('last ' + i + ' hour') : ('last ' + i + ' hours');
-  result = [str].concat(result);
-}
-const hourOptions = result;
+  for (let i = len; i > 0; i--) {
+    const str: string = i === 1 ? ('last ' + i + (type === 'hour' ? ' hour' : ' month'))
+      : ('last ' + i + (type === 'hour' ? ' hours' : ' months'));
+    result = [str].concat(result);
+  }
+
+  return result;
+};
+const hourOptions = getSelectOptions('hour');
+const monthlyOptions = getSelectOptions();
 
 @Component({
   selector: 'tec-abstract',
   templateUrl: './abstract.component.html',
   styleUrls: ['./abstract.component.sass'],
 })
-export class AbstractComponent implements OnInit {
+export class AbstractComponent implements OnInit, AfterViewInit, OnDestroy {
   @HostBinding('class.tui-layout-body') hostClass = true;
+  @ViewChild('platformSummaryHolder') platformSummaryHolder: ElementRef;
 
+  donutChartConfig: DonutChartConfig = new DonutChartConfig();
+  // chart-donut: 平台概览
+  platformSummaryDonuts: DonutChart = new DonutChart();
+  platformSummaryDonutsConfig: DonutChartConfig = new DonutChartConfig();
   iconId: string;
   instancesAmountTrendOptions: string[] = [...monthlyOptions];
   instancesAmountTrendOption: string;
+  listener: Subscription;
   loading = true;
   loadSummary: any;
   nodeAmountTrendOptions: string[] = [...monthlyOptions];
@@ -50,7 +59,12 @@ export class AbstractComponent implements OnInit {
   productsInstancesRankingOption: string;
   productsInstancesTrendOptions: string[] = [...monthlyOptions];
   productsInstancesTrendOption: string;
-  quantitySummary: any;
+  quantitySummary: any = {
+    nodeCount: '',
+    tenantCount: '',
+    productCount: '',
+    instanceCount: '',
+  };
   tenantConsumptionRankingOptions: string[] = [...monthlyOptions];
   tenantConsumptionRankingOption: string;
   tenantGrowTrendOptions: string[] = [...monthlyOptions];
@@ -69,15 +83,39 @@ export class AbstractComponent implements OnInit {
     this.tenantGrowTrendOption = this.tenantGrowTrendOptions[5];
   }
 
-  ngOnInit() {
-    const iconSymbol = document.querySelector('tui-icon-symbol');
-    const symbol = iconSymbol.querySelector('#clock');
+  drawPlatformSummaryDonuts() {
+    const element: HTMLElement = this.platformSummaryHolder.nativeElement;
+    const { clientWidth, clientHeight } = element;
 
-    this.iconId = symbol.id;
-    // TODO: get the icons work
+    this.platformSummaryDonutsConfig.style = {
+      ...this.donutChartConfig.style,
+      ...{
+        width: clientWidth,
+        height: clientHeight,
+        thickness: 15,
+        maxRadius: 65,
+        left: 24,
+        top: 70,
+      },
+    };
 
-    this.fetchData();
+    this.platformSummaryDonutsConfig.legendStyle = {
+      ...this.donutChartConfig.legendStyle,
+      ...{ width: 80 },
+    };
+
+    console.log('this.donutChartConfig:', this.donutChartConfig);
+
+    this.platformSummaryDonutsConfig.donutChartHolder = element;
+    this.platformSummaryDonutsConfig.showLeftLenend = true;
+
+    const platformSummaryDonutsConfig = DonutChartConfig.from(this.platformSummaryDonutsConfig);
+
+    this.platformSummaryDonuts.setConfig(platformSummaryDonutsConfig).datum(this.loadSummary);
+
+    this.platformSummaryDonuts.draw();
   }
+
 
   fetchData() {
     console.log(this.abstractService);
@@ -87,10 +125,31 @@ export class AbstractComponent implements OnInit {
       console.log(this.quantitySummary);
     });
 
-    this.abstractService.getLoadSummary().subscribe(response => {
+    this.abstractService.getLoadSummary(response => {
       this.loadSummary = response;
-      // TODO: adapt the data to donut params
-      console.log(this.loadSummary);
+      this.drawPlatformSummaryDonuts();
+    });
+  }
+
+  ngOnDestroy() {
+    this.listener.unsubscribe();
+  }
+
+  ngOnInit() {
+    // TODO: get the icons work
+
+    this.fetchData();
+  }
+
+  ngAfterViewInit() {
+    setTimeout(() => {
+
+      const widthListener = new ElementWidthListener(this.platformSummaryHolder);
+      this.listener = widthListener.startListen()
+        .subscribe(() => {
+          this.drawPlatformSummaryDonuts();
+          // draw other charts
+        });
     });
   }
 

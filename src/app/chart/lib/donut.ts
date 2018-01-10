@@ -92,6 +92,15 @@ export class DonutChart implements ChartBase {
       palette = this.config.style.colorSchema.palette;
     }
 
+    this.color = d3.scaleOrdinal().range(palette);
+
+    this.color.domain(columns);
+
+    // due to the differences between: showLengend or not
+    if (!config.showLeftLenend) {
+      return;
+    }
+
     const legend = d3.select(config.donutChartHolder).append('svg')
       .attr('class', 'legend')
       .attr('width', legendStyle.width)
@@ -106,10 +115,6 @@ export class DonutChart implements ChartBase {
       .attr('transform', function(d, i) {
         return 'translate(0,' + i * 20 + ')';
       });
-
-    this.color = d3.scaleOrdinal().range(palette);
-
-    this.color.domain(columns);
 
     legend.append('rect')
       .attr('width', legendStyle.rectWidth)
@@ -144,13 +149,16 @@ export class DonutChart implements ChartBase {
 
         const r: any = style.maxRadius; // radius(d.sum);
 
+        // due to the differences between: showLengend or not
+        const left = config.showLeftLenend ? (config.style.left + config.legendStyle.width +
+            idx * (config.style.left + config.legendStyle.width + 2 * config.style.maxRadius)) :
+        (config.style.left + idx * (config.style.left  + 2 * config.style.maxRadius));
+
         const path: any = d3.select(this)
           .attr('width', r * 2)
           .attr('height', r * 2)
           .style('position', 'absolute')
-          .style('left',
-            config.style.left + config.legendStyle.width +
-            idx * (config.style.left + config.legendStyle.width + 2 * config.style.maxRadius))
+          .style('left', left)
           .style('top', config.style.top - 20)
           .append('g')
           .attr('transform', 'translate(' + r + ',' + r + ')');
@@ -190,21 +198,24 @@ export class DonutChart implements ChartBase {
       .attr('class', 'label');
 
     label.append('tspan')
-      .attr('class', 'label-name')
-      .attr('x', 0)
-      .attr('dy', '-.2em')
-      .text(function(d) {
-        return d.type === 'blank' ? '' : d.state;
-      });
-
-    label.append('tspan')
       .attr('class', 'label-value')
-      .attr('x', 0)
-      .attr('dy', '1.1em')
+      .attr('x', '-1em')
+      .attr('dy', 0)
+      // .attr('dy', '1.1em')
       .text(function(d) {
         const value: any = d.parts[0];
         const formated = f((part ? part.data : value) / d.sum );
         return formated;
+      });
+
+    label.append('tspan')
+      .attr('class', 'label-name')
+      .attr('x', '-2em')
+      // .attr('dy', '-.2em')
+      .attr('dy', '1em')
+      .style('fontSize', '10px')
+      .text(function(d) {
+        return d.type === 'blank' ? '' : d.state;
       });
 
   }
@@ -214,7 +225,9 @@ export class DonutChart implements ChartBase {
 export class DonutChartConfig {
 
   donutChartHolder: any; // className of donut's container
-  legend = new LegendConfig();
+
+  showLeftLenend = true;
+  showBottomLabel = false;
 
   style: any = {
     colorSchema: new ColorSchema(),
@@ -226,6 +239,7 @@ export class DonutChartConfig {
     top: 30,
   };
 
+  legend = new LegendConfig();
   legendStyle: any = {
     width: 160,
     rectWidth: 18,

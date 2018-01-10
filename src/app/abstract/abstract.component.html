@@ -20,22 +20,22 @@
             <div class="box">
               <span>
                 <svg [tuiIcon]="TODO" size="lg"></svg>
-                <p class="amount">210</p>
+                <p class="amount">{{quantitySummary.nodeCount}}</p>
                 <p class="description">主机总数</p>
               </span>
               <span>
                 <svg [tuiIcon]="TODO" size="lg"></svg>
-                <p class="amount">62</p>
+                <p class="amount">{{quantitySummary.tenantCount}}</p>
                 <p class="description">租户总数</p>
               </span>
               <span>
                 <svg [tuiIcon]="TODO" size="lg"></svg>
-                <p class="amount">7</p>
+                <p class="amount">{{quantitySummary.productCount}}</p>
                 <p class="description">云产品类型</p>
               </span>
               <span>
                 <svg [tuiIcon]="TODO" size="lg"></svg>
-                <p class="amount">538</p>
+                <p class="amount">{{quantitySummary.instanceCount}}</p>
                 <p class="description">实例总数</p>
               </span>
             </div>
@@ -55,7 +55,11 @@
                 {{option | tuiDefault }}
               </tui-select-option>
             </tui-select>
-            <div>here are some of donut charts</div>
+            <div #platformSummaryHolder class="platform-summary-donuts">
+              <!-- here we have three donut charts, the:
+                "average used network";
+                "whole faulty ratio". can't be implemented by backend -->
+            </div>
           </div>
         </div>
         <!--E: summary-->
@@ -73,14 +77,17 @@
               {{option | tuiDefault }}
             </tui-select-option>
           </tui-select>
-          <div>here are 租户增长趋势</div>
+          <div #tenantGrowTrendHolder class="tenant-grow-line">
+
+          </div>
         </div>
       </div>
+      <!--E: section0-->
 
       <div class="main-content section">
 
         <div class="node-load-trend radius-shadow">
-          <h4>主机负载情况</h4>
+          <h4>云产品实例变化趋势</h4>
           <tui-select
             [ngClass]="{ select: true }"
             placeholder="tui select example"
@@ -92,7 +99,7 @@
               {{option | tuiDefault }}
             </tui-select-option>
           </tui-select>
-          <div>here are 主机负载情况</div>
+          <div>here are 云产品实例变化趋势</div>
         </div>
 
         <div class="node-amount-trend radius-shadow">
