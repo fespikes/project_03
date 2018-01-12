@@ -1,2 +1,22 @@
 ABSTRACT:
   NAME: Abstract
+  QUANTITY_SUMMARY: cloud platform summary
+  NODES_AMOUNT: nodes amount
+  TENANT_AMOUNT: tenant amount
+  PRODUCT_TYPE: cloud product types
+  INSTANCES_AMOUNT: instances amount
+  LOAD_SUMMARY: platform summary
+  TENANT_GROW_TREND: tenant grow trend
+  NODE_LOAD_TREND: nodes load trend
+  NODE_AMOUNT_TRAND: node amount trend
+  PRODUCT_INSTANCES_RANKING: product instances ranking
+  AMOUNT: amount
+  INSTANCES_AMOUNT_TREND: instances amount trend
+  PRODUCTS_INSTANCES_TREND: cloud products trend
+  TENANT_CONSUMPTION_TOP7: tenant consumption top7
+
+  LAST: last
+  HOUR: hour
+  HOURS: hours
+  MONTH: month
+  MONTHS: months
