@@ -6,6 +6,7 @@
 
 /****S:common*****/
 $blue: #2481e3
+$h318: 318px
 
 .radius
   border: 0
@@ -44,6 +45,8 @@ $blue: #2481e3
   right: 40px
   top: 10px
 
+.h318px
+  height: $h318
 /****S:common*****/
 
 .tui-layout-body
@@ -111,11 +114,12 @@ $blue: #2481e3
       padding: 10px
       background: $blue
       color: #fff
+      position: relative
 
       svg
         position: absolute
-        left: 0
-        top: 0
+        left: 30px
+        top: 25px
         width: 50px
         height: 50px
         @extend .radius
@@ -131,6 +135,7 @@ $blue: #2481e3
         overflow: hidden
         text-overflow: ellipsis
         font-size: 30px
+
 
       .description
         font-size: 14px
@@ -163,6 +168,11 @@ $blue: #2481e3
   flex-grow: 1
 
   @extend .margin-right
+
+  .amount
+    position: absolute
+    right: 225px
+    top: 18px
 
 .instances-amount-trend
   flex-basis: 820px
