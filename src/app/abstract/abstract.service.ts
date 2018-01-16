@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 
 import { TecApiService } from '../shared';
-
+import { TranslateService } from '../i18n';
 
 @Injectable()
 export class AbstractService {
@@ -13,7 +13,28 @@ export class AbstractService {
 
   constructor(
     private api: TecApiService,
+    private translateService: TranslateService,
   ) { }
+
+  getSelectOptions(type?: string) {
+    let result: any[] = [];
+    const len: number = (type === 'hour' ? 24 : 12);  // 12 months
+    const translate = this.translateService.translateKey;
+
+    for (let i = len; i > 0; i--) {
+      const str: string = i === 1 ?
+        ( i + ' ' + (type === 'hour' ? this.translateService.translateKey('ABSTRACT.HOUR')
+                      : this.translateService.translateKey('ABSTRACT.MONTH')))
+        : (i + ' ' + (type === 'hour' ? this.translateService.translateKey('ABSTRACT.HOURS')
+                    : this.translateService.translateKey('ABSTRACT.MONTHS')));
+      result = [{
+        label: this.translateService.translateKey('ABSTRACT.LAST') + ' ' + str,
+        value: i,
+      }].concat(result);
+    }
+
+    return result;
+  }
 
   // 1.云平台概览：
   getQuantitySummary(): Observable<any> {
@@ -21,8 +42,8 @@ export class AbstractService {
   }
 
   // 2.平台概览
-  getLoadSummary(callback) {
-    this.api.get(`platforms/loads/summaries`, this.config).subscribe(response => {
+  getLoadSummary(callback, hour?: number) {
+    this.api.get(`platforms/loads/summaries`, {recentHour: hour}).subscribe(response => {
       callback(this.adaptLoadSummary(response));
     });
   }
@@ -57,8 +78,8 @@ export class AbstractService {
   }
 
   // 3.租户增长趋势
-  getTenantCountTrend(callback) {
-    return this.api.get(`tenants/counts/trend`, this.config).subscribe(response => {
+  getTenantCountTrend(callback, month?: number) {
+    return this.api.get(`tenants/counts/trend`, {recentMonth: month}).subscribe(response => {
       callback(this.adaptToSingleLineData(response));
     });
   }
@@ -81,8 +102,8 @@ export class AbstractService {
   }
 
   // 4.云产品实例变化趋势
-  getNodesLoadTrend(callback) {
-    return this.api.get(`nodes/loads/trend`, this.config).subscribe(response => {
+  getNodesLoadTrend(callback, hour?: number) {
+    return this.api.get(`nodes/loads/trend`, {recentHour: hour}).subscribe(response => {
       callback(this.adaptToMultipleCurveData(response));
     });
   }
@@ -118,15 +139,15 @@ export class AbstractService {
   }
 
   // 5.主机变化趋势：
-  getNodesCountTrend(callback) {
-    return this.api.get(`nodes/count/trend`, this.config).subscribe(response => {
+  getNodesCountTrend(callback, month?: number) {
+    return this.api.get(`nodes/count/trend`, {recentMonth: month}).subscribe(response => {
       callback(this.adaptToSingleLineData(response));
     });
   }
 
   // 6.云产品实例排行：
-  getInstancesTemplatesCountRank(callback) {
-    return this.api.get(`instances/templates/count/rank`, this.config).subscribe(response => {
+  getInstancesTemplatesCountRank(callback, month?: number) {
+    return this.api.get(`instances/templates/count/rank`, {recentMonth: month}).subscribe(response => {
       callback(this.adaptInstancesTemplatesCountData(response));
     });
   }
@@ -167,15 +188,15 @@ export class AbstractService {
   }
 
   // 7.实例总量变化趋势：
-  getInstancesCountTrend(callback) {
-    return this.api.get(`instances/count/trend`, this.config).subscribe(response => {
+  getInstancesCountTrend(callback, month?: number) {
+    return this.api.get(`instances/count/trend`, {recentMonth: month}).subscribe(response => {
       callback(this.adaptToSingleLineData(response));
     });
   }
 
   // 8.云产品实例变化趋势
-  getProductInstancesCountTrend(callback) {
-    return this.api.get(`instances/products/count/trend`, this.config).subscribe(response => {
+  getProductInstancesCountTrend(callback, month?: number) {
+    return this.api.get(`instances/products/count/trend`, {recentMonth: month}).subscribe(response => {
       callback(this.adaptToMultipleBrokenLineData(response));
     });
   }
@@ -206,15 +227,30 @@ export class AbstractService {
   }
 
   // 9.租户消费top7
-  getTenantsConsumptionsRank(callback) {
-    return this.api.get(`tenants/consumptions/rank`, this.config).subscribe(response => {
+  getTenantsConsumptionsRank(callback, month?: number) {
+    return this.api.get(`tenants/consumptions/rank`, {recentMonth: month}).subscribe(response => {
       callback(this.adaptTenantsConsumptionData(response));  // XXXXX
     });
   }
 
   adaptTenantsConsumptionData(data) {
-    // TODO: adapt the changed api data;
-    const result = { };
+    const xs: any[] = [];
+    const consumptions = [...data.consumptions];
+    let result: any = {};
+    const dt: any[] = [];
+
+    consumptions.forEach(consumption => {
+      xs.push(consumption.tenantName);
+      dt.push(consumption.totalAmount);
+    });
+
+    result = {
+      xs: xs,
+      series: [{
+        // topic: '',
+        data: dt,
+      }],
+    };
 
     return result;
   }

@@ -22,22 +22,26 @@ import {
   LineChartBuilder,
   LineChartConfig,
 } from '../chart/lib';
+
+import { TranslateService } from '../i18n';
 import { ElementWidthListener } from '../chart/element-width-listener';
 
-const getSelectOptions = function(type?: string, num?: number) {
+// TODO: intl
+const getSelectOptions = function(type?: string) {
   let result: any[] = [];
-  const len = num || 12;
+  const len: number = (type === 'hour' ? 24 : 12);  // 12 months
 
   for (let i = len; i > 0; i--) {
     const str: string = i === 1 ? ('last ' + i + (type === 'hour' ? ' hour' : ' month'))
       : ('last ' + i + (type === 'hour' ? ' hours' : ' months'));
-    result = [str].concat(result);
+    result = [{
+      label: str,
+      value: i,
+    }].concat(result);
   }
 
   return result;
 };
-const hourOptions = getSelectOptions('hour');
-const monthlyOptions = getSelectOptions();
 
 @Component({
   selector: 'tec-abstract',
@@ -56,31 +60,39 @@ export class AbstractComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild('productsInstancesTrendHolder') productsInstancesTrendHolder: ElementRef;
   @ViewChild('tenantConsumptionRankingHolder') tenantConsumptionRankingHolder: ElementRef;
 
+  @ViewChild('loadsSelect') loadsSelect;
+  @ViewChild('tenantGrowTrendSelect') tenantGrowTrendSelect;
+  @ViewChild('nodeLoadTrendSelect') nodeLoadTrendSelect;
+  @ViewChild('nodeAmountTrendSelect') nodeAmountTrendSelect;
+  @ViewChild('productsInstancesRankingSelect') productsInstancesRankingSelect;
+  @ViewChild('instancesAmountTrendSelect') instancesAmountTrendSelect;
+  @ViewChild('productsInstancesTrendSelect') productsInstancesTrendSelect;
+  @ViewChild('tenantConsumptionRankingSelect') tenantConsumptionRankingSelect;
+
+
   iconId: string;
-  instancesAmountTrendOptions: string[] = [...monthlyOptions];
-  instancesAmountTrendOption: string;
+  instancesAmountTrendOptions: object[];
+  instancesAmountTrendOption: object;
   listener: Subscription;
+
   loading = true;
-  nodeAmountTrendOptions: string[] = [...monthlyOptions];
-  nodeAmountTrendOption: string;
-  nodeLoadTrendOptions: string[] = [...hourOptions];
-  nodeLoadTrendOption: string;
-  platformSummaryOptions: string[] = [...hourOptions];
-  platformSummaryOption: string;
-  productsInstancesRankingOptions: string[] = [...monthlyOptions];
-  productsInstancesRankingOption: string;
-  productsInstancesTrendOptions: string[] = [...monthlyOptions];
-  productsInstancesTrendOption: string;
+  hourOptions: object[];
+  monthlyOptions: object[];
+
+  nodeAmountTrendOption: object;
+  nodeLoadTrendOptions: object;
+  nodeLoadTrendOption: object;
+  platformSummaryOption: object;
+  productsInstancesRankingOption: object;
+  productsInstancesTrendOption: object;
   quantitySummary: any = {
     nodeCount: '',
     tenantCount: '',
     productCount: '',
     instanceCount: '',
   };
-  tenantConsumptionRankingOptions: string[] = [...monthlyOptions];
-  tenantConsumptionRankingOption: string;
-  tenantGrowTrendOptions: string[] = [...monthlyOptions];
-  tenantGrowTrendOption: string;
+  tenantConsumptionRankingOption: object;
+  tenantGrowTrendOption: object;
 
 
   // S: charts related
@@ -128,15 +140,19 @@ export class AbstractComponent implements OnInit, AfterViewInit, OnDestroy {
 
   constructor(
     private abstractService: AbstractService,
+    private translateService: TranslateService,
   ) {
-    this.instancesAmountTrendOption = this.instancesAmountTrendOptions[5];
-    this.nodeAmountTrendOption = this.nodeAmountTrendOptions[5];
-    this.nodeLoadTrendOption = this.nodeLoadTrendOptions[0];
-    this.platformSummaryOption = this.platformSummaryOptions[0];
-    this.productsInstancesRankingOption = this.productsInstancesRankingOptions[5];
-    this.productsInstancesTrendOption = this.productsInstancesTrendOptions[5];
-    this.tenantConsumptionRankingOption = this.tenantConsumptionRankingOptions[5];
-    this.tenantGrowTrendOption = this.tenantGrowTrendOptions[5];
+    this.hourOptions = this.abstractService.getSelectOptions('hour');
+    this.monthlyOptions = this.abstractService.getSelectOptions();
+
+    this.instancesAmountTrendOption = this.monthlyOptions[5];
+    this.nodeAmountTrendOption = this.monthlyOptions[5];
+    this.nodeLoadTrendOption = this.hourOptions[23];
+    this.platformSummaryOption = this.hourOptions[0];
+    this.productsInstancesRankingOption = this.monthlyOptions[5];
+    this.productsInstancesTrendOption = this.monthlyOptions[5];
+    this.tenantConsumptionRankingOption = this.monthlyOptions[5];
+    this.tenantGrowTrendOption = this.monthlyOptions[5];
   }
 
   drawPlatformSummary() {
@@ -326,6 +342,70 @@ export class AbstractComponent implements OnInit, AfterViewInit, OnDestroy {
     this.tenantConsumptionRankChart.draw();
   }
 
+  // 2.平台概览
+  getLoadSummary(hour?: number) {
+    this.abstractService.getLoadSummary(adjustedData => {
+      this.loadSummary = adjustedData;
+      this.drawPlatformSummary();
+    }, hour);
+  }
+
+  // 3.租户增长趋势
+  getTenantCountTrend(month?: number) {
+    this.abstractService.getTenantCountTrend(adjustedData => {
+      this.tenantGrowTrendData = adjustedData;
+      this.drawTenantGrowTrend();
+    }, month);
+  }
+
+  // 4.云产品实例变化趋势
+  getNodesLoadTrend(hour?: number) {
+    this.abstractService.getNodesLoadTrend(adjustedData => {
+      this.nodeLoadTrendData = adjustedData;
+      this.drawNodeLoadTrend();
+    }, hour);
+  }
+
+  // 5.主机变化趋势
+  getNodesCountTrend(month?: number) {
+    this.abstractService.getNodesCountTrend(adjustedData => {
+      this.nodeAmountTrendData = adjustedData;
+      this.drawNodeAmountTrend();
+    }, month);
+  }
+
+  // 6.云产品实例排行
+  getInstancesTemplatesCountRank(month?: number) {
+    this.abstractService.getInstancesTemplatesCountRank(adjustedData => {
+      this.instancesTemplatesCountData = adjustedData;
+      this.drawInstancesTemplatesCount();
+    }, month);
+  }
+
+  // 7.实例总量变化趋势
+  getInstancesCountTrend(month?: number) {
+    this.abstractService.getInstancesCountTrend(adjustedData => {
+      this.instancesAmountTrendData = adjustedData;
+      this.drawInstancesAmountTrend();
+    }, month);
+  }
+
+  // 8.云产品实例变化趋势
+  getProductInstancesCountTrend(month?: number) {
+    this.abstractService.getProductInstancesCountTrend(adjustedData => {
+      this.productsInstancesTrendData = adjustedData;
+      this.drawproductsInstancesTrend();
+    }, month);
+  }
+
+  // 9.租户消费top7
+  getTenantsConsumptionsRank(month?: number) {
+    this.abstractService.getTenantsConsumptionsRank(adjustedData => {
+      this.tenantConsumptionRankData = adjustedData;
+      this.drawTenantConsumptionRanking();
+    }, month);
+  }
+
   fetchData() {
     // TODO: loading optimization
     // currently, this solution has some weakness:
@@ -337,53 +417,14 @@ export class AbstractComponent implements OnInit, AfterViewInit, OnDestroy {
       this.quantitySummary = response;
     });
 
-    // 2.平台概览
-    this.abstractService.getLoadSummary(adjustedData => {
-      this.loadSummary = adjustedData;
-      this.drawPlatformSummary();
-    });
-
-    // 3.租户增长趋势
-    this.abstractService.getTenantCountTrend(adjustedData => {
-      this.tenantGrowTrendData = adjustedData;
-      this.drawTenantGrowTrend();
-    });
-
-    // 4.云产品实例变化趋势
-    this.abstractService.getNodesLoadTrend(adjustedData => {
-      this.nodeLoadTrendData = adjustedData;
-      this.drawNodeLoadTrend();
-    });
-
-    // 5.主机变化趋势
-    this.abstractService.getNodesCountTrend(adjustedData => {
-      this.nodeAmountTrendData = adjustedData;
-      this.drawNodeAmountTrend();
-    });
-
-    // 6.云产品实例排行
-    this.abstractService.getInstancesTemplatesCountRank(adjustedData => {
-      this.instancesTemplatesCountData = adjustedData;
-      this.drawInstancesTemplatesCount();
-    });
-
-    // 7.实例总量变化趋势
-    this.abstractService.getInstancesCountTrend(adjustedData => {
-      this.instancesAmountTrendData = adjustedData;
-      this.drawInstancesAmountTrend();
-    });
-
-    // 8.云产品实例变化趋势
-    this.abstractService.getProductInstancesCountTrend(adjustedData => {
-      this.productsInstancesTrendData = adjustedData;
-      this.drawproductsInstancesTrend();
-    });
-
-    // 9.租户消费top7
-    this.abstractService.getTenantsConsumptionsRank(adjustedData => {
-      this.tenantConsumptionRankData = adjustedData;
-      this.drawTenantConsumptionRanking();
-    });
+    this.getLoadSummary();
+    this.getTenantCountTrend();
+    this.getNodesLoadTrend();
+    this.getNodesCountTrend();
+    this.getInstancesTemplatesCountRank();
+    this.getInstancesCountTrend();
+    this.getProductInstancesCountTrend();
+    this.getTenantsConsumptionsRank();
   }
 
   ngOnDestroy() {
@@ -396,6 +437,16 @@ export class AbstractComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngAfterViewInit() {
+
+    this.loadsSelect.registerOnChange(_ => this.getLoadSummary(_));
+    this.tenantGrowTrendSelect.registerOnChange(_ => this.getTenantCountTrend(_));
+    this.nodeLoadTrendSelect.registerOnChange(_ => this.getNodesLoadTrend(_));
+    this.nodeAmountTrendSelect.registerOnChange(_ => this.getNodesCountTrend(_));
+    this.productsInstancesRankingSelect.registerOnChange(_ => this.getInstancesTemplatesCountRank(_));
+    this.instancesAmountTrendSelect.registerOnChange(_ => this.getInstancesCountTrend(_));
+    this.productsInstancesTrendSelect.registerOnChange(_ => this.getProductInstancesCountTrend(_));
+    this.tenantConsumptionRankingSelect.registerOnChange(_ => this.getTenantsConsumptionsRank(_));
+
     setTimeout(() => {
 
       const widthListener = new ElementWidthListener(this.platformSummaryHolder);
@@ -405,8 +456,10 @@ export class AbstractComponent implements OnInit, AfterViewInit, OnDestroy {
           this.drawTenantGrowTrend();
           this.drawNodeLoadTrend();
           this.drawNodeAmountTrend();
+          this.drawInstancesTemplatesCount();
           this.drawInstancesAmountTrend();
-
+          this.drawproductsInstancesTrend();
+          this.drawTenantConsumptionRanking();
           // draw other charts
         });
     });

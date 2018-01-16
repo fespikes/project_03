@@ -2,12 +2,6 @@
 <div class="tui-layout-body">
 
   <div class="tui-layout-vertical">
-    <div class="tui-layout-main-nav">
-      <span class="page-title f14b">星环大数据云平台</span>
-      <svg tuiIcon="clock" size="lg"></svg>
-      <span>创建时间:</span>
-      <span>2017/4/13 10:30AM</span>
-    </div>
 
     <div class="tui-layout-main-container flex-auto">
 
@@ -16,43 +10,45 @@
         <div class="summary">
 
           <div class="quantity radius-shadow">
-            <h4>云平台概览</h4>
+            <h4>{{'ABSTRACT.QUANTITY_SUMMARY' | translate}}</h4>
             <div class="box">
               <span>
                 <svg tuiIcon="pile" size="lg"></svg>
                 <p class="amount">{{quantitySummary.nodeCount}}</p>
-                <p class="description">主机总数</p>
+                <p class="description">{{'ABSTRACT.NODES_AMOUNT' | translate}}</p>
               </span>
               <span>
                 <svg tuiIcon="TODO" size="lg"></svg>
                 <p class="amount">{{quantitySummary.tenantCount}}</p>
-                <p class="description">租户总数</p>
+                <p class="description">{{'ABSTRACT.TENANT_AMOUNT' | translate}}</p>
               </span>
               <span>
                 <svg tuiIcon="TODO" size="lg"></svg>
                 <p class="amount">{{quantitySummary.productCount}}</p>
-                <p class="description">云产品类型</p>
+                <p class="description">{{'ABSTRACT.PRODUCT_TYPE' | translate}}</p>
               </span>
               <span>
                 <svg tuiIcon="TODO" size="lg"></svg>
                 <p class="amount">{{quantitySummary.instanceCount}}</p>
-                <p class="description">实例总数</p>
+                <p class="description">{{'ABSTRACT.INSTANCES_AMOUNT' | translate}}</p>
               </span>
             </div>
           </div>
           <!--E: quantity-->
 
           <div class="loads radius-shadow">
-            <h4>平台概览</h4>
+            <h4>{{'ABSTRACT.LOAD_SUMMARY' | translate}}</h4>
             <tui-select
               [ngClass]="{ select: true }"
               placeholder="tui select example"
-              [(ngModel)]="platformSummaryOption"
+              [(ngModel)]="platformSummaryOption.label"
+              #loadsSelect
             >
               <tui-select-option
-                *ngFor="let option of platformSummaryOptions"
-                [value]="option">
-                {{option | tuiDefault }}
+                *ngFor="let option of hourOptions"
+                [value]="option.value"
+                [label]="option.label">
+                {{option.label | tuiDefault }}
               </tui-select-option>
             </tui-select>
             <div #platformSummaryHolder class="platform-summary-donuts">
@@ -65,16 +61,18 @@
         <!--E: summary-->
 
         <div class="tenant-grow-trend radius-shadow">
-          <h4>租户增长趋势</h4>
+          <h4>{{'ABSTRACT.TENANT_GROW_TREND' | translate}}</h4>
           <tui-select
             [ngClass]="{ select: true }"
             placeholder="tui select example"
-            [(ngModel)]="tenantGrowTrendOption"
+            [(ngModel)]="tenantGrowTrendOption.label"
+            #tenantGrowTrendSelect
           >
             <tui-select-option
-              *ngFor="let option of tenantGrowTrendOptions"
-              [value]="option">
-              {{option | tuiDefault }}
+              *ngFor="let option of monthlyOptions"
+              [value]="option.value"
+              [label]="option.label">
+              {{option.label | tuiDefault }}
             </tui-select-option>
           </tui-select>
           <div #tenantGrowTrendHolder class="tenant-grow-line h318px"></div>
@@ -85,32 +83,36 @@
       <div class="main-content section">
 
         <div class="node-load-trend radius-shadow">
-          <h4>云产品实例变化趋势</h4>
+          <h4>{{'ABSTRACT.NODE_LOAD_TREND' | translate}}</h4>
           <tui-select
             [ngClass]="{ select: true }"
             placeholder="tui select example"
-            [(ngModel)]="nodeLoadTrendOption"
+            [(ngModel)]="nodeLoadTrendOption.label"
+            #nodeLoadTrendSelect
           >
             <tui-select-option
-              *ngFor="let option of nodeLoadTrendOptions"
-              [value]="option">
-              {{option | tuiDefault }}
+              *ngFor="let option of hourOptions"
+              [value]="option.value"
+              [label]="option.label">
+              {{option.label | tuiDefault }}
             </tui-select-option>
           </tui-select>
           <div #nodeLoadTrendHolder class="node-load-lines h318px"></div>
         </div>
 
         <div class="node-amount-trend radius-shadow">
-          <h4>主机变化趋势</h4>
+          <h4>{{'ABSTRACT.NODE_AMOUNT_TRAND' | translate}}</h4>
           <tui-select
             [ngClass]="{ select: true }"
             placeholder="tui select example"
-            [(ngModel)]="nodeAmountTrendOption"
+            [(ngModel)]="nodeAmountTrendOption.label"
+            #nodeAmountTrendSelect
           >
             <tui-select-option
-              *ngFor="let option of nodeAmountTrendOptions"
-              [value]="option">
-              {{option | tuiDefault }}
+              *ngFor="let option of monthlyOptions"
+              [value]="option.value"
+              [label]="option.label">
+              {{option.label | tuiDefault }}
             </tui-select-option>
           </tui-select>
           <div #nodeAmountTrendHolder class="h318px"></div>
@@ -119,32 +121,36 @@
 
       <div class="main-content section">
         <div class="products-instances-ranking radius-shadow">
-          <h4>云产品实例排行</h4>
-          <span class="amount">总数: {{'321'}}</span>
+          <h4>{{'ABSTRACT.PRODUCT_INSTANCES_RANKING' | translate}}</h4>
+          <span class="amount">{{'ABSTRACT.AMOUNT' | translate}}{{'321'}}</span>
           <tui-select
             [ngClass]="{ select: true }"
             placeholder="tui select example"
-            [(ngModel)]="productsInstancesRankingOption"
+            [(ngModel)]="productsInstancesRankingOption.label"
+            #productsInstancesRankingSelect
           >
             <tui-select-option
-              *ngFor="let option of productsInstancesRankingOptions"
-              [value]="option">
-              {{option | tuiDefault }}
+              *ngFor="let option of monthlyOptions"
+              [value]="option.value"
+              [label]="option.label">
+              {{option.label | tuiDefault }}
             </tui-select-option>
           </tui-select>
           <div #productsInstancesRankingHolder class="h318px"></div>
         </div>
         <div class="instances-amount-trend radius-shadow">
-          <h4>实例总量变化趋势</h4>
+          <h4>{{'ABSTRACT.INSTANCES_AMOUNT_TREND' | translate}}</h4>
           <tui-select
             [ngClass]="{ select: true }"
             placeholder="tui select example"
-            [(ngModel)]="instancesAmountTrendOption"
+            [(ngModel)]="instancesAmountTrendOption.label"
+            #instancesAmountTrendSelect
           >
             <tui-select-option
-              *ngFor="let option of instancesAmountTrendOptions"
-              [value]="option">
-              {{option | tuiDefault }}
+              *ngFor="let option of monthlyOptions"
+              [value]="option.value"
+              [label]="option.label">
+              {{option.label | tuiDefault }}
             </tui-select-option>
           </tui-select>
           <div #instancesAmountTrendHolder class="h318px"></div>
@@ -153,31 +159,35 @@
 
       <div class="main-content section">
         <div class="products-instances-trend radius-shadow">
-          <h4>云产品实例变化趋势</h4>
+          <h4>{{'ABSTRACT.PRODUCTS_INSTANCES_TREND' | translate}}</h4>
           <tui-select
             [ngClass]="{ select: true }"
             placeholder="tui select example"
-            [(ngModel)]="productsInstancesTrendOption"
+            [(ngModel)]="productsInstancesTrendOption.label"
+            #productsInstancesTrendSelect
           >
             <tui-select-option
-              *ngFor="let option of productsInstancesTrendOptions"
-              [value]="option">
-              {{option | tuiDefault }}
+              *ngFor="let option of monthlyOptions"
+              [value]="option.value"
+              [label]="option.label">
+              {{option.label | tuiDefault }}
             </tui-select-option>
           </tui-select>
           <div #productsInstancesTrendHolder class="h318px"></div>
         </div>
         <div class="tenant-consumption-ranking radius-shadow">
-          <h4>租户消费top7</h4>
+          <h4>{{'ABSTRACT.TENANT_CONSUMPTION_TOP7' | translate}}</h4>
           <tui-select
             [ngClass]="{ select: true }"
             placeholder="tui select example"
-            [(ngModel)]="tenantConsumptionRankingOption"
+            [(ngModel)]="tenantConsumptionRankingOption.label"
+            #tenantConsumptionRankingSelect
           >
             <tui-select-option
-              *ngFor="let option of tenantConsumptionRankingOptions"
-              [value]="option">
-              {{option | tuiDefault }}
+              *ngFor="let option of monthlyOptions"
+              [value]="option.value"
+              [label]="option.label">
+              {{option.label | tuiDefault }}
             </tui-select-option>
           </tui-select>
           <div #tenantConsumptionRankingHolder class="h318px"></div>
