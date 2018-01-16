@@ -26,23 +26,6 @@ import {
 import { TranslateService } from '../i18n';
 import { ElementWidthListener } from '../chart/element-width-listener';
 
-// TODO: intl
-const getSelectOptions = function(type?: string) {
-  let result: any[] = [];
-  const len: number = (type === 'hour' ? 24 : 12);  // 12 months
-
-  for (let i = len; i > 0; i--) {
-    const str: string = i === 1 ? ('last ' + i + (type === 'hour' ? ' hour' : ' month'))
-      : ('last ' + i + (type === 'hour' ? ' hours' : ' months'));
-    result = [{
-      label: str,
-      value: i,
-    }].concat(result);
-  }
-
-  return result;
-};
-
 @Component({
   selector: 'tec-abstract',
   templateUrl: './abstract.component.html',
@@ -463,6 +446,6 @@ export class AbstractComponent implements OnInit, AfterViewInit, OnDestroy {
           // draw other charts
         });
     });
-  }
 
+  }
 }
