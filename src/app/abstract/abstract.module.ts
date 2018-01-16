@@ -23,10 +23,7 @@ import { AbstractService } from './abstract.service';
   ],
   providers: [
     AbstractService,
-<<<<<<< HEAD
     TranslateService,
-=======
->>>>>>> 4ff3d12... feat: adapt api data and show corresponding chart
     TuiModalService,
   ],
 })

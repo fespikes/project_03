@@ -198,6 +198,7 @@ export class AbstractComponent implements OnInit, AfterViewInit, OnDestroy {
       ...{
         width: clientWidth,
         height: clientHeight,
+        curveStyle: 'curveCardinal',
       },
     };
 
@@ -285,6 +286,7 @@ export class AbstractComponent implements OnInit, AfterViewInit, OnDestroy {
     this.productsInstancesTrendConfig = {
       ...this.productsInstancesTrendConfig,
       ...{
+        curveStyle: 'curveLinear',
         width: clientWidth,
         height: clientHeight,
       },

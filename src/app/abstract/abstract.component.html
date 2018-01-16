@@ -30,32 +30,32 @@
               <p class="amount">{{quantitySummary.instanceCount}}</p>
               <p class="description">{{'ABSTRACT.INSTANCES_AMOUNT' | translate}}</p>
             </span>
-            </div>
-          </div>
-          <!--E: quantity-->
-
-          <div class="loads radius-shadow">
-            <h4>{{'ABSTRACT.LOAD_SUMMARY' | translate}}</h4>
-            <tui-select
-              [ngClass]="{ select: true }"
-              placeholder="tui select example"
-              [(ngModel)]="platformSummaryOption.label"
-              #loadsSelect
-              >
-              <tui-select-option
-                *ngFor="let option of hourOptions"
-                [value]="option.value"
-                [label]="option.label">
-                {{option.label | tuiDefault }}
-              </tui-select-option>
-            </tui-select>
-            <div #platformSummaryHolder class="platform-summary-donuts">
-              <!-- here we have three donut charts, the:
-                "average used network";
-                "whole faulty ratio". can't be implemented by backend -->
-            </div>
           </div>
         </div>
+        <!--E: quantity-->
+
+        <div class="loads radius-shadow">
+          <h4>{{'ABSTRACT.LOAD_SUMMARY' | translate}}</h4>
+          <tui-select
+            [ngClass]="{ select: true }"
+            placeholder="tui select example"
+            [(ngModel)]="platformSummaryOption.label"
+            #loadsSelect
+          >
+            <tui-select-option
+              *ngFor="let option of hourOptions"
+              [value]="option.value"
+              [label]="option.label">
+              {{option.label | tuiDefault }}
+            </tui-select-option>
+          </tui-select>
+          <div #platformSummaryHolder class="platform-summary-donuts">
+            <!-- here we have three donut charts, the:
+              "average used network";
+              "whole faulty ratio". can't be implemented by backend -->
+          </div>
+        </div>
+      </div>
       <!--E: summary-->
 
       <div class="tenant-grow-trend radius-shadow">

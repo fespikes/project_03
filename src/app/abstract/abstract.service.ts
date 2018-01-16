@@ -52,15 +52,15 @@ export class AbstractService {
 
   adaptLoadSummary(quantitySummary) {
     const obj = {...quantitySummary};
-    const result = [];
+    const result: models.Donut[] = [];
 
     delete obj.startTime;
     delete obj.endTime;
 
     Object.keys(obj).forEach(key => {
 
-      const parts = [];
-      const columns = [];
+      const parts: number[] = [];
+      const columns: string[] = [];
 
       obj[key].forEach(part => {
         parts.push(part.value);
@@ -87,12 +87,12 @@ export class AbstractService {
   }
 
   adaptToSingleLineData(data) {
-    const arr = [];
-    let result: any ;
+    const arr: models.LinePoint[] = [];
+    let result: models.LineChartData[] ;
 
     data.counts.forEach(item => {
       arr.push({
-        x: new Date(item.time).toISOString(),  // .slice(0, 10),
+        x: new Date(item.time),  // .slice(0, 10),
         y: item.count,
       });
     });
@@ -134,7 +134,7 @@ export class AbstractService {
       });
     });
 
-    const result: any[] = [];
+    const result: models.MultipleCurveData[] = [];
     keys.forEach(key => result.push(resultObj[key]));
 
     return result;
@@ -157,14 +157,12 @@ export class AbstractService {
   adaptInstancesTemplatesCountData(data) {
     const counts = [...data.counts];
     const templateCounts = [...data.counts[0].templateCounts];
-    const xs: any[] = [];
-    const topics: any[] = [];
+    const xs: string[] = [];
+    const topics: string[] = [];
     templateCounts.forEach(obj => topics.push(obj.type));
 
     const series: any[] = [];
-    const resultObj = {
-
-    };
+    const resultObj = { };
     topics.forEach(topic => resultObj[topic] = {
       topic: topic,
       data: [],
@@ -181,7 +179,7 @@ export class AbstractService {
 
     topics.forEach(topic => series.push(resultObj[topic]));
 
-    const result = {
+    const result: models.InstancesTemplatesCount = {
       xs: xs,
       series: series,
       totalCount: data.totalCount,
@@ -205,7 +203,7 @@ export class AbstractService {
   }
 
   adaptToMultipleBrokenLineData(data) {
-    const result: any[] = [];
+    const result: models.MultipleBrokenLine[] = [];
 
     data.forEach(item => {
 
@@ -239,7 +237,7 @@ export class AbstractService {
   adaptTenantsConsumptionData(data) {
     const xs: any[] = [];
     const consumptions = [...data.consumptions];
-    let result: any = {};
+
     const dt: any[] = [];
 
     consumptions.forEach(consumption => {
@@ -247,10 +245,10 @@ export class AbstractService {
       dt.push(consumption.totalAmount);
     });
 
-    result = {
+    const result: models.TenantsConsumption = {
       xs: xs,
       series: [{
-        // topic: '',
+        topic: '',
         data: dt,
       }],
     };

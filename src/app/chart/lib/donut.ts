@@ -266,7 +266,7 @@ export class DonutChartData {
 
 }
 
-class Donut {
+export class Donut {
   state?: string;
   sum?: number;
   columns?: string[];
