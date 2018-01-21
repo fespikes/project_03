@@ -2,11 +2,6 @@
   <tui-submenu-list menuTitle="{{'TENANT.OVERVIEW.TOTAL' | translate}}: {{tenantsCount}}" [items]='submenuItems'></tui-submenu-list>
 </tui-submenu>
 <div class="tui-layout-vertical" [tuiLoading]="loading" tccLoadingHeight="600px">
-  <div class="tui-layout-main-nav">
-    <span (click)="navigateBack()">
-      <svg tuiIcon="angle-left"></svg>{{'TENANT.DETAIL.GO_BACK' | translate}}
-    </span>
-  </div>
   <div class="tui-layout-main-container">
     <div class="tui-layout-main-title">
       {{tenant.name}}

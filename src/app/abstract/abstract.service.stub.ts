@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-import { TimeOption } from './abstract.model';
+import { TimeOption } from '../shared';
 
 export class AbstractServiceStub {
 

@@ -1,10 +1,13 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 
-import { TecApiService } from '../shared';
 import { TranslateService } from '../i18n';
-
-import * as models from './abstract.model';
+import {
+  TecApiService,
+  Donut, LinePoint, LineChartData,
+  MultipleCurveData, InstancesTemplatesCount,
+  MultipleBrokenLine, TenantsConsumption,
+} from '../shared';
 
 @Injectable()
 export class AbstractService {
@@ -17,26 +20,6 @@ export class AbstractService {
     private api: TecApiService,
     private translateService: TranslateService,
   ) { }
-
-  getSelectOptions(type?: string) {
-    let result: models.TimeOption[] = [];
-    const len: number = (type === 'hour' ? 24 : 12);  // 12 months
-    const translate = this.translateService.translateKey;
-
-    for (let i = len; i > 0; i--) {
-      const str: string = i === 1 ?
-        ( i + ' ' + (type === 'hour' ? this.translateService.translateKey('ABSTRACT.HOUR')
-                      : this.translateService.translateKey('ABSTRACT.MONTH')))
-        : (i + ' ' + (type === 'hour' ? this.translateService.translateKey('ABSTRACT.HOURS')
-                    : this.translateService.translateKey('ABSTRACT.MONTHS')));
-      result = [{
-        label: this.translateService.translateKey('ABSTRACT.LAST') + ' ' + str,
-        value: i,
-      }].concat(result);
-    }
-
-    return result;
-  }
 
   // 1.云平台概览：
   getQuantitySummary(): Observable<any> {
@@ -52,7 +35,7 @@ export class AbstractService {
 
   adaptLoadSummary(quantitySummary) {
     const obj = {...quantitySummary};
-    const result: models.Donut[] = [];
+    const result: Donut[] = [];
 
     delete obj.startTime;
     delete obj.endTime;
@@ -87,8 +70,8 @@ export class AbstractService {
   }
 
   adaptToSingleLineData(data) {
-    const arr: models.LinePoint[] = [];
-    let result: models.LineChartData[] ;
+    const arr: LinePoint[] = [];
+    let result: LineChartData[] ;
 
     data.counts.forEach(item => {
       arr.push({
@@ -134,7 +117,7 @@ export class AbstractService {
       });
     });
 
-    const result: models.MultipleCurveData[] = [];
+    const result: MultipleCurveData[] = [];
     keys.forEach(key => result.push(resultObj[key]));
 
     return result;
@@ -179,7 +162,7 @@ export class AbstractService {
 
     topics.forEach(topic => series.push(resultObj[topic]));
 
-    const result: models.InstancesTemplatesCount = {
+    const result: InstancesTemplatesCount = {
       xs: xs,
       series: series,
       totalCount: data.totalCount,
@@ -203,7 +186,7 @@ export class AbstractService {
   }
 
   adaptToMultipleBrokenLineData(data) {
-    const result: models.MultipleBrokenLine[] = [];
+    const result: MultipleBrokenLine[] = [];
 
     data.forEach(item => {
 
@@ -245,7 +228,7 @@ export class AbstractService {
       dt.push(consumption.totalAmount);
     });
 
-    const result: models.TenantsConsumption = {
+    const result: TenantsConsumption = {
       xs: xs,
       series: [{
         topic: '',

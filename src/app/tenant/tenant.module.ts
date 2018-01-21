@@ -4,10 +4,11 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { TuiModalService } from 'tdc-ui';
 
-import { SharedModule } from '../shared';
+import { SharedModule, ChartWrapperComponent } from '../shared';
 import { I18nModule } from '../i18n';
 
 import { TenantService } from './tenant.service';
+import { TenantAbstractService } from './tenant-detail/tenant-abstract/tenant-abstract.service';
 import { TenantRoutingModule } from './tenant-routing.module';
 import { TenantListComponent } from './tenant-list/tenant-list.component';
 import { TenantDetailComponent } from './tenant-detail/tenant-detail.component';
@@ -42,10 +43,13 @@ import { ModalBillCorrectComponent } from './tenant-detail/tenant-bill/modal-bil
     TenantBillComponent,
     ModalBillClearComponent,
     ModalBillCorrectComponent,
+    // XXXX: when imported into shared module, it has error. so changed to here
+    ChartWrapperComponent,
   ],
   providers: [
     TenantService,
     TuiModalService,
+    TenantAbstractService,
   ],
   entryComponents: [
     ModalBillClearComponent,

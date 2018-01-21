@@ -1,32 +1,56 @@
 @import '../../../styles/util'
 
-\:host
-  display: flex
-  flex-direction: column
+// S: common
+.h200
+  height: 200px
+
+.h348
+  height: 348px
+
+.flex-1
   flex: 1
 
-  .row
-    display: flex
-    min-height: 10rem
-    margin-bottom: 1rem
+.flex-2
+  flex: 2
 
-  .panel
-    display: flex
-    background-color: white
-    @include main-container()
+.flex-3
+  flex: 3
 
-    &:last-child
-      margin-left: 1rem
+.flex-5
+  flex: 5
 
-  .flex-1
-    flex: 1
+// E: common
 
-  .flex-2
-    flex: 2
+.row
+  display: flex
+  flex-direction: row
+  align-items: stretch
+  margin-bottom: 10px
 
-  .flex-3
-    flex: 3
+.panel
+  display: flex
+  flex-direction: column
+  background-color: white
+  @include main-container()
+  position: relative
 
-  .flex-5
-    flex: 5
+  &:last-child
+    margin-left: 10px
+
+  h5
+    margin: 0
+    height: 50px
+    line-height: 50px
+    text-indent: 20px
+
+  .select
+    width: 150px
+    position: absolute
+    right: 40px
+    top: 10px
+  div
+    height: 150px
+
+  .chart-holder
+    position: relative
 

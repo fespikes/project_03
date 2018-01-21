@@ -35,7 +35,7 @@ TENANT:
 
   ABSTRACT:
     PLATFORM_INFO: Platform Info
-    SERVICE_HEALTH: Service Health
+    CONSUMPTION_SUMMARY: Consumption Summary
     INSTANCES_TREND: Instances Trend
     PRODUCTS_TREND: Products Trend
     CONSUMPTION_TREND: Consumption Trend

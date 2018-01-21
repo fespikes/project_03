@@ -39,6 +39,7 @@ export class TenantService {
   }
 
   fetchInfo(uid: string): Observable<TenantInfo> {
+    sessionStorage.setItem('eco:tenant:detail:uid', uid);
     return this.api.get(`tenants/${uid}`);
   }
 

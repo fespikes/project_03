@@ -14,9 +14,3 @@ ABSTRACT:
   INSTANCES_AMOUNT_TREND: instances amount trend
   PRODUCTS_INSTANCES_TREND: cloud products trend
   TENANT_CONSUMPTION_TOP7: tenant consumption top7
-
-  LAST: last
-  HOUR: hour
-  HOURS: hours
-  MONTH: month
-  MONTHS: months

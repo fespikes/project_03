@@ -8,7 +8,8 @@ import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
 import { Pagination, SelectComponent } from 'tdc-ui';
 import { AbstractService } from './abstract.service';
-import { TimeOption } from './abstract.model';
+import { TecUtilService, TimeOption } from '../shared';
+
 import {
   BarChartConfig,
   BarChartData,
@@ -122,9 +123,10 @@ export class AbstractComponent implements OnInit, AfterViewInit, OnDestroy {
 
   constructor(
     private abstractService: AbstractService,
+    private utilService: TecUtilService,
   ) {
-    this.hourOptions = this.abstractService.getSelectOptions('hour');
-    this.monthlyOptions = this.abstractService.getSelectOptions();
+    this.hourOptions = this.utilService.getSelectOptions('hour');
+    this.monthlyOptions = this.utilService.getSelectOptions();
 
     this.instancesAmountTrendOption = this.monthlyOptions[5];
     this.nodeAmountTrendOption = this.monthlyOptions[5];
@@ -147,7 +149,7 @@ export class AbstractComponent implements OnInit, AfterViewInit, OnDestroy {
         width: clientWidth,
         height: clientHeight,
         thickness: 15,
-        maxRadius: 65,
+        maxRadius: 45,
         left: 24,
         top: 70,
       },
@@ -156,7 +158,7 @@ export class AbstractComponent implements OnInit, AfterViewInit, OnDestroy {
     this.platformSummaryDonutsConfig.legendStyle.width = 80;
 
     this.platformSummaryDonutsConfig.donutChartHolder = element;
-    this.platformSummaryDonutsConfig.showLeftLenend = true;
+    this.platformSummaryDonutsConfig.showLeftLegend = true;
 
     const config = DonutChartConfig.from(this.platformSummaryDonutsConfig);
 

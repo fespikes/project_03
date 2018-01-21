@@ -12,7 +12,7 @@ import {
   I18nLangService,
 } from './i18n';
 
-import { TecApiService } from './shared';
+import { TecApiService, TecUtilService } from './shared';
 
 import { NotFoundModule } from './not-found';
 import { LayoutModule } from './layout';
@@ -39,6 +39,7 @@ import { AppComponent } from './app.component';
   ],
   providers: [
     TecApiService,
+    TecUtilService,
     I18nLangService,
     TuiMessageService,
     TranslateService,

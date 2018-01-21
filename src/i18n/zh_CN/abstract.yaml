@@ -15,8 +15,4 @@ ABSTRACT:
   PRODUCTS_INSTANCES_TREND: 云产品实例变化趋势
   TENANT_CONSUMPTION_TOP7: 租户消费top7
 
-  LAST: 最近
-  HOUR: 小时
-  HOURS: 小时
-  MONTH: 个月
-  MONTHS: 个月
+
