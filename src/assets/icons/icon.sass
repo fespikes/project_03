@@ -1,0 +1,17 @@
+.tui-icon
+  width: 1rem
+  height: 1rem
+  fill: $color-icon
+  transition: fill .2s
+
+@mixin tui-icon-mixin($type, $color)
+  .tui-icon-#{$type}
+    fill: $color
+
+@include tui-icon-mixin(danger, $brand-danger)
+@include tui-icon-mixin(primary, $brand-primary)
+@include tui-icon-mixin(default, $brand-default)
+@include tui-icon-mixin(warning, $brand-warning)
+@include tui-icon-mixin(success, $brand-success)
+@include tui-icon-mixin(info, $brand-info)
+@include tui-icon-mixin(white, white)
