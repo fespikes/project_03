@@ -8,7 +8,7 @@ describe('ChartWrapperComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ChartWrapperComponent ]
+      declarations: [ ChartWrapperComponent ],
     })
     .compileComponents();
   }));

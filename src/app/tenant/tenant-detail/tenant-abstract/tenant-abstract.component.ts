@@ -41,8 +41,6 @@ export class TenantAbstractComponent implements OnInit, AfterViewInit, OnDestroy
   @ViewChild('platformSummarySelect') platformSummarySelect: SelectComponent;
   @ViewChild('platformSummaryWrapper') platformSummaryWrapper: ChartWrapperComponent;
 
-
-  // TODO: remove all #consumptionSummary not needed
   // 2.
   consumptionSummaryParam: any = {};
 

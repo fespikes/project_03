@@ -1,12 +1,19 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { Observable } from 'rxjs/Observable';
 
-import { TranslatePipeStub } from '../../../mock';
+import { TranslatePipeStub, DefaultPipeStub } from '../../../mock';
+import { TranslateService } from '../../../i18n';
+import { TenantAbstractService } from './tenant-abstract.service';
 import { TenantAbstractComponent } from './tenant-abstract.component';
+import { TecUtilService, TimeOption, TecUtilServiceStub } from '../../../shared';
+import { TenantAbstractServiceStub } from './tenant-abstract.service.stub';
 
 describe('TenantAbstractComponent', () => {
-  let component: TenantAbstractComponent;
+  let tenantAbstractComponent: TenantAbstractComponent;
   let fixture: ComponentFixture<TenantAbstractComponent>;
+  const timeOption: TimeOption = new TimeOption;
+  const fn = _ => _;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -14,18 +21,43 @@ describe('TenantAbstractComponent', () => {
       declarations: [
         TenantAbstractComponent,
         TranslatePipeStub,
+        DefaultPipeStub,
       ],
+
+      providers: [{
+        provide: TenantAbstractService,
+        useClass: TenantAbstractServiceStub,
+      },
+      {
+        provide: TecUtilService,
+        useClass: TecUtilServiceStub,
+      },
+      {
+        provide: TranslateService,
+        useValue: {
+          translateKey() {},
+        },
+      }],
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(TenantAbstractComponent);
-    component = fixture.componentInstance;
+    tenantAbstractComponent = fixture.componentInstance;
+
+    tenantAbstractComponent.platformSummaryOption = {...timeOption};
+    tenantAbstractComponent.instancesCountTrendOption = {...timeOption};
+    tenantAbstractComponent.consumptionsTrendOption = {...timeOption};
+
+    tenantAbstractComponent.platformSummarySelect.registerOnChange = fn;
+    tenantAbstractComponent.instancesCountTrendSelect.registerOnChange = fn;
+    tenantAbstractComponent.consumptionsTrendSelect.registerOnChange = fn;
+
     fixture.detectChanges();
   });
 
   it('should create', () => {
-    expect(component).toBeTruthy();
+    expect(tenantAbstractComponent).toBeTruthy();
   });
 });

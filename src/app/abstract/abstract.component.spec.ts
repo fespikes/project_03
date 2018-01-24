@@ -1,5 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { DebugElement, ViewChild, NO_ERRORS_SCHEMA, ElementRef } from '@angular/core';
+import { Observable } from 'rxjs/Observable';
 
 import { AbstractComponent } from './abstract.component';
 import { TranslatePipeStub, DefaultPipeStub } from 'app/mock';
@@ -9,7 +10,7 @@ import { SelectComponent } from 'tdc-ui';
 import { AbstractService } from './abstract.service';
 import { AbstractServiceStub } from './abstract.service.stub';
 
-import { TimeOption } from './abstract.model';
+import { TecUtilService, TimeOption, TecUtilServiceStub } from '../shared';
 
 describe('AbstractComponent', () => {
   let abstractComponent: AbstractComponent;
@@ -30,6 +31,19 @@ describe('AbstractComponent', () => {
       providers: [{
         provide: AbstractService,
         useClass: AbstractServiceStub,
+      },
+      {
+        provide: TecUtilService,
+        useClass: TecUtilServiceStub,
+      },
+      {
+        provide: TranslateService,
+        useValue: {
+          get() {
+            return Observable.of();
+          },
+          translateKey() {},
+        },
       }],
     })
     .compileComponents();

@@ -15,7 +15,8 @@ export class DonutChart implements ChartBase {
   private arc: any;
   private pie: any;
   private svg: any;
-  private shadowSize: number = 1.2;
+  private shadowSize = 1.2;
+  private palette: string[];
 
   setConfig(config: DonutChartConfig ) {
     this.config = config;
@@ -80,19 +81,11 @@ export class DonutChart implements ChartBase {
   drawLegend(data, n) {
     const config = this.config;
     const legendStyle = this.config.legendStyle;
-    let palette: string[] = [];
     const columns = data.columns;
 
-    /*if (data.type === 'blank') {
-      palette = this.config.style.colorSchema.palette.slice(0, data.columns.length - 1);
-      palette = palette.concat(['#edf2ff']);
-      data.columns.pop();
-    } else {
-      palette = this.config.style.colorSchema.palette;
-    }*/
-    palette = config.style.colorSchema.getOneWithFilling(0);
+    this.palette = config.style.colorSchema.getOneWithFilling(0);
 
-    this.color = d3.scaleOrdinal().range(palette);
+    this.color = d3.scaleOrdinal().range(this.palette);
 
     this.color.domain(columns);
 
@@ -219,7 +212,8 @@ export class DonutChart implements ChartBase {
       .text(function(d) {
         const dt = (part ? part.data : d.parts[0]) / d.sum;
         return dt.toString() === 'NaN' ? 0 : f(dt);
-      }).style('font-size', 21);
+      }).style('font-size', 20)
+      .style('fill', this.palette[0]);
   }
 
   drawBottomLabel(svg, donut, location) {
