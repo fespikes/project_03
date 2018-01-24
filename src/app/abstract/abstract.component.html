@@ -3,7 +3,7 @@
 
   <div class="tui-layout-main-container flex-auto">
 
-    <div class="main-content section section0">
+    <div class="main-content section section0" #listenerHolder>
 
       <div class="summary">
 
@@ -34,7 +34,7 @@
         </div>
         <!--E: quantity-->
 
-        <div class="loads radius-shadow">
+        <div class="loads radius-shadow flex-colunn">
           <h4>{{'ABSTRACT.LOAD_SUMMARY' | translate}}</h4>
           <tui-select
             [ngClass]="{ select: true }"
@@ -49,16 +49,21 @@
               {{option.label | tuiDefault }}
             </tui-select-option>
           </tui-select>
-          <div #platformSummaryHolder class="platform-summary-donuts">
-            <!-- here we have three donut charts, the:
-              "average used network";
-              "whole faulty ratio". can't be implemented by backend -->
-          </div>
+          <!-- here we have three donut charts, the:
+            "average used network";
+            "whole faulty ratio". can't be implemented by backend
+           -->
+          <tec-chart-wrapper
+            [chartType]="platformSummaryParam.chartType"
+            [fetchData]="platformSummaryParam.fetchData"
+            [config]="platformSummaryParam.config"
+            #platformSummaryWrapper
+          ></tec-chart-wrapper>
         </div>
       </div>
       <!--E: summary-->
 
-      <div class="tenant-grow-trend radius-shadow">
+      <div class="tenant-grow-trend radius-shadow flex-colunn">
         <h4>{{'ABSTRACT.TENANT_GROW_TREND' | translate}}</h4>
         <tui-select
           [ngClass]="{ select: true }"
@@ -73,14 +78,19 @@
             {{option.label | tuiDefault }}
           </tui-select-option>
         </tui-select>
-        <div #tenantGrowTrendHolder class="tenant-grow-line h318px"></div>
+        <tec-chart-wrapper
+            [chartType]="tenantGrowTrendParam.chartType"
+            [fetchData]="tenantGrowTrendParam.fetchData"
+            [config]="tenantGrowTrendParam.config"
+            #tenantGrowTrendWrapper
+          ></tec-chart-wrapper>
       </div>
     </div>
     <!--E: section0-->
 
     <div class="main-content section">
 
-      <div class="node-load-trend radius-shadow">
+      <div class="node-load-trend radius-shadow flex-colunn">
         <h4>{{'ABSTRACT.NODE_LOAD_TREND' | translate}}</h4>
         <tui-select
           [ngClass]="{ select: true }"
@@ -95,10 +105,15 @@
             {{option.label | tuiDefault }}
           </tui-select-option>
         </tui-select>
-        <div #nodeLoadTrendHolder class="node-load-lines h318px"></div>
+        <tec-chart-wrapper
+          [chartType]="nodeLoadTrendParam.chartType"
+          [fetchData]="nodeLoadTrendParam.fetchData"
+          [config]="nodeLoadTrendParam.config"
+          #nodeLoadTrendWrapper
+        ></tec-chart-wrapper>
       </div>
 
-      <div class="node-amount-trend radius-shadow">
+      <div class="node-amount-trend radius-shadow flex-colunn">
         <h4>{{'ABSTRACT.NODE_AMOUNT_TRAND' | translate}}</h4>
         <tui-select
           [ngClass]="{ select: true }"
@@ -113,12 +128,17 @@
             {{option.label | tuiDefault }}
           </tui-select-option>
         </tui-select>
-        <div #nodeAmountTrendHolder class="h318px"></div>
+        <tec-chart-wrapper
+          [chartType]="nodeAmountTrendParam.chartType"
+          [fetchData]="nodeAmountTrendParam.fetchData"
+          [config]="nodeAmountTrendParam.config"
+          #nodeAmountTrendWrapper
+        ></tec-chart-wrapper>
       </div>
     </div>
 
     <div class="main-content section">
-      <div class="products-instances-ranking radius-shadow">
+      <div class="products-instances-ranking radius-shadow flex-colunn">
         <h4>{{'ABSTRACT.PRODUCT_INSTANCES_RANKING' | translate}}</h4>
         <span class="amount">{{'ABSTRACT.AMOUNT' | translate}}{{instancesTotalCount}}</span>
         <tui-select
@@ -134,9 +154,14 @@
             {{option.label | tuiDefault }}
           </tui-select-option>
         </tui-select>
-        <div #productsInstancesRankingHolder class="h318px"></div>
+        <tec-chart-wrapper
+          [chartType]="productsInstancesRankingParam.chartType"
+          [fetchData]="productsInstancesRankingParam.fetchData"
+          [config]="productsInstancesRankingParam.config"
+          #productsInstancesRankingWrapper
+        ></tec-chart-wrapper>
       </div>
-      <div class="instances-amount-trend radius-shadow">
+      <div class="instances-amount-trend radius-shadow flex-colunn">
         <h4>{{'ABSTRACT.INSTANCES_AMOUNT_TREND' | translate}}</h4>
         <tui-select
           [ngClass]="{ select: true }"
@@ -151,12 +176,19 @@
             {{option.label | tuiDefault }}
           </tui-select-option>
         </tui-select>
-        <div #instancesAmountTrendHolder class="h318px"></div>
+<!--         <div #instancesAmountTrendHolder class="h318px"></div>
+         -->
+         <tec-chart-wrapper
+          [chartType]="instancesAmountTrendParam.chartType"
+          [fetchData]="instancesAmountTrendParam.fetchData"
+          [config]="instancesAmountTrendParam.config"
+          #instancesAmountTrendWrapper
+        ></tec-chart-wrapper>
       </div>
     </div>
 
     <div class="main-content section">
-      <div class="products-instances-trend radius-shadow">
+      <div class="products-instances-trend radius-shadow flex-colunn">
         <h4>{{'ABSTRACT.PRODUCTS_INSTANCES_TREND' | translate}}</h4>
         <tui-select
           [ngClass]="{ select: true }"
@@ -171,9 +203,14 @@
             {{option.label | tuiDefault }}
           </tui-select-option>
         </tui-select>
-        <div #productsInstancesTrendHolder class="h318px"></div>
+        <tec-chart-wrapper
+          [chartType]="productsInstancesTrendParam.chartType"
+          [fetchData]="productsInstancesTrendParam.fetchData"
+          [config]="productsInstancesTrendParam.config"
+          #productsInstancesTrendWrapper
+        ></tec-chart-wrapper>
       </div>
-      <div class="tenant-consumption-ranking radius-shadow">
+      <div class="tenant-consumption-ranking radius-shadow flex-colunn">
         <h4>{{'ABSTRACT.TENANT_CONSUMPTION_TOP7' | translate}}</h4>
         <tui-select
           [ngClass]="{ select: true }"
@@ -188,7 +225,13 @@
             {{option.label | tuiDefault }}
           </tui-select-option>
         </tui-select>
-        <div #tenantConsumptionRankingHolder class="h318px"></div>
+        <tec-chart-wrapper
+          [chartType]="tenantConsumptionRankingParam.chartType"
+          [fetchData]="tenantConsumptionRankingParam.fetchData"
+          [config]="tenantConsumptionRankingParam.config"
+          #tenantConsumptionRankingWrapper
+        ></tec-chart-wrapper>
+        <!-- <div #tenantConsumptionRankingHolder class="h318px"></div> -->
       </div>
     </div>
 

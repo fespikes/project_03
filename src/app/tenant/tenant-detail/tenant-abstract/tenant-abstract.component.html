@@ -32,6 +32,7 @@
       [chartType]="consumptionSummaryParam.chartType"
       [fetchData]="consumptionSummaryParam.fetchData"
       [config]="consumptionSummaryParam.config"
+      #consumptionSummaryWrapper
     ></tec-chart-wrapper>
     <div>
 
@@ -56,7 +57,6 @@
         {{option.label | tuiDefault }}
       </tui-select-option>
     </tui-select>
-
     <tec-chart-wrapper
       [chartType]="instancesCountTrendParam.chartType"
       [fetchData]="instancesCountTrendParam.fetchData"
@@ -99,6 +99,7 @@
       [chartType]="instancesCountParam.chartType"
       [fetchData]="instancesCountParam.fetchData"
       [config]="instancesCountParam.config"
+      #instancesCountWrapper
     ></tec-chart-wrapper>
   </div>
   <div class="panel cpu-trend flex-3">
@@ -108,6 +109,7 @@
       [chartType]="CPULoadTrendParam.chartType"
       [fetchData]="CPULoadTrendParam.fetchData"
       [config]="CPULoadTrendParam.config"
+      #CPULoadTrendWrapper
     ></tec-chart-wrapper>
   </div>
 </div>
@@ -119,6 +121,7 @@
       [chartType]="memoryLoadTrendParam.chartType"
       [fetchData]="memoryLoadTrendParam.fetchData"
       [config]="memoryLoadTrendParam.config"
+      #memoryLoadTrendWrapper
     ></tec-chart-wrapper>
   </div>
 
@@ -128,6 +131,7 @@
       [chartType]="storageLoadTrendParam.chartType"
       [fetchData]="storageLoadTrendParam.fetchData"
       [config]="storageLoadTrendParam.config"
+      #storageLoadTrendWrapper
     ></tec-chart-wrapper>
   </div>
 </div>

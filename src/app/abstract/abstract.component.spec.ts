@@ -10,7 +10,7 @@ import { SelectComponent } from 'tdc-ui';
 import { AbstractService } from './abstract.service';
 import { AbstractServiceStub } from './abstract.service.stub';
 
-import { TecUtilService, TimeOption, TecUtilServiceStub } from '../shared';
+import { TecUtilService, TimeOption } from '../shared';
 
 describe('AbstractComponent', () => {
   let abstractComponent: AbstractComponent;
@@ -34,7 +34,11 @@ describe('AbstractComponent', () => {
       },
       {
         provide: TecUtilService,
-        useClass: TecUtilServiceStub,
+        useValue: {
+          getSelectOptions() {
+            return [];
+          },
+        },
       },
       {
         provide: TranslateService,

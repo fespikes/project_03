@@ -17,11 +17,12 @@ import {
   declarations: [
     ImgSrcDirective,
     IconStatusDirective,
-    // ChartWrapperComponent,
+    ChartWrapperComponent,
   ],
   exports: [
     ImgSrcDirective,
     IconStatusDirective,
+    ChartWrapperComponent,
     TuiModule,
   ],
 })

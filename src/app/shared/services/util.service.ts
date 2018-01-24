@@ -30,4 +30,14 @@ export class TecUtilService {
 
     return result;
   }
+
+  trigger = (dt: number, option, wrapper, options?) => {
+    options = options || this.getSelectOptions(); // month
+    if (option.value === dt) {
+      return ;
+    } else {
+      option = options[dt - 1];
+      wrapper.getChartData(dt);
+    }
+  }
 }

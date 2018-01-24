@@ -10,7 +10,6 @@ import {
 } from '../../../chart/lib';
 
 import { TecUtilService } from '../../';
-
 import { chartTypes } from '../../models';
 
 @Component({
@@ -46,23 +45,27 @@ export class ChartWrapperComponent implements OnInit {
     let chartConfig, ChartBuilder;
 
     switch (chartType) {
+
       case chartTypes.bar:
         chartConfig = BarChartConfig;
         ChartBuilder = BarChartBuilder;
         this.chartConfig = new BarChartConfig();
         this.chart = new BarChart();
         break;
+
       case chartTypes.donut:
         chartConfig = DonutChartConfig;
         this.chartConfig = new DonutChartConfig();
         this.chart = new DonutChart();
         break;
+
       case chartTypes.line:
         chartConfig = LineChartConfig;
         ChartBuilder = LineChartBuilder;
         this.chartConfig = new LineChartConfig();
         this.chart = new LineChart();
         break;
+
       default:
         console.log('chart type not match.');
         break;
@@ -81,7 +84,6 @@ export class ChartWrapperComponent implements OnInit {
       height: clientHeight,
     }, this.config);
 
-
     const config = chartConfig.from(this.chartConfig);
     let str = JSON.stringify(this.chartData);
     str = (ChartBuilder ? ChartBuilder.parseChartData(str) : str);
@@ -98,55 +100,6 @@ export class ChartWrapperComponent implements OnInit {
     this.chart.draw();
   }
 
-  drawLineChart() {
-    const element: HTMLElement = this.chartHolder.nativeElement;
-    const { clientWidth, clientHeight } = element;
-    const chartConfig = LineChartConfig;
-
-    this.chartConfig = new LineChartConfig();
-    this.chart = new LineChart();
-
-    this.chartConfig = {
-      ...this.chartConfig,
-      ...{
-        width: clientWidth,
-        height: clientHeight,
-      },
-      ...this.config,
-    };
-
-    const config = chartConfig.from(this.chartConfig);
-    const str = JSON.stringify(this.chartData);
-
-    this.chart.setConfig(config).select(element)
-      .datum(LineChartBuilder.parseChartData(str));
-    this.chart.draw();
-  }
-
-  // TODO: optimization
-  drawBarChart() {
-    const element: HTMLElement = this.chartHolder.nativeElement;
-    const { clientWidth, clientHeight } = element;
-
-    this.chartConfig = {
-      ...this.chartConfig,
-      ...{
-        stack: true,    // TODO: move into the config outside
-        width: clientWidth,
-        height: clientHeight,
-      },
-    };
-
-    const config = BarChartConfig.from(this.chartHolder);
-    const str = JSON.stringify(this.chartData);
-
-    this.chart.setConfig(config)
-      .select(element)
-      .datum(BarChartBuilder.parseChartData(str));
-
-    this.chart.draw();
-  }
-
   public getChartData(num?: number) {
 /*    console.log('confirm inputs: ', {    // remove this logger
       chartType: this.chartType,
@@ -154,7 +107,6 @@ export class ChartWrapperComponent implements OnInit {
       config: this.config,
       resourceType: this.resourceType,
     });*/
-
     if (typeof this.fetchData === 'function') {
       this.fetchData(adjustedData => {
         this.chartData = adjustedData;

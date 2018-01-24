@@ -6,7 +6,7 @@ import { TranslatePipeStub, DefaultPipeStub } from '../../../mock';
 import { TranslateService } from '../../../i18n';
 import { TenantAbstractService } from './tenant-abstract.service';
 import { TenantAbstractComponent } from './tenant-abstract.component';
-import { TecUtilService, TimeOption, TecUtilServiceStub } from '../../../shared';
+import { TecUtilService, TimeOption } from '../../../shared';
 import { TenantAbstractServiceStub } from './tenant-abstract.service.stub';
 
 describe('TenantAbstractComponent', () => {
@@ -30,7 +30,11 @@ describe('TenantAbstractComponent', () => {
       },
       {
         provide: TecUtilService,
-        useClass: TecUtilServiceStub,
+        useValue: {
+          getSelectOptions() {
+            return [];
+          },
+        },
       },
       {
         provide: TranslateService,

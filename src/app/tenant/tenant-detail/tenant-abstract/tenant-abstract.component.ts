@@ -10,7 +10,7 @@ import {
   TecUtilService, chartTypes, resourceTypes } from '../../../shared';
 import {
   BarChartConfig, BarChartData, BarChart, BarChartBuilder,
-  DonutChart, DonutChartData, DonutChartConfig,
+  DonutChart, DonutChartData,
   LineChart, LineChartBuilder, LineChartConfig,
 } from '../../../chart/lib';
 import { ElementWidthListener } from '../../../chart/element-width-listener';
@@ -23,15 +23,10 @@ import { TenantAbstractService } from './tenant-abstract.service';
   styleUrls: ['./tenant-abstract.component.sass'],
 })
 export class TenantAbstractComponent implements OnInit, AfterViewInit, OnDestroy {
-
   @ViewChild('hostWidth') hostWidthHolder: ElementRef;
 
   chartTypes: any;
-  donutChartConfig: DonutChartConfig = new DonutChartConfig();
   listener: Subscription;
-  platformSummaryData: any;
-  platformSummaryDonuts = new DonutChart();
-
   hourOptions: TimeOption[];
   monthlyOptions: TimeOption[];
 
@@ -43,6 +38,7 @@ export class TenantAbstractComponent implements OnInit, AfterViewInit, OnDestroy
 
   // 2.
   consumptionSummaryParam: any = {};
+  @ViewChild('consumptionSummaryWrapper') consumptionSummaryWrapper: ChartWrapperComponent;
 
   // 3.云产品实例变化趋势
   instancesCountTrendOption: TimeOption;
@@ -58,15 +54,19 @@ export class TenantAbstractComponent implements OnInit, AfterViewInit, OnDestroy
 
   // 5.云产品实例数量
   instancesCountParam: any = {};
+  @ViewChild('instancesCountWrapper') instancesCountWrapper: ChartWrapperComponent;
 
   // 6.CPU 负载率
   CPULoadTrendParam: any = {};
+  @ViewChild('CPULoadTrendWrapper') CPULoadTrendWrapper: ChartWrapperComponent;
 
   // 7.内存使用量
   memoryLoadTrendParam: any;
+  @ViewChild('memoryLoadTrendWrapper') memoryLoadTrendWrapper: ChartWrapperComponent;
 
   // 8.磁盘使用量
   storageLoadTrendParam: any;
+  @ViewChild('storageLoadTrendWrapper') storageLoadTrendWrapper: ChartWrapperComponent;
 
   constructor(
     private service: TenantAbstractService,
@@ -76,20 +76,16 @@ export class TenantAbstractComponent implements OnInit, AfterViewInit, OnDestroy
     this.hourOptions = this.utilService.getSelectOptions('hour');
     this.monthlyOptions = this.utilService.getSelectOptions();
 
-    this.platformSummaryOption = this.hourOptions[0];
+    this.platformSummaryOption = this.monthlyOptions[0];
     this.platformSummaryParam = { // 1.
       chartType: chartTypes.donut,
       fetchData: '', // TODO: this.service.fetchPlatformSummary.bind(this.service),
-      config: {
-        testProperty: 'config.fetchPlatformSummary',
-      },
     };
 
     this.consumptionSummaryParam = { // 2.
       chartType: chartTypes.donut,
       fetchData: this.service.fetchConsumptionSummary.bind(this.service),
       config: {
-        thickness: 40,  // TODO: adjust the width to the box width;
         maxRadius: 40,
         style: {
           top: 20,
@@ -101,18 +97,12 @@ export class TenantAbstractComponent implements OnInit, AfterViewInit, OnDestroy
     this.instancesCountTrendParam = { // 3.
       chartType: chartTypes.line,
       fetchData: this.service.fetchInstancesCountTrend.bind(this.service),
-      config: {
-        testProperty: 'config.instancesCountTrendParam',
-      },
     };
 
     this.consumptionsTrendOption = this.monthlyOptions[5];
     this.consumptionsTrendParam = { // 4.
       chartType: chartTypes.line,
       fetchData: this.service.fetchConsumptionsTrend.bind(this.service),
-      config: {
-        testProperty: 'config.consumptionsTrendParam',
-      },
     };
 
     this.instancesCountParam = { // 5.
@@ -120,39 +110,26 @@ export class TenantAbstractComponent implements OnInit, AfterViewInit, OnDestroy
       fetchData: this.service.fetchInstancesCount.bind(this.service),
       config: {
         stack: true,
-        testProperty: 'config.instancesCountParam',
       },
     };
 
     this.CPULoadTrendParam = { // 6.
       chartType: chartTypes.line,
       fetchData: this.service.fetchResourcesTrend.bind(this.service),
-      config: {
-        testProperty: 'config.instancesCountParam',
-      },
       resourceType: resourceTypes.cpu,
     };
 
     this.memoryLoadTrendParam = { // 7.
       chartType: chartTypes.line,
       fetchData: this.service.fetchResourcesTrend.bind(this.service),
-      config: {
-        testProperty: 'config.instancesCountParam',
-      },
       resourceType: resourceTypes.memory,
     };
 
     this.storageLoadTrendParam = { // 8.
       chartType: chartTypes.line,
       fetchData: this.service.fetchResourcesTrend.bind(this.service),
-      config: {
-        testProperty: 'config.instancesCountParam',
-      },
       resourceType: resourceTypes.memory,
     };
-  }
-
-  drawPlatformSummary() {
   }
 
   ngOnDestroy() {
@@ -164,24 +141,41 @@ export class TenantAbstractComponent implements OnInit, AfterViewInit, OnDestroy
   ngOnInit() { }
 
   ngAfterViewInit() {
-
     this.platformSummarySelect.registerOnChange(_ => {    // 1
-      this.platformSummaryWrapper.getChartData(_);
+      this.platformSummaryOption.value === _ ? (p => p)() : (pa => {
+        this.platformSummaryOption = this.monthlyOptions[_ - 1];
+        this.platformSummaryWrapper.getChartData(_);
+      })();
     });
+
     this.instancesCountTrendSelect.registerOnChange(_ => {  // 3.
-      this.instancesCountTrendWrapper.getChartData(_);
+      this.instancesCountTrendOption.value === _ ? (p => p)() : (pa => {
+        this.instancesCountTrendOption = this.monthlyOptions[_ - 1];
+        this.instancesCountTrendWrapper.getChartData(_);
+      })();
     });
+
     this.consumptionsTrendSelect.registerOnChange(_ => {    // 4
-      this.consumptionsTrendWrapper.getChartData(_);
+      this.consumptionsTrendOption.value === _ ? (p => p)() : (pa => {
+        this.consumptionsTrendOption = this.monthlyOptions[_ - 1];
+        this.consumptionsTrendWrapper.getChartData(_);
+      })();
     });
 
     setTimeout(() => {
       const widthListener = new ElementWidthListener(this.hostWidthHolder);
       this.listener = widthListener.startListen()
         .subscribe(() => {
-          // this.getPlatformSummary();
+          this.platformSummaryWrapper.getChartData(this.platformSummaryOption.value);
+          this.consumptionSummaryWrapper.getChartData();
+          this.instancesCountTrendWrapper.getChartData(this.instancesCountTrendOption.value);
+          this.consumptionsTrendWrapper.getChartData();
+          this.consumptionsTrendWrapper.getChartData(this.consumptionsTrendOption.value);
+          this.instancesCountWrapper.getChartData();
+          this.CPULoadTrendWrapper.getChartData();
+          this.memoryLoadTrendWrapper.getChartData();
+          this.storageLoadTrendWrapper.getChartData();
         });
     });
-
   }
 }
