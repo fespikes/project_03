@@ -112,7 +112,7 @@ export class BarChartConfig {
     const _config = new BarChartConfig();
     Object.assign(_config, config);
     _config.colorSchema = ColorSchema.from(_config.colorSchema);
-    _config.legend = LegendConfig.form(_config.legend);
+    _config.legend = LegendConfig.from(_config.legend);
     return _config;
   }
 
@@ -221,7 +221,12 @@ export class BarChart implements ChartBase {
 
     const { width, height, margin, legend } = this.config;
     this.geo = GeoService.fromMarginContainer(rootContainer, {width, height}, margin);
-    this.geo.placeLegend(legend)
+
+    if (legend.show) {
+      this.geo.placeLegend(legend);
+    }
+
+    this.geo
       .placeGrid()
       .placeXAxis()
       .placeYAxis()
@@ -366,7 +371,10 @@ export class BarChart implements ChartBase {
   }
 
   drawLegend() {
+    if (!this.config.legend.show) {
+      return;
+    }
     const legend = new Legend(this.config.colorSchema, this.config.legend);
-    legend.draw(this.geo.legend, this.data.topics);
+    legend.draw(this.geo.legend, this.data.topics, this.geo.legend2d);
   }
 }

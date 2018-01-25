@@ -14,6 +14,7 @@ import { LegendConfig } from './legend';
 export class GeoService {
   container2d: Rect2D;
   canvas2d: Rect2D;
+  legend2d: Rect2D;
   container: SelectionType;
   canvas: SelectionType;
   margin: Margin;
@@ -69,9 +70,14 @@ export class GeoService {
   }
 
   placeCanvas(rect: Rect2D, transform2d = new Transform2D()) {
-    this.canvas = this.container.append('g')
-      .classed('canvas', true)
+    if (!this.canvas) {
+      this.canvas = this.container.append('g')
+      .classed('canvas', true);
+    }
+
+    this.canvas
       .attr('transform', transform2d.toTranslate());
+
     this.canvas2d = rect;
     return this;
   }
@@ -100,22 +106,52 @@ export class GeoService {
    * @param legend
    */
   placeLegend(legend: LegendConfig) {
+    const legendContentWidth = legend.getContentWidth();
+    const { place } = legend;
+    const { top: marginTop, left: marginLeft, right: marginRight, bottom: marginBottom } = this.margin;
+    let { width: canvasWidth, height: canvasHeight } = this.canvas2d;
     // 平移canvas
-    this.canvas2d.height = this.canvas2d.height - legend.areaHeight;
-    const c2d = Transform2D.fromOffset(this.margin.left, this.margin.top + legend.areaHeight);
-    this.canvas.attr('transform', c2d.toTranslate());
+    {
+      let c2d;
+      if (place === 'left' || place === 'right') {
+        canvasWidth -= legendContentWidth;
+      } else {
+        canvasHeight -= legendContentWidth;
+      }
 
-    let relativePosition;
-    const { top, left, right } = this.margin;
-    if (legend.align === 'right') {
-      relativePosition = { top, right };
-    } else {
-      relativePosition = { top, left };
+      c2d = Transform2D.fromOffset(marginLeft, marginTop);
+      if (place === 'left') {
+        c2d = Transform2D.fromOffset(marginLeft + legendContentWidth, marginTop);
+      } else if (place === 'top') {
+        c2d = Transform2D.fromOffset(marginLeft, marginTop + legendContentWidth);
+      }
+
+      const canvas2d = {width: canvasWidth, height: canvasHeight};
+      this.placeCanvas(canvas2d, c2d);
     }
-    const t2d = TransformHelper.translateInContainer(this.container2d, legend.rect2D, relativePosition);
-    this.container.append('g')
+
+    {
+      const extraTranslate = 30;
+      let t2d = Transform2D.fromOffset(marginLeft, marginTop);
+      if (place === 'right') {
+        t2d = Transform2D.fromOffset(marginLeft + extraTranslate + this.canvas2d.width, marginTop);
+      } else if (place === 'bottom') {
+        t2d = Transform2D.fromOffset(marginLeft, marginTop + this.canvas2d.height + extraTranslate);
+      }
+
+      this.container.append('g')
       .classed('legend', true)
       .attr('transform', t2d.toTranslate());
+    }
+
+    // 计算legend2d
+    {
+      if (place === 'left' || place === 'right') {
+        this.legend2d = new Rect2D(legendContentWidth, this.canvas2d.height);
+      } else {
+        this.legend2d = new Rect2D(this.canvas2d.width, legendContentWidth);
+      }
+    }
 
     return this;
   }
