@@ -54,10 +54,6 @@ describe('TenantAbstractComponent', () => {
     tenantAbstractComponent.instancesCountTrendOption = {...timeOption};
     tenantAbstractComponent.consumptionsTrendOption = {...timeOption};
 
-    tenantAbstractComponent.platformSummarySelect.registerOnChange = fn;
-    tenantAbstractComponent.instancesCountTrendSelect.registerOnChange = fn;
-    tenantAbstractComponent.consumptionsTrendSelect.registerOnChange = fn;
-
     fixture.detectChanges();
   });
 

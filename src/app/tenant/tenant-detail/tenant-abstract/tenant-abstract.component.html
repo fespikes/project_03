@@ -5,21 +5,21 @@
     <tui-select
       [ngClass]="{ select: true }"
       placeholder="tui select example"
-      [(ngModel)]="platformSummaryOption.label"
+      [ngModel]="platformSummaryOption"
+            (ngModelChange)="doModelChange(
+              $event, 'platformSummaryOption', platformSummaryWrapper)"
       #platformSummarySelect
     >
       <tui-select-option
         *ngFor="let option of monthlyOptions"
-        [value]="option.value"
+        [value]="option"
         [label]="option.label">
         {{option.label | tuiDefault }}
       </tui-select-option>
     </tui-select>
 
     <tec-chart-wrapper
-      [chartType]="platformSummaryParam.chartType"
-      [fetchData]="platformSummaryParam.fetchData"
-      [config]="platformSummaryParam.config"
+      [data]="platformSummaryParam"
       #platformSummaryWrapper
     >
     </tec-chart-wrapper>
@@ -29,9 +29,7 @@
     <!--2. 消费概况 -->
     <h5>{{'TENANT.ABSTRACT.CONSUMPTION_SUMMARY' | translate}}</h5>
     <tec-chart-wrapper
-      [chartType]="consumptionSummaryParam.chartType"
-      [fetchData]="consumptionSummaryParam.fetchData"
-      [config]="consumptionSummaryParam.config"
+      [data]="consumptionSummaryParam"
       #consumptionSummaryWrapper
     ></tec-chart-wrapper>
     <div>
@@ -47,20 +45,20 @@
     <tui-select
       [ngClass]="{ select: true }"
       placeholder="tui select example"
-      [(ngModel)]="instancesCountTrendOption.label"
+      [ngModel]="instancesCountTrendOption"
+      (ngModelChange)="doModelChange(
+        $event, 'instancesCountTrendOption', instancesCountTrendWrapper)"
       #instancesCountTrendSelect
     >
       <tui-select-option
         *ngFor="let option of monthlyOptions"
-        [value]="option.value"
+        [value]="option"
         [label]="option.label">
         {{option.label | tuiDefault }}
       </tui-select-option>
     </tui-select>
     <tec-chart-wrapper
-      [chartType]="instancesCountTrendParam.chartType"
-      [fetchData]="instancesCountTrendParam.fetchData"
-      [config]="instancesCountTrendParam.config"
+      [data]="instancesCountTrendParam"
       #instancesCountTrendWrapper
     ></tec-chart-wrapper>
   </div>
@@ -71,20 +69,20 @@
     <tui-select
       [ngClass]="{ select: true }"
       placeholder="tui select example"
-      [(ngModel)]="consumptionsTrendOption.label"
+      [ngModel]="consumptionsTrendOption"
+      (ngModelChange)="doModelChange(
+        $event, 'consumptionsTrendOption', consumptionsTrendWrapper)"
       #consumptionsTrendSelect
     >
       <tui-select-option
         *ngFor="let option of monthlyOptions"
-        [value]="option.value"
+        [value]="option"
         [label]="option.label">
         {{option.label | tuiDefault }}
       </tui-select-option>
     </tui-select>
     <tec-chart-wrapper
-      [chartType]="consumptionsTrendParam.chartType"
-      [fetchData]="consumptionsTrendParam.fetchData"
-      [config]="consumptionsTrendParam.config"
+      [data]="consumptionsTrendParam"
       #consumptionsTrendWrapper
     ></tec-chart-wrapper>
   </div>
@@ -96,9 +94,7 @@
   <!-- here the name PRODUCTS_TREND was wrong, should be INSTANCES_COUNT(follow backend or INSTANCES_AMOUNT ) -->
     <h5>{{'TENANT.ABSTRACT.PRODUCTS_TREND' | translate}}</h5>
     <tec-chart-wrapper
-      [chartType]="instancesCountParam.chartType"
-      [fetchData]="instancesCountParam.fetchData"
-      [config]="instancesCountParam.config"
+      [data]="instancesCountParam"
       #instancesCountWrapper
     ></tec-chart-wrapper>
   </div>
@@ -106,9 +102,7 @@
     <!--6.CPU负载率 -->
     <h5>{{'TENANT.ABSTRACT.CPU_TREND' | translate}}</h5>
     <tec-chart-wrapper
-      [chartType]="CPULoadTrendParam.chartType"
-      [fetchData]="CPULoadTrendParam.fetchData"
-      [config]="CPULoadTrendParam.config"
+      [data]="CPULoadTrendParam"
       #CPULoadTrendWrapper
     ></tec-chart-wrapper>
   </div>
@@ -118,9 +112,7 @@
   <div class="panel memory-trend flex-3">
     <h5>{{'TENANT.ABSTRACT.MEMORY_TREND' | translate}}</h5>
     <tec-chart-wrapper
-      [chartType]="memoryLoadTrendParam.chartType"
-      [fetchData]="memoryLoadTrendParam.fetchData"
-      [config]="memoryLoadTrendParam.config"
+      [data]="memoryLoadTrendParam"
       #memoryLoadTrendWrapper
     ></tec-chart-wrapper>
   </div>
@@ -128,9 +120,7 @@
   <div class="panel storage-trend flex-5">
     <h5>{{'TENANT.ABSTRACT.STORAGE_TREND' | translate}}</h5>
     <tec-chart-wrapper
-      [chartType]="storageLoadTrendParam.chartType"
-      [fetchData]="storageLoadTrendParam.fetchData"
-      [config]="storageLoadTrendParam.config"
+      [data]="storageLoadTrendParam"
       #storageLoadTrendWrapper
     ></tec-chart-wrapper>
   </div>

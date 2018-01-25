@@ -33,7 +33,6 @@ export class TenantAbstractComponent implements OnInit, AfterViewInit, OnDestroy
   // 1.
   platformSummaryOption: TimeOption;
   platformSummaryParam: any = {};
-  @ViewChild('platformSummarySelect') platformSummarySelect: SelectComponent;
   @ViewChild('platformSummaryWrapper') platformSummaryWrapper: ChartWrapperComponent;
 
   // 2.
@@ -43,13 +42,11 @@ export class TenantAbstractComponent implements OnInit, AfterViewInit, OnDestroy
   // 3.云产品实例变化趋势
   instancesCountTrendOption: TimeOption;
   instancesCountTrendParam: any = {};
-  @ViewChild('instancesCountTrendSelect') instancesCountTrendSelect: SelectComponent;
   @ViewChild('instancesCountTrendWrapper') instancesCountTrendWrapper: ChartWrapperComponent;
 
   // 4.消费变化趋势
   consumptionsTrendOption: TimeOption;
   consumptionsTrendParam: any = {};
-  @ViewChild('consumptionsTrendSelect') consumptionsTrendSelect: SelectComponent;
   @ViewChild('consumptionsTrendWrapper') consumptionsTrendWrapper: ChartWrapperComponent;
 
   // 5.云产品实例数量
@@ -140,28 +137,15 @@ export class TenantAbstractComponent implements OnInit, AfterViewInit, OnDestroy
 
   ngOnInit() { }
 
+  doModelChange($event, optionName, wrapper) {
+    const option = this[optionName];
+    if ($event.value !== option.value) {
+      this[optionName] = $event;
+      wrapper.getChartData($event.value);
+    }
+  }
+
   ngAfterViewInit() {
-    this.platformSummarySelect.registerOnChange(_ => {    // 1
-      this.platformSummaryOption.value === _ ? (p => p)() : (pa => {
-        this.platformSummaryOption = this.monthlyOptions[_ - 1];
-        this.platformSummaryWrapper.getChartData(_);
-      })();
-    });
-
-    this.instancesCountTrendSelect.registerOnChange(_ => {  // 3.
-      this.instancesCountTrendOption.value === _ ? (p => p)() : (pa => {
-        this.instancesCountTrendOption = this.monthlyOptions[_ - 1];
-        this.instancesCountTrendWrapper.getChartData(_);
-      })();
-    });
-
-    this.consumptionsTrendSelect.registerOnChange(_ => {    // 4
-      this.consumptionsTrendOption.value === _ ? (p => p)() : (pa => {
-        this.consumptionsTrendOption = this.monthlyOptions[_ - 1];
-        this.consumptionsTrendWrapper.getChartData(_);
-      })();
-    });
-
     setTimeout(() => {
       const widthListener = new ElementWidthListener(this.hostWidthHolder);
       this.listener = widthListener.startListen()

@@ -39,12 +39,14 @@
           <tui-select
             [ngClass]="{ select: true }"
             placeholder="tui select example"
-            [(ngModel)]="platformSummaryOption.label"
+            [ngModel]="platformSummaryOption"
+            (ngModelChange)="doModelChange(
+              $event, 'platformSummaryOption', platformSummaryWrapper)"
             #loadsSelect
           >
             <tui-select-option
               *ngFor="let option of hourOptions"
-              [value]="option.value"
+              [value]="option"
               [label]="option.label">
               {{option.label | tuiDefault }}
             </tui-select-option>
@@ -54,9 +56,7 @@
             "whole faulty ratio". can't be implemented by backend
            -->
           <tec-chart-wrapper
-            [chartType]="platformSummaryParam.chartType"
-            [fetchData]="platformSummaryParam.fetchData"
-            [config]="platformSummaryParam.config"
+            [data]="platformSummaryParam"
             #platformSummaryWrapper
           ></tec-chart-wrapper>
         </div>
@@ -68,20 +68,20 @@
         <tui-select
           [ngClass]="{ select: true }"
           placeholder="tui select example"
-          [(ngModel)]="tenantGrowTrendOption.label"
+          [ngModel]="tenantGrowTrendOption"
+          (ngModelChange)="doModelChange(
+            $event, 'tenantGrowTrendOption', tenantGrowTrendWrapper)"
           #tenantGrowTrendSelect
         >
           <tui-select-option
             *ngFor="let option of monthlyOptions"
-            [value]="option.value"
+            [value]="option"
             [label]="option.label">
             {{option.label | tuiDefault }}
           </tui-select-option>
         </tui-select>
         <tec-chart-wrapper
-            [chartType]="tenantGrowTrendParam.chartType"
-            [fetchData]="tenantGrowTrendParam.fetchData"
-            [config]="tenantGrowTrendParam.config"
+            [data]="tenantGrowTrendParam"
             #tenantGrowTrendWrapper
           ></tec-chart-wrapper>
       </div>
@@ -95,20 +95,20 @@
         <tui-select
           [ngClass]="{ select: true }"
           placeholder="tui select example"
-          [(ngModel)]="nodeLoadTrendOption.label"
+          [ngModel]="nodeLoadTrendOption"
+          (ngModelChange)="doModelChange(
+            $event, 'nodeLoadTrendOption', nodeLoadTrendWrapper)"
           #nodeLoadTrendSelect
         >
           <tui-select-option
             *ngFor="let option of hourOptions"
-            [value]="option.value"
+            [value]="option"
             [label]="option.label">
             {{option.label | tuiDefault }}
           </tui-select-option>
         </tui-select>
         <tec-chart-wrapper
-          [chartType]="nodeLoadTrendParam.chartType"
-          [fetchData]="nodeLoadTrendParam.fetchData"
-          [config]="nodeLoadTrendParam.config"
+          [data]="nodeLoadTrendParam"
           #nodeLoadTrendWrapper
         ></tec-chart-wrapper>
       </div>
@@ -118,20 +118,20 @@
         <tui-select
           [ngClass]="{ select: true }"
           placeholder="tui select example"
-          [(ngModel)]="nodeAmountTrendOption.label"
+          [ngModel]="nodeAmountTrendOption"
+          (ngModelChange)="doModelChange(
+            $event, 'nodeAmountTrendOption', nodeAmountTrendWrapper)"
           #nodeAmountTrendSelect
         >
           <tui-select-option
             *ngFor="let option of monthlyOptions"
-            [value]="option.value"
+            [value]="option"
             [label]="option.label">
             {{option.label | tuiDefault }}
           </tui-select-option>
         </tui-select>
         <tec-chart-wrapper
-          [chartType]="nodeAmountTrendParam.chartType"
-          [fetchData]="nodeAmountTrendParam.fetchData"
-          [config]="nodeAmountTrendParam.config"
+          [data]="nodeAmountTrendParam"
           #nodeAmountTrendWrapper
         ></tec-chart-wrapper>
       </div>
@@ -144,20 +144,20 @@
         <tui-select
           [ngClass]="{ select: true }"
           placeholder="tui select example"
-          [(ngModel)]="productsInstancesRankingOption.label"
+          [ngModel]="productsInstancesRankingOption"
+          (ngModelChange)="doModelChange(
+            $event, 'productsInstancesRankingOption', productsInstancesRankingWrapper)"
           #productsInstancesRankingSelect
         >
           <tui-select-option
             *ngFor="let option of monthlyOptions"
-            [value]="option.value"
+            [value]="option"
             [label]="option.label">
             {{option.label | tuiDefault }}
           </tui-select-option>
         </tui-select>
         <tec-chart-wrapper
-          [chartType]="productsInstancesRankingParam.chartType"
-          [fetchData]="productsInstancesRankingParam.fetchData"
-          [config]="productsInstancesRankingParam.config"
+          [data]="productsInstancesRankingParam"
           #productsInstancesRankingWrapper
         ></tec-chart-wrapper>
       </div>
@@ -166,12 +166,14 @@
         <tui-select
           [ngClass]="{ select: true }"
           placeholder="tui select example"
-          [(ngModel)]="instancesAmountTrendOption.label"
+          [ngModel]="instancesAmountTrendOption"
+          (ngModelChange)="doModelChange(
+            $event, 'instancesAmountTrendOption', instancesAmountTrendWrapper)"
           #instancesAmountTrendSelect
         >
           <tui-select-option
             *ngFor="let option of monthlyOptions"
-            [value]="option.value"
+            [value]="option"
             [label]="option.label">
             {{option.label | tuiDefault }}
           </tui-select-option>
@@ -179,9 +181,7 @@
 <!--         <div #instancesAmountTrendHolder class="h318px"></div>
          -->
          <tec-chart-wrapper
-          [chartType]="instancesAmountTrendParam.chartType"
-          [fetchData]="instancesAmountTrendParam.fetchData"
-          [config]="instancesAmountTrendParam.config"
+          [data]="instancesAmountTrendParam"
           #instancesAmountTrendWrapper
         ></tec-chart-wrapper>
       </div>
@@ -193,20 +193,20 @@
         <tui-select
           [ngClass]="{ select: true }"
           placeholder="tui select example"
-          [(ngModel)]="productsInstancesTrendOption.label"
+          [ngModel]="productsInstancesTrendOption"
+          (ngModelChange)="doModelChange(
+            $event, 'productsInstancesTrendOption', productsInstancesTrendWrapper)"
           #productsInstancesTrendSelect
         >
           <tui-select-option
             *ngFor="let option of monthlyOptions"
-            [value]="option.value"
+            [value]="option"
             [label]="option.label">
             {{option.label | tuiDefault }}
           </tui-select-option>
         </tui-select>
         <tec-chart-wrapper
-          [chartType]="productsInstancesTrendParam.chartType"
-          [fetchData]="productsInstancesTrendParam.fetchData"
-          [config]="productsInstancesTrendParam.config"
+          [data]="productsInstancesTrendParam"
           #productsInstancesTrendWrapper
         ></tec-chart-wrapper>
       </div>
@@ -215,20 +215,20 @@
         <tui-select
           [ngClass]="{ select: true }"
           placeholder="tui select example"
-          [(ngModel)]="tenantConsumptionRankingOption.label"
+          [ngModel]="tenantConsumptionRankingOption"
+          (ngModelChange)="doModelChange(
+            $event, 'tenantConsumptionRankingOption', tenantConsumptionRankingWrapper)"
           #tenantConsumptionRankingSelect
         >
           <tui-select-option
             *ngFor="let option of monthlyOptions"
-            [value]="option.value"
+            [value]="option"
             [label]="option.label">
             {{option.label | tuiDefault }}
           </tui-select-option>
         </tui-select>
         <tec-chart-wrapper
-          [chartType]="tenantConsumptionRankingParam.chartType"
-          [fetchData]="tenantConsumptionRankingParam.fetchData"
-          [config]="tenantConsumptionRankingParam.config"
+          [data]="tenantConsumptionRankingParam"
           #tenantConsumptionRankingWrapper
         ></tec-chart-wrapper>
         <!-- <div #tenantConsumptionRankingHolder class="h318px"></div> -->

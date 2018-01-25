@@ -66,15 +66,6 @@ describe('AbstractComponent', () => {
     abstractComponent.tenantConsumptionRankingOption = {...timeOption};
     abstractComponent.tenantGrowTrendOption = {...timeOption};
 
-    abstractComponent.loadsSelect.registerOnChange = fn;
-    abstractComponent.tenantGrowTrendSelect.registerOnChange = fn;
-    abstractComponent.nodeLoadTrendSelect.registerOnChange = fn;
-    abstractComponent.nodeAmountTrendSelect.registerOnChange = fn;
-    abstractComponent.productsInstancesRankingSelect.registerOnChange = fn;
-    abstractComponent.instancesAmountTrendSelect.registerOnChange = fn;
-    abstractComponent.productsInstancesTrendSelect.registerOnChange = fn;
-    abstractComponent.tenantConsumptionRankingSelect.registerOnChange = fn;
-
     fixture.detectChanges();
   });
 

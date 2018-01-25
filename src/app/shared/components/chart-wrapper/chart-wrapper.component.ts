@@ -18,18 +18,13 @@ import { chartTypes } from '../../models';
   styleUrls: ['./chart-wrapper.component.sass'],
 })
 export class ChartWrapperComponent implements OnInit {
-
   @Input()
-  chartType: string = chartTypes.bar;
-
-  @Input()
-  fetchData: any;
-
-  @Input()
-  config: any;
-
-  @Input()
-  resourceType: string;  // CPU STORAGE MEMORY
+  data: any = {
+    chartType: chartTypes.bar,
+    fetchData: '',
+    config: {},
+    resourceType: '',  // CPU STORAGE MEMORY
+  };
 
   @ViewChild('chartHolder') chartHolder: ElementRef;
 
@@ -74,15 +69,15 @@ export class ChartWrapperComponent implements OnInit {
     if (chartType === chartTypes.donut) {
       this.chartConfig.style = Object.assign({},
         this.chartConfig.style,
-        this.config.style,
+        this.data.config.style,
       );
-      delete this.config.style;
+      delete this.data.config.style;
     }
 
     this.chartConfig = Object.assign({}, this.chartConfig, {
       width: clientWidth,
       height: clientHeight,
-    }, this.config);
+    }, this.data.config);
 
     const config = chartConfig.from(this.chartConfig);
     let str = JSON.stringify(this.chartData);
@@ -101,17 +96,12 @@ export class ChartWrapperComponent implements OnInit {
   }
 
   public getChartData(num?: number) {
-/*    console.log('confirm inputs: ', {    // remove this logger
-      chartType: this.chartType,
-      fetchData: this.fetchData,
-      config: this.config,
-      resourceType: this.resourceType,
-    });*/
-    if (typeof this.fetchData === 'function') {
-      this.fetchData(adjustedData => {
+    const data = this.data;
+    if (typeof data.fetchData === 'function') {
+      data.fetchData(adjustedData => {
         this.chartData = adjustedData;
-        this.drawChart(this.chartType);
-      }, num ? num : this.resourceType);
+        this.drawChart(data.chartType);
+      }, num ? num : data.resourceType);
     }
   }
 

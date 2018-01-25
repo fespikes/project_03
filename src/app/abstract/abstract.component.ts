@@ -58,49 +58,41 @@ export class AbstractComponent implements OnInit, AfterViewInit, OnDestroy {
   // 2.平台概览 chart-donut
   platformSummaryParam: any = {};
   platformSummaryOption: TimeOption;
-  @ViewChild('loadsSelect') loadsSelect: SelectComponent;
   @ViewChild('platformSummaryWrapper') platformSummaryWrapper: ChartWrapperComponent;
 
   // 3.租户增长趋势
   tenantGrowTrendOption: TimeOption;
   @ViewChild('tenantGrowTrendWrapper') tenantGrowTrendWrapper: ChartWrapperComponent;
-  @ViewChild('tenantGrowTrendSelect') tenantGrowTrendSelect: SelectComponent;
   tenantGrowTrendParam: any = {};
 
   // 4.
   nodeLoadTrendOption: TimeOption;
   @ViewChild('nodeLoadTrendWrapper') nodeLoadTrendWrapper: ChartWrapperComponent;
-  @ViewChild('nodeLoadTrendSelect') nodeLoadTrendSelect: SelectComponent;
   nodeLoadTrendParam: any = {};
 
   // 5.主机变化趋势
   nodeAmountTrendOption: TimeOption;
   @ViewChild('nodeAmountTrendWrapper') nodeAmountTrendWrapper: ChartWrapperComponent;
-  @ViewChild('nodeAmountTrendSelect') nodeAmountTrendSelect: SelectComponent;
   nodeAmountTrendParam: any = {};
 
   // 6.云产品实例排行
   productsInstancesRankingOption: TimeOption;
   @ViewChild('productsInstancesRankingWrapper') productsInstancesRankingWrapper: ChartWrapperComponent;
-  @ViewChild('productsInstancesRankingSelect') productsInstancesRankingSelect: SelectComponent;
   productsInstancesRankingParam: any = {};
 
   // 7. 实例总量变化趋势
   instancesAmountTrendOption: TimeOption;
   @ViewChild('instancesAmountTrendWrapper') instancesAmountTrendWrapper: ChartWrapperComponent;
-  @ViewChild('instancesAmountTrendSelect') instancesAmountTrendSelect: SelectComponent;
   instancesAmountTrendParam: any = {};
 
   // 8.
   productsInstancesTrendOption: TimeOption;
   @ViewChild('productsInstancesTrendWrapper') productsInstancesTrendWrapper: ChartWrapperComponent;
-  @ViewChild('productsInstancesTrendSelect') productsInstancesTrendSelect: SelectComponent;
   productsInstancesTrendParam: any = {};
 
   // 9.
   tenantConsumptionRankingOption: TimeOption;
   @ViewChild('tenantConsumptionRankingWrapper') tenantConsumptionRankingWrapper: ChartWrapperComponent;
-  @ViewChild('tenantConsumptionRankingSelect') tenantConsumptionRankingSelect: SelectComponent;
   tenantConsumptionRankingParam: any = {};
   instancesTotalCount: number;
 
@@ -192,56 +184,15 @@ export class AbstractComponent implements OnInit, AfterViewInit, OnDestroy {
     });
   }
 
-  ngAfterViewInit() {
-    this.loadsSelect.registerOnChange(_ => { // 2.
-      this.platformSummaryOption.value === _ ? (p => p)() : (pa => {
-        this.platformSummaryOption = this.hourOptions[_ - 1];
-        this.platformSummaryWrapper.getChartData(_);
-      })();
-    });
-    this.tenantGrowTrendSelect.registerOnChange(_ => { // 3.
-      this.tenantGrowTrendOption.value === _ ? (p => p)() : (pa => {
-        this.tenantGrowTrendOption = this.monthlyOptions[_ - 1];
-        this.tenantGrowTrendWrapper.getChartData(_);
-      })();
-    });
-    this.nodeLoadTrendSelect.registerOnChange(_ => { // 4.
-      this.nodeLoadTrendOption.value === _ ? (p => p)() : (pa => {
-        this.nodeLoadTrendOption = this.hourOptions[_ - 1];
-        this.nodeLoadTrendWrapper.getChartData(_);
-      })();
-    });
-    this.nodeAmountTrendSelect.registerOnChange(_ => { // 5.
-      this.nodeAmountTrendOption.value === _ ? (p => p)() : (pa => {
-        this.nodeAmountTrendOption = this.monthlyOptions[_ - 1];
-        this.nodeAmountTrendWrapper.getChartData(_);
-      })();
-    });
-    this.productsInstancesRankingSelect.registerOnChange(_ => {  // 6.
-      this.productsInstancesRankingOption.value === _ ? (p => p)() : (pa => {
-        this.productsInstancesRankingOption = this.monthlyOptions[_ - 1];
-        this.productsInstancesRankingWrapper.getChartData(_);
-      })();
-    });
-    this.instancesAmountTrendSelect.registerOnChange(_ => {  // 7.
-      this.instancesAmountTrendOption.value === _ ? (p => p)() : (pa => {
-        this.instancesAmountTrendOption = this.monthlyOptions[_ - 1];
-        this.instancesAmountTrendWrapper.getChartData(_);
-      })();
-    });
-    this.productsInstancesTrendSelect.registerOnChange(_ => {  // 8.
-      this.productsInstancesTrendOption.value === _ ? (p => p)() : (pa => {
-        this.productsInstancesTrendOption = this.monthlyOptions[_ - 1];
-        this.productsInstancesTrendWrapper.getChartData(_);
-      })();
-    });
-    this.tenantConsumptionRankingSelect.registerOnChange(_ => {  // 9.
-      this.tenantConsumptionRankingOption.value === _ ? (p => p)() : (pa => {
-        this.tenantConsumptionRankingOption = this.monthlyOptions[_ - 1];
-        this.tenantConsumptionRankingWrapper.getChartData(_);
-      })();
-    });
+  doModelChange($event, optionName, wrapper) {
+    const option = this[optionName];
+    if ($event.value !== option.value) {
+      this[optionName] = $event;
+      wrapper.getChartData($event.value);
+    }
+  }
 
+  ngAfterViewInit() {
     setTimeout(() => {
       const widthListener = new ElementWidthListener(this.listenerHolder);
       this.listener = widthListener.startListen()
