@@ -34,7 +34,7 @@ import { ElementWidthListener } from '../chart/element-width-listener';
   templateUrl: './abstract.component.html',
   styleUrls: ['./abstract.component.sass'],
 })
-export class AbstractComponent implements OnInit, AfterViewInit, OnDestroy {
+export class AbstractComponent implements OnInit, OnDestroy {
   @HostBinding('class.tui-layout-body') hostClass = true;
   @ViewChild('listenerHolder') listenerHolder: ElementRef;
 
@@ -124,21 +124,25 @@ export class AbstractComponent implements OnInit, AfterViewInit, OnDestroy {
           top: 20,
         },
       },
+      wrapperName: 'platformSummaryWrapper',
     };
     this.tenantGrowTrendParam = { // 3.
       chartType: chartTypes.line,
       fetchData: this.abstractService.getTenantCountTrend.bind(this.abstractService),
       config: {},
+      wrapperName: 'tenantGrowTrendWrapper',
     };
     this.nodeLoadTrendParam = {  // 4.
       chartType: chartTypes.line,
       fetchData: this.abstractService.getNodesLoadTrend.bind(this.abstractService),
       config: {},
+      wrapperName: 'nodeLoadTrendWrapper',
     };
     this.nodeAmountTrendParam = {  // 5.
       chartType: chartTypes.line,
       fetchData: this.abstractService.getNodesCountTrend.bind(this.abstractService),
       config: {},
+      wrapperName: 'nodeAmountTrendWrapper',
     };
     this.productsInstancesRankingParam = { // 6.云产品实例排行
       chartType: chartTypes.bar,
@@ -146,12 +150,14 @@ export class AbstractComponent implements OnInit, AfterViewInit, OnDestroy {
       config: {
         stack: true,
       },
+      wrapperName: 'productsInstancesRankingWrapper',
     };
     this.instancesAmountTrendParam = { // 7.实例总量变化趋势
       chartType: chartTypes.line,
       fetchData: this.abstractService.getInstancesCountTrend.bind(this.abstractService),
       config: {
       },
+      wrapperName: 'instancesAmountTrendWrapper',
     };
     this.productsInstancesTrendParam = { // 8.云产品实例变化趋势
       chartType: chartTypes.line,
@@ -159,11 +165,13 @@ export class AbstractComponent implements OnInit, AfterViewInit, OnDestroy {
       config: {
         curveStyle: 'curveLinear',
       },
+      wrapperName: 'productsInstancesTrendWrapper',
     };
     this.tenantConsumptionRankingParam = { // 9.租户消费top7
       chartType: chartTypes.bar,
       fetchData: this.abstractService.getTenantsConsumptionsRank.bind(this.abstractService),
       config: { },
+      wrapperName: 'tenantConsumptionRankingWrapper',
     };
   }
 
@@ -171,6 +179,8 @@ export class AbstractComponent implements OnInit, AfterViewInit, OnDestroy {
     if (this.listener) {
       this.listener.unsubscribe();
     }
+
+    this.platformSummaryWrapper.clearMap();
   }
 
   ngOnInit() {
@@ -190,22 +200,5 @@ export class AbstractComponent implements OnInit, AfterViewInit, OnDestroy {
       this[optionName] = $event;
       wrapper.getChartData($event.value);
     }
-  }
-
-  ngAfterViewInit() {
-    setTimeout(() => {
-      const widthListener = new ElementWidthListener(this.listenerHolder);
-      this.listener = widthListener.startListen()
-        .subscribe(() => {
-          this.platformSummaryWrapper.getChartData(this.platformSummaryOption.value);
-          this.tenantGrowTrendWrapper.getChartData(this.tenantGrowTrendOption.value);
-          this.nodeLoadTrendWrapper.getChartData(this.nodeLoadTrendOption.value);
-          this.nodeAmountTrendWrapper.getChartData(this.nodeAmountTrendOption.value);
-          this.productsInstancesRankingWrapper.getChartData(this.productsInstancesRankingOption.value);
-          this.instancesAmountTrendWrapper.getChartData(this.instancesAmountTrendOption.value);
-          this.productsInstancesTrendWrapper.getChartData(this.productsInstancesTrendOption.value);
-          this.tenantConsumptionRankingWrapper.getChartData(this.tenantConsumptionRankingOption.value);
-        });
-    });
   }
 }

@@ -2,6 +2,9 @@ import {
   Component, OnInit,
   ViewChild, ElementRef, Input,
 } from '@angular/core';
+import { Observable } from 'rxjs/Observable';
+import 'rxjs/add/observable/fromEvent';
+import 'rxjs/add/operator/throttleTime';
 
 import {
   BarChartConfig, BarChartData, BarChart, BarChartBuilder,
@@ -18,12 +21,17 @@ import { chartTypes } from '../../models';
   styleUrls: ['./chart-wrapper.component.sass'],
 })
 export class ChartWrapperComponent implements OnInit {
+
+  static drawing = false;
+  static drawerMap = new Map();
+
   @Input()
   data: any = {
     chartType: chartTypes.bar,
     fetchData: '',
     config: {},
     resourceType: '',  // CPU STORAGE MEMORY
+    wrapperName: '',
   };
 
   @ViewChild('chartHolder') chartHolder: ElementRef;
@@ -32,7 +40,31 @@ export class ChartWrapperComponent implements OnInit {
   chartConfig: any;
   chart: any;
 
-  constructor() { }
+  static redraw(drawer, key) {
+    const Parent = ChartWrapperComponent;
+    if (!Parent.drawerMap.get(key)) {
+      Parent.drawerMap.set(key, drawer);
+    }
+
+    if (Parent.drawing === true) {
+      return;
+    }
+    Parent.drawing = true;
+
+    const resize = Observable.fromEvent(window, 'resize');
+    resize.throttleTime(500).subscribe(val => {
+      Parent.drawerMap.forEach(draw => {
+        draw();
+      });
+      Parent.drawing = false;
+    });
+  }
+
+  constructor() {}
+
+  clearMap() {
+    ChartWrapperComponent.drawerMap.clear();
+  }
 
   drawChart(chartType) {
     const element: HTMLElement = this.chartHolder.nativeElement;
@@ -66,7 +98,7 @@ export class ChartWrapperComponent implements OnInit {
         break;
     }
     // TODO: optimization
-    if (chartType === chartTypes.donut) {
+    if (chartType === chartTypes.donut && this.data.config) {
       this.chartConfig.style = Object.assign({},
         this.chartConfig.style,
         this.data.config.style,
@@ -81,6 +113,9 @@ export class ChartWrapperComponent implements OnInit {
 
     const config = chartConfig.from(this.chartConfig);
     let str = JSON.stringify(this.chartData);
+    if (!str) {
+      return;
+    }
     str = (ChartBuilder ? ChartBuilder.parseChartData(str) : str);
 
     if (chartType === chartTypes.donut) {
@@ -97,6 +132,7 @@ export class ChartWrapperComponent implements OnInit {
 
   public getChartData(num?: number) {
     const data = this.data;
+
     if (typeof data.fetchData === 'function') {
       data.fetchData(adjustedData => {
         this.chartData = adjustedData;
@@ -107,5 +143,9 @@ export class ChartWrapperComponent implements OnInit {
 
   ngOnInit() {
     this.getChartData();
+
+    ChartWrapperComponent.redraw(_ => {
+      this.getChartData();
+    }, this.data.wrapperName);
   }
 }

@@ -22,7 +22,7 @@ import { TenantAbstractService } from './tenant-abstract.service';
   templateUrl: './tenant-abstract.component.html',
   styleUrls: ['./tenant-abstract.component.sass'],
 })
-export class TenantAbstractComponent implements OnInit, AfterViewInit, OnDestroy {
+export class TenantAbstractComponent implements OnInit, OnDestroy {
   @ViewChild('hostWidth') hostWidthHolder: ElementRef;
 
   chartTypes: any;
@@ -77,6 +77,7 @@ export class TenantAbstractComponent implements OnInit, AfterViewInit, OnDestroy
     this.platformSummaryParam = { // 1.
       chartType: chartTypes.donut,
       fetchData: '', // TODO: this.service.fetchPlatformSummary.bind(this.service),
+      wrapperName: 'tenantPlatformSummaryWrapper',
     };
 
     this.consumptionSummaryParam = { // 2.
@@ -88,18 +89,21 @@ export class TenantAbstractComponent implements OnInit, AfterViewInit, OnDestroy
           top: 20,
         },
       },
+      wrapperName: 'consumptionSummaryWrapper',
     };
 
     this.instancesCountTrendOption = this.monthlyOptions[5];
     this.instancesCountTrendParam = { // 3.
       chartType: chartTypes.line,
       fetchData: this.service.fetchInstancesCountTrend.bind(this.service),
+      wrapperName: 'instancesCountTrendWrapper',
     };
 
     this.consumptionsTrendOption = this.monthlyOptions[5];
     this.consumptionsTrendParam = { // 4.
       chartType: chartTypes.line,
       fetchData: this.service.fetchConsumptionsTrend.bind(this.service),
+      wrapperName: 'consumptionsTrendWrapper',
     };
 
     this.instancesCountParam = { // 5.
@@ -108,24 +112,28 @@ export class TenantAbstractComponent implements OnInit, AfterViewInit, OnDestroy
       config: {
         stack: true,
       },
+      wrapperName: 'instancesCountWrapper',
     };
 
     this.CPULoadTrendParam = { // 6.
       chartType: chartTypes.line,
       fetchData: this.service.fetchResourcesTrend.bind(this.service),
       resourceType: resourceTypes.cpu,
+      wrapperName: 'CPULoadTrendWrapper',
     };
 
     this.memoryLoadTrendParam = { // 7.
       chartType: chartTypes.line,
       fetchData: this.service.fetchResourcesTrend.bind(this.service),
       resourceType: resourceTypes.memory,
+      wrapperName: 'memoryLoadTrendWrapper',
     };
 
     this.storageLoadTrendParam = { // 8.
       chartType: chartTypes.line,
       fetchData: this.service.fetchResourcesTrend.bind(this.service),
       resourceType: resourceTypes.memory,
+      wrapperName: 'storageLoadTrendWrapper',
     };
   }
 
@@ -143,23 +151,5 @@ export class TenantAbstractComponent implements OnInit, AfterViewInit, OnDestroy
       this[optionName] = $event;
       wrapper.getChartData($event.value);
     }
-  }
-
-  ngAfterViewInit() {
-    setTimeout(() => {
-      const widthListener = new ElementWidthListener(this.hostWidthHolder);
-      this.listener = widthListener.startListen()
-        .subscribe(() => {
-          this.platformSummaryWrapper.getChartData(this.platformSummaryOption.value);
-          this.consumptionSummaryWrapper.getChartData();
-          this.instancesCountTrendWrapper.getChartData(this.instancesCountTrendOption.value);
-          this.consumptionsTrendWrapper.getChartData();
-          this.consumptionsTrendWrapper.getChartData(this.consumptionsTrendOption.value);
-          this.instancesCountWrapper.getChartData();
-          this.CPULoadTrendWrapper.getChartData();
-          this.memoryLoadTrendWrapper.getChartData();
-          this.storageLoadTrendWrapper.getChartData();
-        });
-    });
   }
 }
