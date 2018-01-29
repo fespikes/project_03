@@ -8,6 +8,7 @@ import { SharedModule } from '../shared';
 import { I18nModule } from '../i18n';
 
 import { TenantService } from './tenant.service';
+import { TenantAbstractService } from './tenant-detail/tenant-abstract/tenant-abstract.service';
 import { TenantRoutingModule } from './tenant-routing.module';
 import { TenantListComponent } from './tenant-list/tenant-list.component';
 import { TenantDetailComponent } from './tenant-detail/tenant-detail.component';
@@ -46,6 +47,7 @@ import { ModalBillCorrectComponent } from './tenant-detail/tenant-bill/modal-bil
   providers: [
     TenantService,
     TuiModalService,
+    TenantAbstractService,
   ],
   entryComponents: [
     ModalBillClearComponent,

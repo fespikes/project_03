@@ -1,0 +1,162 @@
+\:host
+  display: flex
+  flex-direction: column
+
+/****S:common*****/
+$blue: #2481e3
+$h318: 318px
+
+.radius
+  border: 0
+  border-radius: 3px
+
+.radius-shadow
+  @extend .radius
+  background: #fff
+  box-shadow: 0 4px 10px #ccc
+  position: relative
+
+.fb
+  font-weight: bold
+.f14
+  font-size: 14px
+.sub-title, .f14b
+  @extend .f14, .fb
+
+.flex
+  display: flex
+  align-items: stretch
+
+.flex-colunn
+  @extend .flex
+  flex-direction: column
+.flex-row
+  @extend .flex
+  flex-direction: row
+
+.margin-right
+  margin-right: 10px
+
+.select
+  width: 150px
+  position: absolute
+  right: 40px
+  top: 10px
+
+.h318px
+  height: $h318
+/****S:common*****/
+
+.tui-layout-main-container
+  @extend .flex-colunn
+  justify-content: space-between
+  box-shadow: none
+  background: #ebeef5
+
+.main-content
+  height: 370px
+
+.section
+  @extend .flex-row
+  margin-bottom: 10px
+  justify-content: space-evenly
+  align-items: stretch
+  flex-grow: 1
+
+  &:last-child
+    margin-bottom: 0
+
+  h4
+    @extend .f14b
+    text-indent: 20px
+
+.section0
+
+  .summary
+    flex-basis: 825px
+    flex-grow: 1
+
+    @extend .flex-colunn, .margin-right
+
+  .tenant-grow-trend
+    flex-basis: 490px
+    flex-grow: 1
+
+
+.quantity
+  @extend .flex-colunn
+  height: 160px
+  margin-bottom: 10px
+
+  .box
+    @extend .flex-row
+    justify-content: space-around
+
+    span
+      @extend .radius
+      height: 80px
+      flex-basis: 180px
+      flex-grow: 0
+      flex-shrink: 1
+      padding: 10px
+      background: $blue
+      color: #fff
+      position: relative
+
+      svg
+        position: absolute
+        left: 30px
+        top: 25px
+        width: 50px
+        height: 50px
+        @extend .radius
+
+      p
+        margin: 0
+        text-align: right
+
+      .amount
+        width: 100%
+        height: 40px
+        line-height: 30px
+        overflow: hidden
+        text-overflow: ellipsis
+        font-size: 30px
+
+
+      .description
+        font-size: 14px
+
+.loads
+  @extend .flex-colunn
+  height: 200px
+
+.platform-summary-donuts
+  height: 140px
+
+/* E: section0 */
+
+.node-load-trend, .products-instances-trend
+  flex-basis: 825px
+  flex-grow: 1
+  @extend .margin-right
+
+.node-amount-trend, .tenant-consumption-ranking
+  flex-basis: 490px
+  flex-grow: 1
+
+
+.products-instances-ranking
+  flex-basis: 490px
+  flex-grow: 1
+
+  @extend .margin-right
+
+  .amount
+    position: absolute
+    right: 225px
+    top: 18px
+
+.instances-amount-trend
+  flex-basis: 820px
+  flex-grow: 1

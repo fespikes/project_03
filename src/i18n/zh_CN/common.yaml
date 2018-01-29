@@ -54,3 +54,8 @@ TUI:
 
   SELECT:
     NO_OPTIONS: -- 没有选项 --
+    LAST: 最近
+    HOUR: 小时
+    HOURS: 小时
+    MONTH: 个月
+    MONTHS: 个月

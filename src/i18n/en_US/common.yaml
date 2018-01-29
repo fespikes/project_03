@@ -54,4 +54,8 @@ TUI:
 
   SELECT:
     NO_OPTIONS: -- No Options --
-
+    LAST: last
+    HOUR: hour
+    HOURS: hours
+    MONTH: month
+    MONTHS: months

@@ -6,8 +6,8 @@ import { TuiModule } from 'tdc-ui';
 import {
   ImgSrcDirective,
   IconStatusDirective,
+  ChartWrapperComponent,
 } from './components/';
-
 
 @NgModule({
   imports: [
@@ -17,10 +17,12 @@ import {
   declarations: [
     ImgSrcDirective,
     IconStatusDirective,
+    ChartWrapperComponent,
   ],
   exports: [
     ImgSrcDirective,
     IconStatusDirective,
+    ChartWrapperComponent,
     TuiModule,
   ],
 })

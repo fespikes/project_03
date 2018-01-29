@@ -14,7 +14,6 @@ TENANT:
     CREATE_TIME: 创建时间
     BILL: 总账单金额
 
-
   DETAIL:
     GO_BACK: 返回
     ABSTRACT: 概览
@@ -36,7 +35,7 @@ TENANT:
 
   ABSTRACT:
     PLATFORM_INFO: 平台概览
-    SERVICE_HEALTH: 服务情况
+    CONSUMPTION_SUMMARY: 消费概况
     INSTANCES_TREND: 云产品实例变化趋势
     PRODUCTS_TREND: 云产品实例数量
     CONSUMPTION_TREND: 消费变化趋势

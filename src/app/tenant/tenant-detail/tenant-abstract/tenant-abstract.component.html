@@ -1,24 +1,127 @@
-<div class="row">
-  <div class="panel platform-info flex-3">{{'TENANT.ABSTRACT.PLATFORM_INFO' | translate}}</div>
-  <div class="panel service-health flex-2">{{'TENANT.ABSTRACT.SERVICE_HEALTH' | translate}}</div>
+<div class="row h200" #hostWidth>
+
+  <div class="panel platform-info flex-3">
+    <h5>{{'TENANT.ABSTRACT.PLATFORM_INFO' | translate}}</h5>
+    <tui-select
+      [ngClass]="{ select: true }"
+      placeholder="tui select example"
+      [ngModel]="platformSummaryOption"
+            (ngModelChange)="doModelChange(
+              $event, 'platformSummaryOption', platformSummaryWrapper)"
+      #platformSummarySelect
+    >
+      <tui-select-option
+        *ngFor="let option of monthlyOptions"
+        [value]="option"
+        [label]="option.label">
+        {{option.label | tuiDefault }}
+      </tui-select-option>
+    </tui-select>
+
+    <tec-chart-wrapper
+      [data]="platformSummaryParam"
+      #platformSummaryWrapper
+    >
+    </tec-chart-wrapper>
+  </div>
+
+  <div class="panel service-health flex-2">
+    <!--2. 消费概况 -->
+    <h5>{{'TENANT.ABSTRACT.CONSUMPTION_SUMMARY' | translate}}</h5>
+    <tec-chart-wrapper
+      [data]="consumptionSummaryParam"
+      #consumptionSummaryWrapper
+    ></tec-chart-wrapper>
+    <div>
+
+    </div>
+  </div>
 </div>
 
-<div class="row">
-  <div class="panel instances-trend flex-2">{{'TENANT.ABSTRACT.INSTANCES_TREND' | translate}}</div>
-  <div class="panel products-trend flex-3">{{'TENANT.ABSTRACT.PRODUCTS_TREND' | translate}}</div>
+<div class="row h348">
+  <div class="panel instances-trend flex-2">
+    <!--3. 云产品实例变化趋势 -->
+    <h5>{{'TENANT.ABSTRACT.INSTANCES_TREND' | translate}}</h5>
+    <tui-select
+      [ngClass]="{ select: true }"
+      placeholder="tui select example"
+      [ngModel]="instancesCountTrendOption"
+      (ngModelChange)="doModelChange(
+        $event, 'instancesCountTrendOption', instancesCountTrendWrapper)"
+      #instancesCountTrendSelect
+    >
+      <tui-select-option
+        *ngFor="let option of monthlyOptions"
+        [value]="option"
+        [label]="option.label">
+        {{option.label | tuiDefault }}
+      </tui-select-option>
+    </tui-select>
+    <tec-chart-wrapper
+      [data]="instancesCountTrendParam"
+      #instancesCountTrendWrapper
+    ></tec-chart-wrapper>
+  </div>
+
+  <div class="panel products-trend flex-3">
+    <!--4. 消费变化趋势 -->
+    <h5>{{'TENANT.ABSTRACT.CONSUMPTION_TREND' | translate}}</h5>
+    <tui-select
+      [ngClass]="{ select: true }"
+      placeholder="tui select example"
+      [ngModel]="consumptionsTrendOption"
+      (ngModelChange)="doModelChange(
+        $event, 'consumptionsTrendOption', consumptionsTrendWrapper)"
+      #consumptionsTrendSelect
+    >
+      <tui-select-option
+        *ngFor="let option of monthlyOptions"
+        [value]="option"
+        [label]="option.label">
+        {{option.label | tuiDefault }}
+      </tui-select-option>
+    </tui-select>
+    <tec-chart-wrapper
+      [data]="consumptionsTrendParam"
+      #consumptionsTrendWrapper
+    ></tec-chart-wrapper>
+  </div>
 </div>
 
-<div class="row">
-  <div class="panel consumption-trend flex-5">{{'TENANT.ABSTRACT.CONSUMPTION_TREND' | translate}}</div>
-  <div class="panel cpu-trend flex-3">{{'TENANT.ABSTRACT.CPU_TREND' | translate}}</div>
+<div class="row h348">
+  <div class="panel consumption-trend flex-5">
+  <!--5. 云产品实例数量 -->
+  <!-- here the name PRODUCTS_TREND was wrong, should be INSTANCES_COUNT(follow backend or INSTANCES_AMOUNT ) -->
+    <h5>{{'TENANT.ABSTRACT.PRODUCTS_TREND' | translate}}</h5>
+    <tec-chart-wrapper
+      [data]="instancesCountParam"
+      #instancesCountWrapper
+    ></tec-chart-wrapper>
+  </div>
+  <div class="panel cpu-trend flex-3">
+    <!--6.CPU负载率 -->
+    <h5>{{'TENANT.ABSTRACT.CPU_TREND' | translate}}</h5>
+    <tec-chart-wrapper
+      [data]="CPULoadTrendParam"
+      #CPULoadTrendWrapper
+    ></tec-chart-wrapper>
+  </div>
 </div>
 
-<div class="row">
-  <div class="panel memory-trend flex-3">{{'TENANT.ABSTRACT.MEMORY_TREND' | translate}}</div>
-  <div class="panel storage-trend flex-5">{{'TENANT.ABSTRACT.STORAGE_TREND' | translate}}</div>
-</div>
+<div class="row h348">
+  <div class="panel memory-trend flex-3">
+    <h5>{{'TENANT.ABSTRACT.MEMORY_TREND' | translate}}</h5>
+    <tec-chart-wrapper
+      [data]="memoryLoadTrendParam"
+      #memoryLoadTrendWrapper
+    ></tec-chart-wrapper>
+  </div>
 
-<div class="row">
-  <div class="panel network-trend flex-5">{{'TENANT.ABSTRACT.NETWORK_TREND' | translate}}</div>
-  <div class="panel service-kill-trend flex-3">{{'TENANT.ABSTRACT.SERVICE_KILL_TREND' | translate}}</div>
+  <div class="panel storage-trend flex-5">
+    <h5>{{'TENANT.ABSTRACT.STORAGE_TREND' | translate}}</h5>
+    <tec-chart-wrapper
+      [data]="storageLoadTrendParam"
+      #storageLoadTrendWrapper
+    ></tec-chart-wrapper>
+  </div>
 </div>

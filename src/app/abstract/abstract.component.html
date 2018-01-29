@@ -1,3 +1,240 @@
-<p>
-  abstract works!
-</p>
+
+<div class="tui-layout-vertical">
+
+  <div class="tui-layout-main-container flex-auto">
+
+    <div class="main-content section section0" #listenerHolder>
+
+      <div class="summary">
+
+        <div class="quantity radius-shadow">
+          <h4>{{'ABSTRACT.QUANTITY_SUMMARY' | translate}}</h4>
+          <div class="box">
+            <span>
+              <svg tuiIcon="pile" size="lg"></svg>
+              <p class="amount">{{quantitySummary.nodeCount}}</p>
+              <p class="description">{{'ABSTRACT.NODES_AMOUNT' | translate}}</p>
+            </span>
+            <span>
+              <svg tuiIcon="TODO" size="lg"></svg>
+              <p class="amount">{{quantitySummary.tenantCount}}</p>
+              <p class="description">{{'ABSTRACT.TENANT_AMOUNT' | translate}}</p>
+            </span>
+            <span>
+              <svg tuiIcon="TODO" size="lg"></svg>
+              <p class="amount">{{quantitySummary.productCount}}</p>
+              <p class="description">{{'ABSTRACT.PRODUCT_TYPE' | translate}}</p>
+            </span>
+            <span>
+              <svg tuiIcon="TODO" size="lg"></svg>
+              <p class="amount">{{quantitySummary.instanceCount}}</p>
+              <p class="description">{{'ABSTRACT.INSTANCES_AMOUNT' | translate}}</p>
+            </span>
+          </div>
+        </div>
+        <!--E: quantity-->
+
+        <div class="loads radius-shadow flex-colunn">
+          <h4>{{'ABSTRACT.LOAD_SUMMARY' | translate}}</h4>
+          <tui-select
+            [ngClass]="{ select: true }"
+            placeholder="tui select example"
+            [ngModel]="platformSummaryOption"
+            (ngModelChange)="doModelChange(
+              $event, 'platformSummaryOption', platformSummaryWrapper)"
+            #loadsSelect
+          >
+            <tui-select-option
+              *ngFor="let option of hourOptions"
+              [value]="option"
+              [label]="option.label">
+              {{option.label | tuiDefault }}
+            </tui-select-option>
+          </tui-select>
+          <!-- here we have three donut charts, the:
+            "average used network";
+            "whole faulty ratio". can't be implemented by backend
+           -->
+          <tec-chart-wrapper
+            [data]="platformSummaryParam"
+            #platformSummaryWrapper
+          ></tec-chart-wrapper>
+        </div>
+      </div>
+      <!--E: summary-->
+
+      <div class="tenant-grow-trend radius-shadow flex-colunn">
+        <h4>{{'ABSTRACT.TENANT_GROW_TREND' | translate}}</h4>
+        <tui-select
+          [ngClass]="{ select: true }"
+          placeholder="tui select example"
+          [ngModel]="tenantGrowTrendOption"
+          (ngModelChange)="doModelChange(
+            $event, 'tenantGrowTrendOption', tenantGrowTrendWrapper)"
+          #tenantGrowTrendSelect
+        >
+          <tui-select-option
+            *ngFor="let option of monthlyOptions"
+            [value]="option"
+            [label]="option.label">
+            {{option.label | tuiDefault }}
+          </tui-select-option>
+        </tui-select>
+        <tec-chart-wrapper
+            [data]="tenantGrowTrendParam"
+            #tenantGrowTrendWrapper
+          ></tec-chart-wrapper>
+      </div>
+    </div>
+    <!--E: section0-->
+
+    <div class="main-content section">
+
+      <div class="node-load-trend radius-shadow flex-colunn">
+        <h4>{{'ABSTRACT.NODE_LOAD_TREND' | translate}}</h4>
+        <tui-select
+          [ngClass]="{ select: true }"
+          placeholder="tui select example"
+          [ngModel]="nodeLoadTrendOption"
+          (ngModelChange)="doModelChange(
+            $event, 'nodeLoadTrendOption', nodeLoadTrendWrapper)"
+          #nodeLoadTrendSelect
+        >
+          <tui-select-option
+            *ngFor="let option of hourOptions"
+            [value]="option"
+            [label]="option.label">
+            {{option.label | tuiDefault }}
+          </tui-select-option>
+        </tui-select>
+        <tec-chart-wrapper
+          [data]="nodeLoadTrendParam"
+          #nodeLoadTrendWrapper
+        ></tec-chart-wrapper>
+      </div>
+
+      <div class="node-amount-trend radius-shadow flex-colunn">
+        <h4>{{'ABSTRACT.NODE_AMOUNT_TRAND' | translate}}</h4>
+        <tui-select
+          [ngClass]="{ select: true }"
+          placeholder="tui select example"
+          [ngModel]="nodeAmountTrendOption"
+          (ngModelChange)="doModelChange(
+            $event, 'nodeAmountTrendOption', nodeAmountTrendWrapper)"
+          #nodeAmountTrendSelect
+        >
+          <tui-select-option
+            *ngFor="let option of monthlyOptions"
+            [value]="option"
+            [label]="option.label">
+            {{option.label | tuiDefault }}
+          </tui-select-option>
+        </tui-select>
+        <tec-chart-wrapper
+          [data]="nodeAmountTrendParam"
+          #nodeAmountTrendWrapper
+        ></tec-chart-wrapper>
+      </div>
+    </div>
+
+    <div class="main-content section">
+      <div class="products-instances-ranking radius-shadow flex-colunn">
+        <h4>{{'ABSTRACT.PRODUCT_INSTANCES_RANKING' | translate}}</h4>
+        <span class="amount">{{'ABSTRACT.AMOUNT' | translate}}{{instancesTotalCount}}</span>
+        <tui-select
+          [ngClass]="{ select: true }"
+          placeholder="tui select example"
+          [ngModel]="productsInstancesRankingOption"
+          (ngModelChange)="doModelChange(
+            $event, 'productsInstancesRankingOption', productsInstancesRankingWrapper)"
+          #productsInstancesRankingSelect
+        >
+          <tui-select-option
+            *ngFor="let option of monthlyOptions"
+            [value]="option"
+            [label]="option.label">
+            {{option.label | tuiDefault }}
+          </tui-select-option>
+        </tui-select>
+        <tec-chart-wrapper
+          [data]="productsInstancesRankingParam"
+          #productsInstancesRankingWrapper
+        ></tec-chart-wrapper>
+      </div>
+      <div class="instances-amount-trend radius-shadow flex-colunn">
+        <h4>{{'ABSTRACT.INSTANCES_AMOUNT_TREND' | translate}}</h4>
+        <tui-select
+          [ngClass]="{ select: true }"
+          placeholder="tui select example"
+          [ngModel]="instancesAmountTrendOption"
+          (ngModelChange)="doModelChange(
+            $event, 'instancesAmountTrendOption', instancesAmountTrendWrapper)"
+          #instancesAmountTrendSelect
+        >
+          <tui-select-option
+            *ngFor="let option of monthlyOptions"
+            [value]="option"
+            [label]="option.label">
+            {{option.label | tuiDefault }}
+          </tui-select-option>
+        </tui-select>
+<!--         <div #instancesAmountTrendHolder class="h318px"></div>
+         -->
+         <tec-chart-wrapper
+          [data]="instancesAmountTrendParam"
+          #instancesAmountTrendWrapper
+        ></tec-chart-wrapper>
+      </div>
+    </div>
+
+    <div class="main-content section">
+      <div class="products-instances-trend radius-shadow flex-colunn">
+        <h4>{{'ABSTRACT.PRODUCTS_INSTANCES_TREND' | translate}}</h4>
+        <tui-select
+          [ngClass]="{ select: true }"
+          placeholder="tui select example"
+          [ngModel]="productsInstancesTrendOption"
+          (ngModelChange)="doModelChange(
+            $event, 'productsInstancesTrendOption', productsInstancesTrendWrapper)"
+          #productsInstancesTrendSelect
+        >
+          <tui-select-option
+            *ngFor="let option of monthlyOptions"
+            [value]="option"
+            [label]="option.label">
+            {{option.label | tuiDefault }}
+          </tui-select-option>
+        </tui-select>
+        <tec-chart-wrapper
+          [data]="productsInstancesTrendParam"
+          #productsInstancesTrendWrapper
+        ></tec-chart-wrapper>
+      </div>
+      <div class="tenant-consumption-ranking radius-shadow flex-colunn">
+        <h4>{{'ABSTRACT.TENANT_CONSUMPTION_TOP7' | translate}}</h4>
+        <tui-select
+          [ngClass]="{ select: true }"
+          placeholder="tui select example"
+          [ngModel]="tenantConsumptionRankingOption"
+          (ngModelChange)="doModelChange(
+            $event, 'tenantConsumptionRankingOption', tenantConsumptionRankingWrapper)"
+          #tenantConsumptionRankingSelect
+        >
+          <tui-select-option
+            *ngFor="let option of monthlyOptions"
+            [value]="option"
+            [label]="option.label">
+            {{option.label | tuiDefault }}
+          </tui-select-option>
+        </tui-select>
+        <tec-chart-wrapper
+          [data]="tenantConsumptionRankingParam"
+          #tenantConsumptionRankingWrapper
+        ></tec-chart-wrapper>
+        <!-- <div #tenantConsumptionRankingHolder class="h318px"></div> -->
+      </div>
+    </div>
+
+  </div>
+
+</div>

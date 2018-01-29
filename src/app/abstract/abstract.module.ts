@@ -1,12 +1,14 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { TuiModalService } from 'tdc-ui';
 
 import { SharedModule } from '../shared';
-import { I18nModule } from '../i18n';
+import { I18nModule, TranslateService } from '../i18n';
 
 import { AbstractRoutingModule } from './abstract-routing.module';
 import { AbstractComponent } from './abstract.component';
+import { AbstractService } from './abstract.service';
 
 @NgModule({
   imports: [
@@ -18,6 +20,11 @@ import { AbstractComponent } from './abstract.component';
   ],
   declarations: [
     AbstractComponent,
+  ],
+  providers: [
+    AbstractService,
+    TranslateService,
+    TuiModalService,
   ],
 })
 export class AbstractModule { }
