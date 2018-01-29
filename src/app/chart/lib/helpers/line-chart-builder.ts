@@ -1,4 +1,4 @@
-import { LineChartData } from '../line';
+import { LineChartData } from '../line/line';
 
 const mockTopics = ['Shanghai', 'Beijing'];
 // 模拟服务返回 array of json。

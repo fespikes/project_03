@@ -1,7 +1,5 @@
 import * as d3 from 'd3';
 
-import { BaseType } from 'd3';
-
 import { ColorSchema } from './color-schema';
 import { Rect2D } from './helpers/transform-helper';
 import { SelectionType } from './chart-base';

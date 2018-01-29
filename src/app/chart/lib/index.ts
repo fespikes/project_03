@@ -1,6 +1,6 @@
 export * from './chart-base';
 export * from './helpers';
-export * from './line';
+export * from './line/line';
 export * from './donut';
 export * from './bar';
 export * from './bar-time';
