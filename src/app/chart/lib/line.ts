@@ -59,7 +59,7 @@ export class LineChartConfig {
     const _config = new LineChartConfig();
     Object.assign(_config, config);
     _config.colorSchema = ColorSchema.from(_config.colorSchema);
-    _config.legend = LegendConfig.form(_config.legend);
+    _config.legend = LegendConfig.from(config.legend);
     return _config;
   }
 
@@ -127,8 +127,12 @@ export class LineChart implements ChartBase {
 
     const { width, height, margin, legend } = this.config;
     this.geo = GeoService.fromMarginContainer(rootContainer, {width, height}, margin);
-    this.geo.placeLegend(legend)
-      .placeGrid()
+
+    if (legend.show) {
+      this.geo.placeLegend(legend);
+    }
+
+    this.geo.placeGrid()
       .placeXAxis()
       .placeYAxis()
       .placeBackground();
@@ -172,8 +176,11 @@ export class LineChart implements ChartBase {
   }
 
   drawLegend() {
+    if (!this.config.legend.show) {
+      return;
+    }
     const legend = new Legend(this.config.colorSchema, this.config.legend);
-    legend.draw(this.geo.legend, this.data.map((d) => d.topic));
+    legend.draw(this.geo.legend, this.data.map((d) => d.topic), this.geo.legend2d);
   }
 
   drawLines() {
@@ -204,7 +211,8 @@ export class LineChart implements ChartBase {
       .attr('d', finishLine(data))
       .style('stroke', this.config.colorSchema.getColor(idx))
       .style('stroke-width', '2px')
-      .style('fill', 'none');
+      .style('fill', 'none')
+      .style('shape-rendering', 'auto');
 
     if (this.config.hasAnimation) {
       line

@@ -236,7 +236,7 @@ export class DonutChartConfig {
     const _config = new DonutChartConfig();
     Object.assign(_config, config);
     _config.style.colorSchema = ColorSchema.from(_config.style.colorSchema);
-    _config.legend = LegendConfig.form(_config.legend);
+    _config.legend = LegendConfig.from(_config.legend);
 
     return _config;
   }
