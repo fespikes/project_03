@@ -39,6 +39,7 @@ export class ChartWrapperComponent implements OnInit {
   chartData: any;
   chartConfig: any;
   chart: any;
+  chartType: string;
 
   static redraw(drawer, key) {
     const Parent = ChartWrapperComponent;
@@ -53,8 +54,9 @@ export class ChartWrapperComponent implements OnInit {
 
     const resize = Observable.fromEvent(window, 'resize');
     resize.throttleTime(500).subscribe(val => {
-      Parent.drawerMap.forEach(draw => {
-        draw();
+      Parent.drawerMap.forEach(obj => {
+        const {callback, chartType, chartConfig, chart, chartData} = obj;
+        callback(chartType, chartConfig, chart, chartData);
       });
       Parent.drawing = false;
     });
@@ -66,31 +68,39 @@ export class ChartWrapperComponent implements OnInit {
     ChartWrapperComponent.drawerMap.clear();
   }
 
-  drawChart(chartType) {
+  drawChart(type?, chartConfiguration?, theChart?, chartData?) {
     const element: HTMLElement = this.chartHolder.nativeElement;
     const { clientWidth, clientHeight } = element;
+
+    if ( clientHeight === 0 || clientWidth === 0 ) {
+      return;
+    }
     let chartConfig, ChartBuilder;
+    const chartType = type || this.chartType;
+    this.chartConfig = chartConfiguration || this.chartConfig;
+    this.chart = theChart || this.chart;
+    this.chartData = chartData || this.chartData;
 
     switch (chartType) {
 
       case chartTypes.bar:
         chartConfig = BarChartConfig;
         ChartBuilder = BarChartBuilder;
-        this.chartConfig = new BarChartConfig();
-        this.chart = new BarChart();
+        this.chartConfig = this.chartConfig || new BarChartConfig();
+        this.chart = this.chart || new BarChart();
         break;
 
       case chartTypes.donut:
         chartConfig = DonutChartConfig;
-        this.chartConfig = new DonutChartConfig();
-        this.chart = new DonutChart();
+        this.chartConfig = this.chartConfig || new DonutChartConfig();
+        this.chart = this.chart || new DonutChart();
         break;
 
       case chartTypes.line:
         chartConfig = LineChartConfig;
         ChartBuilder = LineChartBuilder;
-        this.chartConfig = new LineChartConfig();
-        this.chart = new LineChart();
+        this.chartConfig = this.chartConfig || new LineChartConfig();
+        this.chart = this.chart || new LineChart();
         break;
 
       default:
@@ -126,7 +136,6 @@ export class ChartWrapperComponent implements OnInit {
       this.chart.setConfig(config).select(element)
         .datum(str);
     }
-
     this.chart.draw();
   }
 
@@ -136,16 +145,26 @@ export class ChartWrapperComponent implements OnInit {
     if (typeof data.fetchData === 'function') {
       data.fetchData(adjustedData => {
         this.chartData = adjustedData;
-        this.drawChart(data.chartType);
-      }, num ? num : data.resourceType);
+        this.chartType = data.chartType;
+        this.drawChart();
+
+        ChartWrapperComponent.redraw({
+          callback: (...param) => {
+            this.drawChart(...param);
+          },
+          chartData: this.chartData,
+          chartType: data.chartType,
+          chartConfig: this.chartConfig,
+          chart: this.chart,
+        },
+        this.data.wrapperName );
+      },
+      num ? num : data.resourceType);
     }
   }
 
   ngOnInit() {
     this.getChartData();
 
-    ChartWrapperComponent.redraw(_ => {
-      this.getChartData();
-    }, this.data.wrapperName);
   }
 }
