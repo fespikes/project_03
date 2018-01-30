@@ -13,14 +13,17 @@ export class TooltipItem {
 }
 
 export class Tooltip {
+  constainer: SelectionType;
   tooltip: SelectionType;
   title: SelectionType;
   content: SelectionType;
 
-  constructor() {}
+  constructor(container: SelectionType) {
+    this.constainer = container;
+  }
 
   draw() {
-    this.tooltip = d3.select('body')
+    this.tooltip = this.constainer
       .append('div')
       .style('position', 'absolute')
       .style('width', 'auto')
@@ -72,7 +75,7 @@ export class Tooltip {
   }
 
   setPosition(x: number, y: number) {
-    this.tooltip.style('top', `${y - 10}px`).style('left', `${x + 10}px`);
+    this.tooltip.style('top', `${y + 10}px`).style('left', `${x + 10}px`);
   }
 
   styleTooltip() {
