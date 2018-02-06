@@ -10,6 +10,11 @@ export class Rect2D {
   }
 }
 
+export class Point2D {
+  x: number;
+  y: number;
+}
+
 export class RelativePosition {
   top?: number;
   right?: number;

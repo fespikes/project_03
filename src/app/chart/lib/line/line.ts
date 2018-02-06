@@ -16,6 +16,9 @@ import {
 import { Tooltip } from '../tooltip';
 import { Overlay } from '../overlay';
 import { AxisLine } from '../axis-line';
+import { MarkerFactory, MarkerBase } from './marker';
+import { Point2D } from '../helpers/transform-helper';
+import { InteractionSurface, InteractionObject } from '../interaction-surface';
 
 export type curveStyle = 'curveLinear' | 'curveStep' | 'curveBasis'
   | 'curveCardinal' | 'curveMonotoneX' | 'curveCatmullRom';
@@ -73,58 +76,56 @@ export class LineChartConfig {
   }
 }
 
-export class LinePoint2D {
+export class GeomPoint {
+  point: Point2D;
+  datum: LinePoint;
   topic: string;
+
+  get x() {
+    return this.point.x;
+  }
+
+  get y() {
+    return this.point.y;
+  }
+
+  static create(point: Point2D, datum: LinePoint, topic: string) {
+    const gp = new GeomPoint();
+    gp.point = point;
+    gp.datum = datum;
+    gp.topic = topic;
+
+    return gp;
+  }
+}
+
+export class InteractionXAxisObject implements InteractionObject {
   x: number;
-  y: number;
+  markers: MarkerBase[] = [];
+  points: GeomPoint[] = [];
 
-  constructor(x: number, y: number, topic: string) {
+  constructor(x: number) {
     this.x = x;
-    this.y = y;
-    this.topic = topic;
   }
 
-  get id() {
-    const { topic, x, y } = this;
-    return `${topic}-${x}-${y}`;
-  }
-}
-
-export class PointCollection {
-  points: LinePoint2D[] = [];
-
-  constructor(points: LinePoint2D[]) {
-    this.points = points;
+  addPair(point: GeomPoint, marker: MarkerBase) {
+    this.markers.push(marker);
+    this.points.push(point);
   }
 
-  /**
-   * x方向最近邻
-   */
-  nearestX(x: number) {
-    let minDist = Infinity;
-    let minPoints: LinePoint2D[];
-    this.points.forEach((point) => {
-      const dist = Math.abs(point.x - x);
-      if (minDist > dist) {
-        minDist = dist;
-        minPoints = [point];
-      } else if (minDist === dist) {
-        minPoints.push(point);
-      }
-    });
-
-    return minPoints;
+  distance(x: number, y: number) {
+    return Math.abs(this.x - x);
   }
 
-  getPointsByTopic(topic: string) {
-    return this.points.filter((p) => p.topic === topic);
+  activate() {
+    this.markers.forEach((marker) => marker.activate());
+  }
+
+  deactivate() {
+    this.markers.forEach((marker) => marker.deactivate());
   }
 }
 
-// TODO: add coord
-class Cartesian {
-
-}
 
 export class LineChart implements ChartBase {
   data: LineChartData[] = [];
@@ -133,10 +134,15 @@ export class LineChart implements ChartBase {
   geo: GeoService;
   xAxis: TimeAxis;
   yAxis: LinearAxis;
-  pointCollection: PointCollection;
+  // pointCollection: PointCollection;
   tooltip: Tooltip;
   overlay: Overlay;
   axisLine: AxisLine;
+  interactionSurface: InteractionSurface;
+
+  get rootContainer() {
+    return d3.select(this.element);
+  }
 
   constructor() {}
 
@@ -169,12 +175,10 @@ export class LineChart implements ChartBase {
   }
 
   initGeo() {
-    if (this.geo) {
-      this.geo.clear();
+    if (this.overlay) {
+      this.overlay.clear();
     }
-    const overlayContainer = d3.select(this.element).append('div')
-    .style('width', '100%')
-    .style('height', '100%');
+    const overlayContainer = this.rootContainer.append('div');
 
     const rootContainer = overlayContainer.append('svg')
     .attr('class', 'chart tdc-chart-line')
@@ -182,13 +186,14 @@ export class LineChart implements ChartBase {
     .style('height', '100%');
 
     const { width, height, margin, legend } = this.config;
-    this.geo = GeoService.fromMarginContainer(rootContainer, {width, height}, margin);
 
-    this.overlay = new Overlay(overlayContainer, {width, height});
+    this.geo = GeoService.fromMarginContainer(rootContainer, {width, height}, margin);
 
     if (legend.show) {
       this.geo.placeLegend(legend);
     }
+
+    this.overlay = new Overlay(overlayContainer, {width, height});
 
     this.geo.placeGrid()
       .placeXAxis()
@@ -200,13 +205,57 @@ export class LineChart implements ChartBase {
     const { scale: xScale } = this.xAxis;
     const { scale: yScale } = this.yAxis;
 
-    const points = this.data.reduce((accum, dataset) => {
-      return accum.concat(dataset.data.map((d) => {
-        return new LinePoint2D(xScale(d.x), yScale(d.y), dataset.topic);
-      }));
-    }, []);
+    const markerContainer = this.geo.canvas.append('g')
+    .classed('tooltip-marker-container', true);
 
-    this.pointCollection = new PointCollection(points);
+    const objectMap = {};
+    this.data.forEach((dataset, idx) => {
+      const color = this.config.colorSchema.getColor(idx);
+      dataset.data.forEach((d) => {
+        const center = {
+          x: xScale(d.x),
+          y: yScale(d.y),
+        };
+        const gp = GeomPoint.create(center, d, dataset.topic);
+        const marker = MarkerFactory.createMarker(markerContainer, {center, color});
+        if (!objectMap[center.x]) {
+          objectMap[center.x] = new InteractionXAxisObject(center.x);
+        }
+        objectMap[center.x].addPair(gp, marker);
+      });
+    });
+
+    const objects = Object.keys(objectMap).map((key) => objectMap[key]);
+    this.interactionSurface = new InteractionSurface();
+    this.interactionSurface
+      .watch(this.overlay.container)
+      .setObjects(objects)
+      .on('activeChange', (active: InteractionXAxisObject) => {
+        const format = d3.timeFormat(this.config.xAxis.tick.timeFormat);
+        const title = format(active.points[0].datum.x);
+        this.axisLine.show();
+        this.axisLine.move(active.x);
+
+        const tooltipItems = active.markers.map((marker, idx) => {
+          const point = active.points[idx];
+          return {
+            name: point.topic,
+            value: point.datum.y,
+            color: marker.color,
+          };
+        });
+
+        this.tooltip.show();
+        this.tooltip.setContent(title, tooltipItems);
+      })
+      .on('inactive', () => {
+        this.axisLine.hide();
+        this.tooltip.hide();
+      })
+      .on('mouseCoordChange', (mouseCoord) => {
+        const [x, y] = mouseCoord;
+        this.tooltip.setPosition(x, y);
+      });
   }
 
   initTooltip() {
@@ -214,10 +263,6 @@ export class LineChart implements ChartBase {
     this.tooltip.draw();
     this.axisLine = new AxisLine(this.geo.canvas);
     this.axisLine.draw('#c2c9d5', 'vertical', this.geo.canvas2d.height);
-
-    this.overlay
-      .on('mousemove', this.drawTooltip.bind(this))
-      .on('mouseleave', this.removeTooltip.bind(this));
   }
 
   drawAxis() {
@@ -266,22 +311,31 @@ export class LineChart implements ChartBase {
   }
 
   drawLines() {
+    const { scale: xScale } = this.xAxis;
+    const { scale: yScale } = this.yAxis;
     this.data.forEach((dataset, idx) => {
-      const points = this.pointCollection.getPointsByTopic(dataset.topic);
+      const points = dataset.data.map((d) => {
+        const center = {
+          x: xScale(d.x),
+          y: yScale(d.y),
+        };
+        // return this.pointCollection.getPointByDatum(d);
+        const gp = GeomPoint.create(center, d, dataset.topic);
+        return gp;
+      });
       const line = this.drawLine(points, idx);
       this.appendShadow(line);
       this.appendArea(points);
-      this.appendLineMarker(points, idx);
     });
   }
 
-  drawLine(data: LinePoint2D[], idx = 0) {
-    const startLine = d3.line<LinePoint2D>()
+  drawLine(data: GeomPoint[], idx = 0) {
+    const startLine = d3.line<GeomPoint>()
       .x((p) => p.x)
       .y(0)
       .curve(d3[this.config.curveStyle]);
 
-    const finishLine = d3.line<LinePoint2D>()
+    const finishLine = d3.line<GeomPoint>()
       .x((p) => p.x)
       .y((p) => p.y)
       .curve(d3[this.config.curveStyle]);
@@ -345,16 +399,16 @@ export class LineChart implements ChartBase {
     }
   }
 
-  appendArea(points: LinePoint2D[]) {
+  appendArea(points: GeomPoint[]) {
     const { canvas2d } = this.geo;
 
-    const startArea = d3.area<LinePoint2D>()
+    const startArea = d3.area<GeomPoint>()
       .x((p) => p.x)
       .y0(canvas2d.height)
       .y1(0)
       .curve(d3[this.config.curveStyle]);
 
-    const finishArea = d3.area<LinePoint2D>()
+    const finishArea = d3.area<GeomPoint>()
       .x((p) => p.x)
       .y0(canvas2d.height)
       .y1((p) => p.y)
@@ -378,81 +432,5 @@ export class LineChart implements ChartBase {
         .attr('to', finishArea(points));
       }
     }
-  }
-
-  appendLineMarker(points: LinePoint2D[], idx: number) {
-    const { scale: xScale } = this.xAxis;
-    const { scale: yScale } = this.yAxis;
-    const tooltipMarkers = this.geo.canvas.append('g')
-    .classed('tooltip-marker-container', true)
-    .selectAll('g')
-    .data(points)
-    .enter()
-    .append('g')
-    .classed('tooltip-marker', true)
-    .attr('id', (p) => p.id);
-
-    tooltipMarkers
-    .append('circle')
-    .classed('tooltip-marker-doublecircle-outer', true)
-    .attr('fill', 'white')
-    .attr('r', 2)
-    .attr('stroke-width', 1)
-    .attr('stroke', this.config.colorSchema.getColor(idx))
-    .attr('transform', (p) => {
-      return `translate(${p.x}, ${p.y})`;
-    });
-
-    tooltipMarkers
-    .append('circle')
-    .classed('tooltip-marker-doublecircle-inner', true)
-    .attr('fill', this.config.colorSchema.getColor(idx))
-    .attr('r', 2)
-    .attr('transform', (p) => {
-      return `translate(${p.x}, ${p.y})`;
-    });
-  }
-
-  activateMarkers(points: LinePoint2D[]) {
-    const markerContainers = this.geo.canvas.selectAll('.tooltip-marker-container');
-    markerContainers.selectAll('.tooltip-marker').classed('active', false);
-    points.forEach((p) => {
-      const markers = markerContainers.selectAll(`#${p.id}`);
-      markers.classed('active', true);
-    });
-  }
-
-  drawTooltip() {
-    const xScale = this.xAxis.scale;
-    const [canvasMouseX] = d3.mouse(this.geo.canvas.node());
-    const [overlayMouseX, overlayMouseY] = d3.mouse(this.overlay.container.node());
-    const nearestPoints = this.pointCollection.nearestX(canvasMouseX);
-    const nearestPoint = nearestPoints[0];
-
-    this.activateMarkers(nearestPoints);
-    const tooltipItems = nearestPoints.map((p) => {
-      const idx = this.data.findIndex((dataset) => {
-        return dataset.topic === p.topic;
-      });
-      return {
-        name: p.topic,
-        // CRITICAL: wrong
-        value: p.y,
-        color: this.config.colorSchema.getColor(idx),
-      };
-    });
-
-    this.axisLine.show();
-    this.axisLine.move(nearestPoint.x);
-
-    this.tooltip.show();
-    // CRITICAL: difficult to get tooltip title. which is data.x
-    this.tooltip.setContent('tooltip', tooltipItems);
-    this.tooltip.setPosition(overlayMouseX, overlayMouseY);
-  }
-
-  removeTooltip() {
-    this.axisLine.hide();
-    this.tooltip.hide();
   }
 }

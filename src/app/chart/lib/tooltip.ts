@@ -1,10 +1,6 @@
 import * as d3 from 'd3';
 import { ColorSchema } from './color-schema';
-import { SelectionType } from 'app/chart/lib';
-
-export class TooltipConfig {
-
-}
+import { SelectionType } from './chart-base';
 
 export class TooltipItem {
   name: string | number;
