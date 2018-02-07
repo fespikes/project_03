@@ -1,17 +1,20 @@
 import { SelectionType } from '../chart-base';
 
 import { CircleShapeConfig, Circle } from './circle';
-import { PathShapeConfig, Path } from './path';
+import { LineShapeConfig, Line } from './line';
+import { Point2D } from '../helpers/transform-helper';
 
-export class ShapeRender {
+export class ShapeFactory {
 
   static drawCircle(container: SelectionType, config: CircleShapeConfig) {
     const circle = Circle.config(config);
     circle.draw(container);
+    return circle;
   }
 
-  static drawPath(container: SelectionType, config: PathShapeConfig) {
-    const path = Path.config(config);
-    path.draw(container);
+  static drawLine(container: SelectionType, points: Point2D[], config: LineShapeConfig) {
+    const line = Line.config(config);
+    line.draw(container, points);
+    return line;
   }
 }

@@ -33,7 +33,7 @@ export class InteractionSurface extends EventEmitter {
 
   watch(container: SelectionType) {
     this.container = container;
-    this.container.on('mouseenter', this.onMouseEnter.bind(this));
+    this.container.on('mouseenter', this.onMouseMove.bind(this));
     this.container.on('mousemove', this.onMouseMove.bind(this));
     this.container.on('mouseleave', this.onMouseLeave.bind(this));
     return this;
@@ -44,30 +44,24 @@ export class InteractionSurface extends EventEmitter {
     return this;
   }
 
-  onMouseEnter() {
-    this.deactivateAll();
-    const object = this.getClosestObject();
-    this.setActive(object);
-    this.emitMouseCoord();
-  }
-
   onMouseMove() {
-    this.deactivateAll();
     const object = this.getClosestObject();
     this.setActive(object);
     this.emitMouseCoord();
   }
 
   onMouseLeave() {
-    this.deactivateAll();
+    console.log('onMouseLeave');
     this.setActive();
   }
 
   setActive(object?: InteractionObject) {
     if (!object) {
+      this.deactivateAll();
       this.active = null;
       this.emit('inactive');
     } else if (object !== this.active) {
+      this.deactivateAll();
       object.activate();
       this.active = object;
       this.emit('activeChange', object);

@@ -1,5 +1,4 @@
 import {
-  ShapeRender,
   CircleShapeConfig,
   Circle,
 } from '../shapes';

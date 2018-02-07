@@ -19,6 +19,7 @@ import { AxisLine } from '../axis-line';
 import { MarkerFactory, MarkerBase } from './marker';
 import { Point2D } from '../helpers/transform-helper';
 import { InteractionSurface, InteractionObject } from '../interaction-surface';
+import { ShapeFactory } from '../shapes';
 
 export type curveStyle = 'curveLinear' | 'curveStep' | 'curveBasis'
   | 'curveCardinal' | 'curveMonotoneX' | 'curveCatmullRom';
@@ -76,40 +77,29 @@ export class LineChartConfig {
   }
 }
 
-export class GeomPoint {
-  point: Point2D;
+export class MarkerPoint {
+  marker: MarkerBase;
   datum: LinePoint;
+  coord: Point2D;
   topic: string;
 
-  get x() {
-    return this.point.x;
-  }
-
-  get y() {
-    return this.point.y;
-  }
-
-  static create(point: Point2D, datum: LinePoint, topic: string) {
-    const gp = new GeomPoint();
-    gp.point = point;
-    gp.datum = datum;
-    gp.topic = topic;
-
-    return gp;
+  constructor(topic: string, datum: LinePoint, coord: Point2D, marker: MarkerBase) {
+    this.topic = topic;
+    this.datum = datum;
+    this.coord = coord;
+    this.marker = marker;
   }
 }
 
 export class InteractionXAxisObject implements InteractionObject {
   x: number;
-  markers: MarkerBase[] = [];
-  points: GeomPoint[] = [];
+  points: MarkerPoint[] = [];
 
   constructor(x: number) {
     this.x = x;
   }
 
-  addPair(point: GeomPoint, marker: MarkerBase) {
-    this.markers.push(marker);
+  addPair(point: MarkerPoint) {
     this.points.push(point);
   }
 
@@ -118,11 +108,11 @@ export class InteractionXAxisObject implements InteractionObject {
   }
 
   activate() {
-    this.markers.forEach((marker) => marker.activate());
+    this.points.forEach((p) => p.marker.activate());
   }
 
   deactivate() {
-    this.markers.forEach((marker) => marker.deactivate());
+    this.points.forEach((p) => p.marker.deactivate());
   }
 }
 
@@ -134,11 +124,11 @@ export class LineChart implements ChartBase {
   geo: GeoService;
   xAxis: TimeAxis;
   yAxis: LinearAxis;
-  // pointCollection: PointCollection;
   tooltip: Tooltip;
   overlay: Overlay;
   axisLine: AxisLine;
   interactionSurface: InteractionSurface;
+  points: MarkerPoint[][] = [];
 
   get rootContainer() {
     return d3.select(this.element);
@@ -169,7 +159,6 @@ export class LineChart implements ChartBase {
     this.drawGrid();
     this.drawLines();
     this.drawLegend();
-    this.initTooltip();
 
     return this;
   }
@@ -209,26 +198,37 @@ export class LineChart implements ChartBase {
     .classed('tooltip-marker-container', true);
 
     const objectMap = {};
-    this.data.forEach((dataset, idx) => {
+    this.points = this.data.map((dataset, idx) => {
       const color = this.config.colorSchema.getColor(idx);
-      dataset.data.forEach((d) => {
+      return dataset.data.map((d) => {
         const center = {
           x: xScale(d.x),
           y: yScale(d.y),
         };
-        const gp = GeomPoint.create(center, d, dataset.topic);
         const marker = MarkerFactory.createMarker(markerContainer, {center, color});
-        if (!objectMap[center.x]) {
-          objectMap[center.x] = new InteractionXAxisObject(center.x);
-        }
-        objectMap[center.x].addPair(gp, marker);
+        return new MarkerPoint(dataset.topic, d, center, marker);
       });
     });
+
+    this.points.forEach((series) => {
+      series.forEach((point) => {
+        const x = point.coord.x;
+        if (!objectMap[x]) {
+          objectMap[x] = new InteractionXAxisObject(x);
+        }
+        objectMap[x].addPair(point);
+      });
+    });
+
+    this.tooltip = new Tooltip(this.overlay.container);
+    this.tooltip.draw();
+    this.axisLine = new AxisLine(this.geo.canvas);
+    this.axisLine.draw('#c2c9d5', 'vertical', this.geo.canvas2d.height);
 
     const objects = Object.keys(objectMap).map((key) => objectMap[key]);
     this.interactionSurface = new InteractionSurface();
     this.interactionSurface
-      .watch(this.overlay.container)
+      .watch(this.geo.container)
       .setObjects(objects)
       .on('activeChange', (active: InteractionXAxisObject) => {
         const format = d3.timeFormat(this.config.xAxis.tick.timeFormat);
@@ -236,12 +236,11 @@ export class LineChart implements ChartBase {
         this.axisLine.show();
         this.axisLine.move(active.x);
 
-        const tooltipItems = active.markers.map((marker, idx) => {
-          const point = active.points[idx];
+        const tooltipItems = active.points.map((point, idx) => {
           return {
             name: point.topic,
             value: point.datum.y,
-            color: marker.color,
+            color: point.marker.color,
           };
         });
 
@@ -256,13 +255,6 @@ export class LineChart implements ChartBase {
         const [x, y] = mouseCoord;
         this.tooltip.setPosition(x, y);
       });
-  }
-
-  initTooltip() {
-    this.tooltip = new Tooltip(this.overlay.container);
-    this.tooltip.draw();
-    this.axisLine = new AxisLine(this.geo.canvas);
-    this.axisLine.draw('#c2c9d5', 'vertical', this.geo.canvas2d.height);
   }
 
   drawAxis() {
@@ -313,124 +305,13 @@ export class LineChart implements ChartBase {
   drawLines() {
     const { scale: xScale } = this.xAxis;
     const { scale: yScale } = this.yAxis;
-    this.data.forEach((dataset, idx) => {
-      const points = dataset.data.map((d) => {
-        const center = {
-          x: xScale(d.x),
-          y: yScale(d.y),
-        };
-        // return this.pointCollection.getPointByDatum(d);
-        const gp = GeomPoint.create(center, d, dataset.topic);
-        return gp;
-      });
-      const line = this.drawLine(points, idx);
-      this.appendShadow(line);
-      this.appendArea(points);
+    this.points.forEach((series, idx) => {
+      const points = series.map((p) => p.coord);
+      const { hasAnimation, hasShadow, hasArea, areaColor } = this.config;
+      const line = ShapeFactory.drawLine(this.geo.canvas, points, { color: this.config.colorSchema.getColor(idx) })
+      .animate(hasAnimation)
+      .shadow(hasShadow)
+      .area(hasArea, {color: areaColor, animation: hasAnimation, canvasHeight: this.geo.canvas2d.height});
     });
-  }
-
-  drawLine(data: GeomPoint[], idx = 0) {
-    const startLine = d3.line<GeomPoint>()
-      .x((p) => p.x)
-      .y(0)
-      .curve(d3[this.config.curveStyle]);
-
-    const finishLine = d3.line<GeomPoint>()
-      .x((p) => p.x)
-      .y((p) => p.y)
-      .curve(d3[this.config.curveStyle]);
-
-    const line = this.geo.canvas.append('path')
-      .attr('class', 'line')
-      .attr('d', finishLine(data))
-      .style('stroke', this.config.colorSchema.getColor(idx))
-      .style('stroke-width', '2px')
-      .style('fill', 'none')
-      .style('shape-rendering', 'auto');
-
-    if (this.config.hasAnimation) {
-      line
-      .append('animate')
-      .attr('dur', '1s')
-      .attr('attributeName', 'd')
-      .attr('calcMode', 'spline')
-      .attr('keyTimes', '0; 1')
-      .attr('keySplines', '.5 0 .5 1')
-      .attr('from', startLine(data))
-      .attr('to', finishLine(data));
-    }
-
-    return line;
-  }
-
-  appendShadow(line: SelectionType) {
-    // 如果没有定义shadow样式，则定义
-    if (!this.geo.container.selectAll('#line-shadow').size()) {
-      const defs = this.geo.canvas.append('defs');
-      const filter = defs.append('filter')
-        .attr('id', 'line-shadow')
-        .attr('height', '130%');
-
-      filter.append('feGaussianBlur')
-        .attr('in', 'SourceAlpha')
-        .attr('color', '#ccc')
-        .attr('stdDeviation', 3)
-        .attr('result', 'blur');
-
-      filter.append('feOffset')
-        .attr('in', 'blur')
-        .attr('dx', 3)
-        .attr('dy', 5)
-        .attr('result', 'offsetBlur');
-
-      filter.append('feComponentTransfer')
-        .append('feFuncA')
-          .attr('type', 'linear')
-          .attr('slope', '0.2');
-
-      const feMerge = filter.append('feMerge');
-      feMerge.append('feMergeNode');
-      feMerge.append('feMergeNode')
-        .attr('in', 'SourceGraphic');
-    }
-
-    if (this.config.hasShadow) {
-      line.style('filter', 'url(#line-shadow)');
-    }
-  }
-
-  appendArea(points: GeomPoint[]) {
-    const { canvas2d } = this.geo;
-
-    const startArea = d3.area<GeomPoint>()
-      .x((p) => p.x)
-      .y0(canvas2d.height)
-      .y1(0)
-      .curve(d3[this.config.curveStyle]);
-
-    const finishArea = d3.area<GeomPoint>()
-      .x((p) => p.x)
-      .y0(canvas2d.height)
-      .y1((p) => p.y)
-      .curve(d3[this.config.curveStyle]);
-
-    if (this.config.hasArea) {
-      const area = this.geo.canvas.append('path')
-      .attr('class', 'area')
-      .attr('d', finishArea(points))
-      .attr('fill', this.config.areaColor);
-
-      if (this.config.hasAnimation) {
-        area
-        .append('animate')
-        .attr('dur', '1s')
-        .attr('attributeName', 'd')
-        .attr('calcMode', 'spline')
-        .attr('keyTimes', '0; 1')
-        .attr('keySplines', '.5 0 .5 1')
-        .attr('from', startArea(points))
-        .attr('to', finishArea(points));
-      }
-    }
   }
 }
