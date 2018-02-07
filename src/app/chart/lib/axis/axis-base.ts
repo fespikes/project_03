@@ -79,4 +79,8 @@ export abstract class AxisBase {
       .attr('fill', this.config.textStyle.color)
       .attr('font-size', this.config.textStyle.foneSize);
   }
+
+  format(datum) {
+    return datum;
+  }
 }

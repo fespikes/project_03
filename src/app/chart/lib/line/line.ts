@@ -18,7 +18,7 @@ import { Overlay } from '../overlay';
 import { AxisLine } from '../axis-line';
 import { MarkerFactory, MarkerBase } from './marker';
 import { Point2D } from '../helpers/transform-helper';
-import { InteractionSurface, InteractionObject } from '../interaction-surface';
+import { InteractionSurface, InteractionObject, TooltipInteraction } from '../interaction-surface';
 import { ShapeFactory } from '../shapes';
 
 export type curveStyle = 'curveLinear' | 'curveStep' | 'curveBasis'
@@ -93,13 +93,25 @@ export class MarkerPoint {
 
 export class InteractionXAxisObject implements InteractionObject {
   x: number;
+  title: string;
   points: MarkerPoint[] = [];
 
-  constructor(x: number) {
-    this.x = x;
+  get items() {
+    return this.points.map((point) => {
+      return {
+        name: point.topic,
+        value: point.datum.y,
+        color: point.marker.color,
+      };
+    });
   }
 
-  addPair(point: MarkerPoint) {
+  constructor(x: number, title: string) {
+    this.x = x;
+    this.title = title;
+  }
+
+  addPoint(point: MarkerPoint) {
     this.points.push(point);
   }
 
@@ -155,6 +167,7 @@ export class LineChart implements ChartBase {
     this.initGeo();
     this.drawAxis();
     this.initData();
+    this.initTooltip();
     this.drawBackgroud();
     this.drawGrid();
     this.drawLines();
@@ -197,7 +210,6 @@ export class LineChart implements ChartBase {
     const markerContainer = this.geo.canvas.append('g')
     .classed('tooltip-marker-container', true);
 
-    const objectMap = {};
     this.points = this.data.map((dataset, idx) => {
       const color = this.config.colorSchema.getColor(idx);
       return dataset.data.map((d) => {
@@ -209,52 +221,6 @@ export class LineChart implements ChartBase {
         return new MarkerPoint(dataset.topic, d, center, marker);
       });
     });
-
-    this.points.forEach((series) => {
-      series.forEach((point) => {
-        const x = point.coord.x;
-        if (!objectMap[x]) {
-          objectMap[x] = new InteractionXAxisObject(x);
-        }
-        objectMap[x].addPair(point);
-      });
-    });
-
-    this.tooltip = new Tooltip(this.overlay.container);
-    this.tooltip.draw();
-    this.axisLine = new AxisLine(this.geo.canvas);
-    this.axisLine.draw('#c2c9d5', 'vertical', this.geo.canvas2d.height);
-
-    const objects = Object.keys(objectMap).map((key) => objectMap[key]);
-    this.interactionSurface = new InteractionSurface();
-    this.interactionSurface
-      .watch(this.geo.container)
-      .setObjects(objects)
-      .on('activeChange', (active: InteractionXAxisObject) => {
-        const format = d3.timeFormat(this.config.xAxis.tick.timeFormat);
-        const title = format(active.points[0].datum.x);
-        this.axisLine.show();
-        this.axisLine.move(active.x);
-
-        const tooltipItems = active.points.map((point, idx) => {
-          return {
-            name: point.topic,
-            value: point.datum.y,
-            color: point.marker.color,
-          };
-        });
-
-        this.tooltip.show();
-        this.tooltip.setContent(title, tooltipItems);
-      })
-      .on('inactive', () => {
-        this.axisLine.hide();
-        this.tooltip.hide();
-      })
-      .on('mouseCoordChange', (mouseCoord) => {
-        const [x, y] = mouseCoord;
-        this.tooltip.setPosition(x, y);
-      });
   }
 
   drawAxis() {
@@ -270,6 +236,31 @@ export class LineChart implements ChartBase {
     const { width, height } = this.geo.canvas2d;
     this.xAxis.draw(allDataX, [0, width]);
     this.yAxis.draw([0, d3.max(allDataY)], [height, 0]);
+  }
+
+  initTooltip() {
+    const objectMap = {};
+    this.points.forEach((series) => {
+      series.forEach((point) => {
+        const x = point.coord.x;
+        if (!objectMap[x]) {
+          const title = this.xAxis.format(point.datum.x);
+          objectMap[x] = new InteractionXAxisObject(x, title);
+        }
+        objectMap[x].addPoint(point);
+      });
+    });
+
+    const tooltip = new Tooltip(this.overlay.container);
+    tooltip.draw();
+    const axisLine = new AxisLine(this.geo.canvas);
+    axisLine.draw('#c2c9d5', 'vertical', this.geo.canvas2d.height);
+
+    const objects = Object.keys(objectMap).map((key) => objectMap[key]);
+    const interactionSurface = new InteractionSurface();
+    const tooltipInteraction = new TooltipInteraction(this.overlay, interactionSurface, objects)
+    .bindTooltip(tooltip)
+    .bindAxisLine(axisLine);
   }
 
   drawBackgroud() {

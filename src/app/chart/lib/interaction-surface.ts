@@ -4,14 +4,14 @@ import { EventEmitter } from 'events';
 
 import { SelectionType } from './chart-base';
 import { Point2D } from './helpers/transform-helper';
+import { Tooltip } from './tooltip';
+import { Overlay } from './overlay';
+import { AxisLine } from './axis-line';
 
 export type InteractionType = 'radiated' | 'covered' | 'normal';
 
 export abstract class InteractionObject {
   abstract distance(x: number, y: number);
-  // abstract onInteract(type: InteractionType);
-  abstract activate();
-  abstract deactivate();
 }
 
 export type DetectionAxis = 'x' | 'y' | 'both';
@@ -51,18 +51,14 @@ export class InteractionSurface extends EventEmitter {
   }
 
   onMouseLeave() {
-    console.log('onMouseLeave');
     this.setActive();
   }
 
   setActive(object?: InteractionObject) {
     if (!object) {
-      this.deactivateAll();
       this.active = null;
       this.emit('inactive');
     } else if (object !== this.active) {
-      this.deactivateAll();
-      object.activate();
       this.active = object;
       this.emit('activeChange', object);
     }
@@ -70,10 +66,6 @@ export class InteractionSurface extends EventEmitter {
 
   emitMouseCoord() {
     this.emit('mouseCoordChange', this.mouseCoord);
-  }
-
-  deactivateAll() {
-    this.objects.forEach((object) => object.deactivate());
   }
 
   getClosestObject() {
@@ -86,5 +78,80 @@ export class InteractionSurface extends EventEmitter {
   getObjectDist(object: InteractionObject) {
     const [mouseX, mouseY] = this.mouseCoord;
     return object.distance(mouseX, null);
+  }
+}
+
+export class TooltipItem {
+  name: string;
+  value: string;
+  color: string;
+}
+
+export abstract class TooltipInteractionItem {
+  x: number;
+  title: string;
+  items: TooltipItem[];
+  abstract distance(x: number, y: number);
+  abstract activate();
+  abstract deactivate();
+}
+
+export class TooltipInteraction {
+  items: TooltipInteractionItem[];
+  overlay: Overlay;
+  surface: InteractionSurface;
+
+  constructor(overlay: Overlay, surface: InteractionSurface, items: TooltipInteractionItem[]) {
+    this.overlay = overlay;
+    this.surface = surface;
+    this.items = items;
+
+    this.surface.watch(this.overlay.container)
+    .setObjects(this.items)
+    .on('activeChange', (active) => {
+      this.deactivateAllItems();
+      active.activate();
+    })
+    .on('inactive', (active) => {
+      this.deactivateAllItems();
+    });
+
+    return this;
+  }
+
+  bindTooltip(tooltip: Tooltip) {
+    this.surface
+    .on('activeChange', (active: TooltipInteractionItem) => {
+      tooltip.show();
+      tooltip.setContent(active.title, active.items);
+    })
+    .on('inactive', () => {
+      tooltip.hide();
+    })
+    .on('mouseCoordChange', (mouseCoord) => {
+      const [x, y] = mouseCoord;
+      tooltip.setPosition(x, y);
+    });
+
+    return this;
+  }
+
+  bindAxisLine(axisLine: AxisLine) {
+    this.surface
+    .on('activeChange', (active: TooltipInteractionItem) => {
+      axisLine.show();
+      axisLine.move(active.x);
+    })
+    .on('inactive', () => {
+      axisLine.hide();
+    });
+
+    return this;
+  }
+
+  deactivateAllItems() {
+    this.items.forEach((item) => {
+      item.deactivate();
+    });
   }
 }

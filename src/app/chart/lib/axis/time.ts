@@ -51,4 +51,10 @@ export class TimeAxis extends AxisBase {
     this.styleLine();
     this.styleText();
   }
+
+  // Override
+  format(datum: Date) {
+    const timeFormat = d3.timeFormat(this.config.tick.timeFormat);
+    return timeFormat(datum);
+  }
 }
