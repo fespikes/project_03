@@ -7,9 +7,19 @@ import { Component, OnInit } from '@angular/core';
 })
 export class LayoutHeadRightComponent implements OnInit {
   messageCount = 2;
+  dropdownDirection = 'bottomCenter';
+  user: any = {
+    name: 'rockwang',
+  };
+
   constructor() { }
 
   ngOnInit() {
+  }
+
+  quit($event) {
+    console.log('quit ....', $event);
+    // TODO: request and refresh page
   }
 
 }

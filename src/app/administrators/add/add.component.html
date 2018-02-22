@@ -1,0 +1,65 @@
+
+<div class="container">
+  <div>
+    <span class="label">用户名</span>
+    <input
+      class="field"
+      type="password"
+      [(ngModel)]="params.username"
+      required #username
+     />
+  </div>
+  <div>
+    <span class="label">密码</span>
+    <input
+      class="field"
+      type="text"
+      [(ngModel)]="params.password"
+      required
+    />
+  </div>
+  <div>
+    <span class="label">全名</span>
+    <input
+      class="field"
+      type="text"
+      [(ngModel)]="params.fullName"
+      required
+    />
+  </div>
+  <div>
+    <span class="label">email</span>
+    <input
+      class="field"
+      type="password"
+      [(ngModel)]="params.email"
+      required
+    />
+  </div>
+  <div class="radio-wrapper">
+    <input class="radio true"
+      name="deletable"
+      type="radio" id="yes"
+      required
+      checked="checked" />
+    <label for="yes">可删除</label>
+    <input class="radio false"
+      name="deletable"
+      type="radio"
+      required
+      id="no" />
+    <label for="no">不可删除</label>
+  </div>
+
+  <div class="buttons">
+    <button
+      class="tui-btn-md tui-btn-primary tui-btn sure"
+      (click)="submit($event)"
+    >确认</button>
+    <button
+      class="tui-btn-md tui-btn-default tui-btn quit"
+      (click)="quit($event)"
+    >取消</button>
+  </div>
+</div>
+

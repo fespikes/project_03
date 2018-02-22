@@ -1,0 +1,8 @@
+ADMINISTRATORS:
+  ADMINISTRATOR_LIST: 管理员列表
+  ADD: 添加管理员
+  NAME: 用户名
+  EMAIL: Email
+  FULL_NAME: 全名
+  TIME: 时间
+  OPERATE: 操作

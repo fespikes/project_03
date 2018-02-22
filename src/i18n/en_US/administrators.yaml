@@ -1,0 +1,8 @@
+ADMINISTRATORS:
+  ADMINISTRATOR_LIST: administrators
+  ADD: add administrator
+  NAME: Name
+  EMAIL: Email
+  FULL_NAME: full name
+  TIME: Date
+  OPERATE: Operate

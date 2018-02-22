@@ -6,7 +6,9 @@ LAYOUT:
   SYSTEM: System Service
   TICKET: Ticket
   ORGANIZATION: Organization
-
+  ADMINISTRATOR_LIST: administrators
+  CHANGE_PWD: change password
+  QUIT: quit
 
 NOT_FOUND:
   ERROR_PROMPT: Sorry, something went wrong

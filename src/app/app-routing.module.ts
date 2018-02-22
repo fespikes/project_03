@@ -55,6 +55,14 @@ const routes: Routes = [
         loadChildren: './chart/chart.module#ChartModule',
       },
       {
+        path: 'administrators',
+        loadChildren: './administrators/administrators.module#AdministratorsModule',
+      },
+      {
+        path: 'account',
+        loadChildren: './account/account.module#AccountModule',
+      },
+      {
         path: '',
         redirectTo: 'abstract',
         pathMatch: 'full',

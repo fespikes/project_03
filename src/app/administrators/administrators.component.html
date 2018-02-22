@@ -1,0 +1,47 @@
+
+<div class="tui-layout-vertical">
+  <div class="tui-layout-main-container container" style="">
+    <h2 class="tui-layout-main-title">
+      {{'ADMINISTRATORS.ADMINISTRATOR_LIST' | translate}}
+      <span>
+        <button class="add-admin" tuiBtn="primary" (click)="openChildModal()">
+          <svg class="add" tuiIcon="create" size="md"></svg>
+          {{'ADMINISTRATORS.ADD' | translate}}
+        </button>
+      </span>
+    </h2>
+
+    <div class="main-content main">
+      <tui-table class="tui-table" [tuiTableFlex]="[3,4,4,5,2]" [loading]="loading">
+        <tui-table-head>
+          <div>{{'ADMINISTRATORS.NAME' | translate}}</div>
+          <div>{{'ADMINISTRATORS.EMAIL' | translate}}</div>
+          <div>{{'ADMINISTRATORS.FULL_NAME' | translate}}</div>
+          <div>{{'ADMINISTRATORS.TIME' | translate}}</div>
+          <div>{{'ADMINISTRATORS.OPERATE' | translate}}</div>
+        </tui-table-head>
+        <tui-table-row *ngFor="let instance of tableData">
+          <div class="text-ellipsis">{{instance.username}}</div>
+          <div class="text-ellipsis">{{instance.email}}</div>
+          <div>{{instance.fullName}}</div>
+          <div>{{instance.createTime | date: 'yyyy/MM/dd h:mm a'}}</div>
+          <div>
+            <svg
+              *ngIf="instance.deletable"
+              class="remove"
+              tuiIcon="trash"
+              size="md"
+              (click)="removeCurrent(instance.id)"
+              ></svg>
+          </div>
+        </tui-table-row>
+      </tui-table>
+    </div>
+
+    <div class="tui-layout-main-pagination-footer">
+      <tui-pagination [(pagination)]="pagination" (paginationChange)="fetchTableData()">
+      </tui-pagination>
+    </div>
+
+  </div>
+</div>
