@@ -3,64 +3,80 @@
   <div class="tui-layout-main-container container flex-auto" style="">
 
     <div class="main-content main">
-      <form [formGroup]="myForm"
-            (ngSubmit)="onSubmit(myForm.value)"
-            class="ui form">
+      <form
+        [formGroup]="myForm"
+        (ngSubmit)="onSubmit(myForm.value)"
+        class="form-specific"
+      >
         <h3>修改密码</h3>
         <div
           [class.error]="!myForm.get('oldPassword').valid && myForm.get('oldPassword').touched"
         >
-          <label for="passwordId"><span>*</span>原密码</label>
-          <input
-            class="field"
-            type="password"
-            placeholder="原密码"
-            id="passwordId"
-            autocomplete="off"
-            [formControl]="myForm.controls['oldPassword']"
-            [(ngModel)]="params.oldPassword"
-           />
+          <div class="field-box">
+            <label for="passwordId"><span>*</span>原密码</label>
+            <input
+              class="field"
+              type="password"
+              placeholder="原密码"
+              id="passwordId"
+              autocomplete="off"
+              [formControl]="myForm.controls['oldPassword']"
+              [(ngModel)]="params.oldPassword"
+             />
+          </div>
+
+          <div
+            *ngIf="myForm.controls['oldPassword'].hasError('required') && myForm.controls['oldPassword'].touched"
+            class="message"
+          >Original password is required.</div>
         </div>
+
         <div
           [class.error]="!myForm.get('newPassword').valid && myForm.get('newPassword').touched"
         >
-          <label for="newPasswordId"><span>*</span>新密码</label>
-          <input
-            class="field"
-            type="password"
-            placeholder="新密码"
-            id="newPasswordId"
-            autocomplete="off"
-            [formControl]="myForm.controls['newPassword']"
-            [(ngModel)]="params.newPassword"
-          />
-        </div>
-        <div
-          *ngIf="myForm.controls['newPassword'].hasError('invalidCompare') && myForm.controls['newPassword'].touched"
-          class="message">New password must be different with the old one.
-        </div>
-        <div
-          *ngIf="myForm.controls['newPassword'].hasError('pattern') && myForm.controls['newPassword'].touched"
-          class="message">Must change to pattern "[A-Za-z0-9]\{{ '{' }}6,8\{{ '}' }}"
+          <div class="field-box">
+            <label for="newPasswordId"><span>*</span>新密码</label>
+            <input
+              class="field"
+              type="password"
+              placeholder="新密码"
+              id="newPasswordId"
+              autocomplete="off"
+              [formControl]="myForm.controls['newPassword']"
+              [(ngModel)]="params.newPassword"
+            />
+          </div>
+
+          <div
+            *ngIf="myForm.controls['newPassword'].hasError('invalidCompare') && myForm.controls['newPassword'].touched"
+            class="message"
+          >New password is required and must be different from the old one.</div>
+          <div
+            *ngIf="myForm.controls['newPassword'].hasError('pattern') && myForm.controls['newPassword'].touched"
+            class="message">Must change to pattern "/^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{{'{'}}6,21{{'}'}}$/"
+          </div>
         </div>
 
         <div
           [class.error]="!myForm.get('confirm').valid && myForm.get('confirm').touched"
         >
-          <label for="confirmId"><span>*</span>确认密码</label>
-          <input
-            class="field"
-            type="password"
-            placeholder="请再输入一次确认"
-            id="confirmId"
-            autocomplete="off"
-            [formControl]="myForm.controls['confirm']"
-            [(ngModel)]="params.confirm"
-          />
-        </div>
-        <div
-          *ngIf="myForm.controls['confirm'].hasError('invalidCompare') && myForm.controls['confirm'].touched"
-          class="message">Confirm password must be the same with new password.
+          <div class="field-box">
+            <label for="confirmId"><span>*</span>确认密码</label>
+            <input
+              class="field"
+              type="password"
+              placeholder="请再输入一次确认"
+              id="confirmId"
+              autocomplete="off"
+              [formControl]="myForm.controls['confirm']"
+              [(ngModel)]="params.confirm"
+            />
+          </div>
+
+          <div
+            *ngIf="myForm.controls['confirm'].hasError('invalidCompare') && myForm.controls['confirm'].touched"
+            class="message"
+          >Confirm password is required and must be the same with new password.</div>
         </div>
 
         <div class="buttons">

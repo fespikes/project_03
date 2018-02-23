@@ -6,6 +6,8 @@ import {
   FormControl,
 } from '@angular/forms';
 
+import { TuiModalRef } from 'tdc-ui';
+
 import { AccountService } from '../account.service';
 
 @Component({
@@ -17,6 +19,8 @@ export class ChangePwdComponent implements OnInit {
 
   myForm: FormGroup;
 
+  loading = false;
+
   params: any = {
     oldPassword: '',
     newPassword: '',
@@ -25,7 +29,11 @@ export class ChangePwdComponent implements OnInit {
 
   test: string;
 
-  constructor(fb: FormBuilder, accountService: AccountService) {
+  constructor(
+    fb: FormBuilder,
+    private modal: TuiModalRef,
+    private accountService: AccountService,
+  ) {
     const me = this;
 
     this.myForm = fb.group({
@@ -36,7 +44,7 @@ export class ChangePwdComponent implements OnInit {
           Validators.required,
           // Validators.minLength(6),
           // Validators.maxLength(8),
-          Validators.pattern('[A-Za-z0-9]{6,8}'),
+          Validators.pattern(/^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,8}$/),
           function(control: FormControl) {
             return me.confirmValidator.bind(me)(control, 'oldPassword');
           },
@@ -53,8 +61,6 @@ export class ChangePwdComponent implements OnInit {
         ]),
       ],
     });
-
-    // this.confirmValidator = this.confirmValidator.bind(me);
   }
 
   confirmValidator(control: FormControl, target: string, inverse?: boolean): { [s: string]: boolean } {
@@ -68,14 +74,17 @@ export class ChangePwdComponent implements OnInit {
   ngOnInit() {
     const me = this;
     this.myForm.valueChanges.subscribe((form: any) => {
-      // console.log('form changed to:', form.valid, me.myForm);
-      console.log(me.myForm.get('confirm'), me.myForm.get('newPassword').hasError('pattern') );
+      // TODO
     });
 
   }
 
-  onSubmit($event) {
-    console.log('submit', $event);
+  onSubmit(value: {[s: string]: string}) {
+    console.log('submit', value);
+    delete value.confirm;
+    this.accountService.changePWD({...value}).subscribe(response => {
+      this.modal.close('closed');
+    });
   }
 
 }

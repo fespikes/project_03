@@ -13,12 +13,11 @@ export class AdministratorsService {
     return this.api.get(`admins`, {...filter});
   }
 
+  addAdministrator(params) {
+    return this.api.post(`admins`, {...params});
+  }
   deleteAdministrator(id: number) {
     return this.api.delete(`admins/${id}`);
-  }
-
-  changePwd(pwd: string) {
-    return this.api.post(`admins/resetPassword`, {passwordRequest: pwd});
   }
 
 }

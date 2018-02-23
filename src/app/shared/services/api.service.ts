@@ -43,6 +43,7 @@ export class TecApiService {
   }
 
   makeUrl(url) {
+    console.log(path.join(environment.apiUrl, url));
     return path.join(environment.apiUrl, url);
   }
 

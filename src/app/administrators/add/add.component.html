@@ -1,65 +1,141 @@
 
 <div class="container">
-  <div>
-    <span class="label">用户名</span>
-    <input
-      class="field"
-      type="password"
-      [(ngModel)]="params.username"
-      required #username
-     />
-  </div>
-  <div>
-    <span class="label">密码</span>
-    <input
-      class="field"
-      type="text"
-      [(ngModel)]="params.password"
-      required
-    />
-  </div>
-  <div>
-    <span class="label">全名</span>
-    <input
-      class="field"
-      type="text"
-      [(ngModel)]="params.fullName"
-      required
-    />
-  </div>
-  <div>
-    <span class="label">email</span>
-    <input
-      class="field"
-      type="password"
-      [(ngModel)]="params.email"
-      required
-    />
-  </div>
-  <div class="radio-wrapper">
-    <input class="radio true"
-      name="deletable"
-      type="radio" id="yes"
-      required
-      checked="checked" />
-    <label for="yes">可删除</label>
-    <input class="radio false"
-      name="deletable"
-      type="radio"
-      required
-      id="no" />
-    <label for="no">不可删除</label>
-  </div>
+  <form
+    [formGroup]="myForm"
+    (ngSubmit)="onSubmit(myForm.value)"
+    class="form-specific"
+  >
+    <div
+      [class.error]="!myForm.get('username').valid && myForm.get('username').touched"
+    >
+      <div class="field-box">
+        <label for="usernameId"><span>*</span>用户名</label>
+        <input
+          class="field"
+          type="text"
+          placeholder="用户名"
+          id="usernameId"
+          autocomplete="off"
+          [formControl]="myForm.controls['username']"
+         />
+      </div>
 
-  <div class="buttons">
-    <button
-      class="tui-btn-md tui-btn-primary tui-btn sure"
-      (click)="submit($event)"
-    >确认</button>
-    <button
-      class="tui-btn-md tui-btn-default tui-btn quit"
-      (click)="quit($event)"
-    >取消</button>
-  </div>
+      <div
+        *ngIf="myForm.controls['username'].hasError('required') && myForm.controls['username'].touched"
+        class="message"
+      >User name is required.</div>
+    </div>
+
+    <div
+      [class.error]="!myForm.get('password').valid && myForm.get('password').touched"
+    >
+      <div class="field-box">
+        <label for="passwordId"><span>*</span>密码</label>
+        <input
+          class="field"
+          type="password"
+          placeholder="密码"
+          id="passwordId"
+          autocomplete="off"
+          [formControl]="myForm.controls['password']"
+         />
+      </div>
+
+      <div
+        *ngIf="myForm.controls['password'].hasError('required') && myForm.controls['password'].touched"
+        class="message"
+      >Password is required.</div>
+      <div
+        *ngIf="myForm.controls['password'].hasError('pattern') && myForm.controls['password'].touched"
+        class="message"
+      >Password pattern is /^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{{'{'}}6,8{{'}'}}$</div>
+    </div>
+
+    <div
+      [class.error]="!myForm.get('fullName').valid && myForm.get('fullName').touched"
+    >
+      <div class="field-box">
+        <label for="fullNameId"><span>*</span>全名</label>
+        <input
+          class="field"
+          type="text"
+          placeholder="全名"
+          id="fullNameId"
+          autocomplete="off"
+          [formControl]="myForm.controls['fullName']"
+         />
+      </div>
+
+      <div
+        *ngIf="myForm.controls['fullName'].hasError('required') && myForm.controls['fullName'].touched"
+        class="message"
+      >FullName is required.</div>
+    </div>
+
+    <div
+      [class.error]="!myForm.get('email').valid && myForm.get('email').touched"
+    >
+      <div class="field-box">
+        <label for="emailId"><span>*</span>email</label>
+        <input
+          class="field"
+          type="text"
+          placeholder="email"
+          id="emailId"
+          autocomplete="off"
+          [formControl]="myForm.controls['email']"
+         />
+      </div>
+
+      <div
+        *ngIf="myForm.controls['email'].hasError('required') && myForm.controls['email'].touched"
+        class="message"
+      >Email is required.</div>
+      <div
+        *ngIf="myForm.controls['email'].hasError('pattern') && myForm.controls['email'].touched"
+        class="message"
+      >Email pattern is /^(\w)+(\.\w+)*@(\w)+((\.\w+)+)$/.</div>
+    </div>
+
+    <div
+      [class.error]="!myForm.get('deletable').valid && myForm.get('deletable').touched"
+      class="radio-wrapper"
+    >
+      <div class="field-box">
+        <input class="radio true"
+          name="deletable"
+          type="radio" id="yes"
+          value=true
+          [formControl]="myForm.controls['deletable']"
+        />
+        <label for="yes">可删除</label>
+        <input class="radio false"
+          name="deletable"
+          type="radio"
+          id="no"
+          value=false
+          [formControl]="myForm.controls['deletable']"
+        />
+        <label for="no">不可删除</label>
+      </div>
+
+      <div
+        *ngIf="myForm.controls['deletable'].hasError('required') && myForm.controls['deletable'].touched"
+        class="message"
+      >Deletable field is required.</div>
+    </div>
+
+    <div class="buttons">
+      <button
+        class="tui-btn-md tui-btn-primary tui-btn"
+        type="submit"
+        [disabled]="!myForm.valid ? 'disabled' : null"
+      >确认</button>
+      <button
+        class="tui-btn-md tui-btn-default tui-btn"
+        type="reset"
+      >取消</button>
+    </div>
+  </form>
 </div>
 

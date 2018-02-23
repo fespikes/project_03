@@ -4,7 +4,6 @@ import { RouterModule, Routes } from '@angular/router';
 
 import { TranslateDeactivator, TranslateResolver, TranslateToken } from '../i18n';
 import { AccountComponent } from './account.component';
-import { LoginComponent } from './login/login.component';
 import { ChangePwdComponent } from './change-pwd/change-pwd.component';
 
 const accountRoutes: Routes = [{
@@ -15,7 +14,6 @@ const accountRoutes: Routes = [{
   children: [{
     path: '',
     children: [
-      { path: 'login', component: LoginComponent },
       { path: 'change-pwd', component: ChangePwdComponent },
       { path: '', redirectTo: '/account/login', pathMatch: 'full' },
     ],

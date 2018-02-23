@@ -56,7 +56,6 @@ export class AdministratorsComponent implements OnInit {
     this.service.deleteAdministrator(id).subscribe(response => {
       this.loading = false;
       this.fetchTableData();
-      console.log(id, 'been removed');
     });
   }
 }

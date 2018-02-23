@@ -12,7 +12,7 @@ export class AccountService {
   ) { }
 
   changePWD(params) {
-    this.api.post(`admins/resetPassword`, {...params});
+    return this.api.post(`admins/resetPassword`, {...params});
   }
 
 }
