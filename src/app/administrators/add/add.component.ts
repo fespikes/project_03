@@ -8,6 +8,7 @@ import {
 
 import { TuiModalRef } from 'tdc-ui';
 
+import { patterns } from '../../shared';
 import { AdministratorsService } from '../administrators.service';
 
 @Component({
@@ -29,14 +30,14 @@ export class AddComponent implements OnInit {
       'username': ['', Validators.required],
       'password': ['', Validators.compose([
           Validators.required,
-          Validators.pattern(/^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,8}$/),
+          Validators.pattern(patterns.password),
         ])],
       'fullName': ['', Validators.required],
       'email': [
         '',
         Validators.compose([
           Validators.required,
-          Validators.pattern(/^(\w)+(\.\w+)*@(\w)+((\.\w+)+)$/),
+          Validators.pattern(patterns.email),
         ]),
       ],
       'deletable': ['true', Validators.required],

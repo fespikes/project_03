@@ -7,6 +7,7 @@ import {
 } from '@angular/forms';
 
 import { TuiModalRef } from 'tdc-ui';
+import { patterns } from '../../shared';
 
 import { AccountService } from '../account.service';
 
@@ -44,7 +45,7 @@ export class ChangePwdComponent implements OnInit {
           Validators.required,
           // Validators.minLength(6),
           // Validators.maxLength(8),
-          Validators.pattern(/^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,8}$/),
+          Validators.pattern(patterns.password),
           function(control: FormControl) {
             return me.confirmValidator.bind(me)(control, 'oldPassword');
           },
@@ -54,7 +55,7 @@ export class ChangePwdComponent implements OnInit {
         '',
         Validators.compose([
           Validators.required,
-          Validators.pattern('[A-Za-z0-9]{6,8}'),
+          Validators.pattern(patterns.password),
           function(control: FormControl) {
             return me.confirmValidator.bind(me)(control, 'newPassword', true);
           },

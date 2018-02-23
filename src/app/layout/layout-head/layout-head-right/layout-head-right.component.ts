@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
+import { LayoutService } from '../../layout.service';
+
 @Component({
   selector: 'tec-layout-head-right',
   templateUrl: './layout-head-right.component.html',
@@ -12,14 +14,19 @@ export class LayoutHeadRightComponent implements OnInit {
     name: 'rockwang',
   };
 
-  constructor() { }
+  constructor(
+    private layoutService: LayoutService,
+  ) { }
 
   ngOnInit() {
   }
 
   quit($event) {
-    console.log('quit ....', $event);
-    // TODO: request and refresh page
+    this.layoutService.ssoLogout().subscribe(res => {
+      console.log('logout succeed. the next : ->', res);
+      // TODO: api content no user info , need to make changes
+      // TODO: redirect to outer page after logout
+    });
   }
 
 }

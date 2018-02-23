@@ -10,6 +10,7 @@ import { LayoutHeadComponent } from './layout-head/layout-head.component';
 import { LayoutHeadNavComponent } from './layout-head/layout-head-nav/layout-head-nav.component';
 import { LayoutHeadRightComponent } from './layout-head/layout-head-right/layout-head-right.component';
 
+import { LayoutService } from './layout.service';
 @NgModule({
   imports: [
     CommonModule,
@@ -23,6 +24,9 @@ import { LayoutHeadRightComponent } from './layout-head/layout-head-right/layout
     LayoutHeadComponent,
     LayoutHeadNavComponent,
     LayoutHeadRightComponent,
+  ],
+  providers: [
+    LayoutService,
   ],
 })
 export class LayoutModule { }
