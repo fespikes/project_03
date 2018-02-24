@@ -9,17 +9,21 @@ export class TooltipItem {
 }
 
 export class Tooltip {
-  constainer: SelectionType;
+  container: SelectionType;
   tooltip: SelectionType;
   title: SelectionType;
   content: SelectionType;
 
-  constructor(container: SelectionType) {
-    this.constainer = container;
+  constructor(overlayContainer: SelectionType) {
+    this.container = overlayContainer;
+    this.container.on('mousemove', () => {
+      const [x, y] = d3.mouse(overlayContainer.node());
+      this.setPosition(x, y);
+    });
   }
 
   draw() {
-    this.tooltip = this.constainer
+    this.tooltip = this.container
       .append('div')
       .style('position', 'absolute')
       .style('width', 'auto')
@@ -71,7 +75,7 @@ export class Tooltip {
   }
 
   setPosition(x: number, y: number) {
-    this.tooltip.style('top', `${y + 10}px`).style('left', `${x + 10}px`);
+    this.tooltip.style('top', `${y}px`).style('left', `${x}px`);
   }
 
   styleTooltip() {

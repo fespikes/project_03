@@ -18,7 +18,6 @@ export class AxisLine {
     }
 
     this.line = this.container.append('line')
-    .classed('chart-axis-line', true)
     .classed(`chart-axis-line-${orient}`, true)
     .attr('stroke', color)
     .attr('stroke-width', 1)
@@ -38,7 +37,7 @@ export class AxisLine {
   }
 
   clear() {
-    this.container.selectAll('.chart-axis-line').remove();
+    this.line.remove();
     this.line = null;
   }
 

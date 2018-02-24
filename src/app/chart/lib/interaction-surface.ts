@@ -2,88 +2,15 @@ import * as d3 from 'd3';
 import { min } from 'lodash-es';
 import { EventEmitter } from 'events';
 
-import { SelectionType } from './chart-base';
+import { SelectionType, InteractiveContainer } from './chart-base';
 import { Point2D } from './helpers/transform-helper';
 import { Tooltip } from './tooltip';
 import { Overlay } from './overlay';
 import { AxisLine } from './axis-line';
 
-export type InteractionType = 'radiated' | 'covered' | 'normal';
-
-export abstract class InteractionObject {
-  abstract distance(x: number, y: number);
-}
-
-export type DetectionAxis = 'x' | 'y' | 'both';
-
-export class InteractionSurface extends EventEmitter {
-  axis: DetectionAxis;
-  container: SelectionType;
-  objects: InteractionObject[] = [];
-  active: InteractionObject;
-
-  get mouseCoord() {
-    return d3.mouse(this.container.node());
-  }
-
-  config(axis: DetectionAxis, multi: boolean) {
-    this.axis = axis;
-    return this;
-  }
-
-  watch(container: SelectionType) {
-    this.container = container;
-    this.container.on('mouseenter', this.onMouseMove.bind(this));
-    this.container.on('mousemove', this.onMouseMove.bind(this));
-    this.container.on('mouseleave', this.onMouseLeave.bind(this));
-    return this;
-  }
-
-  setObjects(objects: InteractionObject[]) {
-    this.objects = objects;
-    return this;
-  }
-
-  onMouseMove() {
-    const object = this.getClosestObject();
-    this.setActive(object);
-    this.emitMouseCoord();
-  }
-
-  onMouseLeave() {
-    this.setActive();
-  }
-
-  setActive(object?: InteractionObject) {
-    if (!object) {
-      this.active = null;
-      this.emit('inactive');
-    } else if (object !== this.active) {
-      this.active = object;
-      this.emit('activeChange', object);
-    }
-  }
-
-  emitMouseCoord() {
-    this.emit('mouseCoordChange', this.mouseCoord);
-  }
-
-  getClosestObject() {
-    const dists = this.objects.map((object) => this.getObjectDist(object));
-    const minDist = min(dists);
-    const minIdx = dists.indexOf(minDist);
-    return this.objects[minIdx];
-  }
-
-  getObjectDist(object: InteractionObject) {
-    const [mouseX, mouseY] = this.mouseCoord;
-    return object.distance(mouseX, null);
-  }
-}
-
 export class TooltipItem {
   name: string;
-  value: string;
+  value: number;
   color: string;
 }
 
@@ -99,20 +26,18 @@ export abstract class TooltipInteractionItem {
 export class TooltipInteraction {
   items: TooltipInteractionItem[];
   overlay: Overlay;
-  surface: InteractionSurface;
+  canvas: InteractiveContainer;
 
-  constructor(overlay: Overlay, surface: InteractionSurface, items: TooltipInteractionItem[]) {
-    this.overlay = overlay;
-    this.surface = surface;
+  constructor(canvas: InteractiveContainer, items: TooltipInteractionItem[]) {
     this.items = items;
-
-    this.surface.watch(this.overlay.container)
-    .setObjects(this.items)
-    .on('activeChange', (active) => {
+    this.canvas = canvas;
+    this.canvas.mouseEvent.on('mousemove', ([x, y]) => {
+      const active = this.getActive(x);
       this.deactivateAllItems();
       active.activate();
-    })
-    .on('inactive', (active) => {
+    });
+
+    this.canvas.mouseEvent.on('mouseleave', () => {
       this.deactivateAllItems();
     });
 
@@ -120,33 +45,39 @@ export class TooltipInteraction {
   }
 
   bindTooltip(tooltip: Tooltip) {
-    this.surface
-    .on('activeChange', (active: TooltipInteractionItem) => {
+    this.canvas.mouseEvent.on('mousemove', ([x, y]) => {
+      const active = this.getActive(x);
       tooltip.show();
       tooltip.setContent(active.title, active.items);
-    })
-    .on('inactive', () => {
+      tooltip.setPosition(x + 60, y + 60);
+    });
+
+    this.canvas.mouseEvent.on('mouseleave', () => {
       tooltip.hide();
-    })
-    .on('mouseCoordChange', (mouseCoord) => {
-      const [x, y] = mouseCoord;
-      tooltip.setPosition(x, y);
     });
 
     return this;
   }
 
   bindAxisLine(axisLine: AxisLine) {
-    this.surface
-    .on('activeChange', (active: TooltipInteractionItem) => {
+    this.canvas.mouseEvent.on('mousemove', ([x, y]) => {
+      const active = this.getActive(x);
       axisLine.show();
       axisLine.move(active.x);
-    })
-    .on('inactive', () => {
+    });
+
+    this.canvas.mouseEvent.on('mouseleave', () => {
       axisLine.hide();
     });
 
     return this;
+  }
+
+  getActive(x: number): TooltipInteractionItem {
+    const dists = this.items.map((object) => object.distance(x, null));
+    const minDist = min(dists);
+    const minIdx = dists.indexOf(minDist);
+    return this.items[minIdx];
   }
 
   deactivateAllItems() {

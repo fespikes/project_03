@@ -12,6 +12,9 @@ export class Overlay extends EventEmitter {
     this.container = container;
     this.container2d = container2d;
     this.setup();
+    setTimeout(() => {
+      this.startListen();
+    });
   }
 
   clear() {
@@ -24,5 +27,13 @@ export class Overlay extends EventEmitter {
       .style('position', 'relative')
       .style('width', `${width}px`)
       .style('height', `${height}px`);
+  }
+
+  startListen() {
+    ['mouseenter', 'mousemove', 'mouseleave'].forEach((event) => {
+      this.container.on(event, () => {
+        this.emit(event);
+      });
+    });
   }
 }

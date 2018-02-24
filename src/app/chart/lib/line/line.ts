@@ -2,7 +2,7 @@ import * as d3 from 'd3';
 import * as moment from 'moment';
 import { Selection, ScaleTime, ScaleLinear, Axis, Line } from 'd3';
 
-import { ChartBase, SelectionType } from '../chart-base';
+import { ChartBase, SelectionType, Chart } from '../chart-base';
 import { Legend, LegendConfig } from '../legend';
 import { ColorSchema } from '../color-schema';
 import { GeoService } from '../geo-service';
@@ -14,11 +14,10 @@ import {
   TimeAxisConfig,
 } from '../axis';
 import { Tooltip } from '../tooltip';
-import { Overlay } from '../overlay';
 import { AxisLine } from '../axis-line';
 import { MarkerFactory, MarkerBase } from './marker';
 import { Point2D } from '../helpers/transform-helper';
-import { InteractionSurface, InteractionObject, TooltipInteraction } from '../interaction-surface';
+import { TooltipInteraction, TooltipInteractionItem } from '../interaction-surface';
 import { ShapeFactory } from '../shapes';
 
 export type curveStyle = 'curveLinear' | 'curveStep' | 'curveBasis'
@@ -61,8 +60,6 @@ export class LineChartConfig {
   background: string;
   colorSchema = new ColorSchema();
   legend = new LegendConfig();
-  overlay: Overlay;
-  axisLine: AxisLine;
 
   static from(config) {
     const _config = new LineChartConfig();
@@ -91,7 +88,7 @@ export class MarkerPoint {
   }
 }
 
-export class InteractionXAxisObject implements InteractionObject {
+export class InteractionAxisObject implements TooltipInteractionItem {
   x: number;
   title: string;
   points: MarkerPoint[] = [];
@@ -129,42 +126,20 @@ export class InteractionXAxisObject implements InteractionObject {
 }
 
 
-export class LineChart implements ChartBase {
+export class LineChart extends Chart {
   data: LineChartData[] = [];
   config: LineChartConfig;
   element: HTMLElement;
-  geo: GeoService;
   xAxis: TimeAxis;
   yAxis: LinearAxis;
   tooltip: Tooltip;
-  overlay: Overlay;
   axisLine: AxisLine;
-  interactionSurface: InteractionSurface;
   points: MarkerPoint[][] = [];
 
-  get rootContainer() {
-    return d3.select(this.element);
-  }
-
-  constructor() {}
-
-  setConfig(config: LineChartConfig) {
-    this.config = config;
-    return this;
-  }
-
-  select(element: HTMLElement) {
-    this.element = element;
-    return this;
-  }
-
-  datum(data: LineChartData[]) {
-    this.data = data;
-    return this;
-  }
-
   draw() {
-    this.initGeo();
+    const { width, height, margin, legend } = this.config;
+    this.init({width, height}, margin, legend);
+
     this.drawAxis();
     this.initData();
     this.initTooltip();
@@ -176,39 +151,9 @@ export class LineChart implements ChartBase {
     return this;
   }
 
-  initGeo() {
-    if (this.overlay) {
-      this.overlay.clear();
-    }
-    const overlayContainer = this.rootContainer.append('div');
-
-    const rootContainer = overlayContainer.append('svg')
-    .attr('class', 'chart tdc-chart-line')
-    .style('width', '100%')
-    .style('height', '100%');
-
-    const { width, height, margin, legend } = this.config;
-
-    this.geo = GeoService.fromMarginContainer(rootContainer, {width, height}, margin);
-
-    if (legend.show) {
-      this.geo.placeLegend(legend);
-    }
-
-    this.overlay = new Overlay(overlayContainer, {width, height});
-
-    this.geo.placeGrid()
-      .placeXAxis()
-      .placeYAxis()
-      .placeBackground();
-  }
-
   initData() {
     const { scale: xScale } = this.xAxis;
     const { scale: yScale } = this.yAxis;
-
-    const markerContainer = this.geo.canvas.append('g')
-    .classed('tooltip-marker-container', true);
 
     this.points = this.data.map((dataset, idx) => {
       const color = this.config.colorSchema.getColor(idx);
@@ -217,7 +162,7 @@ export class LineChart implements ChartBase {
           x: xScale(d.x),
           y: yScale(d.y),
         };
-        const marker = MarkerFactory.createMarker(markerContainer, {center, color});
+        const marker = MarkerFactory.createMarker(this.layout.canvas.selection, {center, color});
         return new MarkerPoint(dataset.topic, d, center, marker);
       });
     });
@@ -225,15 +170,15 @@ export class LineChart implements ChartBase {
 
   drawAxis() {
     const { xAxis, yAxis } = this.config;
-    this.xAxis = new TimeAxis(xAxis, this.geo.xAxis, 'bottom');
-    this.yAxis = new LinearAxis(yAxis, this.geo.yAxis, 'left');
+    this.xAxis = new TimeAxis(xAxis, this.layout.xAxis.selection, 'bottom');
+    this.yAxis = new LinearAxis(yAxis, this.layout.yAxis.selection, 'left');
 
     const allData = this.data.reduce((accum, d) => {
       return accum.concat(d.data);
     }, []);
     const allDataX = allData.map(d => d.x);
     const allDataY = allData.map(d => d.y);
-    const { width, height } = this.geo.canvas2d;
+    const { width, height } = this.layout.canvas.dim;
     this.xAxis.draw(allDataX, [0, width]);
     this.yAxis.draw([0, d3.max(allDataY)], [height, 0]);
   }
@@ -245,41 +190,45 @@ export class LineChart implements ChartBase {
         const x = point.coord.x;
         if (!objectMap[x]) {
           const title = this.xAxis.format(point.datum.x);
-          objectMap[x] = new InteractionXAxisObject(x, title);
+          objectMap[x] = new InteractionAxisObject(x, title);
         }
         objectMap[x].addPoint(point);
       });
     });
 
+    const objects = Object.keys(objectMap).map((key) => objectMap[key]);
     const tooltip = new Tooltip(this.overlay.container);
     tooltip.draw();
-    const axisLine = new AxisLine(this.geo.canvas);
-    axisLine.draw('#c2c9d5', 'vertical', this.geo.canvas2d.height);
+    const axisLine = new AxisLine(this.layout.canvas.selection);
+    axisLine.draw('#c2c9d5', 'vertical', this.layout.canvas.dim.height);
 
-    const objects = Object.keys(objectMap).map((key) => objectMap[key]);
-    const interactionSurface = new InteractionSurface();
-    const tooltipInteraction = new TooltipInteraction(this.overlay, interactionSurface, objects)
+    const tooltipInteraction = new TooltipInteraction(this.layout.canvas, objects)
     .bindTooltip(tooltip)
     .bindAxisLine(axisLine);
   }
 
   drawBackgroud() {
     if (this.config.background) {
-      this.geo.background
+      const { width, height } = this.layout.canvas.dim;
+      this.layout.background.selection
+        .append('rect')
+        .classed('background', true)
+        .attr('width', width)
+        .attr('height', height)
         .attr('fill', this.config.background);
     }
   }
 
   drawGrid() {
-    const { canvas2d, gridVertical, gridHorizontal } = this.geo;
+    const { canvas, gridVertical, gridHorizontal } = this.layout;
 
     {
-      const gridRenderer = new Grid(gridVertical, canvas2d);
+      const gridRenderer = new Grid(gridVertical.selection, canvas.dim);
       const { grid, tick } = this.config.xAxis;
       gridRenderer.draw(grid, tick.count, this.xAxis.scale, 'vertical');
     }
     {
-      const gridRenderer = new Grid(gridHorizontal, canvas2d);
+      const gridRenderer = new Grid(gridHorizontal.selection, canvas.dim);
       const { grid, tick } = this.config.yAxis;
       gridRenderer.draw(grid, tick.count, this.yAxis.scale);
     }
@@ -290,7 +239,7 @@ export class LineChart implements ChartBase {
       return;
     }
     const legend = new Legend(this.config.colorSchema, this.config.legend);
-    legend.draw(this.geo.legend, this.data.map((d) => d.topic), this.geo.legend2d);
+    legend.draw(this.layout.legend.selection, this.data.map((d) => d.topic), this.layout.legend.dim);
   }
 
   drawLines() {
@@ -299,10 +248,10 @@ export class LineChart implements ChartBase {
     this.points.forEach((series, idx) => {
       const points = series.map((p) => p.coord);
       const { hasAnimation, hasShadow, hasArea, areaColor } = this.config;
-      const line = ShapeFactory.drawLine(this.geo.canvas, points, { color: this.config.colorSchema.getColor(idx) })
+      const line = ShapeFactory.drawLine(this.layout.canvas.selection, points, { color: this.config.colorSchema.getColor(idx) })
       .animate(hasAnimation)
       .shadow(hasShadow)
-      .area(hasArea, {color: areaColor, animation: hasAnimation, canvasHeight: this.geo.canvas2d.height});
+      .area(hasArea, {color: areaColor, animation: hasAnimation, canvasHeight: this.layout.canvas.dim.height});
     });
   }
 }

@@ -39,6 +39,11 @@ export class Transform2D {
     return transform;
   }
 
+  translate(t: Transform2D) {
+    this.x += t.x;
+    this.y += t.y;
+  }
+
   toTranslate() {
     return `translate(${this.x}, ${this.y})`;
   }
