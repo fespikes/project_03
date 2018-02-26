@@ -2,22 +2,21 @@ import * as d3 from 'd3';
 import * as moment from 'moment';
 import { Selection, ScaleTime, ScaleLinear, Axis, Line } from 'd3';
 
-import { ChartBase, SelectionType, Chart } from '../chart-base';
+import { ChartBase, SelectionType } from '../chart-base';
+import { Chart } from '../chart';
 import { Legend, LegendConfig } from '../legend';
 import { ColorSchema } from '../color-schema';
 import { GeoService } from '../geo-service';
-import { Grid } from '../grid';
+import { Grid } from '../tooltip/grid';
 import {
   LinearAxis,
   LinearAxisConfig,
   TimeAxis,
   TimeAxisConfig,
 } from '../axis';
-import { Tooltip } from '../tooltip';
-import { AxisLine } from '../axis-line';
 import { MarkerFactory, MarkerBase } from './marker';
 import { Point2D } from '../helpers/transform-helper';
-import { TooltipInteraction, TooltipInteractionItem } from '../interaction-surface';
+import { Tooltip, TooltipEvent, TooltipBundleCls, AxisIndicator } from '../tooltip';
 import { ShapeFactory } from '../shapes';
 
 export type curveStyle = 'curveLinear' | 'curveStep' | 'curveBasis'
@@ -88,7 +87,7 @@ export class MarkerPoint {
   }
 }
 
-export class InteractionAxisObject implements TooltipInteractionItem {
+export class TooltipBundle implements TooltipBundleCls {
   x: number;
   title: string;
   points: MarkerPoint[] = [];
@@ -132,8 +131,9 @@ export class LineChart extends Chart {
   element: HTMLElement;
   xAxis: TimeAxis;
   yAxis: LinearAxis;
+  grid: Grid;
   tooltip: Tooltip;
-  axisLine: AxisLine;
+  axisIndicator: AxisIndicator;
   points: MarkerPoint[][] = [];
 
   draw() {
@@ -141,10 +141,10 @@ export class LineChart extends Chart {
     this.init({width, height}, margin, legend);
 
     this.drawAxis();
-    this.initData();
-    this.initTooltip();
     this.drawBackgroud();
     this.drawGrid();
+    this.initData();
+    this.initTooltip();
     this.drawLines();
     this.drawLegend();
 
@@ -190,48 +190,35 @@ export class LineChart extends Chart {
         const x = point.coord.x;
         if (!objectMap[x]) {
           const title = this.xAxis.format(point.datum.x);
-          objectMap[x] = new InteractionAxisObject(x, title);
+          objectMap[x] = new TooltipBundle(x, title);
         }
         objectMap[x].addPoint(point);
       });
     });
-
     const objects = Object.keys(objectMap).map((key) => objectMap[key]);
-    const tooltip = new Tooltip(this.overlay.container);
-    tooltip.draw();
-    const axisLine = new AxisLine(this.layout.canvas.selection);
-    axisLine.draw('#c2c9d5', 'vertical', this.layout.canvas.dim.height);
 
-    const tooltipInteraction = new TooltipInteraction(this.layout.canvas, objects)
-    .bindTooltip(tooltip)
-    .bindAxisLine(axisLine);
+    const tooltipEvent = new TooltipEvent(this.layout.canvas, objects);
+    this.tooltip = new Tooltip(this.overlay.container).draw().subscribe(tooltipEvent);
+    this.axisIndicator = new AxisIndicator(this.grid, 'line').draw().subscribe(tooltipEvent);
   }
 
   drawBackgroud() {
     if (this.config.background) {
-      const { width, height } = this.layout.canvas.dim;
-      this.layout.background.selection
-        .append('rect')
-        .classed('background', true)
-        .attr('width', width)
-        .attr('height', height)
-        .attr('fill', this.config.background);
+      const { selection, dim: { width, height } } = this.layout.background;
+      ShapeFactory.drawRect(selection, {x: 0, y: 0}, height, { width });
     }
   }
 
   drawGrid() {
-    const { canvas, gridVertical, gridHorizontal } = this.layout;
-
-    {
-      const gridRenderer = new Grid(gridVertical.selection, canvas.dim);
-      const { grid, tick } = this.config.xAxis;
-      gridRenderer.draw(grid, tick.count, this.xAxis.scale, 'vertical');
-    }
-    {
-      const gridRenderer = new Grid(gridHorizontal.selection, canvas.dim);
-      const { grid, tick } = this.config.yAxis;
-      gridRenderer.draw(grid, tick.count, this.yAxis.scale);
-    }
+    const { xAxis, yAxis } = this.config;
+    const xScale = this.xAxis.scale;
+    const yScale = this.yAxis.scale;
+    this.grid = new Grid(this.layout.grid);
+    // TODO: move these to axis class
+    const xTicks = xScale.ticks(xAxis.tick.count).map((t) => xScale(t));
+    const yTicks = yScale.ticks(yAxis.tick.count).map((t) => yScale(t));
+    this.grid.drawX(xTicks, xAxis.grid);
+    this.grid.drawY(yTicks, yAxis.grid);
   }
 
   drawLegend() {
@@ -239,7 +226,7 @@ export class LineChart extends Chart {
       return;
     }
     const legend = new Legend(this.config.colorSchema, this.config.legend);
-    legend.draw(this.layout.legend.selection, this.data.map((d) => d.topic), this.layout.legend.dim);
+    legend.draw(this.layout.legend, this.data.map((d) => d.topic));
   }
 
   drawLines() {
@@ -248,7 +235,7 @@ export class LineChart extends Chart {
     this.points.forEach((series, idx) => {
       const points = series.map((p) => p.coord);
       const { hasAnimation, hasShadow, hasArea, areaColor } = this.config;
-      const line = ShapeFactory.drawLine(this.layout.canvas.selection, points, { color: this.config.colorSchema.getColor(idx) })
+      const path = ShapeFactory.drawPath(this.layout.canvas.selection, points, { color: this.config.colorSchema.getColor(idx) })
       .animate(hasAnimation)
       .shadow(hasShadow)
       .area(hasArea, {color: areaColor, animation: hasAnimation, canvasHeight: this.layout.canvas.dim.height});

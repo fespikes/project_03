@@ -10,6 +10,25 @@ export class Rect2D {
   }
 }
 
+export class Vector2D {
+  x: number;
+  y: number;
+
+  constructor(x: number, y: number) {
+    this.x = x;
+    this.y = y;
+  }
+
+  normalize() {
+    const { x, y } = this;
+    const x2 = x * x;
+    const y2 = y * y;
+    const sum = x2 + y2;
+    this.x = Math.sqrt(x2 / sum);
+    this.y = Math.sqrt(y2 / sum);
+  }
+}
+
 export class Point2D {
   x: number;
   y: number;
@@ -28,9 +47,6 @@ export class Transform2D {
 
   // y方向平移
   y = 0;
-
-  // 旋转
-  r = 0;
 
   static fromOffset(xOffset, yOffset) {
     const transform = new Transform2D();

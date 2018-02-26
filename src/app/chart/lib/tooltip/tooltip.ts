@@ -1,6 +1,8 @@
 import * as d3 from 'd3';
-import { ColorSchema } from './color-schema';
-import { SelectionType } from './chart-base';
+
+import { ColorSchema } from '../color-schema';
+import { SelectionType } from '../chart-base';
+import { TooltipEvent } from './tooltip-event';
 
 export class TooltipItem {
   name: string | number;
@@ -9,21 +11,34 @@ export class TooltipItem {
 }
 
 export class Tooltip {
-  container: SelectionType;
+  overlay: SelectionType;
   tooltip: SelectionType;
   title: SelectionType;
   content: SelectionType;
 
-  constructor(overlayContainer: SelectionType) {
-    this.container = overlayContainer;
-    this.container.on('mousemove', () => {
-      const [x, y] = d3.mouse(overlayContainer.node());
-      this.setPosition(x, y);
+  constructor(overlay: SelectionType) {
+    this.overlay = overlay;
+  }
+
+  subscribe(event: TooltipEvent) {
+    event.on('mousemove', ([x, y]) => {
+      this.show();
+      this.setPosition(x + 60, y + 60);
     });
+
+    event.on('mouseleave', () => {
+      this.hide();
+    });
+
+    event.on('tooltip', ({title, items}) => {
+      this.setContent(title, items);
+    });
+
+    return this;
   }
 
   draw() {
-    this.tooltip = this.container
+    this.tooltip = this.overlay
       .append('div')
       .style('position', 'absolute')
       .style('width', 'auto')
@@ -42,6 +57,8 @@ export class Tooltip {
 
     this.content = this.tooltip.append('div')
     .attr('class', 'chart-tooltip-content');
+
+    return this;
   }
 
   show() {

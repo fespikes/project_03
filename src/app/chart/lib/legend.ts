@@ -1,8 +1,9 @@
 import * as d3 from 'd3';
 
 import { ColorSchema } from './color-schema';
-import { Rect2D } from './helpers/transform-helper';
+import { Rect2D, Transform2D } from './helpers/transform-helper';
 import { SelectionType } from './chart-base';
+import { Container } from './container';
 
 export type LegendAlign = 'start' | 'end' | 'center';
 
@@ -68,24 +69,26 @@ export class LegendConfig {
 }
 
 export class Legend {
+  container: Container;
+  padding = 15;
+
   constructor(
     private colorSchema: ColorSchema,
     private config: LegendConfig,
   ) {}
 
-  padding = 15;
-
-  draw(mountPoint: SelectionType, names: string[], legend2d: Rect2D) {
-    const container = mountPoint.append('g');
-    const legend = container.append('g')
+  draw(container: Container, names: string[]) {
+    this.container = container;
+    const selection = this.container.selection.append('g');
+    const legend = selection.append('g')
       .attr('font-family', 'sans-serif')
       .attr('font-size', 14)
       .attr('text-anchor', 'start')
       .selectAll('g')
       .data(names)
       .enter()
-      .append('g')
-      .classed('legend-item', true);
+        .append('g')
+        .classed('legend-item', true);
 
     this.drawMarkers(legend);
 
@@ -95,14 +98,15 @@ export class Legend {
       .attr('dy', '0.32rem')
       .text((text) => text);
 
-    const items = mountPoint.selectAll('.legend-item').nodes();
+    const items = selection.selectAll('.legend-item').nodes();
 
     legend.attr('transform', (text, i) => {
       return this.getItemsTranslate(items.slice(0, i));
     });
 
-    const containerTranslate = this.getContainerTranslate(items, legend2d);
-    container.attr('transform', containerTranslate);
+    const containerTranslate = this.getContainerTranslate(items, container.dim);
+    console.log('container.dim', container.dim);
+    selection.attr('transform', containerTranslate.toTranslate());
   }
 
   drawMarkers(legend: SelectionType) {
@@ -171,7 +175,7 @@ export class Legend {
       }
     }
 
-    return `translate(${translateX}, ${translateY})`;
+    return Transform2D.fromOffset(translateX, translateY);
   }
 
   getItemsMaxWidth(items: Element[]) {

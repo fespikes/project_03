@@ -371,10 +371,10 @@ export class BarChart implements ChartBase {
   }
 
   drawLegend() {
-    if (!this.config.legend.show) {
-      return;
-    }
-    const legend = new Legend(this.config.colorSchema, this.config.legend);
-    legend.draw(this.geo.legend, this.data.topics, this.geo.legend2d);
+    // if (!this.config.legend.show) {
+    //   return;
+    // }
+    // const legend = new Legend(this.config.colorSchema, this.config.legend);
+    // legend.draw(this.geo.legend, this.data.topics, this.geo.legend2d);
   }
 }
