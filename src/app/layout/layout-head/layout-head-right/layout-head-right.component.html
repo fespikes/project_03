@@ -9,7 +9,7 @@
 </div>
 
 <button class="user-dropdown" tuiBtn="primary" [tuiDropdownTrigger]="dropdown">
-  {{user.name}}
+  {{profile.fullName}}
 </button>
 <tui-dropdown #dropdown [direction]="dropdownDirection" [caret]="true">
   <tui-dropdown-item [class.active]="true" class="items">

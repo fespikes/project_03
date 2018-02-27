@@ -1,5 +1,6 @@
 import { Component, OnInit, HostBinding } from '@angular/core';
 import { TuiModalService, TuiModalRef, TUI_MODAL_DATA, Pagination } from 'tdc-ui';
+import { TranslateService } from '../i18n';
 
 import { AddComponent } from './add/add.component';
 import { AdministratorsService } from './administrators.service';
@@ -21,6 +22,7 @@ export class AdministratorsComponent implements OnInit {
   constructor(
     private modalService: TuiModalService,
     private service: AdministratorsService,
+    private translateService: TranslateService,
   ) { }
 
   fetchTableData() {
@@ -39,12 +41,10 @@ export class AdministratorsComponent implements OnInit {
 
   openChildModal(size = 'lg') {
     return this.modalService.open(AddComponent, {
-      title: '添加管理员',
+      title: this.translateService.translateKey('ADMINISTRATORS.TITLE'),
       size,
     })
-    .subscribe((word: string) => {
-      console.log(`Your word is: ${word}`);
-    });
+    .subscribe((word: string) => {});
   }
 
   ngOnInit() {

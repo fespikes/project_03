@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
+import { I18nModule, TranslateService } from '../i18n';
 import { TuiModalRef } from 'tdc-ui';
 
 import { AccounRoutingModule } from './accoun-routing.module';
@@ -13,6 +14,7 @@ import { AccountService } from './account.service';
   imports: [
     CommonModule,
     AccounRoutingModule,
+    I18nModule,
     FormsModule,
     ReactiveFormsModule,
   ],
@@ -23,6 +25,7 @@ import { AccountService } from './account.service';
   providers: [
     TuiModalRef,
     AccountService,
+    TranslateService,
   ],
 })
 export class AccountModule { }

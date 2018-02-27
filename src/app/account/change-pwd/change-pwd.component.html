@@ -8,16 +8,16 @@
         (ngSubmit)="onSubmit(myForm.value)"
         class="form-specific"
       >
-        <h3>修改密码</h3>
+        <h3>{{'ACCOUNT.CHANGE_PWD' | translate}}</h3>
         <div
           [class.error]="!myForm.get('oldPassword').valid && myForm.get('oldPassword').touched"
         >
           <div class="field-box">
-            <label for="passwordId"><span>*</span>原密码</label>
+            <label for="passwordId"><span>*</span>{{'ACCOUNT.ORIGINAL_PWD' | translate}}</label>
             <input
               class="field"
               type="password"
-              placeholder="原密码"
+              placeholder="{{'ACCOUNT.ORIGINAL_PWD_PLACEHOLDER' | translate}}"
               id="passwordId"
               autocomplete="off"
               [formControl]="myForm.controls['oldPassword']"
@@ -28,18 +28,18 @@
           <div
             *ngIf="myForm.controls['oldPassword'].hasError('required') && myForm.controls['oldPassword'].touched"
             class="message"
-          >Original password is required.</div>
+          >{{'ACCOUNT.ORIGINAL_PWD_TIP' | translate}}</div>
         </div>
 
         <div
           [class.error]="!myForm.get('newPassword').valid && myForm.get('newPassword').touched"
         >
           <div class="field-box">
-            <label for="newPasswordId"><span>*</span>新密码</label>
+            <label for="newPasswordId"><span>*</span>{{'ACCOUNT.NEW_PWD' | translate}}</label>
             <input
               class="field"
               type="password"
-              placeholder="新密码"
+              placeholder="{{'ACCOUNT.NEW_PWD_PLACEHOLDER' | translate}}"
               id="newPasswordId"
               autocomplete="off"
               [formControl]="myForm.controls['newPassword']"
@@ -50,22 +50,21 @@
           <div
             *ngIf="myForm.controls['newPassword'].hasError('invalidCompare') && myForm.controls['newPassword'].touched"
             class="message"
-          >New password is required and must be different from the old one.</div>
+          >{{'ACCOUNT.NEW_PWD_TIP_REQUIRED' | translate}}</div>
           <div
             *ngIf="myForm.controls['newPassword'].hasError('pattern') && myForm.controls['newPassword'].touched"
-            class="message">Must change to pattern "/^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{{'{'}}6,21{{'}'}}$/"
-          </div>
+            class="message">{{'ACCOUNT.NEW_PWD_PLACEHOLDER' | translate}}</div>
         </div>
 
         <div
           [class.error]="!myForm.get('confirm').valid && myForm.get('confirm').touched"
         >
           <div class="field-box">
-            <label for="confirmId"><span>*</span>确认密码</label>
+            <label for="confirmId"><span>*</span>{{'ACCOUNT.CONFIRM_PWD' | translate}}</label>
             <input
               class="field"
               type="password"
-              placeholder="请再输入一次确认"
+              placeholder="{{'ACCOUNT.CONFIRM_PWD_PLACEHOLDER' | translate}}"
               id="confirmId"
               autocomplete="off"
               [formControl]="myForm.controls['confirm']"
@@ -76,7 +75,7 @@
           <div
             *ngIf="myForm.controls['confirm'].hasError('invalidCompare') && myForm.controls['confirm'].touched"
             class="message"
-          >Confirm password is required and must be the same with new password.</div>
+          >{{'ACCOUNT.CONFIRM_PWD_TIP' | translate}}</div>
         </div>
 
         <div class="buttons">
@@ -84,11 +83,11 @@
             class="tui-btn-md tui-btn-primary tui-btn"
             type="submit"
             [disabled]="!myForm.valid ? 'disabled' : null"
-          >确认</button>
+          >{{'ACCOUNT.CONFIRM' | translate}}</button>
           <button
             class="tui-btn-md tui-btn-default tui-btn"
             type="reset"
-          >取消</button>
+          >{{'ACCOUNT.RESET' | translate}}</button>
         </div>
       </form>
     </div>

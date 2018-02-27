@@ -9,11 +9,11 @@
       [class.error]="!myForm.get('username').valid && myForm.get('username').touched"
     >
       <div class="field-box">
-        <label for="usernameId"><span>*</span>用户名</label>
+        <label for="usernameId"><span>*</span>{{'ADMINISTRATORS.NAME' | translate}}</label>
         <input
           class="field"
           type="text"
-          placeholder="用户名"
+          placeholder="{{'ADMINISTRATORS.NAME_PLACEHOLDER' | translate}}"
           id="usernameId"
           autocomplete="off"
           [formControl]="myForm.controls['username']"
@@ -23,18 +23,18 @@
       <div
         *ngIf="myForm.controls['username'].hasError('required') && myForm.controls['username'].touched"
         class="message"
-      >User name is required.</div>
+      >{{'ADMINISTRATORS.NAME_TIP' | translate}}</div>
     </div>
 
     <div
       [class.error]="!myForm.get('password').valid && myForm.get('password').touched"
     >
       <div class="field-box">
-        <label for="passwordId"><span>*</span>密码</label>
+        <label for="passwordId"><span>*</span>{{'ADMINISTRATORS.PASSWORD' | translate}}</label>
         <input
           class="field"
           type="password"
-          placeholder="密码"
+          placeholder="{{'ADMINISTRATORS.PASSWORD_PLACEHOLDER' | translate}}"
           id="passwordId"
           autocomplete="off"
           [formControl]="myForm.controls['password']"
@@ -44,22 +44,22 @@
       <div
         *ngIf="myForm.controls['password'].hasError('required') && myForm.controls['password'].touched"
         class="message"
-      >Password is required.</div>
+      >{{'ADMINISTRATORS.PASSWORD_TIP_REQUIRED' | translate}}</div>
       <div
         *ngIf="myForm.controls['password'].hasError('pattern') && myForm.controls['password'].touched"
         class="message"
-      >Password pattern is /^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{{'{'}}6,8{{'}'}}$</div>
+      >{{'ADMINISTRATORS.PASSWORD_PLACEHOLDER' | translate}}</div>
     </div>
 
     <div
       [class.error]="!myForm.get('fullName').valid && myForm.get('fullName').touched"
     >
       <div class="field-box">
-        <label for="fullNameId"><span>*</span>全名</label>
+        <label for="fullNameId"><span>*</span>{{'ADMINISTRATORS.FULL_NAME' | translate}}</label>
         <input
           class="field"
           type="text"
-          placeholder="全名"
+          placeholder="{{'ADMINISTRATORS.FULL_NAME_PLACEHOLDER' | translate}}"
           id="fullNameId"
           autocomplete="off"
           [formControl]="myForm.controls['fullName']"
@@ -69,18 +69,18 @@
       <div
         *ngIf="myForm.controls['fullName'].hasError('required') && myForm.controls['fullName'].touched"
         class="message"
-      >FullName is required.</div>
+      >{{'ADMINISTRATORS.FULL_NAME_TIP_REQUIRED' | translate}}</div>
     </div>
 
     <div
       [class.error]="!myForm.get('email').valid && myForm.get('email').touched"
     >
       <div class="field-box">
-        <label for="emailId"><span>*</span>email</label>
+        <label for="emailId"><span>*</span>{{'ADMINISTRATORS.EMAIL' | translate}}</label>
         <input
           class="field"
           type="text"
-          placeholder="email"
+          placeholder="{{'ADMINISTRATORS.EMAIL_PLACEHOLDER' | translate}}"
           id="emailId"
           autocomplete="off"
           [formControl]="myForm.controls['email']"
@@ -90,11 +90,11 @@
       <div
         *ngIf="myForm.controls['email'].hasError('required') && myForm.controls['email'].touched"
         class="message"
-      >Email is required.</div>
+      >{{'ADMINISTRATORS.EMAIL_TIP_REQUIRED' | translate}}</div>
       <div
         *ngIf="myForm.controls['email'].hasError('pattern') && myForm.controls['email'].touched"
         class="message"
-      >Email pattern is /^(\w)+(\.\w+)*@(\w)+((\.\w+)+)$/.</div>
+      >{{'ADMINISTRATORS.EMAIL_TIP_PATTERN' | translate}}</div>
     </div>
 
     <div
@@ -108,7 +108,7 @@
           value=true
           [formControl]="myForm.controls['deletable']"
         />
-        <label for="yes">可删除</label>
+        <label for="yes">{{'ADMINISTRATORS.DELETABLE' | translate}}</label>
         <input class="radio false"
           name="deletable"
           type="radio"
@@ -116,13 +116,13 @@
           value=false
           [formControl]="myForm.controls['deletable']"
         />
-        <label for="no">不可删除</label>
+        <label for="no">{{'ADMINISTRATORS.UNSUPPERESSIBLE' | translate}}</label>
       </div>
 
       <div
         *ngIf="myForm.controls['deletable'].hasError('required') && myForm.controls['deletable'].touched"
         class="message"
-      >Deletable field is required.</div>
+      >{{'ADMINISTRATORS.DELETABLE_TIP_REQUIRED' | translate}}</div>
     </div>
 
     <div class="buttons">
@@ -130,11 +130,11 @@
         class="tui-btn-md tui-btn-primary tui-btn"
         type="submit"
         [disabled]="!myForm.valid ? 'disabled' : null"
-      >确认</button>
+      >{{'ADMINISTRATORS.CONFIRM' | translate}}</button>
       <button
         class="tui-btn-md tui-btn-default tui-btn"
         type="reset"
-      >取消</button>
+      >{{'ADMINISTRATORS.RESET' | translate}}</button>
     </div>
   </form>
 </div>

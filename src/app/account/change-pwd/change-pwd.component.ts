@@ -72,18 +72,11 @@ export class ChangePwdComponent implements OnInit {
     }
   }
 
-  ngOnInit() {
-    const me = this;
-    this.myForm.valueChanges.subscribe((form: any) => {
-      // TODO
-    });
-
-  }
+  ngOnInit() {}
 
   onSubmit(value: {[s: string]: string}) {
-    console.log('submit', value);
     delete value.confirm;
-    this.accountService.changePWD({...value}).subscribe(response => {
+    this.accountService.changePWD({...value}).subscribe(res => {
       this.modal.close('closed');
     });
   }

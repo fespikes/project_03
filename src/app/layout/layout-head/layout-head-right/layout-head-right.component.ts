@@ -10,8 +10,8 @@ import { LayoutService } from '../../layout.service';
 export class LayoutHeadRightComponent implements OnInit {
   messageCount = 2;
   dropdownDirection = 'bottomCenter';
-  user: any = {
-    name: 'rockwang',
+  profile: any = {
+    fullName: '',
   };
 
   constructor(
@@ -19,14 +19,15 @@ export class LayoutHeadRightComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.layoutService.getProfile().subscribe(res => {
+      this.profile = res;
+    });
   }
 
   quit($event) {
-    this.layoutService.ssoLogout().subscribe(res => {
-      console.log('logout succeed. the next : ->', res);
-      // TODO: api content no user info , need to make changes
-      // TODO: redirect to outer page after logout
-    });
+    // here when quit, Back end would handle
+    // the session and redirect to cas login.
+    this.layoutService.ssoLogout().subscribe(res => { });
   }
 
 }

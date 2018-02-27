@@ -44,19 +44,14 @@ export class AddComponent implements OnInit {
     });
   }
 
-  ngOnInit() {
-    const me = this;
-    this.myForm.valueChanges.subscribe((form: any) => {
-      console.log(me.myForm.value, me.myForm);
-    });
-  }
+  ngOnInit() {}
 
   onSubmit(value: {[s: string]: string}) {
     const val: any = {...value};
     val.deletable = (value.deletable.indexOf('true') > -1 ? true : false);
 
     this.administratorsService.addAdministrator(val)
-      .subscribe(response => {
+      .subscribe(res => {
         this.modal.close('closed');
       });
   }
