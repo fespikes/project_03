@@ -157,6 +157,9 @@ export class AbstractComponent implements OnInit, OnDestroy {
         stack: true,
       },
       wrapperName: 'productsInstancesRankingWrapper',
+      showSum: (sum: number) => {
+        this.instancesTotalCount = sum;
+      },
     };
     this.instancesAmountTrendParam = { // 7.实例总量变化趋势
       chartType: chartTypes.line,
