@@ -10,26 +10,34 @@
         <div class="quantity radius-shadow">
           <h4>{{'ABSTRACT.QUANTITY_SUMMARY' | translate}}</h4>
           <div class="box">
-            <span>
-              <svg tuiIcon="pile" size="lg"></svg>
-              <p class="amount">{{quantitySummary.nodeCount}}</p>
-              <p class="description">{{'ABSTRACT.NODES_AMOUNT' | translate}}</p>
-            </span>
-            <span>
-              <svg tuiIcon="TODO" size="lg"></svg>
-              <p class="amount">{{quantitySummary.tenantCount}}</p>
-              <p class="description">{{'ABSTRACT.TENANT_AMOUNT' | translate}}</p>
-            </span>
-            <span>
-              <svg tuiIcon="TODO" size="lg"></svg>
-              <p class="amount">{{quantitySummary.productCount}}</p>
-              <p class="description">{{'ABSTRACT.PRODUCT_TYPE' | translate}}</p>
-            </span>
-            <span>
-              <svg tuiIcon="TODO" size="lg"></svg>
-              <p class="amount">{{quantitySummary.instanceCount}}</p>
-              <p class="description">{{'ABSTRACT.INSTANCES_AMOUNT' | translate}}</p>
-            </span>
+            <div>
+              <span>
+                <svg tuiIcon="pile" size="lg"></svg>
+                <p class="amount">{{quantitySummary.nodeCount}}</p>
+                <p class="description">{{'ABSTRACT.NODES_AMOUNT' | translate}}</p>
+              </span>
+            </div>
+            <div>
+              <span>
+                <svg tuiIcon="TODO" size="lg"></svg>
+                <p class="amount">{{quantitySummary.tenantCount}}</p>
+                <p class="description">{{'ABSTRACT.TENANT_AMOUNT' | translate}}</p>
+              </span>
+            </div>
+            <div>
+              <span>
+                <svg tuiIcon="TODO" size="lg"></svg>
+                <p class="amount">{{quantitySummary.productCount}}</p>
+                <p class="description">{{'ABSTRACT.PRODUCT_TYPE' | translate}}</p>
+              </span>
+            </div>
+            <div>
+              <span>
+                <svg tuiIcon="TODO" size="lg"></svg>
+                <p class="amount">{{quantitySummary.instanceCount}}</p>
+                <p class="description">{{'ABSTRACT.INSTANCES_AMOUNT' | translate}}</p>
+              </span>
+            </div>
           </div>
         </div>
         <!--E: quantity-->

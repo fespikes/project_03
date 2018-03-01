@@ -1,7 +1,8 @@
 NODE:
   NAME: node
-  
+
   TOTALNODES: 'nodes amount:'
+  EXPORT: Export
   STATUS: status
   MEMORYUSED: memory used
   STORAGEUSED: storage used
