@@ -158,6 +158,10 @@ export class ChartWrapperComponent implements OnInit {
           chart: this.chart,
         },
         this.data.wrapperName );
+
+        if (typeof data.showSum === 'function' && adjustedData.totalCount) {
+          data.showSum(this.chartData.totalCount);
+        }
       },
       num ? num : data.resourceType);
     }

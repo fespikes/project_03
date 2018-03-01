@@ -135,7 +135,14 @@ export class DonutChart implements ChartBase {
       radius.domain([0, d3.max(donuts, d => d.sum)]);
     }
 
-    this.svg = d3.select(config.donutChartHolder).selectAll('.pie')
+    const donutWrapper: any = document.createElement('div');
+    donutWrapper.style = 'height: ' + (style.maxRadius * 2 * me.shadowSize - 5) + 'px; display: flex; justify-content: space-evenly; ';
+    const labelWrapper: any = document.createElement('div');
+    labelWrapper.style = 'height:50px; display: flex; justify-content: space-evenly; ';
+    config.donutChartHolder.appendChild(donutWrapper);
+    config.donutChartHolder.appendChild(labelWrapper);
+
+    this.svg = d3.select(donutWrapper).selectAll('.pie')
       .data(donuts)
       .enter().append('svg')
       .attr('class', 'pie')
@@ -153,9 +160,6 @@ export class DonutChart implements ChartBase {
         const path: any = d3.select(this)
           .attr('width', r * 2 * me.shadowSize)
           .attr('height', r * 2 * me.shadowSize)
-          .style('position', 'absolute')
-          .style('left', left)
-          .style('top', config.style.top - 20)
           .append('g')
           .attr('transform', 'translate(' + r + ',' + r + ')')
           .attr('filter', 'url(#dropshadow)');
@@ -171,7 +175,6 @@ export class DonutChart implements ChartBase {
             return me.color(d.columns[n]);
 
           }).on('mouseover', dt => {
-            // draw corresponding part's percentage when hover
             if (config.percentage.byHover) {
               me.drawPercentage(currentSvg, dt);
             }
@@ -180,7 +183,8 @@ export class DonutChart implements ChartBase {
         me.drawPercentage(currentSvg);
 
         if (config.bottomLabel.show) {
-          me.drawBottomLabel(currentSvg, d, {
+          // me.drawBottomLabel(currentSvg, d, {
+          me.drawBottomLabel(labelWrapper, d, {
             left: left,
             top: config.style.top - 20 + style.maxRadius * 2,
           });
@@ -216,21 +220,20 @@ export class DonutChart implements ChartBase {
       .style('fill', this.palette[0]);
   }
 
-  drawBottomLabel(svg, donut, location) {
+  drawBottomLabel(box, donut, location) {
     const label: string = donut.state;
     const bottomLabel = this.config.bottomLabel;
 
     const span: any = document.createElement('span');
     const text: any = document.createTextNode(label);
     span.appendChild(text);
-    span.style = 'width: 100px; height: 50px; position: absolute; top:'
-      + location.top + 'px; left:' + location.left + 'px; line-height:'
-      + (bottomLabel.height - 10) + 'px; text-align: center; font-size:' + bottomLabel.size;
-    this.config.donutChartHolder.appendChild(span);
+    span.style = 'width:' + this.config.style.thickness * 2 * this.shadowSize + 'px; height: 50px;' + location.top + 'line-height:'
+      + (bottomLabel.height - 10) + 'px; text-indent: -20px; text-align: center; font-size:' + bottomLabel.size;
+    box.appendChild(span);
   }
 
   addFilterDefs() {
-    const filter = `<svg>
+    const filter = `<svg style="position: absolute">
       <defs>
         <filter id="dropshadow" height="${this.shadowSize}">
           <feGaussianBlur in="SourceAlpha" stdDeviation="3"/>

@@ -54,6 +54,8 @@ export class LineChartConfig {
   background: string;
   colorSchema = new ColorSchema();
   legend = new LegendConfig();
+  drawGridX = true;
+  drawGridY = true;
 
   static from(config) {
     const _config = new LineChartConfig();
@@ -163,12 +165,12 @@ export class LineChart implements ChartBase {
   drawGrid() {
     const { canvas2d, gridVertical, gridHorizontal } = this.geo;
 
-    {
+    if (this.config.drawGridY) {
       const gridRenderer = new Grid(gridVertical, canvas2d);
       const { grid, tick } = this.config.xAxis;
       gridRenderer.draw(grid, tick.count, this.xAxis.scale, 'vertical');
     }
-    {
+    if (this.config.drawGridX) {
       const gridRenderer = new Grid(gridHorizontal, canvas2d);
       const { grid, tick } = this.config.yAxis;
       gridRenderer.draw(grid, tick.count, this.yAxis.scale);
