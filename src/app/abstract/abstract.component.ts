@@ -129,19 +129,25 @@ export class AbstractComponent implements OnInit, OnDestroy {
     this.tenantGrowTrendParam = { // 3.
       chartType: chartTypes.line,
       fetchData: this.abstractService.getTenantCountTrend.bind(this.abstractService),
-      config: {},
+      config: {
+        drawGridY: false,
+      },
       wrapperName: 'tenantGrowTrendWrapper',
     };
     this.nodeLoadTrendParam = {  // 4.
       chartType: chartTypes.line,
       fetchData: this.abstractService.getNodesLoadTrend.bind(this.abstractService),
-      config: {},
+      config: {
+        drawGridY: false,
+      },
       wrapperName: 'nodeLoadTrendWrapper',
     };
     this.nodeAmountTrendParam = {  // 5.
       chartType: chartTypes.line,
       fetchData: this.abstractService.getNodesCountTrend.bind(this.abstractService),
-      config: {},
+      config: {
+        drawGridY: false,
+      },
       wrapperName: 'nodeAmountTrendWrapper',
     };
     this.productsInstancesRankingParam = { // 6.云产品实例排行
@@ -156,6 +162,7 @@ export class AbstractComponent implements OnInit, OnDestroy {
       chartType: chartTypes.line,
       fetchData: this.abstractService.getInstancesCountTrend.bind(this.abstractService),
       config: {
+        drawGridY: false,
       },
       wrapperName: 'instancesAmountTrendWrapper',
     };
@@ -164,6 +171,7 @@ export class AbstractComponent implements OnInit, OnDestroy {
       fetchData: this.abstractService.getProductInstancesCountTrend.bind(this.abstractService),
       config: {
         curveStyle: 'curveLinear',
+        drawGridY: false,
       },
       wrapperName: 'productsInstancesTrendWrapper',
     };
@@ -176,10 +184,6 @@ export class AbstractComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    if (this.listener) {
-      this.listener.unsubscribe();
-    }
-
     this.platformSummaryWrapper.clearMap();
   }
 
