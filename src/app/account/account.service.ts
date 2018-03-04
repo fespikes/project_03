@@ -1,8 +1,6 @@
 import { Injectable } from '@angular/core';
 
-import {
-  TecApiService,
-} from '../shared';
+import { TecApiService } from '../shared';
 
 @Injectable()
 export class AccountService {

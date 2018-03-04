@@ -1,9 +1,21 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
+import {
+  Http,
+  ConnectionBackend,
+  BaseRequestOptions,
+  Response,
+  ResponseOptions,
+} from '@angular/http';
+import { MockBackend } from '@angular/http/testing';
 
+import { TuiModalService } from 'tdc-ui';
 import { MockModule } from '../../../mock';
 import { I18nLangService, TranslateService } from '../../../i18n';
 import { LayoutHeadRightComponent } from './layout-head-right.component';
+
+import { TecApiService } from '../../../shared';
+import { LayoutService } from '../../layout.service';
 
 describe('LayoutHeadRightComponent', () => {
   let component: LayoutHeadRightComponent;
@@ -15,6 +27,19 @@ describe('LayoutHeadRightComponent', () => {
       imports: [MockModule],
       declarations: [ LayoutHeadRightComponent ],
       providers: [
+        LayoutService,
+        TecApiService,
+        TuiModalService,
+        BaseRequestOptions,
+        MockBackend,
+        {
+          provide: Http,
+          useFactory: (backend: ConnectionBackend,
+                       defaultOptions: BaseRequestOptions) => {
+            return new Http(backend, defaultOptions);
+          },
+          deps: [MockBackend, BaseRequestOptions],
+        },
         {
           provide: TranslateService,
           useValue: {

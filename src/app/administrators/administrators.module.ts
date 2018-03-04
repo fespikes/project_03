@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TuiModalService } from 'tdc-ui';
 
 import { SharedModule } from '../shared';
@@ -15,10 +14,8 @@ import { AdministratorsService } from './administrators.service';
   imports: [
     CommonModule,
     AdministratorsRoutingModule,
-    SharedModule,
     I18nModule,
-    FormsModule,
-    ReactiveFormsModule,
+    SharedModule,
   ],
   declarations: [
     AdministratorsComponent,

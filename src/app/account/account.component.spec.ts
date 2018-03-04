@@ -1,5 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { RouterTestingModule } from '@angular/router/testing';
 
+import { TranslatePipeStub, DefaultPipeStub } from 'app/mock';
 import { AccountComponent } from './account.component';
 
 describe('AccountComponent', () => {
@@ -8,7 +10,14 @@ describe('AccountComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ AccountComponent ]
+      imports: [
+        RouterTestingModule,
+      ],
+      declarations: [
+        AccountComponent,
+        TranslatePipeStub,
+        DefaultPipeStub,
+      ],
     })
     .compileComponents();
   }));

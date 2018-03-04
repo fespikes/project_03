@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { SharedModule } from '../shared';
 
 import { I18nModule, TranslateService } from '../i18n';
 import { TuiModalRef } from 'tdc-ui';
@@ -15,8 +15,7 @@ import { AccountService } from './account.service';
     CommonModule,
     AccounRoutingModule,
     I18nModule,
-    FormsModule,
-    ReactiveFormsModule,
+    SharedModule,
   ],
   declarations: [
     AccountComponent,

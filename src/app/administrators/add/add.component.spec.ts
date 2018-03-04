@@ -1,6 +1,14 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { HttpModule } from '@angular/http';
 
+import { TuiModalRef } from 'tdc-ui';
+
+import { TranslatePipeStub, DefaultPipeStub } from 'app/mock';
 import { AddComponent } from './add.component';
+import { AdministratorsService } from '../administrators.service';
+import { TecApiService } from '../../shared';
+
 
 describe('AddComponent', () => {
   let component: AddComponent;
@@ -8,7 +16,21 @@ describe('AddComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ AddComponent ],
+      imports: [
+        HttpModule,
+        FormsModule,
+        ReactiveFormsModule,
+      ],
+      declarations: [
+        TranslatePipeStub,
+        DefaultPipeStub,
+        AddComponent,
+      ],
+      providers: [
+        TuiModalRef,
+        AdministratorsService,
+        TecApiService,
+      ],
     })
     .compileComponents();
   }));
