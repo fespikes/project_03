@@ -142,7 +142,7 @@ export class AbstractService {
     const templateCounts = [...data.counts[0].templateCounts];
     const xs: string[] = [];
     const topics: string[] = [];
-    templateCounts.forEach(obj => topics.push(obj.type));
+    templateCounts.forEach(obj => topics.push(obj.typeAlias));
 
     const series: any[] = [];
     const resultObj = { };
@@ -152,10 +152,10 @@ export class AbstractService {
     });
 
     counts.forEach(item => {
-      xs.push(item.productName);
+      xs.push(item.productNameAlias);
 
       item['templateCounts'].forEach(templateCount => {
-        resultObj[templateCount.type].data.push(templateCount.count);
+        resultObj[templateCount.typeAlias].data.push(templateCount.count);
         // series.push(templateCount.)
       });
     });
@@ -203,7 +203,7 @@ export class AbstractService {
 
       result.push({
         data: heap,
-        topic: item.productName,
+        topic: item.productNameAlias,
       });
     });
 

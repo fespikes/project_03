@@ -109,8 +109,8 @@ export class AbstractComponent implements OnInit, OnDestroy {
     this.instancesAmountTrendOption = this.monthlyOptions[5];
     this.nodeAmountTrendOption = this.monthlyOptions[5];
     this.nodeLoadTrendOption = this.hourOptions[23];
-    this.productsInstancesRankingOption = this.monthlyOptions[5];
-    this.productsInstancesTrendOption = this.monthlyOptions[5];
+    this.productsInstancesRankingOption = this.monthlyOptions[0];
+    this.productsInstancesTrendOption = this.monthlyOptions[0];
     this.tenantConsumptionRankingOption = this.monthlyOptions[5];
     this.tenantGrowTrendOption = this.monthlyOptions[5];
 
