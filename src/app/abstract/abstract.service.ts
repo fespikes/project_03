@@ -36,14 +36,20 @@ export class AbstractService {
   adaptLoadSummary(quantitySummary) {
     const obj = {...quantitySummary};
     const result: Donut[] = [];
+    const alias: any = obj.alias;
 
     delete obj.startTime;
     delete obj.endTime;
+    delete obj.alias;
 
     Object.keys(obj).forEach(key => {
 
       const parts: number[] = [];
       const columns: string[] = [];
+
+      if (obj[key] === null) {
+        return ;
+      }
 
       obj[key].forEach(part => {
         parts.push(part.value);
@@ -51,7 +57,7 @@ export class AbstractService {
       });
 
       result.push({
-        state: key,
+        state: alias[key],    // translated key from backend
         columns: columns,
         parts: parts,
       });
@@ -86,7 +92,7 @@ export class AbstractService {
     }];
   }
 
-  // 4.云产品实例变化趋势
+  // 4.主机负载情况
   getNodesLoadTrend(callback, hour?: number) {
     return this.api.get(`nodes/loads/trend`, {recentHour: hour}).subscribe(response => {
       callback(this.adaptToMultipleCurveData(response));
@@ -95,14 +101,16 @@ export class AbstractService {
 
   adaptToMultipleCurveData(data) {
     const load = {...data.loads[0]};
+    const alias: any = data.alias;
     delete load.time;
+    delete data.alias;
     const keys = Object.keys(load);
     const resultObj = {};
 
     keys.forEach(key => {
       resultObj[key] = {
         data: [],
-        topic: key,
+        topic: alias[key],
       };
     });
 
@@ -142,7 +150,7 @@ export class AbstractService {
     const templateCounts = [...data.counts[0].templateCounts];
     const xs: string[] = [];
     const topics: string[] = [];
-    templateCounts.forEach(obj => topics.push(obj.type));
+    templateCounts.forEach(obj => topics.push(obj.typeAlias));
 
     const series: any[] = [];
     const resultObj = { };
@@ -152,10 +160,10 @@ export class AbstractService {
     });
 
     counts.forEach(item => {
-      xs.push(item.productName);
+      xs.push(item.productNameAlias);
 
       item['templateCounts'].forEach(templateCount => {
-        resultObj[templateCount.type].data.push(templateCount.count);
+        resultObj[templateCount.typeAlias].data.push(templateCount.count);
         // series.push(templateCount.)
       });
     });
@@ -203,7 +211,7 @@ export class AbstractService {
 
       result.push({
         data: heap,
-        topic: item.productName,
+        topic: item.productNameAlias,
       });
     });
 
