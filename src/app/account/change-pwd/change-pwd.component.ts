@@ -38,13 +38,11 @@ export class ChangePwdComponent implements OnInit {
     const me = this;
 
     this.myForm = fb.group({
-      'oldPassword': ['', Validators.required],  // [Validators.pattern(/^(.{0,50}\n)*[^\n]{0,50}$/)]],
+      'oldPassword': ['', Validators.required],
       'newPassword': [
         '',
         Validators.compose([
           Validators.required,
-          // Validators.minLength(6),
-          // Validators.maxLength(8),
           Validators.pattern(patterns.password),
           function(control: FormControl) {
             return me.confirmValidator.bind(me)(control, 'oldPassword');
