@@ -47,7 +47,7 @@ export class AbstractService {
       const parts: number[] = [];
       const columns: string[] = [];
 
-      if (obj[key]===null) {
+      if (obj[key] === null) {
         return ;
       }
 

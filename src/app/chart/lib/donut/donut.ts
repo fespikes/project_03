@@ -228,7 +228,8 @@ export class DonutChart implements ChartBase {
     const text: any = document.createTextNode(label);
     span.appendChild(text);
     span.style = 'width:' + this.config.style.thickness * 2 * this.shadowSize + 'px; height: 50px;' + location.top + 'line-height:'
-      + (bottomLabel.height - 10) + 'px; text-indent: -20px; font-size:' +bottomLabel.size + 'px; text-align: center; font-size:' + bottomLabel.size;
+      + (bottomLabel.height - 10) + 'px; text-indent: -20px; font-size:' +
+      bottomLabel.size + 'px; text-align: center; font-size:' + bottomLabel.size;
     box.appendChild(span);
   }
 
