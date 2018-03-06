@@ -1,4 +1,5 @@
 import { NgModule } from '@angular/core';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { I18nModule } from '../i18n';
 import { TuiModule } from 'tdc-ui';
@@ -12,6 +13,8 @@ import {
 @NgModule({
   imports: [
     CommonModule,
+    FormsModule,
+    ReactiveFormsModule,
     TuiModule,
   ],
   declarations: [
@@ -24,6 +27,8 @@ import {
     IconStatusDirective,
     ChartWrapperComponent,
     TuiModule,
+    FormsModule,
+    ReactiveFormsModule,
   ],
 })
 export class SharedModule { }

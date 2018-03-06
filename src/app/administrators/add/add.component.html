@@ -1,0 +1,141 @@
+
+<div class="container">
+  <form
+    [formGroup]="myForm"
+    (ngSubmit)="onSubmit(myForm.value)"
+    class="form-specific"
+  >
+    <div
+      [class.error]="!myForm.get('username').valid && myForm.get('username').touched"
+    >
+      <div class="field-box">
+        <label for="usernameId"><span>*</span>{{'ADMINISTRATORS.NAME' | translate}}</label>
+        <input
+          class="field"
+          type="text"
+          placeholder="{{'ADMINISTRATORS.NAME_PLACEHOLDER' | translate}}"
+          id="usernameId"
+          autocomplete="off"
+          [formControl]="myForm.controls['username']"
+         />
+      </div>
+
+      <div
+        *ngIf="myForm.controls['username'].hasError('required') && myForm.controls['username'].touched"
+        class="message"
+      >{{'ADMINISTRATORS.NAME_TIP' | translate}}</div>
+    </div>
+
+    <div
+      [class.error]="!myForm.get('password').valid && myForm.get('password').touched"
+    >
+      <div class="field-box">
+        <label for="passwordId"><span>*</span>{{'ADMINISTRATORS.PASSWORD' | translate}}</label>
+        <input
+          class="field"
+          type="password"
+          placeholder="{{'ADMINISTRATORS.PASSWORD_PLACEHOLDER' | translate}}"
+          id="passwordId"
+          autocomplete="off"
+          [formControl]="myForm.controls['password']"
+         />
+      </div>
+
+      <div
+        *ngIf="myForm.controls['password'].hasError('required') && myForm.controls['password'].touched"
+        class="message"
+      >{{'ADMINISTRATORS.PASSWORD_TIP_REQUIRED' | translate}}</div>
+      <div
+        *ngIf="myForm.controls['password'].hasError('pattern') && myForm.controls['password'].touched"
+        class="message"
+      >{{'ADMINISTRATORS.PASSWORD_PLACEHOLDER' | translate}}</div>
+    </div>
+
+    <div
+      [class.error]="!myForm.get('fullName').valid && myForm.get('fullName').touched"
+    >
+      <div class="field-box">
+        <label for="fullNameId"><span>*</span>{{'ADMINISTRATORS.FULL_NAME' | translate}}</label>
+        <input
+          class="field"
+          type="text"
+          placeholder="{{'ADMINISTRATORS.FULL_NAME_PLACEHOLDER' | translate}}"
+          id="fullNameId"
+          autocomplete="off"
+          [formControl]="myForm.controls['fullName']"
+         />
+      </div>
+
+      <div
+        *ngIf="myForm.controls['fullName'].hasError('required') && myForm.controls['fullName'].touched"
+        class="message"
+      >{{'ADMINISTRATORS.FULL_NAME_TIP_REQUIRED' | translate}}</div>
+    </div>
+
+    <div
+      [class.error]="!myForm.get('email').valid && myForm.get('email').touched"
+    >
+      <div class="field-box">
+        <label for="emailId"><span>*</span>{{'ADMINISTRATORS.EMAIL' | translate}}</label>
+        <input
+          class="field"
+          type="text"
+          placeholder="{{'ADMINISTRATORS.EMAIL_PLACEHOLDER' | translate}}"
+          id="emailId"
+          autocomplete="off"
+          [formControl]="myForm.controls['email']"
+         />
+      </div>
+
+      <div
+        *ngIf="myForm.controls['email'].hasError('required') && myForm.controls['email'].touched"
+        class="message"
+      >{{'ADMINISTRATORS.EMAIL_TIP_REQUIRED' | translate}}</div>
+      <div
+        *ngIf="myForm.controls['email'].hasError('pattern') && myForm.controls['email'].touched"
+        class="message"
+      >{{'ADMINISTRATORS.EMAIL_TIP_PATTERN' | translate}}</div>
+    </div>
+
+    <div
+      [class.error]="!myForm.get('deletable').valid && myForm.get('deletable').touched"
+      class="radio-wrapper"
+    >
+      <div class="field-box">
+        <input class="radio true"
+          name="deletable"
+          type="radio" id="yes"
+          value=true
+          [formControl]="myForm.controls['deletable']"
+        />
+        <label for="yes">{{'ADMINISTRATORS.DELETABLE' | translate}}</label>
+        <input class="radio false"
+          name="deletable"
+          type="radio"
+          id="no"
+          value=false
+          [formControl]="myForm.controls['deletable']"
+        />
+        <label for="no">{{'ADMINISTRATORS.UNSUPPERESSIBLE' | translate}}</label>
+      </div>
+
+      <div
+        *ngIf="myForm.controls['deletable'].hasError('required') && myForm.controls['deletable'].touched"
+        class="message"
+      >{{'ADMINISTRATORS.DELETABLE_TIP_REQUIRED' | translate}}</div>
+    </div>
+
+    <div class="buttons">
+      <button
+        class="tui-btn-md tui-btn-primary tui-btn"
+        type="submit"
+        [disabled]="!myForm.valid ? 'disabled' : null"
+      >{{'ADMINISTRATORS.CONFIRM' | translate}}</button>
+      <button
+        class="tui-btn-md tui-btn-default tui-btn"
+        type="reset"
+      >{{'ADMINISTRATORS.RESET' | translate}}</button>
+    </div>
+  </form>
+</div>
+

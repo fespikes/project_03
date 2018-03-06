@@ -46,6 +46,12 @@ export class TecApiService {
     return path.join(environment.apiUrl, url);
   }
 
+  getInRoot(url: string, params: Object = {}, config?: ApiConfig): Observable<any> {
+    return this.http.get(url, { headers: this.headers, search: params })
+      .catch(this.formatErrors)
+      .map((res: Response) => this.formatResponse(res, config));
+  }
+
   get(url: string, params: Object = {}, config?: ApiConfig): Observable<any> {
     return this.http.get(this.makeUrl(url), { headers: this.headers, search: params })
       .catch(this.formatErrors)

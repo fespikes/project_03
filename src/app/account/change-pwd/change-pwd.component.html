@@ -1,0 +1,96 @@
+
+<div class="tui-layout-vertical">
+  <div class="tui-layout-main-container container flex-auto" style="">
+
+    <div class="main-content main">
+      <form
+        [formGroup]="myForm"
+        (ngSubmit)="onSubmit(myForm.value)"
+        class="form-specific"
+      >
+        <h3>{{'ACCOUNT.CHANGE_PWD' | translate}}</h3>
+        <div
+          [class.error]="!myForm.get('oldPassword').valid && myForm.get('oldPassword').touched"
+        >
+          <div class="field-box">
+            <label for="passwordId"><span>*</span>{{'ACCOUNT.ORIGINAL_PWD' | translate}}</label>
+            <input
+              class="field"
+              type="password"
+              placeholder="{{'ACCOUNT.ORIGINAL_PWD_PLACEHOLDER' | translate}}"
+              id="passwordId"
+              autocomplete="off"
+              [formControl]="myForm.controls['oldPassword']"
+              [(ngModel)]="params.oldPassword"
+             />
+          </div>
+
+          <div
+            *ngIf="myForm.controls['oldPassword'].hasError('required') && myForm.controls['oldPassword'].touched"
+            class="message"
+          >{{'ACCOUNT.ORIGINAL_PWD_TIP' | translate}}</div>
+        </div>
+
+        <div
+          [class.error]="!myForm.get('newPassword').valid && myForm.get('newPassword').touched"
+        >
+          <div class="field-box">
+            <label for="newPasswordId"><span>*</span>{{'ACCOUNT.NEW_PWD' | translate}}</label>
+            <input
+              class="field"
+              type="password"
+              placeholder="{{'ACCOUNT.NEW_PWD_PLACEHOLDER' | translate}}"
+              id="newPasswordId"
+              autocomplete="off"
+              [formControl]="myForm.controls['newPassword']"
+              [(ngModel)]="params.newPassword"
+            />
+          </div>
+
+          <div
+            *ngIf="myForm.controls['newPassword'].hasError('invalidCompare') && myForm.controls['newPassword'].touched"
+            class="message"
+          >{{'ACCOUNT.NEW_PWD_TIP_REQUIRED' | translate}}</div>
+          <div
+            *ngIf="myForm.controls['newPassword'].hasError('pattern') && myForm.controls['newPassword'].touched"
+            class="message">{{'ACCOUNT.NEW_PWD_PLACEHOLDER' | translate}}</div>
+        </div>
+
+        <div
+          [class.error]="!myForm.get('confirm').valid && myForm.get('confirm').touched"
+        >
+          <div class="field-box">
+            <label for="confirmId"><span>*</span>{{'ACCOUNT.CONFIRM_PWD' | translate}}</label>
+            <input
+              class="field"
+              type="password"
+              placeholder="{{'ACCOUNT.CONFIRM_PWD_PLACEHOLDER' | translate}}"
+              id="confirmId"
+              autocomplete="off"
+              [formControl]="myForm.controls['confirm']"
+              [(ngModel)]="params.confirm"
+            />
+          </div>
+
+          <div
+            *ngIf="myForm.controls['confirm'].hasError('invalidCompare') && myForm.controls['confirm'].touched"
+            class="message"
+          >{{'ACCOUNT.CONFIRM_PWD_TIP' | translate}}</div>
+        </div>
+
+        <div class="buttons">
+          <button
+            class="tui-btn-md tui-btn-primary tui-btn"
+            type="submit"
+            [disabled]="!myForm.valid ? 'disabled' : null"
+          >{{'ACCOUNT.CONFIRM' | translate}}</button>
+          <button
+            class="tui-btn-md tui-btn-default tui-btn"
+            type="reset"
+          >{{'ACCOUNT.RESET' | translate}}</button>
+        </div>
+      </form>
+    </div>
+
+  </div>
+</div>

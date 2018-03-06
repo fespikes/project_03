@@ -1,0 +1,24 @@
+ADMINISTRATORS:
+  ADMINISTRATOR_LIST: 管理员列表
+  ADD: 添加管理员
+  TITLE: 添加管理员
+  NAME: 用户名
+  NAME_PLACEHOLDER: 请输入用户名
+  NAME_TIP: 用户名为必填
+  EMAIL: Email
+  EMAIL_PLACEHOLDER: 请输入Email
+  EMAIL_TIP_REQUIRED: Email为必填
+  EMAIL_TIP_PATTERN: 请输入合法的Email
+  FULL_NAME: 全名
+  FULL_NAME_PLACEHOLDER: 请输入全名
+  FULL_NAME_TIP_REQUIRED: 全名为必填
+  TIME: 时间
+  OPERATE: 操作
+  PASSWORD: 密码
+  PASSWORD_PLACEHOLDER: 密码必须由6-8位字母加数字组成
+  PASSWORD_TIP_REQUIRED: 密码为必填
+  DELETABLE: 可删除的
+  UNSUPPERESSIBLE: 不可删的
+  DELETABLE_TIP_REQUIRED: 可删与否是必选项
+  CONFIRM: 确认
+  RESET: 取消

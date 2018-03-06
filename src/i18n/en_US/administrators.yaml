@@ -1,0 +1,24 @@
+ADMINISTRATORS:
+  ADMINISTRATOR_LIST: administrators
+  ADD: add administrators
+  TITLE: Add an administrator
+  NAME: Name
+  NAME_PLACEHOLDER: Please input your account
+  NAME_TIP: Name is required
+  EMAIL: Email
+  EMAIL_PLACEHOLDER: Please input your email
+  EMAIL_TIP_REQUIRED: Email is required
+  EMAIL_TIP_PATTERN: Email is illegal
+  FULL_NAME: Fullname
+  FULL_NAME_PLACEHOLDER: Please input your fullname
+  FULL_NAME_TIP_REQUIRED: Full name is required
+  TIME: Date
+  OPERATE: Operate
+  PASSWORD: Password
+  PASSWORD_PLACEHOLDER: Must content 6-8 letters and digits
+  PASSWORD_TIP_REQUIRED: Password is required
+  DELETABLE: Deletable
+  UNSUPPERESSIBLE: unsuppressible
+  DELETABLE_TIP_REQUIRED: Deletable is required
+  CONFIRM: Confirm
+  RESET: Reset

@@ -33,3 +33,34 @@
 .org
   cursor: pointer
   white-space: nowrap
+
+
+.user-dropdown
+  border: 0
+  background: #fff
+  color: #424c5d
+  position: relative
+  outline: none
+
+  &:after
+    content: ''
+    width: 10px
+    height: 10px
+    border-bottom: 1px #9097a0 solid
+    border-right: 1px #9097a0 solid
+    transform: rotate(45deg)
+    position: absolute
+    right: 16px
+    top: 8px
+
+.items
+  position: relative
+
+  &:last-child
+    border-top: 1px #ddd solid
+
+  .icons
+    float: left
+    margin-right: 10px
+    fill: #b9c1cf
+

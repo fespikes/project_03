@@ -1,0 +1,14 @@
+ACCOUNT:
+  CHANGE_PWD: 修改密码
+  ORIGINAL_PWD: 原密码
+  ORIGINAL_PWD_TIP: 原密码为必填
+  ORIGINAL_PWD_PLACEHOLDER: 需要修改的密码
+  NEW_PWD: 新密码
+  NEW_PWD_PLACEHOLDER: 新密码必须由6-8位字母加数字组成
+  NEW_PWD_TIP_REQUIRED: 新密码为必填且不同于原密码
+  CONFIRM_PWD: 确认密码
+  CONFIRM_PWD_PLACEHOLDER: 请再次输入确认
+  CONFIRM_PWD_TIP: 确认密码为必填且和新密码相同
+  CONFIRM: 确认
+  RESET: 取消
+

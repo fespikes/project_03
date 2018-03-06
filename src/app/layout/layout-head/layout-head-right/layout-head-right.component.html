@@ -7,3 +7,23 @@
 <div class="org" [routerLink]="['/organization']">
   {{'LAYOUT.ORGANIZATION' | translate}}
 </div>
+
+<button class="user-dropdown" tuiBtn="primary" [tuiDropdownTrigger]="dropdown">
+  {{profile.fullName}}
+</button>
+<tui-dropdown #dropdown [direction]="dropdownDirection" [caret]="true">
+  <tui-dropdown-item [class.active]="true" class="items">
+    <svg class="icons" tuiIcon="user" size="md"></svg>
+    <a routerLink="/administrators">{{'LAYOUT.ADMINISTRATOR_LIST' | translate}}</a>
+  </tui-dropdown-item>
+  <tui-dropdown-item class="items">
+    <svg class="icons" tuiIcon="lock" size="md"></svg>
+    <a routerLink="/account/change-pwd">{{'LAYOUT.CHANGE_PWD' | translate}}</a>
+  </tui-dropdown-item>
+  <tui-dropdown-item class="items">
+    <svg class="icons" tuiIcon="power-off" size="md"></svg>
+    <a (click)="quit($event)">{{'LAYOUT.QUIT' | translate}}</a>
+  </tui-dropdown-item>
+</tui-dropdown>
+
+<tui-avatar src="assets/images/naruto.png" size="md"></tui-avatar>
