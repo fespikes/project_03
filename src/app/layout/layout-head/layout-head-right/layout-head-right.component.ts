@@ -27,7 +27,7 @@ export class LayoutHeadRightComponent implements OnInit {
   quit($event) {
     // here when quit, Back end would handle
     // the session and redirect to cas login.
-    this.layoutService.ssoLogout().subscribe(res => { });
+    this.layoutService.ssoLogout();
   }
 
 }
