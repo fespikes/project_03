@@ -2,7 +2,7 @@
   <div class="tui-layout-main-container">
     <div class="tui-layout-main-title">
       <span>{{'TENANT.OVERVIEW.TOTAL' | translate}}:</span>
-      <span>{{tenantsCount}}</span>
+      <span>{{pagination.total}}</span>
     </div>
 
     <div class="container-operation-bar">
@@ -10,7 +10,7 @@
         <svg tuiIcon="export"></svg>
         <span>{{'TENANT.OVERVIEW.EXPORT' | translate}}</span>
       </button>
-      <tui-search [(ngModel)]="keyword" (ngModelChange)="search()">
+      <tui-search [(ngModel)]="filter.keyword" (ngModelChange)="getTenants()">
       </tui-search>
     </div>
 
@@ -46,7 +46,7 @@
       </tui-table>
     </div>
     <div class="tui-layout-main-pagination-footer">
-      <tui-pagination [(pagination)]="pagination" (paginationChange)="paginationChange()">
+      <tui-pagination [(pagination)]="pagination" (paginationChange)="getTenants()">
       </tui-pagination>
     </div>
   </div>

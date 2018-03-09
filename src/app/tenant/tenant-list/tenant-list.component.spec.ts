@@ -10,14 +10,7 @@ class TenantServiceStub {
   fetchSummaries() {
     return Observable.of({
       data: [],
-    });
-  }
-  fetchTenantsCount() {
-    return Observable.of({
-      data: {
-        count: 10,
-        time: 0,
-      },
+      pagination: {},
     });
   }
 }

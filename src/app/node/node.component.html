@@ -18,7 +18,7 @@
 
           <tui-search
             [(ngModel)]="this.filter.keyword"
-            (ngModelChange)="onSearch(true)"
+            (ngModelChange)="fetchTableData()"
           ></tui-search>
         </span>
       </div>

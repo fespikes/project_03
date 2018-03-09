@@ -9,6 +9,12 @@ export class TenantInfo {
   uid = '';
 }
 
+export class TenantFilter {
+  page?: number;
+  size?: number;
+  keyword?: string;
+}
+
 export class TenantSummary {
   billMonth = '';
   unpaid = 0;
