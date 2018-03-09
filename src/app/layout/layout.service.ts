@@ -11,8 +11,8 @@ export class LayoutService {
     return this.api.get(`admins/current`);
   }
 
-  ssoLogout(): Observable<any> {
-    return this.api.getInRoot(`sso-logout`);
+  ssoLogout(): void {
+    window.location.href = '/sso-logout';
   }
 
 }
