@@ -7,7 +7,9 @@ import { Component, HostBinding } from '@angular/core';
 })
 export class LayoutHeadComponent {
   @HostBinding('class.tui-layout-head') hostClass = true;
-  navs = ['abstract', 'tenant', 'node', 'system', 'ticket'].map((nav) => {
+
+  // WARP-21827: templately hide ticket tab and all related parts:
+  navs = ['abstract', 'tenant', 'node', 'system'/*, 'ticket'*/].map((nav) => {
     return {
       link: '/' + nav,
       name: `LAYOUT.${nav.toUpperCase()}`,

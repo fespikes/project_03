@@ -33,15 +33,13 @@ export class NodeComponent implements OnInit {
 
   fetchTableData() {
     this.loading = true;
+    this.filter.page = this.pagination.page;
+    this.filter.size = this.pagination.size;
     this.nodeService.fetchNodeList(this.filter).subscribe(response => {
       this.tableData = response.data;
       this.pagination = response.pagination;
       this.loading = false;
     });
-  }
-
-  onSearch(fromStart = false) {
-    this.fetchTableData();
   }
 
   parseFloat(i: any, key: string) {

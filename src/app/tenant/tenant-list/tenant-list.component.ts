@@ -2,6 +2,7 @@ import { Component, OnInit, HostBinding } from '@angular/core';
 
 import { Pagination } from 'tdc-ui';
 
+import { TenantFilter } from '../tenant-model';
 import { TenantService } from '../tenant.service';
 import { TenantSummary } from '../tenant-model';
 
@@ -15,6 +16,7 @@ export class TenantListComponent implements OnInit {
   loading;
   keyword = '';
   tenantsCount = 0;
+  filter = new TenantFilter();
 
   tenants: TenantSummary[];
 
@@ -25,23 +27,15 @@ export class TenantListComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.tenantService.fetchTenantsCount()
-      .subscribe((result) => {
-        this.tenantsCount = result.count;
-      });
-    this.getTenants().subscribe();
+    this.getTenants();
   }
-
-  search() {
-    this.getTenants().subscribe();
-  }
-
-  paginationChange() {}
 
   getTenants() {
     this.loading = true;
-    return this.tenantService.fetchSummaries(this.keyword)
-      .map((result) => {
+    this.filter.page = this.pagination.page;
+    this.filter.size = this.pagination.size;
+    this.tenantService.fetchSummaries(this.filter)
+      .subscribe((result) => {
         this.tenants = result.data;
         this.pagination = result.pagination;
         this.loading = false;

@@ -4,7 +4,7 @@
 <div class="tui-layout-vertical" [tuiLoading]="loading" tccLoadingHeight="600px">
   <div class="tui-layout-main-container">
     <div class="tui-layout-main-title">
-      {{tenant.name}}
+      {{tenant.name + ' (' + tenant.uid + ')'}}
     </div>
     <div class="tenant-detail">
       <div class="description">
@@ -21,8 +21,11 @@
     <tec-tenant-abstract *tuiTabPane="'TENANT.DETAIL.ABSTRACT' | translate"></tec-tenant-abstract>
     <tec-tenant-instance *tuiTabPane="'TENANT.DETAIL.INSTANCE' | translate" [uid]="tenant.uid"></tec-tenant-instance>
     <tec-tenant-network *tuiTabPane="'TENANT.DETAIL.NETWORK' | translate"></tec-tenant-network>
+    <!--WARP-21827: templately hide ticket tab and all related parts:-->
+    <!--
     <tec-tenant-ticket *tuiTabPane="'TENANT.DETAIL.TICKET' | translate"></tec-tenant-ticket>
     <tec-tenant-error *tuiTabPane="'TENANT.DETAIL.ERROR' | translate"></tec-tenant-error>
+    -->
     <tec-tenant-quota *tuiTabPane="'TENANT.DETAIL.QUOTA' | translate"></tec-tenant-quota>
     <tec-tenant-bill *tuiTabPane="'TENANT.DETAIL.BILL' | translate" [uid]="tenant.uid"></tec-tenant-bill>
   </tui-tab>

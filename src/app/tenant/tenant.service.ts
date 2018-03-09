@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 
 import { TecApiService } from '../shared';
+import { TenantFilter } from './tenant-model';
 import { Pagination } from 'tdc-ui';
 import {
   TenantInfo,
@@ -26,8 +27,8 @@ export class TenantService {
     return this.api.get('tenants');
   }
 
-  fetchSummaries(keyword: string): Observable<TenantSummaries> {
-    return this.api.get(`tenants/summaries`, {keyword: keyword});
+  fetchSummaries(filter: TenantFilter): Observable<TenantSummaries> {
+    return this.api.get(`tenants/summaries`, {...filter});
   }
 
   fetchTenantsCount(): Observable<TenantCount> {

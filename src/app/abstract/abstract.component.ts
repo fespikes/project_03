@@ -131,6 +131,9 @@ export class AbstractComponent implements OnInit, OnDestroy {
       fetchData: this.abstractService.getTenantCountTrend.bind(this.abstractService),
       config: {
         drawGridY: false,
+        legend: {
+          show: false,
+        },
       },
       wrapperName: 'tenantGrowTrendWrapper',
     };
@@ -147,6 +150,9 @@ export class AbstractComponent implements OnInit, OnDestroy {
       fetchData: this.abstractService.getNodesCountTrend.bind(this.abstractService),
       config: {
         drawGridY: false,
+        legend: {
+          show: false,
+        },
       },
       wrapperName: 'nodeAmountTrendWrapper',
     };
@@ -166,6 +172,9 @@ export class AbstractComponent implements OnInit, OnDestroy {
       fetchData: this.abstractService.getInstancesCountTrend.bind(this.abstractService),
       config: {
         drawGridY: false,
+        legend: {
+          show: false,
+        },
       },
       wrapperName: 'instancesAmountTrendWrapper',
     };
@@ -181,7 +190,11 @@ export class AbstractComponent implements OnInit, OnDestroy {
     this.tenantConsumptionRankingParam = { // 9.租户消费top7
       chartType: chartTypes.bar,
       fetchData: this.abstractService.getTenantsConsumptionsRank.bind(this.abstractService),
-      config: { },
+      config: {
+        legend: {
+          show: false,
+        },
+      },
       wrapperName: 'tenantConsumptionRankingWrapper',
     };
   }
