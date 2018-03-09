@@ -44,7 +44,7 @@ export class TenantDetailComponent implements OnInit {
     this.tenantService.fetchAllTenants()
       .subscribe((result) => {
         this.submenuItems = result.map((tenant) => ({
-          name: tenant.name,
+          name: tenant.name + ' (' + tenant.uid + ')' ,
           url: `/tenant/detail/${tenant.uid}`,
           icon: '',
         }));

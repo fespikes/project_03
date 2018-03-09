@@ -29,7 +29,7 @@
         </tui-table-head>
         <tui-table-row *ngFor="let tenant of tenants">
           <div class="text-ellipsis">
-            <a [routerLink]="'/tenant/detail/' + tenant.tenantInfo.uid" class="tenant-name">{{tenant.tenantInfo.name}}</a>
+            <a [routerLink]="'/tenant/detail/' + tenant.tenantInfo.uid" class="tenant-name">{{tenant.tenantInfo.name + ' (' + tenant.tenantInfo.uid + ')'}}</a>
           </div>
           <div class="text-ellipsis">{{tenant.tenantInfo.description | tuiDefault}}</div>
           <div>{{tenant.instanceCount}}</div>
