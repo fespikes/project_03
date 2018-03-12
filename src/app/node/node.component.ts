@@ -50,9 +50,10 @@ export class NodeComponent implements OnInit {
     if (!sub) { return ''; }
 
     let usage = sub['usage'];
+    const unit = sub['unit'];
     let usagePercent = sub['usagePercent'];
 
-    usage = usage ? (Math.round(usage / 1e4) / 100 + 'G') : '';
+    usage = (usage && unit) ? (usage + unit) : '';
     usagePercent = usagePercent ? (usagePercent + '%') : '';
     return usage + ' ' + usagePercent;
   }
