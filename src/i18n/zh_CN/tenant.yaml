@@ -44,6 +44,9 @@ TENANT:
     STORAGE_TREND: 磁盘使用量
     NETWORK_TREND: 网络使用量
     SERVICE_KILL_TREND: 服务Kill情况
+    LIMITS: Limit总量
+    REQUESTS: Request总量
+    USAGES: 实际使用总量
 
   INSTANCE:
     NAME: 实例名

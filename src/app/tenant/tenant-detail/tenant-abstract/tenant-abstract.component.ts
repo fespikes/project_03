@@ -97,6 +97,12 @@ export class TenantAbstractComponent implements OnInit, OnDestroy {
       chartType: chartTypes.line,
       fetchData: this.service.fetchInstancesCountTrend.bind(this.service),
       wrapperName: 'instancesCountTrendWrapper',
+      config: {
+        drawGridY: false,
+        legend: {
+          show: false,
+        },
+      },
     };
 
     this.consumptionsTrendOption = this.monthlyOptions[5];
@@ -104,6 +110,12 @@ export class TenantAbstractComponent implements OnInit, OnDestroy {
       chartType: chartTypes.line,
       fetchData: this.service.fetchConsumptionsTrend.bind(this.service),
       wrapperName: 'consumptionsTrendWrapper',
+      config: {
+        drawGridY: false,
+        legend: {
+          show: false,
+        },
+      },
     };
 
     this.instancesCountParam = { // 5.

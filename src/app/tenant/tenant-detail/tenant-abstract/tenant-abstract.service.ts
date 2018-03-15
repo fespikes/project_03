@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
+import { TranslateService } from '../../../i18n';
 
 import {
   TecApiService, TimeOption,
@@ -11,7 +12,10 @@ import {
 @Injectable()
 export class TenantAbstractService {
 
-  constructor(private api: TecApiService) { }
+  constructor(
+    private api: TecApiService,
+    private translateService: TranslateService,
+  ) { }
 
   getWithUID(...params) {
     const uid = sessionStorage.getItem('eco:tenant:detail:uid');
@@ -94,17 +98,21 @@ export class TenantAbstractService {
     const templateCounts = [...data[0].templateCounts];
     const xs: string[] = [];
     const topics: string[] = [];
-    templateCounts.forEach(obj => topics.push(obj.type));
+    const topicObj: object = {};
+    templateCounts.forEach(obj => {
+      topics.push(obj.type);
+      topicObj[obj.type] = obj.typeAlias;
+    });
 
     const series: any[] = [];
     const resultObj = { };
     topics.forEach(topic => resultObj[topic] = {
-      topic: topic,
+      topic: topicObj[topic],
       data: [],
     });
 
     counts.forEach(item => {
-      xs.push(item.productName);
+      xs.push(item.productNameAlias);
 
       item['templateCounts'].forEach(templateCount => {
         resultObj[templateCount.type].data.push(templateCount.count);
@@ -133,8 +141,11 @@ export class TenantAbstractService {
   adaptResourcesTrendData(data) {
     const result: any[] = [];
     const keys = ['limits', 'requests', 'usages'];
+    const keyObj = {};
 
     keys.forEach( key => {
+      keyObj[key] = this.translateService.translateKey('TENANT.ABSTRACT.' + key.toUpperCase());
+
       const stack: any[] = [];
       data[key].forEach(dt => {
         stack.push({
@@ -144,7 +155,7 @@ export class TenantAbstractService {
       });
 
       result.push({
-        topic: key,
+        topic: keyObj[key],
         data: stack,
       });
     });
