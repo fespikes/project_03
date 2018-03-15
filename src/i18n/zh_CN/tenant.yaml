@@ -44,6 +44,9 @@ TENANT:
     STORAGE_TREND: 磁盘使用量
     NETWORK_TREND: 网络使用量
     SERVICE_KILL_TREND: 服务Kill情况
+    LIMITS: Limit总量
+    REQUESTS: Request总量
+    USAGES: 实际使用总量
 
   INSTANCE:
     NAME: 实例名
@@ -95,8 +98,8 @@ TENANT:
     CLEAR: 销账
     CORRECT: 补账
     CONFIRM_CLEAR_BILL: 确认销账
-    DEDUCT: 追缴
-    ADD: 返现
+    DEDUCT: 返现
+    ADD: 追缴
     CORRECTION_TYPE: 补账类型
     CORRECTION_AMOUNT: 补账金额
     CORRECTION_REASON: 补账原因
