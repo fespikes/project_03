@@ -144,7 +144,7 @@ export class TenantAbstractComponent implements OnInit, OnDestroy {
     this.storageLoadTrendParam = { // 8.
       chartType: chartTypes.line,
       fetchData: this.service.fetchResourcesTrend.bind(this.service),
-      resourceType: resourceTypes.memory,
+      resourceType: resourceTypes.storage,
       wrapperName: 'storageLoadTrendWrapper',
     };
   }
