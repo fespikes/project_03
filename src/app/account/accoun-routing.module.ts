@@ -6,7 +6,7 @@ import { TranslateDeactivator, TranslateResolver, TranslateToken } from '../i18n
 import { AccountComponent } from './account.component';
 import { ChangePwdComponent } from './change-pwd/change-pwd.component';
 
-const accountRoutes: Routes = [{
+export const accountRoutes: Routes = [{
   path: '',
   component: AccountComponent,
   resolve: [TranslateResolver],
