@@ -7,11 +7,10 @@ import {
   Response,
   ResponseOptions,
 } from '@angular/http';
-import * as path from 'path';
-
-import { environment } from '../../environments/environment';
 
 import { TecApiService } from '../shared';
+import { TecApiServiceMock } from '../shared/services/api.serviceMock';
+import { makeUrl } from '../shared/test';
 import { AccountService } from './account.service';
 
 const response: any = {
@@ -19,20 +18,11 @@ const response: any = {
   'message': 'reset succeed',
   'resultCode': '200',
 };
-// const response: any = {
-//   body: `{
-//     'data': {},
-//     'message': 'reset succeed',
-//     'resultCode': '200',
-//   }`,
-// };
 
 describe('AccountService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [
-        AccountService,
-        TecApiService,
         BaseRequestOptions,
         MockBackend,
         { provide: Http,
@@ -42,15 +32,18 @@ describe('AccountService', () => {
           },
           deps: [MockBackend, BaseRequestOptions],
         },
+        AccountService,
+        TecApiServiceMock,
+        {
+          provide: TecApiService,
+          useFactory: (http: Http) => new TecApiServiceMock(http),
+          deps: [Http],
+        },
       ],
     });
   });
 
-  const makeUrl = (url) => {
-    return path.join(environment.apiUrl, url);
-  };
-
-  function expectURL(url: string, backend: MockBackend) {
+  function expectURL(backend: MockBackend, url: string) {
     backend.connections.subscribe(c => {
       expect(c.request.url).toBe(url);
 
@@ -61,6 +54,42 @@ describe('AccountService', () => {
   it('should be created', inject([AccountService], (service: AccountService) => {
     expect(service).toBeTruthy();
   }));
+
+  describe('changePWD', () => {
+    it('retrieves using oldPassword and newPassword',
+      inject([AccountService, MockBackend], fakeAsync((accountService, backend) => {
+        let res;
+        const requestUrl = makeUrl('admins/resetPassword');
+        expectURL(backend, requestUrl);
+
+        accountService.changePWD({
+          oldpassword: 123,
+          newpassword: 2345,
+        }).subscribe(resp => {
+          res = resp;
+        });
+        tick();
+
+        expect(res.message).toBe('reset succeed');
+      })));
+
+    it('retrieves using oldPassword and newPassword',
+      inject([AccountService, MockBackend], fakeAsync((accountService, backend) => {
+        let res;
+        const requestUrl = makeUrl('admins/resetPassword');
+        expectURL(backend, requestUrl);
+
+        accountService.changePWD({
+          oldpassword: 123,
+          newpassword: 2345,
+        }).subscribe(resp => {
+          res = resp;
+        });
+        tick();
+
+        expect(res.message).toBe('reset succeed');
+      })));
+  });
 
 
 });
