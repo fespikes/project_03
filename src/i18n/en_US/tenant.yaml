@@ -47,6 +47,9 @@ TENANT:
     LIMITS: Limits
     REQUESTS: Requests
     USAGES: Usages
+    HEALTHPERCENT: healthy percent
+    TICKETPERCENT: tickets percent
+    ARREARSPERCENT: arrears percent
     VIEW_DETAILS: View Details
     UNPAID: Unpaid Amount
     MONTYLY: MONTYLY Amount

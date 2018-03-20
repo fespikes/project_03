@@ -47,6 +47,9 @@ TENANT:
     LIMITS: Limit总量
     REQUESTS: Request总量
     USAGES: 实际使用总量
+    HEALTHPERCENT: 租户健康度
+    TICKETPERCENT: 工单处理率
+    ARREARSPERCENT: 租户欠费率
     VIEW_DETAILS: 查看详情
     UNPAID: 待付费账单金额
     MONTYLY: 当月已产生费用

@@ -79,7 +79,7 @@ export class TenantAbstractComponent implements OnInit, OnDestroy {
     this.platformSummaryOption = this.monthlyOptions[0];
     this.platformSummaryParam = { // 1.
       chartType: chartTypes.donut,
-      fetchData: '', // TODO: this.service.fetchPlatformSummary.bind(this.service),
+      fetchData: this.service.fetchPlatformSummary.bind(this.service),
       wrapperName: 'tenantPlatformSummaryWrapper',
     };
 
