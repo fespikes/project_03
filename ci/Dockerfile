@@ -1,4 +1,4 @@
-FROM 172.16.1.99/transwarp/tdc-ui/build/ci-base:latest
+FROM 172.16.1.99/frontend/tdc-ui/build/ci-base:latest
 
 ARG NG_CLI_VERSION=1.5.0
 ARG USER_HOME_DIR="/tmp"

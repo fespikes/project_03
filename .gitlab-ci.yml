@@ -1,4 +1,4 @@
-image: 172.16.1.99/transwarp/ignitor-frontend/build/tdc-eco-ci:latest
+image: 172.16.1.99/frontend/tdc-eco-frontend/build/tdc-eco-ci:latest
 before_script:
   - echo "Namespace" $CI_PROJECT_NAMESPACE
   - echo "Project" $CI_PROJECT_NAME
