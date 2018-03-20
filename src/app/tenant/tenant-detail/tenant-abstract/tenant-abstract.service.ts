@@ -29,7 +29,8 @@ export class TenantAbstractService {
   // 2.消费概况
   fetchConsumptionSummary(callback) {
     return this.getWithUID(`consumptions/summaries`).subscribe(response => {
-      callback(this.adaptDonutChartData(response));
+      // callback(this.adaptDonutChartData(response));
+      callback(response);
     });
   }
 

@@ -29,6 +29,11 @@ export class TenantAbstractComponent implements OnInit, OnDestroy {
   listener: Subscription;
   hourOptions: TimeOption[];
   monthlyOptions: TimeOption[];
+  consumptionSummary: any = {
+    unpaidAmount: 0,
+    monthAmount: 0,
+    historyAmount: 0,
+  };
 
   // 1.
   platformSummaryOption: TimeOption;
@@ -36,8 +41,6 @@ export class TenantAbstractComponent implements OnInit, OnDestroy {
   @ViewChild('platformSummaryWrapper') platformSummaryWrapper: ChartWrapperComponent;
 
   // 2.
-  consumptionSummaryParam: any = {};
-  @ViewChild('consumptionSummaryWrapper') consumptionSummaryWrapper: ChartWrapperComponent;
 
   // 3.云产品实例变化趋势
   instancesCountTrendOption: TimeOption;
@@ -80,17 +83,10 @@ export class TenantAbstractComponent implements OnInit, OnDestroy {
       wrapperName: 'tenantPlatformSummaryWrapper',
     };
 
-    this.consumptionSummaryParam = { // 2.
-      chartType: chartTypes.donut,
-      fetchData: this.service.fetchConsumptionSummary.bind(this.service),
-      config: {
-        maxRadius: 40,
-        style: {
-          top: 20,
-        },
-      },
-      wrapperName: 'consumptionSummaryWrapper',
-    };
+    // 2.
+    this.service.fetchConsumptionSummary((res) => {
+      this.consumptionSummary = res;
+    });
 
     this.instancesCountTrendOption = this.monthlyOptions[5];
     this.instancesCountTrendParam = { // 3.

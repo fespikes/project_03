@@ -47,6 +47,10 @@ TENANT:
     LIMITS: Limit总量
     REQUESTS: Request总量
     USAGES: 实际使用总量
+    VIEW_DETAILS: 查看详情
+    UNPAID: 待付费账单金额
+    MONTYLY: 当月已产生费用
+    HISTORICAL: '历史账单总金额：'
 
   INSTANCE:
     NAME: 实例名
