@@ -15,7 +15,7 @@
     </div>
 
     <div class="container-content">
-      <tui-table [tuiTableFlex]="[2,2,1,1,2,1,1,2,1]" [loading]="loading">
+      <tui-table [tuiTableFlex]="[2,2,1,1,2,1,1,1,1]" [loading]="loading">
         <tui-table-head>
           <div>{{'TENANT.OVERVIEW.NAME' | translate}}</div>
           <div>{{'TENANT.OVERVIEW.DESC' | translate}}</div>
@@ -36,11 +36,40 @@
           <div>{{tenant.userCount}}</div>
           <div class="text-ellipsis">{{tenant.tenantInfo.admin}}</div>
           <div class="text-ellipsis">{{tenant.tenantInfo.createTime | date:'y/M/d'}}</div>
-          <div class="text-ellipsis">{{tenant.billMonth | tuiDefault}}</div>
-          <div class="text-ellipsis">{{tenant.consumption | tuiDefault}}</div>
+          <div class="text-ellipsis">{{tenant.totalAmount | tuiDefault}}</div>
+          <div class="text-ellipsis">{{tenant.unpaidAmount | tuiDefault}}</div>
           <div class="status-td">
-            <svg tuiIcon [tecIconStatus]="tenant.tenantInfo.status" size="sm"></svg>
-            <span>{{'TENANT.STATUS.' + tenant.tenantInfo.status | translate}}</span>
+            <!--original status: 原来只有ACTIVATING和CANCELED两个状态;
+              from now on:
+              [ CREATING: 创建中
+                ACTIVATING: 运行中
+                BROKEN: 故障
+                CANCELED: 已删除 ]
+            -->
+            <svg
+              *ngIf="tenant.tenantInfo.status==='CREATING'"
+              class="icon creating"
+            ></svg>
+            <svg
+              *ngIf="tenant.tenantInfo.status==='ACTIVATING'"
+              class="icon activating"
+              tuiIcon="circle"
+              size="md"
+            ></svg>
+            <svg
+              *ngIf="tenant.tenantInfo.status==='BROKEN'"
+              class="icon broken"
+              tuiIcon="exclamation-circle"
+              size="md"
+            ></svg>
+            <svg
+              *ngIf="tenant.tenantInfo.status==='CANCELED'"
+              class="icon canceled"
+              tuiIcon="trash-circle"
+              size="md"
+            ></svg>
+            <!-- <span>{{'TENANT.STATUS.' + tenant.tenantInfo.status | translate}}</span> -->
+            <span class="status">{{tenant.tenantInfo.statusAlias}}</span>
           </div>
         </tui-table-row>
       </tui-table>
