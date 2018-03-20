@@ -44,9 +44,16 @@ TENANT:
     STORAGE_TREND: Storage Trend
     NETWORK_TREND: Network Trend
     SERVICE_KILL_TREND: Service Kill Trend
-    LIMITS: limits
-    REQUESTS: requests
-    USAGES: usages
+    LIMITS: Limits
+    REQUESTS: Requests
+    USAGES: Usages
+    HEALTHPERCENT: healthy percent
+    TICKETPERCENT: tickets percent
+    ARREARSPERCENT: arrears percent
+    VIEW_DETAILS: View Details
+    UNPAID: Unpaid Amount
+    MONTYLY: MONTYLY Amount
+    HISTORICAL: Historical Amount
 
   INSTANCE:
     NAME: Instance Name

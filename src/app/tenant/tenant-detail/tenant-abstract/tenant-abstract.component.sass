@@ -54,3 +54,46 @@
   .chart-holder
     position: relative
 
+.view-details
+  display: inline-block
+  position: absolute
+  right: 20px
+  top: 20px
+  color: #336fd3
+  font-weight: 600
+
+ul.consumptionSummary
+  flex-basis: 110px
+  flex-direction: row
+  justify-content: space-evenly
+  align-items: center
+
+  .unpaidAmount, .monthAmount
+    width: 175px
+    height: 40px
+    margin-left: 36px
+    margin-top: 32px
+    padding-left: 60px
+    display: inline-block
+    background: transparent no-repeat left center
+
+    .amount, .label
+      display: block
+      font-size: 14px
+    .amount
+      line-height: 24px
+      height: 24px
+      font-size: 18px
+      font-weight: 600
+  .unpaidAmount
+    background-image: url(../../../../assets/images/unpaid.png)
+
+  .monthAmount
+    background-image: url(../../../../assets/images/monthly.png)
+
+.historyAmount
+  flex-basis: 40px
+  line-height: 40px
+  text-align: right
+  margin-right: 15px
+

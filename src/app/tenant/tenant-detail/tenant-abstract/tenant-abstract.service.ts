@@ -24,35 +24,59 @@ export class TenantAbstractService {
 
   // 1.平台概览
   fetchPlatformSummary(callback) {
-  }
-
-  // 2.消费概况
-  fetchConsumptionSummary(callback) {
-    return this.getWithUID(`consumptions/summaries`).subscribe(response => {
+    return this.getWithUID(`overviews`).subscribe(response => {
       callback(this.adaptDonutChartData(response));
     });
   }
 
   adaptDonutChartData(data) {
-    // TODO: to be confirmed
-    const obj = {...data.unpaidAmount};
+    const obj = {...data};
     const result: Donut[] = [];
+    const alias: any = {};
 
-    const parts: number[] = [
-      obj['totalAmount'] - obj['chargeAmount'],  // 消费金额
-      obj['chargeAmount'],  // 冲账金额
-    ];
-    const columns: string[] = ['correctAmount', 'chargeAmount'];
+    delete obj.time;
+    delete obj.uid;
 
-    result.push({
-      state: 'unpaidAmount',  // TODO: intl
-      columns: columns,
-      parts: parts,
+    /**
+    the keys must belongs to :
+    [
+      HEALTHPERCENT        租户健康度
+      TICKETPERCENT        工单处理率
+      ARREARSPERCENT        租户欠费率
+    ] */
+
+    Object.keys(obj).forEach(key => {
+      alias[key] = this.translateService.translateKey('TENANT.ABSTRACT.' + key.toUpperCase());
+
+      const parts: number[] = [];
+      const columns: string[] = [];
+
+      if (obj[key] === null) {
+        return ;
+      }
+
+      obj[key].forEach(part => {
+        parts.push(part.value);
+        columns.push(part.title);
+      });
+
+      result.push({
+        state: alias[key],    // translated key from backend
+        columns: columns,
+        parts: parts,
+      });
+
     });
-
     return {
       donuts: result,
     };
+  }
+
+  // 2.消费概况
+  fetchConsumptionSummary(callback) {
+    return this.getWithUID(`consumptions/summaries`).subscribe(response => {
+      callback(response);
+    });
   }
 
   // 3.云产品实例变化趋势  line chart

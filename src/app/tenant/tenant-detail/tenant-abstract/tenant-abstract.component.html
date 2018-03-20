@@ -28,12 +28,22 @@
   <div class="panel service-health flex-2">
     <!--2. 消费概况 -->
     <h5>{{'TENANT.ABSTRACT.CONSUMPTION_SUMMARY' | translate}}</h5>
-    <tec-chart-wrapper
-      [data]="consumptionSummaryParam"
-      #consumptionSummaryWrapper
-    ></tec-chart-wrapper>
-    <div>
+    <span class="view-details">{{'TENANT.ABSTRACT.VIEW_DETAILS' | translate}}</span>
 
+    <ul class="consumptionSummary">
+      <li class="unpaidAmount">
+        <span class="amount">{{consumptionSummary.unpaidAmount}}</span>
+        <span class="label">{{'TENANT.ABSTRACT.UNPAID' | translate}}</span>
+      </li>
+      <li class="monthAmount">
+        <span class="amount">{{consumptionSummary.monthAmount}}</span>
+        <span class="label">{{'TENANT.ABSTRACT.MONTYLY' | translate}}</span>
+      </li>
+    </ul>
+
+    <div class="historyAmount">
+      <span class="label">{{'TENANT.ABSTRACT.HISTORICAL' | translate}}</span>
+      <span class="amount">{{consumptionSummary.historyAmount}}</span>
     </div>
   </div>
 </div>
