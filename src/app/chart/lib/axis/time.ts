@@ -10,6 +10,7 @@ import {
   AxisLineStyle,
   AxisTextStyle,
 } from './axis-base';
+import { AxisContainer } from '../container';
 
 export class TimeAxisConfig {
   tick = new AxisTimeTickConfig();
@@ -21,6 +22,13 @@ export class TimeAxisConfig {
 export class TimeAxis extends AxisBase {
   scale: ScaleTime<any, any>;
   axis: Axis<any>;
+
+  static create(config: TimeAxisConfig, container: AxisContainer, domain: any[]) {
+    const { selection, placement, range } = container;
+    const axis = new TimeAxis(config, selection, placement);
+    axis.draw(domain, range);
+    return axis;
+  }
 
   constructor(
     public config: TimeAxisConfig,
@@ -56,5 +64,10 @@ export class TimeAxis extends AxisBase {
   format(datum: Date) {
     const timeFormat = d3.timeFormat(this.config.tick.timeFormat);
     return timeFormat(datum);
+  }
+
+  ticks() {
+    return this.scale.ticks(this.config.tick.count)
+      .map((t) => this.scale(t));
   }
 }

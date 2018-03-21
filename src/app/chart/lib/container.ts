@@ -209,11 +209,51 @@ export class CanvasContainer extends Container {
       });
     });
   }
+}
 
-  createEventChild(id: string) {
-    const childSelection = this.selection.append('g');
-    const child = new CanvasContainer(id, childSelection, this.overlay, this);
-    this.children.push(child);
-    return child;
+export type AxisPlacement = 'top' | 'right' | 'bottom' | 'left';
+export type AxisAlignment = 'vertical' | 'horizontal';
+
+export class AxisContainer extends Container {
+  placement: AxisPlacement;
+
+  get align(): AxisAlignment {
+    if (this.placement === 'left' || this.placement === 'right') {
+      return 'vertical';
+    } else {
+      return 'horizontal';
+    }
+  }
+
+  get range(): [number, number] {
+    const { width, height } = this.dim;
+    if (this.align === 'vertical') {
+      return [height, 0];
+    } else {
+      return [0, width];
+    }
+  }
+
+  constructor(id: string, placement: AxisPlacement, parent: Container) {
+    const selection = parent.selection.append('g');
+    super(id, selection, parent);
+    this.placement = placement;
+  }
+
+  relayout() {
+    const { width, height } = this.parent.dim;
+    // 布局自身, top和left不需要平移
+    if (this.placement === 'right') {
+      this.translate(Transform2D.fromOffset(width, 0));
+    } else if (this.placement === 'bottom') {
+      this.translate(Transform2D.fromOffset(0, height));
+    }
+
+    // 初始化尺寸
+    if (this.align === 'vertical') {
+      this.dim.resize(1, height);
+    } else {
+      this.dim.resize(width, 1);
+    }
   }
 }

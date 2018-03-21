@@ -7,6 +7,9 @@ import { Rect2D } from './helpers/transform-helper';
 import { LegendConfig, Legend } from './legend';
 import { Layout } from './layout';
 import { ShapeFactory } from './shapes';
+import { ColorSchema } from './color-schema';
+import { AxisGridConfig } from './axis';
+import { Grid } from './tooltip/grid';
 
 export type Constructor<T> = new(...args: any[]) => T;
 
@@ -43,7 +46,7 @@ export class Chart {
     .style('width', '100%')
     .style('height', '100%');
 
-    const { width, height } = this.config;
+    const { width, height } = dim;
     this.overlay = new Overlay(wrapper, {width, height});
     this.layout = new Layout(this.overlay);
     this.layout.init(root);
@@ -57,25 +60,27 @@ export class Chart {
     }
   }
 
-  drawLegend() {
-    // if (!this.config.legend.show) {
-    //   return;
-    // }
-    // const legend = new Legend(this.config.colorSchema, this.config.legend);
-    // legend.draw(this.layout.legend.selection, this.data.map((d) => d.topic), this.layout.legend.dim);
+  drawLegend(config: LegendConfig, colorSchema: ColorSchema, topics: string[]) {
+    if (!config.show) {
+      return;
+    }
+    const legend = new Legend(colorSchema, config);
+    legend.draw(this.layout.legend, topics);
   }
 }
 
-export function mixinGrid<T extends Constructor<Chart>>(base: T) {
-  return class extends base {
-    drawGrid() {
-    }
-  };
-}
+// export function mixinAxis<T extends Constructor<Chart>>(base: T) {
+//   return class extends base {
+//     grid: Grid;
 
-export function mixinAxis<T extends Constructor<Chart>>(base: T) {
-  return class extends base {
-    drawAxis() {
-    }
-  };
-}
+//     drawAxis() {
+//     }
+
+//     drawGrid(gridConfig: AxisGridConfig, ticks: number[]) {
+//       if (!this.grid) {
+//         this.grid = new Grid(this.layout.grid);
+//       }
+//       this.grid.drawX(ticks, gridConfig);
+//     }
+//   };
+// }

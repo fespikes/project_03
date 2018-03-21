@@ -137,7 +137,7 @@ export class LineChart extends Chart {
   points: MarkerPoint[][] = [];
 
   draw() {
-    const { width, height, margin, legend } = this.config;
+    const { width, height, margin, legend, colorSchema } = this.config;
     this.init({width, height}, margin, legend);
 
     this.drawAxis();
@@ -146,7 +146,7 @@ export class LineChart extends Chart {
     this.initData();
     this.initTooltip();
     this.drawLines();
-    this.drawLegend();
+    this.drawLegend(legend, colorSchema, this.data.map((d) => d.topic));
 
     return this;
   }
@@ -169,18 +169,16 @@ export class LineChart extends Chart {
   }
 
   drawAxis() {
-    const { xAxis, yAxis } = this.config;
-    this.xAxis = new TimeAxis(xAxis, this.layout.xAxis.selection, 'bottom');
-    this.yAxis = new LinearAxis(yAxis, this.layout.yAxis.selection, 'left');
-
     const allData = this.data.reduce((accum, d) => {
       return accum.concat(d.data);
     }, []);
     const allDataX = allData.map(d => d.x);
     const allDataY = allData.map(d => d.y);
-    const { width, height } = this.layout.canvas.dim;
-    this.xAxis.draw(allDataX, [0, width]);
-    this.yAxis.draw([0, d3.max(allDataY)], [height, 0]);
+
+    const { xAxis, yAxis } = this.config;
+    const { xAxis: xContaienr, yAxis: yContainer } = this.layout;
+    this.xAxis = TimeAxis.create(xAxis, xContaienr, allDataX);
+    this.yAxis = LinearAxis.create(yAxis, yContainer, [0, d3.max(allDataY)]);
   }
 
   initTooltip() {
@@ -202,31 +200,11 @@ export class LineChart extends Chart {
     this.axisIndicator = new AxisIndicator(this.grid, 'line').draw().subscribe(tooltipEvent);
   }
 
-  drawBackgroud() {
-    if (this.config.background) {
-      const { selection, dim: { width, height } } = this.layout.background;
-      ShapeFactory.drawRect(selection, {x: 0, y: 0}, height, { width });
-    }
-  }
-
   drawGrid() {
     const { xAxis, yAxis } = this.config;
-    const xScale = this.xAxis.scale;
-    const yScale = this.yAxis.scale;
     this.grid = new Grid(this.layout.grid);
-    // TODO: move these to axis class
-    const xTicks = xScale.ticks(xAxis.tick.count).map((t) => xScale(t));
-    const yTicks = yScale.ticks(yAxis.tick.count).map((t) => yScale(t));
-    this.grid.drawX(xTicks, xAxis.grid);
-    this.grid.drawY(yTicks, yAxis.grid);
-  }
-
-  drawLegend() {
-    if (!this.config.legend.show) {
-      return;
-    }
-    const legend = new Legend(this.config.colorSchema, this.config.legend);
-    legend.draw(this.layout.legend, this.data.map((d) => d.topic));
+    this.grid.drawX(this.xAxis.ticks(), xAxis.grid);
+    this.grid.drawY(this.yAxis.ticks(), yAxis.grid);
   }
 
   drawLines() {

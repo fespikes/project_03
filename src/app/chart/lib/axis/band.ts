@@ -8,6 +8,7 @@ import {
   AxisLineStyle,
   AxisTextStyle,
 } from './axis-base';
+import { AxisContainer } from '../container';
 
 export class BandAxisConfig {
   padding = {
@@ -21,6 +22,13 @@ export class BandAxisConfig {
 export class BandAxis extends AxisBase {
   scale: ScaleBand<any>;
   axis: Axis<any>;
+
+  static create(config: BandAxisConfig, container: AxisContainer, domain: any[]) {
+    const { selection, placement, range } = container;
+    const axis = new BandAxis(config, selection, placement);
+    axis.draw(domain, range);
+    return axis;
+  }
 
   constructor(
     public config: BandAxisConfig,

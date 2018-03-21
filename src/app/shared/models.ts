@@ -1,6 +1,6 @@
-import { LinePoint, LineChartData } from '../chart/lib/line';
+import { LinePoint, LineChartData } from '../chart/lib/line/line';
 
-export { LineChartData } from '../chart/lib/line';
+export { LineChartData } from '../chart/lib/line/line';
 
 export interface Pagination {
   page: number;

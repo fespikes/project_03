@@ -1,6 +1,6 @@
 import { SelectionType, Margin } from './chart-base';
 import { Overlay } from './overlay';
-import { CanvasContainer, Container, FlexContainer, ContainerDimension } from './container';
+import { CanvasContainer, Container, FlexContainer, ContainerDimension, AxisContainer } from './container';
 import { Transform2D, Rect2D } from './helpers/transform-helper';
 import { LegendConfig } from './legend';
 
@@ -11,21 +11,8 @@ export class Layout {
   grid: Container;
   background: Container;
   legend: Container;
-
-  get xAxis() {
-    let x = this.canvas.findChild('x-axis');
-    if (x) {
-      return x;
-    } else {
-      x = this.canvas.createChild('x-axis');
-      x.translate(Transform2D.fromOffset(0, this.canvas.dim.height));
-      return x;
-    }
-  }
-
-  get yAxis() {
-    return this.canvas.retrieveChild('y-axis');
-  }
+  xAxis: AxisContainer;
+  yAxis: AxisContainer;
 
   constructor(overlay: Overlay) {
     this.overlay = overlay;
@@ -45,6 +32,10 @@ export class Layout {
     // 后创建的container为前景
     this.background = this.canvas.createChild('background', true);
     this.grid = this.canvas.createChild('grid', true);
+    this.xAxis = new AxisContainer('x-axis', 'bottom', this.canvas);
+    this.yAxis = new AxisContainer('y-axis', 'left', this.canvas);
+    this.canvas.appendChild(this.xAxis);
+    this.canvas.appendChild(this.yAxis);
 
     return this;
   }
@@ -76,5 +67,7 @@ export class Layout {
     }
 
     this.root.relayout();
+    this.xAxis.relayout();
+    this.yAxis.relayout();
   }
 }

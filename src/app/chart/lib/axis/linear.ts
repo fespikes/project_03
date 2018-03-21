@@ -10,6 +10,7 @@ import {
   AxisLineStyle,
   AxisTextStyle,
 } from './axis-base';
+import { AxisContainer } from '../container';
 
 export class LinearAxisConfig {
   tick = new AxisTickConfig();
@@ -21,6 +22,13 @@ export class LinearAxisConfig {
 export class LinearAxis extends AxisBase {
   scale: ScaleLinear<any, any>;
   axis: Axis<any>;
+
+  static create(config: LinearAxisConfig, container: AxisContainer, domain: any[]) {
+    const { selection, placement, range } = container;
+    const axis = new LinearAxis(config, selection, placement);
+    axis.draw(domain, range);
+    return axis;
+  }
 
   constructor(
     public config: LinearAxisConfig,
@@ -48,5 +56,10 @@ export class LinearAxis extends AxisBase {
 
     this.styleLine();
     this.styleText();
+  }
+
+  ticks() {
+    return this.scale.ticks(this.config.tick.count)
+      .map((t) => this.scale(t));
   }
 }
