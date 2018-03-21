@@ -18,7 +18,9 @@ import {
   BandAxis,
   BandAxisConfig,
 } from './axis';
-import { Grid } from './grid';
+// import { Grid } from './grid';
+import { Grid } from './tooltip/grid';
+import { Chart } from './chart';
 
 
 export class BarChartData {
@@ -101,8 +103,6 @@ export class BarChartConfig {
   stack = false;
   xAxis = new BandAxisConfig();
   yAxis = new LinearAxisConfig();
-  // TODO
-  hasAnimation = false;
   background: string;
   margin = {top: 20, right: 50, bottom: 40, left: 50};
   colorSchema = new ColorSchema();
@@ -121,11 +121,10 @@ export class BarChartConfig {
   }
 }
 
-export class BarChart implements ChartBase {
+export class BarChart extends Chart {
   data: BarChartData;
   config: BarChartConfig;
   element: HTMLElement;
-  geo: GeoService;
   xAxis: BandAxis;
   yAxis: LinearAxis;
 
@@ -149,7 +148,9 @@ export class BarChart implements ChartBase {
   }
 
   draw() {
-    this.initGeo();
+    const { width, height, margin, legend, colorSchema } = this.config;
+    this.init({width, height}, margin, legend);
+
     this.drawAxis();
     this.drawGrid();
 
@@ -163,7 +164,7 @@ export class BarChart implements ChartBase {
       this.appendTooltipGrouped(bars);
     }
 
-    this.drawLegend();
+    this.drawLegend(legend, colorSchema, this.data.topics);
     this.drawTooltip();
 
     return this;
@@ -210,54 +211,26 @@ export class BarChart implements ChartBase {
 
   }
 
-  initGeo() {
-    if (this.geo) {
-      this.geo.clear();
-    }
-    const rootContainer = d3.select(this.element).append('svg')
-    .attr('class', 'chart tdc-chart-bar')
-    .style('width', '100%')
-    .style('height', '100%');
-
-    const { width, height, margin, legend } = this.config;
-    this.geo = GeoService.fromMarginContainer(rootContainer, {width, height}, margin);
-
-    if (legend.show) {
-      this.geo.placeLegend(legend);
-    }
-
-    this.geo
-      .placeGrid()
-      .placeXAxis()
-      .placeYAxis()
-      .placeBackground();
-  }
-
   drawAxis() {
-      const { xAxis, yAxis } = this.config;
-      this.xAxis = new BandAxis(xAxis, this.geo.xAxis, 'bottom');
-      this.yAxis = new LinearAxis(yAxis, this.geo.yAxis, 'left');
-
-      const { width, height } = this.geo.canvas2d;
       let yTop;
       if (this.config.stack) {
         yTop = this.data.stackTop;
       } else {
         yTop = this.data.top;
       }
-      this.xAxis.draw(this.data.xs, [0, width]);
-      this.yAxis.draw([0, yTop], [height, 0]);
+      const { xAxis, yAxis } = this.config;
+      const { xAxis: xContainer, yAxis: yContainer } = this.layout;
+      this.xAxis = BandAxis.create(xAxis, xContainer, this.data.xs);
+      this.yAxis = LinearAxis.create(yAxis, yContainer, [0, yTop]);
 
       this.ordinalScale = d3.scaleOrdinal()
         .range(this.config.colorSchema.palette);
   }
 
   drawGrid() {
-    const { canvas2d, gridVertical } = this.geo;
-    const gridRenderer = new Grid(gridVertical, canvas2d);
-    const { grid, tick } = this.config.yAxis;
-
-    gridRenderer.draw(grid, tick.count, this.yAxis.scale);
+    const { yAxis } = this.config;
+    const grid = new Grid(this.layout.grid);
+    grid.drawY(this.yAxis.ticks(), yAxis.grid);
   }
 
   drawBarGrouped() {
@@ -265,7 +238,7 @@ export class BarChart implements ChartBase {
     const { scale: yScale } = this.yAxis;
     const xSubScale = d3.scaleBand().domain(this.data.topics).rangeRound([0, xScale.bandwidth()]);
 
-    return this.geo.canvas.append('g')
+    return this.layout.canvas.selection.append('g')
       .selectAll('g')
       .data(this.data.xs)
       .enter()
@@ -299,7 +272,7 @@ export class BarChart implements ChartBase {
     const { scale: yScale } = this.yAxis;
     const dataByTopic = this.data.dataByTopic;
 
-    return this.geo.canvas.append('g')
+    return this.layout.canvas.selection.append('g')
       .selectAll('g')
       .data(d3.stack().keys(this.data.topics)(dataByTopic))
       .enter()
@@ -315,7 +288,7 @@ export class BarChart implements ChartBase {
         const x = this.data.xs[i];
         return xScale(x);
       })
-      .attr('y', this.geo.canvas2d.height)
+      .attr('y', this.layout.canvas.dim.height)
       .attr('width', xScale.bandwidth)
       .attr('height', 0);
   }
@@ -326,7 +299,7 @@ export class BarChart implements ChartBase {
     bars.transition()
       .delay((d, i) => i * 10)
       .attr('y', (d) => yScale(d.y))
-      .attr('height', (d) => this.geo.canvas2d.height - yScale(d.y));
+      .attr('height', (d) => this.layout.canvas.dim.height - yScale(d.y));
   }
 
   appendAnimationStack(bars) {
@@ -368,13 +341,5 @@ export class BarChart implements ChartBase {
             return `${topic}: ${d.data[topic]}`;
           });
       });
-  }
-
-  drawLegend() {
-    // if (!this.config.legend.show) {
-    //   return;
-    // }
-    // const legend = new Legend(this.config.colorSchema, this.config.legend);
-    // legend.draw(this.geo.legend, this.data.topics, this.geo.legend2d);
   }
 }
