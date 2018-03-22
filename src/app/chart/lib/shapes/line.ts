@@ -2,7 +2,6 @@ import * as d3 from 'd3';
 
 import { SelectionType } from '../chart-base';
 import { Point2D, Vector2D } from '../helpers/transform-helper';
-import { Movable } from './movable';
 
 export class LineShapeConfig {
   width? = 1;
@@ -15,7 +14,7 @@ export class LineShapeConfig {
   }
 }
 
-export class Line extends Movable {
+export class Line {
   selection: SelectionType;
   shape: SelectionType;
   config: LineShapeConfig;
@@ -23,7 +22,6 @@ export class Line extends Movable {
   to: Point2D;
 
   constructor(selection: SelectionType, config: LineShapeConfig) {
-    super();
     this.selection = selection;
     this.config = LineShapeConfig.default(config);
   }

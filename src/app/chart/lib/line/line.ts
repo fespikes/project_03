@@ -87,7 +87,7 @@ export class MarkerPoint {
   }
 }
 
-export class TooltipBundle implements TooltipBundleCls {
+class TooltipBundle implements TooltipBundleCls {
   x: number;
   title: string;
   points: MarkerPoint[] = [];
@@ -155,6 +155,7 @@ export class LineChart extends Chart {
     const { scale: xScale } = this.xAxis;
     const { scale: yScale } = this.yAxis;
 
+    // 数据点的坐标，marker，topic信息集合结构
     this.points = this.data.map((dataset, idx) => {
       const color = this.config.colorSchema.getColor(idx);
       return dataset.data.map((d) => {

@@ -2,7 +2,6 @@ import * as d3 from 'd3';
 
 import { SelectionType } from '../chart-base';
 import { Point2D, Vector2D } from '../helpers/transform-helper';
-import { Movable } from './movable';
 
 export class RectShapeConfig {
   width: number;
@@ -15,7 +14,7 @@ export class RectShapeConfig {
   }
 }
 
-export class Rect extends Movable {
+export class Rect {
   selection: SelectionType;
   shape: SelectionType;
   config: RectShapeConfig;
@@ -23,7 +22,6 @@ export class Rect extends Movable {
   height: number;
 
   constructor(selection: SelectionType, config: RectShapeConfig) {
-    super();
     this.selection = selection;
     this.config = RectShapeConfig.default(config);
   }
@@ -33,7 +31,7 @@ export class Rect extends Movable {
     this.base = base;
 
     const { width, color } = this.config;
-    this.selection.append('rect')
+    this.shape = this.selection.append('rect')
     .attr('width', width)
     .attr('height', height)
     .attr('fill', color)

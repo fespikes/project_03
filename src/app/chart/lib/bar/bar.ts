@@ -8,19 +8,19 @@ import {
   Selection,
 } from 'd3';
 
-import { ChartBase, SelectionType } from './chart-base';
-import { ColorSchema } from './color-schema';
-import { Legend, LegendConfig } from './legend';
-import { GeoService } from './geo-service';
+import { ChartBase, SelectionType } from '../chart-base';
+import { ColorSchema } from '../color-schema';
+import { Legend, LegendConfig } from '../legend';
 import {
   LinearAxis,
   LinearAxisConfig,
   BandAxis,
   BandAxisConfig,
-} from './axis';
-// import { Grid } from './grid';
-import { Grid } from './tooltip/grid';
-import { Chart } from './chart';
+} from '../axis';
+import { Grid } from '../tooltip/grid';
+import { Chart } from '../chart';
+import { TooltipBundleCls, TooltipItem, TooltipEvent, Tooltip, AxisIndicator } from '../tooltip';
+import { Rect2D, Point2D } from '../helpers/transform-helper';
 
 
 export class BarChartData {
@@ -121,6 +121,19 @@ export class BarChartConfig {
   }
 }
 
+class TooltipBundle extends TooltipBundleCls {
+  constructor(x: number, title: string) {
+    super();
+    this.x = x;
+    this.title = title;
+    this.items = [];
+  }
+
+  distance(x: number, y: number) {
+    return Math.abs(this.x - x);
+  }
+}
+
 export class BarChart extends Chart {
   data: BarChartData;
   config: BarChartConfig;
@@ -130,22 +143,9 @@ export class BarChart extends Chart {
 
   private ordinalScale: ScaleOrdinal<any, any>;
   private stack: Stack<any, any, any>;
-  private tooltip;
-
-  setConfig(config: BarChartConfig) {
-    this.config = config;
-    return this;
-  }
-
-  select(element: HTMLElement) {
-    this.element = element;
-    return this;
-  }
-
-  datum(data: BarChartData) {
-    this.data = data;
-    return this;
-  }
+  grid: Grid;
+  tooltip: Tooltip;
+  axisIndicator: AxisIndicator;
 
   draw() {
     const { width, height, margin, legend, colorSchema } = this.config;
@@ -157,58 +157,44 @@ export class BarChart extends Chart {
     if (this.config.stack) {
       const bars = this.drawBarStack();
       this.appendAnimationStack(bars);
-      this.appendTooltipStack(bars);
     } else {
       const bars = this.drawBarGrouped();
       this.appendAnimationGrouped(bars);
-      this.appendTooltipGrouped(bars);
     }
 
     this.drawLegend(legend, colorSchema, this.data.topics);
-    this.drawTooltip();
+
+    this.initTooltip();
 
     return this;
   }
 
-  drawTooltip() {
-    this.tooltip = d3.select('body')
-      .append('div')
-      .style('position', 'absolute')
-      .style('width', 'auto')
-      .style('z-index', '1000')
-      .style('background', 'rgba(0,0,0,0.6)')
-      .style('color', 'white')
-      .style('padding', '10px')
-      .style('border-radius', '5px')
-      .style('display', 'none');
+  initTooltip() {
+    const { scale } = this.xAxis;
+    const objectMap: {[key: string]: TooltipBundleCls} = {};
 
-    this.tooltip.append('div')
-      .attr('class', 'axis-label')
-      .style('padding', '0 10px 0 0')
-      .style('font-size', '14px')
-      .style('font-weight', 'bold');
-
-    this.tooltip
-    .selectAll('.value')
-    .data(this.data.topics)
-    .enter()
-    .append('div')
-      .attr('class', 'value')
-      .style('padding', '10 10px 0 0')
-      .style('display', 'flex')
-      .style('align-items', 'center')
-      .html((d, i) => {
-        return `<span class="legend-label" style="color:${this.ordinalScale(d)}">●</span> <span class="value-label"></span>`;
+    this.data.series.forEach((series, i) => {
+      const topic = series.topic;
+      const color = this.config.colorSchema.getColor(i);
+      series.data.forEach((data, idx) => {
+        const title = this.data.xs[idx];
+        if (!objectMap[title]) {
+          const x = this.xAxis.center(title);
+          objectMap[title] = new TooltipBundle(x, title)  ;
+        }
+        objectMap[title].items.push({
+          name: topic,
+          value: data,
+          color,
+        });
       });
+    });
+    const objects = Object.keys(objectMap).map((key) => objectMap[key]);
 
-    this.tooltip.selectAll('.legend-label')
-      .style('font-size', '24px');
-
-    this.tooltip.selectAll('.value-label')
-      .style('white-space', 'nowrap')
-      .style('font-size', '14px')
-      .style('font-weight', 'bold');
-
+    const tooltipEvent = new TooltipEvent(this.layout.canvas, objects);
+    this.tooltip = new Tooltip(this.overlay.container).draw().subscribe(tooltipEvent);
+    const bandwidth = this.xAxis.scale.bandwidth();
+    this.axisIndicator = new AxisIndicator(this.grid, 'bar', bandwidth).draw().subscribe(tooltipEvent);
   }
 
   drawAxis() {
@@ -229,8 +215,8 @@ export class BarChart extends Chart {
 
   drawGrid() {
     const { yAxis } = this.config;
-    const grid = new Grid(this.layout.grid);
-    grid.drawY(this.yAxis.ticks(), yAxis.grid);
+    this.grid = new Grid(this.layout.grid);
+    this.grid.drawY(this.yAxis.ticks(), yAxis.grid);
   }
 
   drawBarGrouped() {
@@ -312,34 +298,6 @@ export class BarChart extends Chart {
       })
       .attr('height', (d, i) => {
         return yScale(d[0]) - yScale(d[1]);
-      });
-  }
-
-  appendTooltipGrouped(bars) {
-    bars.on('mouseover', () => this.tooltip.style('display', 'block'))
-      .on('mouseout', () => this.tooltip.style('display', 'none'))
-      .on('mousemove', (d) => {
-        this.tooltip.style('top', (d3.event.pageY - 10) + 'px').style('left', (d3.event.pageX + 10) + 'px');
-        this.tooltip.select('.axis-label').html(d.xs);
-        this.tooltip.selectAll('.value-label')
-          .html((value, index) => {
-            const topic = this.data.topics[index];
-            return `${topic}: ${this.data.dataByTopic[d.xIndex][topic]}`;
-          });
-      });
-  }
-
-  appendTooltipStack(bars) {
-    bars.on('mouseover', () => this.tooltip.style('display', 'block'))
-      .on('mouseout', () => this.tooltip.style('display', 'none'))
-      .on('mousemove', (d, i) => {
-        this.tooltip.style('top', (d3.event.pageY - 10) + 'px').style('left', (d3.event.pageX + 10) + 'px');
-        this.tooltip.select('.axis-label').html(this.data.xs[i]);
-        this.tooltip.selectAll('.value-label')
-          .html((value, index) => {
-            const topic = this.data.topics[index];
-            return `${topic}: ${d.data[topic]}`;
-          });
       });
   }
 }

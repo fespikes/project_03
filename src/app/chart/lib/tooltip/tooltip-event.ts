@@ -10,8 +10,8 @@ export abstract class TooltipBundleCls {
   title: string;
   items: TooltipItem[];
   abstract distance(x: number, y: number);
-  abstract activate();
-  abstract deactivate();
+  activate() {}
+  deactivate() {}
 }
 
 export class TooltipEvent extends EventEmitter {

@@ -14,6 +14,7 @@ import { Grid } from './tooltip/grid';
 export type Constructor<T> = new(...args: any[]) => T;
 
 export class Chart {
+  // TODO: remove any. 利用泛型
   config: any;
   element: HTMLElement;
   data: any;

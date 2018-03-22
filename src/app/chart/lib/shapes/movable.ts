@@ -1,33 +1,50 @@
 import { Point2D, Vector2D, Transform2D } from '../helpers/transform-helper';
 import { SelectionType } from '../chart-base';
+import { Constructor } from '../chart';
 
-export class Movable {
+export interface Movable {
   coord: Point2D;
   shape: SelectionType;
-  transform = new Transform2D();
+  transform: Transform2D;
 
-  move(vec: Vector2D, dist) {
-    vec.normalize();
-    const xdist = dist * vec.x;
-    const ydist = dist * vec.y;
+  move(vec: Vector2D, dist): void;
+  show();
+  hide();
+  clear();
+}
 
-    this.transform.translate(Transform2D.fromOffset(xdist, ydist));
+export class BaseShape {
+  shape: SelectionType;
+}
 
-    this.shape.attr('transform', this.transform.toTranslate());
-  }
+export function mixinMovable<T extends Constructor<BaseShape>>(base: T) {
+  return class extends base implements Movable {
+    coord: Point2D;
+    transform = new Transform2D();
 
-  show() {
-    this.shape.style('display', 'block');
-  }
+    move(vec: Vector2D, dist) {
+      vec.normalize();
+      const xdist = dist * vec.x;
+      const ydist = dist * vec.y;
 
-  hide() {
-    this.shape.style('display', 'none');
-  }
+      this.transform.translate(Transform2D.fromOffset(xdist, ydist));
 
-  clear() {
-    if (this.shape) {
-      this.shape.remove();
-      this.shape = null;
+      this.shape.attr('transform', this.transform.toTranslate());
     }
-  }
+
+    show() {
+      this.shape.style('display', 'block');
+    }
+
+    hide() {
+      this.shape.style('display', 'none');
+    }
+
+    clear() {
+      if (this.shape) {
+        this.shape.remove();
+        this.shape = null;
+      }
+    }
+  };
 }

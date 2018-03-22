@@ -55,4 +55,9 @@ export class BandAxis extends AxisBase {
     this.styleLine();
     this.styleText();
   }
+
+  center(x: string) {
+    const bandWidth = this.scale.bandwidth();
+    return this.scale(x) + bandWidth / 2;
+  }
 }
