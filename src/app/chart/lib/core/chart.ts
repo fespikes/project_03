@@ -1,15 +1,19 @@
 import * as d3 from 'd3';
 import { Selection } from 'd3' ;
 
+import {
+  LegendConfig,
+  Legend,
+  ColorSchema,
+  Grid,
+} from '../component';
+import { ShapeFactory } from '../shapes';
+import { AxisGridConfig } from '../axis';
+import { Rect2D } from '../helpers/transform-helper';
+
 import { Margin } from './chart-base';
 import { Overlay } from './overlay';
-import { Rect2D } from './helpers/transform-helper';
-import { LegendConfig, Legend } from './legend';
 import { Layout } from './layout';
-import { ShapeFactory } from './shapes';
-import { ColorSchema } from './color-schema';
-import { AxisGridConfig } from './axis';
-import { Grid } from './tooltip/grid';
 
 export type Constructor<T> = new(...args: any[]) => T;
 
@@ -69,19 +73,3 @@ export class Chart {
     legend.draw(this.layout.legend, topics);
   }
 }
-
-// export function mixinAxis<T extends Constructor<Chart>>(base: T) {
-//   return class extends base {
-//     grid: Grid;
-
-//     drawAxis() {
-//     }
-
-//     drawGrid(gridConfig: AxisGridConfig, ticks: number[]) {
-//       if (!this.grid) {
-//         this.grid = new Grid(this.layout.grid);
-//       }
-//       this.grid.drawX(ticks, gridConfig);
-//     }
-//   };
-// }

@@ -1,14 +1,13 @@
 import * as d3 from 'd3';
 import { Axis, ScaleBand } from 'd3';
 
-import { SelectionType } from '../chart-base';
+import { SelectionType, AxisContainer } from '../core';
 import {
   AxisBase,
   AxisPosition,
   AxisLineStyle,
   AxisTextStyle,
 } from './axis-base';
-import { AxisContainer } from '../container';
 
 export class BandAxisConfig {
   padding = {

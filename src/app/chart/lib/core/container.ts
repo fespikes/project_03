@@ -2,7 +2,7 @@ import * as d3 from 'd3';
 import { EventEmitter } from 'events';
 
 import { SelectionType } from './chart-base';
-import { Transform2D, Rect2D } from './helpers/transform-helper';
+import { Transform2D, Rect2D } from '../helpers/transform-helper';
 import { Overlay } from './overlay';
 
 export class ContainerMargin {

@@ -1,9 +1,7 @@
 import * as d3 from 'd3';
 
-import { ChartBase } from '../chart-base';
-import { ColorSchema } from '../color-schema';
-import { Legend, LegendConfig } from '../legend';
-import { GeoService } from '../geo-service';
+import { ChartBase } from '../core';
+import { ColorSchema, Legend, LegendConfig } from '../component';
 
 export class DonutChart implements ChartBase {
 

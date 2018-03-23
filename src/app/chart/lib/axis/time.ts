@@ -1,7 +1,7 @@
 import * as d3 from 'd3';
 import { ScaleTime, Axis } from 'd3';
 
-import { SelectionType } from '../chart-base';
+import { SelectionType, AxisContainer } from '../core';
 import {
   AxisBase,
   AxisPosition,
@@ -10,7 +10,6 @@ import {
   AxisLineStyle,
   AxisTextStyle,
 } from './axis-base';
-import { AxisContainer } from '../container';
 
 export class TimeAxisConfig {
   tick = new AxisTimeTickConfig();

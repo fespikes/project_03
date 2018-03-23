@@ -1,8 +1,7 @@
 import * as d3 from 'd3';
 
-import { Container } from '../container';
+import { Container, SelectionType } from '../core';
 import { AxisGridConfig } from '../axis';
-import { SelectionType } from '../chart-base';
 
 export class Grid {
   container: Container;

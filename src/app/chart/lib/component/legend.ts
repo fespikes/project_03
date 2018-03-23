@@ -1,9 +1,9 @@
 import * as d3 from 'd3';
 
-import { ColorSchema } from './color-schema';
-import { Rect2D, Transform2D } from './helpers/transform-helper';
-import { SelectionType } from './chart-base';
-import { Container } from './container';
+import { ColorSchema } from '../component';
+import { Rect2D, Transform2D } from '../helpers/transform-helper';
+import { SelectionType } from '../core';
+import { Container } from '../core';
 
 export type LegendAlign = 'start' | 'end' | 'center';
 

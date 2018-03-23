@@ -1,5 +1,5 @@
 import * as d3 from 'd3';
-import { SelectionType } from '../chart-base';
+import { SelectionType } from '../core';
 
 export type AxisPosition = 'top' | 'right' | 'bottom' | 'left';
 

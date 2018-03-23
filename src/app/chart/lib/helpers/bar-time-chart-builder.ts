@@ -1,4 +1,4 @@
-import { BarTimeChartData } from '../bar-time';
+import { BarTimeChartData } from '../chart';
 
 
 const mockData = [

@@ -1,5 +1,3 @@
-import { SelectionType } from '../chart-base';
-
 export class Rect2D {
   width: number;
   height: number;

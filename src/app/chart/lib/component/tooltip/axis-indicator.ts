@@ -1,9 +1,8 @@
-import { SelectionType } from '../chart-base';
-import { Container } from '../container';
-import { ShapeFactory } from '../shapes';
-import { Movable } from '../shapes/movable';
-import { Vector2D } from '../helpers/transform-helper';
-import { Grid } from './grid';
+import { SelectionType, Container } from '../../core';
+import { ShapeFactory } from '../../shapes';
+import { Movable } from '../../shapes/movable';
+import { Vector2D } from '../../helpers/transform-helper';
+import { Grid } from '../grid';
 import { TooltipEvent } from './tooltip-event';
 
 export type AxisIndicatorOrient = 'vertical' | 'horizontal';

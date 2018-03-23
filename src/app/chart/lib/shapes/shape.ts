@@ -1,4 +1,4 @@
-import { SelectionType } from '../chart-base';
+import { SelectionType } from '../core';
 import { Point2D } from '../helpers/transform-helper';
 
 import { CircleShapeConfig, Circle } from './circle';

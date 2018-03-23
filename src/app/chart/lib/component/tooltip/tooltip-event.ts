@@ -1,8 +1,7 @@
 import { EventEmitter } from 'events';
 import { min } from 'lodash-es';
 
-import { Overlay } from '../overlay';
-import { CanvasContainer } from '../container';
+import { Overlay, CanvasContainer } from '../../core';
 import { TooltipItem } from './tooltip';
 
 export abstract class TooltipBundleCls {

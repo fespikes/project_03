@@ -1,8 +1,8 @@
 import { SelectionType, Margin } from './chart-base';
 import { Overlay } from './overlay';
 import { CanvasContainer, Container, FlexContainer, ContainerDimension, AxisContainer } from './container';
-import { Transform2D, Rect2D } from './helpers/transform-helper';
-import { LegendConfig } from './legend';
+import { Transform2D, Rect2D } from '../helpers/transform-helper';
+import { LegendConfig } from '../component';
 
 export class Layout {
   overlay: Overlay;

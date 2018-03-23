@@ -2,20 +2,26 @@ import * as d3 from 'd3';
 import * as moment from 'moment';
 import { Selection, ScaleTime, ScaleLinear, Axis, Line } from 'd3';
 
-import { ChartBase, SelectionType } from '../chart-base';
-import { Chart } from '../chart';
-import { Legend, LegendConfig } from '../legend';
-import { ColorSchema } from '../color-schema';
-import { Grid } from '../tooltip/grid';
+import { Chart } from '../core';
 import {
   LinearAxis,
   LinearAxisConfig,
   TimeAxis,
   TimeAxisConfig,
 } from '../axis';
-import { MarkerFactory, MarkerBase } from './marker';
+import {
+  Grid,
+  ColorSchema,
+  Legend,
+  LegendConfig,
+  MarkerFactory,
+  MarkerBase,
+  Tooltip,
+  TooltipEvent,
+  TooltipBundleCls,
+  AxisIndicator,
+} from '../component';
 import { Point2D } from '../helpers/transform-helper';
-import { Tooltip, TooltipEvent, TooltipBundleCls, AxisIndicator } from '../tooltip';
 import { ShapeFactory } from '../shapes';
 
 export type curveStyle = 'curveLinear' | 'curveStep' | 'curveBasis'

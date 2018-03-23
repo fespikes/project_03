@@ -1,6 +1,6 @@
 import { EventEmitter } from 'events';
 
-import { Rect2D } from './helpers/transform-helper';
+import { Rect2D } from '../helpers/transform-helper';
 import { SelectionType } from './chart-base';
 
 export class Overlay extends EventEmitter {

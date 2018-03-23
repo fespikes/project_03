@@ -1,17 +1,21 @@
 import * as d3 from 'd3';
 import * as moment from 'moment';
 
-import { ChartBase } from './chart-base';
+import { Chart } from '../core';
 import {
   LinearAxis,
   LinearAxisConfig,
   TimeAxisConfig,
   TimeAxis,
   BandAxisConfig,
-} from './axis';
-import { Chart } from './chart';
-import { Grid } from './tooltip/grid';
-import { TooltipBundleCls, TooltipEvent, Tooltip, AxisIndicator } from './tooltip';
+} from '../axis';
+import {
+  Grid,
+  TooltipBundleCls,
+  TooltipEvent,
+  Tooltip,
+  AxisIndicator,
+} from '../component';
 
 export class BarPoint {
   x: Date;

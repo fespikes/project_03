@@ -1,4 +1,4 @@
-import { BarChartData } from '../bar';
+import { BarChartData } from '../chart';
 
 const mockData = {
   xs: ['Quater 1', 'Quater 2', 'Quoter 3', 'Quoter 4'],

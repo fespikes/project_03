@@ -1,6 +1,6 @@
 import * as d3 from 'd3';
 
-import { SelectionType } from '../chart-base';
+import { SelectionType } from '../core';
 import { Point2D, Vector2D } from '../helpers/transform-helper';
 
 export class LineShapeConfig {

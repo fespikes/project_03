@@ -8,19 +8,24 @@ import {
   Selection,
 } from 'd3';
 
-import { ChartBase, SelectionType } from '../chart-base';
-import { ColorSchema } from '../color-schema';
-import { Legend, LegendConfig } from '../legend';
+import { Chart } from '../core';
 import {
   LinearAxis,
   LinearAxisConfig,
   BandAxis,
   BandAxisConfig,
 } from '../axis';
-import { Grid } from '../tooltip/grid';
-import { Chart } from '../chart';
-import { TooltipBundleCls, TooltipItem, TooltipEvent, Tooltip, AxisIndicator } from '../tooltip';
-import { Rect2D, Point2D } from '../helpers/transform-helper';
+import {
+  Grid,
+  ColorSchema,
+  Legend,
+  LegendConfig,
+  TooltipBundleCls,
+  TooltipItem,
+  TooltipEvent,
+  Tooltip,
+  AxisIndicator,
+} from '../component';
 
 
 export class BarChartData {

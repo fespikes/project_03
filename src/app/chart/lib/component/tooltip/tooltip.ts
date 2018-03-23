@@ -1,7 +1,7 @@
 import * as d3 from 'd3';
 
+import { SelectionType } from '../../core';
 import { ColorSchema } from '../color-schema';
-import { SelectionType } from '../chart-base';
 import { TooltipEvent } from './tooltip-event';
 
 export class TooltipItem {

@@ -1,6 +1,5 @@
 import { Point2D, Vector2D, Transform2D } from '../helpers/transform-helper';
-import { SelectionType } from '../chart-base';
-import { Constructor } from '../chart';
+import { SelectionType, Constructor } from '../core';
 
 export interface Movable {
   coord: Point2D;
