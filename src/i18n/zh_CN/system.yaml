@@ -1,25 +1,54 @@
 SYSTEM:
   NAME: 系统服务
+  OPERATION: 操作
+  NO_CONTENT: 没有内容
 
-  OVERVIEW:
+  INSTANCE:
     TOTAL: 系统服务数量
     NAME: 服务名
     STATUS: 状况
     VERSION: 版本号
     TAG: 标签
     IMAGE: 容器镜像
-    DURATION: 存活时间
-    OPERATION: 操作
-    EDIT: 编辑Yarml
-    UPDATE: 更新Image
-    DELETE: 删除服务
-    YEAR: 年
-    MONTH: 月
-    DAY: 天
-    HOUR: 小时
-    MINUTE: 分钟
-    SECOND: 秒
-    MILLISECOND: 毫秒
     HEALTH: 健康
     ERROR: 故障
+    MICRO_SERVICE: 微服务名
+    STATE: 状态
+    START_TIME: 启动时间
+    SELECT_TAG: 选择标签
 
+  TOOLTIP:
+    VIEW_POD: 查看Pod
+    VIEW_IMAGE: 查看镜像
+    VIEW_YAML: 查看YAML文件
+    START_SERVICE: 启动服务
+    STOP_SERVICE: 暂停服务
+
+  POPUP:
+    YAML_FILE: YAML文件
+    CLOSE: 关闭
+    CONFIRM: 确定
+    CANCEL: 取消
+    IMAGE_INFO: 镜像信息
+    IMAGE_ADDRESS: 镜像地址
+    IMAGE_ADDRESS_INITIAL: 初始镜像地址
+    NEW_IMAGE_ADDRESS: 新镜像地址
+    NEW_IMAGE_ADDRESS_INITIAL: 新初始镜像地址
+    COPY_IMAGE_ADDRESS: 复制镜像地址
+    COPY_IMAGE_ADDRESS_INITIAL: 复制初始镜像地址
+    CHANGE_IMAGE: 更换镜像
+    CHANGE_IMAGE_MESSAGE: 更换镜像地址可能用时较长
+    COPIED: 已复制
+    COPY_FAILED: 复制失败
+    POD_DETAIL: Pod详情
+    CREATE_TIME: 创建时间
+    CONTAINER: 容器
+    EVENT: 事件
+    LOG: 日志
+    CONTAINER_NAME: 容器名
+    HEALTHY_STATE: 健康状态
+    INFO: 信息
+    LAST_APPEAR: 最后出现
+    REASON: 原因
+    NUMBER: 数量
+    LOAD_COMPLETE_LOG: 加载完整的日志

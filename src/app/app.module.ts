@@ -17,6 +17,7 @@ import { TecApiService, TecUtilService } from './shared';
 import { NotFoundModule } from './not-found';
 import { LayoutModule } from './layout';
 import { SharedModule } from './shared';
+import { IconModule } from '../assets/icons/icon.module';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -31,6 +32,7 @@ import { AppComponent } from './app.component';
     HttpModule,
     TuiModule,
     I18nModule,
+    IconModule,
     SharedModule,
     LayoutModule,
     NotFoundModule,

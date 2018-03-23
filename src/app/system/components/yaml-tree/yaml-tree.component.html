@@ -1,0 +1,34 @@
+<div
+  class="node"
+  *ngFor="let node of treeModel">
+  <div
+    class="node-item"
+    [ngStyle]="{'margin-left': (treeLevel * 10) + 'px'}"
+    (dblclick)="dbClick(node)"
+  >
+    <svg
+      tuiIcon="caret-right"
+      class="toggle-icon"
+      [ngClass]="{'hide': !node.children || node.children.length === 0}"
+      [class.expanded]="node.expanded"
+      (click)="toggle(node)"
+    ></svg><!--
+    --><span
+      class="node-item-name"
+      (click)="selectChange(node);"
+    >
+      {{node.name}}:
+    </span><!--
+    --><span
+      class="node-item-value text-ellipsis"
+    >
+      {{node.value}}
+    </span>
+  </div>
+  <tec-yaml-tree
+    *ngIf="node.expanded && node.children?.length > 0"
+    [treeModel]="node.children"
+    [treeLevel]="treeLevel + 1"
+    (onSelectChange)="selectChange($event);"
+  ></tec-yaml-tree>
+</div>

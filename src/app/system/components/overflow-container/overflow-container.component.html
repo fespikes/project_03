@@ -1,0 +1,13 @@
+<div class="container">
+  <div class="container-nav left" *ngIf="canMoveLeft" (click)="moveLeft()">
+    <svg tuiIcon="angle-left" class="tui-icon-hover"></svg>
+  </div>
+  <div class="container-body" #containerBody>
+    <div class="overflow-content" #overflowContent>
+      <ng-content></ng-content>
+    </div>
+  </div>
+  <div class="container-nav right" *ngIf="canMoveRight" (click)="moveRight()">
+    <svg tuiIcon="angle-right" class="tui-icon-hover"></svg>
+  </div>
+</div>

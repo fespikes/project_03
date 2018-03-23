@@ -19,11 +19,34 @@
     .tui-search
       margin-left: 1rem
 
+    .tui-select
+      width: 10rem
+
   .container-content
     display: flex
     flex-direction: column
     justify-content: space-between
     flex: 1
+
+    .instance-name
+      display: flex
+      align-items: center
+      cursor: default
+
+      .open
+        transform: rotate(90deg)
+
+    .status-td
+      .error
+        color: $brand-danger
+
+    .operation-td
+      span:not(:first-child) svg
+        margin-left: 1rem
+
+      .pod-title
+        text-align: left
+
 
   .tui-table-row > div, .tui-table-head > div
     padding: .5rem 1rem
@@ -31,10 +54,10 @@
 .popover-tag-container
   padding: 6px
 
-  .popover-tag-item 
+  .popover-tag-item
     border-radius: 3px
-    background-color: $grey
-    color: #fff
+    background-color: #f1f4f9
+    color: #9aa3b4
     font-size: $font-sm
     margin-top: 5px
     padding: 2px 5px

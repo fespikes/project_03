@@ -1,0 +1,36 @@
+@import 'util'
+
+.tui-form
+  min-height: 5rem
+
+  &-item-text
+    padding-top: 9px
+
+    .tui-copy-button
+      margin-left: 0.5rem
+      vertical-align: top
+
+  &-item-link
+    color: $brand-primary
+    cursor: pointer
+
+    &:hover
+      text-decoration: underline
+
+  .tui-input.new-image
+    width: 100%
+
+  .input-message
+    line-height: 1.5rem
+    font-size: $font-sm
+    color: $text-mute
+
+    svg
+      vertical-align: text-bottom
+
+.foot
+  margin-top: 1rem
+  @include flex-xy-center
+
+  button:first-child
+    margin-right: 1rem

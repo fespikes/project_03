@@ -1,0 +1,49 @@
+@import 'util'
+
+\:host
+  display: inline-block
+
+.container
+  display: flex
+  justify-content: flex-start
+  align-items: center
+  height: 100%
+
+  &-nav
+    display: flex
+    justify-content: center
+    align-items: center
+    position: relative
+    flex-shrink: 0
+    height: 100%
+    user-select: none
+    cursor: pointer
+
+    &.right:before
+      position: absolute
+      top: 0
+      left: -2rem
+      content: ''
+      height: 100%
+      width: 2rem
+      background: linear-gradient(to right, rgba(255,255,255,0), rgba(255,255,255,1))
+      z-index: 1
+
+    &.left:before
+      position: absolute
+      top: 0
+      right: -2rem
+      content: ''
+      height: 100%
+      width: 2rem
+      background: linear-gradient(to right, rgba(255,255,255,1), rgba(255,255,255,0))
+      z-index: 1
+
+    svg
+      transform: scale(1, 1.5)
+
+  &-body
+    overflow: hidden
+
+    .overflow-content
+      transition: all 0.5s ease

@@ -18,26 +18,26 @@ export class ServiceDurationPipe implements PipeTransform {
 
     transform(value: number, args?: any): any {
 
-      let unit = this.translate.translateKey('SYSTEM.OVERVIEW.MILLISECOND');
+      let unit = this.translate.translateKey('SYSTEM.INSTANCE.MILLISECOND');
 
       if (value / this.YEAR >= 1) {
         value = Math.round(value / this.YEAR);
-        unit = this.translate.translateKey('SYSTEM.OVERVIEW.YEAR');
+        unit = this.translate.translateKey('SYSTEM.INSTANCE.YEAR');
       }else if (value / this.MONTH >= 1) {
         value = Math.round(value / this.MONTH);
-        unit = this.translate.translateKey('SYSTEM.OVERVIEW.MONTH');
+        unit = this.translate.translateKey('SYSTEM.INSTANCE.MONTH');
       }else if (value / this.DAY >= 1) {
         value = Math.round(value / this.DAY);
-        unit = this.translate.translateKey('SYSTEM.OVERVIEW.DAY');
+        unit = this.translate.translateKey('SYSTEM.INSTANCE.DAY');
       }else if (value / this.HOUR >= 1) {
         value = Math.round(value / this.HOUR);
-        unit = this.translate.translateKey('SYSTEM.OVERVIEW.HOUR');
+        unit = this.translate.translateKey('SYSTEM.INSTANCE.HOUR');
       }else if (value / this.MINUTE >= 1) {
         value = Math.round(value / this.MINUTE);
-        unit = this.translate.translateKey('SYSTEM.OVERVIEW.MINUTE');
+        unit = this.translate.translateKey('SYSTEM.INSTANCE.MINUTE');
       }else if (value / this.SECOND >= 1) {
         value = Math.round(value / this.SECOND);
-        unit = this.translate.translateKey('SYSTEM.OVERVIEW.SECOND');
+        unit = this.translate.translateKey('SYSTEM.INSTANCE.SECOND');
       }
       return `${value}${unit}`;
     }

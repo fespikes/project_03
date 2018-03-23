@@ -1,26 +1,55 @@
 SYSTEM:
   NAME: System Service
+  OPERATION: Operation
+  NO_CONTENT: No Content
 
-  OVERVIEW:
+  INSTANCE:
     TOATAL: System Service Number
     NAME: Service Name
     STATUS: Status
     VERSION: Version
     TAG: Label
     IMAGE: Container Image
-    DURATION: Survival Time
-    OPERATION: Operation
-    EDIT: Edit Yarml
-    UPDATE: Update Image
-    DELETE: Delete Service
-    YEAR: Year
-    MONTH: Month
-    DAY: Day
-    HOUR: Hour
-    MINUTE: Minute
-    SECOND: Second
-    MILLISECOND: Millisecond
     HEALTH: Health
     ERROR: Error
+    MICRO_SERVICE: Micro Service Name
+    STATE: State
+    START_TIME: Start Time
+    SELECT_TAG: Select Label
+
+  TOOLTIP:
+    VIEW_POD: View Pod
+    VIEW_IMAGE: View Image
+    VIEW_YAML: View Yaml
+    START_SERVICE: Start Service
+    STOP_SERVICE: Stop Service
+
+  POPUP:
+    YAML_FILE: YAML File
+    CLOSE: Close
+    CONFIRM: Confirm
+    CANCEL: Cancel
+    IMAGE_INFO: Image Info
+    IMAGE_ADDRESS: Image Address
+    IMAGE_ADDRESS_INITIAL: Initial Image Address
+    NEW_IMAGE_ADDRESS: New Image Address
+    NEW_IMAGE_ADDRESS_INITIAL: New Initial Image Address
+    COPY_IMAGE_ADDRESS: Copy Image Address
+    COPY_IMAGE_ADDRESS_INITIAL: Copy Initial Image Address
+    CHANGE_IMAGE_MESSAGE: Change image address may take a long time
+    COPIED: Copied
+    COPY_FAILED: Copy Failed
+    POD_DETAIL: Pod Detail
+    CREATE_TIME: Create Time
+    CONTAINER: Container
+    EVENT: Event
+    LOG: Log
+    CONTAINER_NAME: Container Name
+    HEALTHY_STATE: Healthy State
+    INFO: Info
+    LAST_APPEAR: Last Appear
+    REASON: Reason
+    NUMBER: Number
+    LOAD_COMPLETE_LOG: Load Complete Log
 
 

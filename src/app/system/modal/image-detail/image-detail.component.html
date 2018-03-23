@@ -1,0 +1,56 @@
+<form #form="ngForm" tuiForm labelFlex="0 0 100px" inputFlex="1">
+  <div *ngIf="image?.baseImage">
+    <tui-form-item label="{{'SYSTEM.POPUP.IMAGE_ADDRESS' | translate}}">
+      <div class="tui-form-item-text">
+        {{image?.baseImage}}
+        <tec-copy-button
+          [text]="image?.baseImage"
+          tuiTooltip="{{'SYSTEM.POPUP.COPY_IMAGE_ADDRESS' | translate}}"
+        >
+          <svg tuiIcon="copy" class="tui-icon-hover"></svg>
+        </tec-copy-button>
+      </div>
+    </tui-form-item>
+    <tui-form-item *ngIf="!image?.showChangeBaseImage">
+      <div class="tui-form-item-link" (click)="image.showChangeBaseImage = true">
+        {{'SYSTEM.POPUP.CHANGE_IMAGE' | translate}}
+      </div>
+    </tui-form-item>
+    <tui-form-item *ngIf="image?.showChangeBaseImage" label="{{'SYSTEM.POPUP.NEW_IMAGE_ADDRESS' | translate}}">
+      <tui-input class="new-image" name="newBaseImage" type="text" [(ngModel)]="image.newBaseImage" required></tui-input>
+      <div class="input-message">
+        <svg tuiIcon="info-circle" color="warning"></svg>
+        {{'SYSTEM.POPUP.CHANGE_IMAGE_MESSAGE' | translate}}
+      </div>
+    </tui-form-item>
+  </div>
+  <div *ngIf="image?.initImage">
+    <tui-form-item label="{{'SYSTEM.POPUP.IMAGE_ADDRESS_INITIAL' | translate}}">
+      <div class="tui-form-item-text">
+        {{image.initImage}}
+        <tec-copy-button
+          [text]="image.initImage"
+          tuiTooltip="{{'SYSTEM.POPUP.COPY_IMAGE_ADDRESS_INITIAL' | translate}}"
+        >
+          <svg tuiIcon="copy" class="tui-icon-hover"></svg>
+        </tec-copy-button>
+      </div>
+    </tui-form-item>
+    <tui-form-item *ngIf="!image?.showChangeInitImage">
+      <div class="tui-form-item-link" (click)="image.showChangeInitImage = true">
+        {{'SYSTEM.POPUP.CHANGE_IMAGE' | translate}}
+      </div>
+    </tui-form-item>
+    <tui-form-item *ngIf="image?.showChangeInitImage" label="{{'SYSTEM.POPUP.NEW_IMAGE_ADDRESS_INITIAL' | translate}}">
+      <tui-input class="new-image" name="newInitImage" type="text" [(ngModel)]="image.newInitImage" required></tui-input>
+      <div class="input-message">
+        <svg tuiIcon="info-circle" color="warning"></svg>
+        {{'SYSTEM.POPUP.CHANGE_IMAGE_MESSAGE' | translate}}
+      </div>
+    </tui-form-item>
+  </div>
+</form>
+<div class="tui-modal-foot">
+  <button tuiBtn="primary" [disabled]="form.invalid" (click)="confirm()" >{{ 'SYSTEM.POPUP.CONFIRM' | translate }}</button>
+  <button tuiBtn="default" (click)="cancel()">{{ 'SYSTEM.POPUP.CANCEL' | translate }}</button>
+</div>

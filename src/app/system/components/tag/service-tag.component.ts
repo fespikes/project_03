@@ -10,7 +10,7 @@ import {
 } from '@angular/core';
 import { Subject } from 'rxjs/Subject';
 
-import { Tag } from '../model/system-model';
+import { Tag } from '../../model/system-model';
 
 @Component({
   selector: 'tec-system-service-tag',
