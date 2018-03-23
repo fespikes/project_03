@@ -1,38 +1,39 @@
-<tui-table [tuiTableFlex]="[3,4,1]" [loading]="loading">
-  <tui-table-row>
-    <div class="text-ellipsis">{{'TENANT.QUOTA.CPU' | translate}}</div>
-    <div class="text-ellipsis">100 core</div>
-    <div>
-      <span tuiTooltip="{{'TENANT.DETAIL.EDIT' | translate}}">
-        <svg tuiIcon="pencil-square" (click)="edit()"></svg>
-      </span>
+
+<ul class="wrapper">
+  <li *ngFor="let quota of quotas; let i=index;">
+    <div class="text-ellipsis">{{quota.nameAlias}}</div>
+
+    <div
+      *ngIf="!!editing && (i===editingKey)"
+    >
+      <input
+        type="text"
+        class="text-ellipsis replacement"
+        value={{quota.limit}}
+        [(ngModel)]="quotas[i]['limit']"
+      />{{' ' + quota.unit}}
     </div>
-  </tui-table-row>
-  <tui-table-row>
-    <div class="text-ellipsis">{{'TENANT.QUOTA.MEMORY' | translate}}</div>
-    <div class="text-ellipsis">1024 GB</div>
-    <div>
-      <span tuiTooltip="{{'TENANT.DETAIL.EDIT' | translate}}">
-        <svg tuiIcon="pencil-square" (click)="edit()"></svg>
-      </span>
-    </div>
-  </tui-table-row>
-  <tui-table-row>
-    <div class="text-ellipsis">{{'TENANT.QUOTA.STORAGE' | translate}}</div>
-    <div class="text-ellipsis">20TB (已使用: 500GB)</div>
-    <div>
-      <span tuiTooltip="{{'TENANT.DETAIL.EDIT' | translate}}">
-        <svg tuiIcon="pencil-square" (click)="edit()"></svg>
-      </span>
-    </div>
-  </tui-table-row>
-  <tui-table-row>
-    <div class="text-ellipsis">{{'TENANT.QUOTA.NETWORK'| translate}}</div>
-    <div class="text-ellipsis">100 MB/S</div>
-    <div>
-      <span tuiTooltip="{{'TENANT.DETAIL.EDIT' | translate}}">
-        <svg tuiIcon="pencil-square" (click)="edit()"></svg>
-      </span>
-    </div>
-  </tui-table-row>
-</tui-table>
+
+    <ng-container *ngIf="!editing || i!==editingKey">
+      <div
+        *ngIf="quota.limit !== null"
+        class="text-ellipsis"
+      >
+        {{quota.limit + ' ' + quota.unit}}
+      </div>
+
+      <div
+        *ngIf="quota.limit === null"
+        class="text-ellipsis"
+      >
+        {{'TENANT.QUOTA.UNDEFINED' | translate}}
+      </div>
+    </ng-container>
+
+    <tec-edit
+      (editChange)="onEditChange($event)"
+      [key]="i"
+      [editingKey]="editingKey"
+    ></tec-edit>
+  </li>
+</ul>

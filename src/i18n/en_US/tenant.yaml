@@ -82,10 +82,8 @@ TENANT:
     END_DATE: End Date
 
   QUOTA:
-    CPU: CPU Limit
-    MEMORY: Memory Limit
-    NETWORK: Child Network Limit
-    STORAGE: Storage Limit
+    UNDEFINED: Undefined
+    TOBEREMOVED: below
 
   STATUS:
     CREATING: Creating

@@ -58,8 +58,14 @@ export class TenantService {
     return this.api.get(`tenant/${name}/errors`, filter);
   }
 
-  fetchQuota(name): Observable<Quota> {
-    return this.api.get(`tenant/${name}/quota`);
+  fetchQuotas(): Observable<any> {
+    const uid = sessionStorage.getItem('eco:tenant:detail:uid');
+    return this.api.get(`tenants/${uid}/quotas`);
+  }
+
+  putQuotas(body: Object): Observable<any> {
+    const uid = sessionStorage.getItem('eco:tenant:detail:uid');
+    return this.api.put(`tenants/${uid}/quotas`, {...body});
   }
 
   fetchBills(uid, pagination, keyword): Observable<Bills> {

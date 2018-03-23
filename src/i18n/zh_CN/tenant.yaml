@@ -82,10 +82,8 @@ TENANT:
     END_DATE: 截止时间
 
   QUOTA:
-    CPU: CPU上限
-    MEMORY: 内存上限
-    NETWORK: 子网络上限
-    STORAGE: 磁盘上限
+    UNDEFINED: 未设置
+    TOBEREMOVED: below
 
   STATUS:
     CREATING: 创建中
