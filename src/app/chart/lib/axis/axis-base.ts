@@ -1,5 +1,5 @@
 import * as d3 from 'd3';
-import { SelectionType } from '../chart-base';
+import { SelectionType } from '../core';
 
 export type AxisPosition = 'top' | 'right' | 'bottom' | 'left';
 
@@ -78,5 +78,9 @@ export abstract class AxisBase {
     this.container.selectAll('text')
       .attr('fill', this.config.textStyle.color)
       .attr('font-size', this.config.textStyle.foneSize);
+  }
+
+  format(datum) {
+    return datum;
   }
 }

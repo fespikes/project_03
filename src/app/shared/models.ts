@@ -1,6 +1,6 @@
-import { LinePoint, LineChartData } from '../chart/lib/line';
+import { LinePoint, LineChartData } from '../chart/lib';
 
-export { LineChartData } from '../chart/lib/line';
+export { LineChartData } from '../chart/lib';
 
 export interface Pagination {
   page: number;
@@ -24,7 +24,7 @@ export const chartTypes = {
   bar: 'bar',
 };
 
-export { DonutChartData, Donut } from '../chart/lib/donut';
+export { DonutChartData, Donut } from '../chart/lib';
 export { LinePoint };
 
 export class MultipleCurveData {

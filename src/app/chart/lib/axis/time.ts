@@ -1,7 +1,7 @@
 import * as d3 from 'd3';
 import { ScaleTime, Axis } from 'd3';
 
-import { SelectionType } from '../chart-base';
+import { SelectionType, AxisContainer } from '../core';
 import {
   AxisBase,
   AxisPosition,
@@ -21,6 +21,13 @@ export class TimeAxisConfig {
 export class TimeAxis extends AxisBase {
   scale: ScaleTime<any, any>;
   axis: Axis<any>;
+
+  static create(config: TimeAxisConfig, container: AxisContainer, domain: any[]) {
+    const { selection, placement, range } = container;
+    const axis = new TimeAxis(config, selection, placement);
+    axis.draw(domain, range);
+    return axis;
+  }
 
   constructor(
     public config: TimeAxisConfig,
@@ -50,5 +57,16 @@ export class TimeAxis extends AxisBase {
 
     this.styleLine();
     this.styleText();
+  }
+
+  // Override
+  format(datum: Date) {
+    const timeFormat = d3.timeFormat(this.config.tick.timeFormat);
+    return timeFormat(datum);
+  }
+
+  ticks() {
+    return this.scale.ticks(this.config.tick.count)
+      .map((t) => this.scale(t));
   }
 }

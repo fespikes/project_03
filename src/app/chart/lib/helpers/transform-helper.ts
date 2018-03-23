@@ -1,5 +1,3 @@
-import { SelectionType } from '../chart-base';
-
 export class Rect2D {
   width: number;
   height: number;
@@ -8,6 +6,30 @@ export class Rect2D {
     this.width = width;
     this.height = height;
   }
+}
+
+export class Vector2D {
+  x: number;
+  y: number;
+
+  constructor(x: number, y: number) {
+    this.x = x;
+    this.y = y;
+  }
+
+  normalize() {
+    const { x, y } = this;
+    const x2 = x * x;
+    const y2 = y * y;
+    const sum = x2 + y2;
+    this.x = Math.sqrt(x2 / sum);
+    this.y = Math.sqrt(y2 / sum);
+  }
+}
+
+export class Point2D {
+  x: number;
+  y: number;
 }
 
 export class RelativePosition {
@@ -24,14 +46,16 @@ export class Transform2D {
   // y方向平移
   y = 0;
 
-  // 旋转
-  r = 0;
-
   static fromOffset(xOffset, yOffset) {
     const transform = new Transform2D();
     transform.x = xOffset;
     transform.y = yOffset;
     return transform;
+  }
+
+  translate(t: Transform2D) {
+    this.x += t.x;
+    this.y += t.y;
   }
 
   toTranslate() {

@@ -1,7 +1,7 @@
 import * as d3 from 'd3';
 import { Axis, ScaleBand } from 'd3';
 
-import { SelectionType } from '../chart-base';
+import { SelectionType, AxisContainer } from '../core';
 import {
   AxisBase,
   AxisPosition,
@@ -21,6 +21,13 @@ export class BandAxisConfig {
 export class BandAxis extends AxisBase {
   scale: ScaleBand<any>;
   axis: Axis<any>;
+
+  static create(config: BandAxisConfig, container: AxisContainer, domain: any[]) {
+    const { selection, placement, range } = container;
+    const axis = new BandAxis(config, selection, placement);
+    axis.draw(domain, range);
+    return axis;
+  }
 
   constructor(
     public config: BandAxisConfig,
@@ -46,5 +53,10 @@ export class BandAxis extends AxisBase {
 
     this.styleLine();
     this.styleText();
+  }
+
+  center(x: string) {
+    const bandWidth = this.scale.bandwidth();
+    return this.scale(x) + bandWidth / 2;
   }
 }

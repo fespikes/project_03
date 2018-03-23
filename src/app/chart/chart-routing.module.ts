@@ -45,13 +45,5 @@ import { BarTimeChartComponent } from './bar-time-chart/bar-time-chart.component
   exports: [
     RouterModule,
   ],
-  providers: [
-    TranslateResolver,
-    TranslateDeactivator,
-    {
-      provide: TranslateToken,
-      useValue: 'abstract',
-    },
-  ],
 })
 export class ChartRoutingModule { }

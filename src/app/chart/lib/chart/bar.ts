@@ -8,17 +8,24 @@ import {
   Selection,
 } from 'd3';
 
-import { ChartBase, SelectionType } from './chart-base';
-import { ColorSchema } from './color-schema';
-import { Legend, LegendConfig } from './legend';
-import { GeoService } from './geo-service';
+import { Chart } from '../core';
 import {
   LinearAxis,
   LinearAxisConfig,
   BandAxis,
   BandAxisConfig,
-} from './axis';
-import { Grid } from './grid';
+} from '../axis';
+import {
+  Grid,
+  ColorSchema,
+  Legend,
+  LegendConfig,
+  TooltipBundleCls,
+  TooltipItem,
+  TooltipEvent,
+  Tooltip,
+  AxisIndicator,
+} from '../component';
 
 
 export class BarChartData {
@@ -101,8 +108,6 @@ export class BarChartConfig {
   stack = false;
   xAxis = new BandAxisConfig();
   yAxis = new LinearAxisConfig();
-  // TODO
-  hasAnimation = false;
   background: string;
   margin = {top: 20, right: 50, bottom: 40, left: 50};
   colorSchema = new ColorSchema();
@@ -121,143 +126,102 @@ export class BarChartConfig {
   }
 }
 
-export class BarChart implements ChartBase {
+class TooltipBundle extends TooltipBundleCls {
+  constructor(x: number, title: string) {
+    super();
+    this.x = x;
+    this.title = title;
+    this.items = [];
+  }
+
+  distance(x: number, y: number) {
+    return Math.abs(this.x - x);
+  }
+}
+
+export class BarChart extends Chart {
   data: BarChartData;
   config: BarChartConfig;
   element: HTMLElement;
-  geo: GeoService;
   xAxis: BandAxis;
   yAxis: LinearAxis;
 
   private ordinalScale: ScaleOrdinal<any, any>;
   private stack: Stack<any, any, any>;
-  private tooltip;
-
-  setConfig(config: BarChartConfig) {
-    this.config = config;
-    return this;
-  }
-
-  select(element: HTMLElement) {
-    this.element = element;
-    return this;
-  }
-
-  datum(data: BarChartData) {
-    this.data = data;
-    return this;
-  }
+  grid: Grid;
+  tooltip: Tooltip;
+  axisIndicator: AxisIndicator;
 
   draw() {
-    this.initGeo();
+    const { width, height, margin, legend, colorSchema } = this.config;
+    this.init({width, height}, margin, legend);
+
     this.drawAxis();
     this.drawGrid();
 
     if (this.config.stack) {
       const bars = this.drawBarStack();
       this.appendAnimationStack(bars);
-      this.appendTooltipStack(bars);
     } else {
       const bars = this.drawBarGrouped();
       this.appendAnimationGrouped(bars);
-      this.appendTooltipGrouped(bars);
     }
 
-    this.drawLegend();
-    this.drawTooltip();
+    this.drawLegend(legend, colorSchema, this.data.topics);
+
+    this.initTooltip();
 
     return this;
   }
 
-  drawTooltip() {
-    this.tooltip = d3.select('body')
-      .append('div')
-      .style('position', 'absolute')
-      .style('width', 'auto')
-      .style('z-index', '1000')
-      .style('background', 'rgba(0,0,0,0.6)')
-      .style('color', 'white')
-      .style('padding', '10px')
-      .style('border-radius', '5px')
-      .style('display', 'none');
+  initTooltip() {
+    const { scale } = this.xAxis;
+    const objectMap: {[key: string]: TooltipBundleCls} = {};
 
-    this.tooltip.append('div')
-      .attr('class', 'axis-label')
-      .style('padding', '0 10px 0 0')
-      .style('font-size', '14px')
-      .style('font-weight', 'bold');
-
-    this.tooltip
-    .selectAll('.value')
-    .data(this.data.topics)
-    .enter()
-    .append('div')
-      .attr('class', 'value')
-      .style('padding', '10 10px 0 0')
-      .style('display', 'flex')
-      .style('align-items', 'center')
-      .html((d, i) => {
-        return `<span class="legend-label" style="color:${this.ordinalScale(d)}">●</span> <span class="value-label"></span>`;
+    this.data.series.forEach((series, i) => {
+      const topic = series.topic;
+      const color = this.config.colorSchema.getColor(i);
+      series.data.forEach((data, idx) => {
+        const title = this.data.xs[idx];
+        if (!objectMap[title]) {
+          const x = this.xAxis.center(title);
+          objectMap[title] = new TooltipBundle(x, title)  ;
+        }
+        objectMap[title].items.push({
+          name: topic,
+          value: data,
+          color,
+        });
       });
+    });
+    const objects = Object.keys(objectMap).map((key) => objectMap[key]);
 
-    this.tooltip.selectAll('.legend-label')
-      .style('font-size', '24px');
-
-    this.tooltip.selectAll('.value-label')
-      .style('white-space', 'nowrap')
-      .style('font-size', '14px')
-      .style('font-weight', 'bold');
-
-  }
-
-  initGeo() {
-    if (this.geo) {
-      this.geo.clear();
-    }
-    const rootContainer = d3.select(this.element).append('svg')
-    .attr('class', 'chart tdc-chart-bar')
-    .style('width', '100%')
-    .style('height', '100%');
-
-    const { width, height, margin, legend } = this.config;
-    this.geo = GeoService.fromMarginContainer(rootContainer, {width, height}, margin);
-
-    if (legend.show) {
-      this.geo.placeLegend(legend);
-    }
-
-    this.geo
-      .placeGrid()
-      .placeXAxis()
-      .placeYAxis()
-      .placeBackground();
+    const tooltipEvent = new TooltipEvent(this.layout.canvas, objects);
+    this.tooltip = new Tooltip(this.overlay.container).draw().subscribe(tooltipEvent);
+    const bandwidth = this.xAxis.scale.bandwidth();
+    this.axisIndicator = new AxisIndicator(this.grid, 'bar', bandwidth + 20).draw().subscribe(tooltipEvent);
   }
 
   drawAxis() {
-      const { xAxis, yAxis } = this.config;
-      this.xAxis = new BandAxis(xAxis, this.geo.xAxis, 'bottom');
-      this.yAxis = new LinearAxis(yAxis, this.geo.yAxis, 'left');
-
-      const { width, height } = this.geo.canvas2d;
       let yTop;
       if (this.config.stack) {
         yTop = this.data.stackTop;
       } else {
         yTop = this.data.top;
       }
-      this.xAxis.draw(this.data.xs, [0, width]);
-      this.yAxis.draw([0, yTop], [height, 0]);
+      const { xAxis, yAxis } = this.config;
+      const { xAxis: xContainer, yAxis: yContainer } = this.layout;
+      this.xAxis = BandAxis.create(xAxis, xContainer, this.data.xs);
+      this.yAxis = LinearAxis.create(yAxis, yContainer, [0, yTop]);
 
       this.ordinalScale = d3.scaleOrdinal()
         .range(this.config.colorSchema.palette);
   }
 
   drawGrid() {
-    const { canvas2d, gridVertical } = this.geo;
-    const gridRenderer = new Grid(gridVertical, canvas2d);
-    const { grid, tick } = this.config.yAxis;
-
-    gridRenderer.draw(grid, tick.count, this.yAxis.scale);
+    const { yAxis } = this.config;
+    this.grid = new Grid(this.layout.grid);
+    this.grid.drawY(this.yAxis.ticks(), yAxis.grid);
   }
 
   drawBarGrouped() {
@@ -265,7 +229,7 @@ export class BarChart implements ChartBase {
     const { scale: yScale } = this.yAxis;
     const xSubScale = d3.scaleBand().domain(this.data.topics).rangeRound([0, xScale.bandwidth()]);
 
-    return this.geo.canvas.append('g')
+    return this.layout.canvas.selection.append('g')
       .selectAll('g')
       .data(this.data.xs)
       .enter()
@@ -299,7 +263,7 @@ export class BarChart implements ChartBase {
     const { scale: yScale } = this.yAxis;
     const dataByTopic = this.data.dataByTopic;
 
-    return this.geo.canvas.append('g')
+    return this.layout.canvas.selection.append('g')
       .selectAll('g')
       .data(d3.stack().keys(this.data.topics)(dataByTopic))
       .enter()
@@ -315,7 +279,7 @@ export class BarChart implements ChartBase {
         const x = this.data.xs[i];
         return xScale(x);
       })
-      .attr('y', this.geo.canvas2d.height)
+      .attr('y', this.layout.canvas.dim.height)
       .attr('width', xScale.bandwidth)
       .attr('height', 0);
   }
@@ -326,7 +290,7 @@ export class BarChart implements ChartBase {
     bars.transition()
       .delay((d, i) => i * 10)
       .attr('y', (d) => yScale(d.y))
-      .attr('height', (d) => this.geo.canvas2d.height - yScale(d.y));
+      .attr('height', (d) => this.layout.canvas.dim.height - yScale(d.y));
   }
 
   appendAnimationStack(bars) {
@@ -340,41 +304,5 @@ export class BarChart implements ChartBase {
       .attr('height', (d, i) => {
         return yScale(d[0]) - yScale(d[1]);
       });
-  }
-
-  appendTooltipGrouped(bars) {
-    bars.on('mouseover', () => this.tooltip.style('display', 'block'))
-      .on('mouseout', () => this.tooltip.style('display', 'none'))
-      .on('mousemove', (d) => {
-        this.tooltip.style('top', (d3.event.pageY - 10) + 'px').style('left', (d3.event.pageX + 10) + 'px');
-        this.tooltip.select('.axis-label').html(d.xs);
-        this.tooltip.selectAll('.value-label')
-          .html((value, index) => {
-            const topic = this.data.topics[index];
-            return `${topic}: ${this.data.dataByTopic[d.xIndex][topic]}`;
-          });
-      });
-  }
-
-  appendTooltipStack(bars) {
-    bars.on('mouseover', () => this.tooltip.style('display', 'block'))
-      .on('mouseout', () => this.tooltip.style('display', 'none'))
-      .on('mousemove', (d, i) => {
-        this.tooltip.style('top', (d3.event.pageY - 10) + 'px').style('left', (d3.event.pageX + 10) + 'px');
-        this.tooltip.select('.axis-label').html(this.data.xs[i]);
-        this.tooltip.selectAll('.value-label')
-          .html((value, index) => {
-            const topic = this.data.topics[index];
-            return `${topic}: ${d.data[topic]}`;
-          });
-      });
-  }
-
-  drawLegend() {
-    if (!this.config.legend.show) {
-      return;
-    }
-    const legend = new Legend(this.config.colorSchema, this.config.legend);
-    legend.draw(this.geo.legend, this.data.topics, this.geo.legend2d);
   }
 }
