@@ -32,7 +32,7 @@ export class AxisIndicator {
   constructor(grid: Grid, type: AxisIndicatorType, barWidth?: number) {
     this.grid = grid;
     this.type = type;
-    this.barWidth = barWidth + 20;
+    this.barWidth = barWidth;
   }
 
   subscribe(event: TooltipEvent) {

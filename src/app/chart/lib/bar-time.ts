@@ -1,8 +1,6 @@
 import * as d3 from 'd3';
 import * as moment from 'moment';
 
-import { GeoService } from './geo-service';
-import { Grid } from './grid';
 import { ChartBase } from './chart-base';
 import {
   LinearAxis,
@@ -11,6 +9,9 @@ import {
   TimeAxis,
   BandAxisConfig,
 } from './axis';
+import { Chart } from './chart';
+import { Grid } from './tooltip/grid';
+import { TooltipBundleCls, TooltipEvent, Tooltip, AxisIndicator } from './tooltip';
 
 export class BarPoint {
   x: Date;
@@ -71,121 +72,87 @@ export class BarTimeChartConfig {
   }
 }
 
-export class BarTimeChart implements ChartBase {
+class TooltipBundle extends TooltipBundleCls {
+  constructor(x: number) {
+    super();
+    this.x = x;
+    this.items = [];
+  }
+
+  distance(x: number, y: number) {
+    return Math.abs(this.x - x);
+  }
+}
+
+export class BarTimeChart extends Chart {
   data: BarTimeChartData;
   config: BarTimeChartConfig;
   element: HTMLElement;
-  geo: GeoService;
   xAxis: TimeAxis;
   yAxis: LinearAxis;
+  grid: Grid;
+  axisIndicator: AxisIndicator;
 
   private tooltip;
 
-  constructor() {
-  }
-
-  setConfig(config: BarTimeChartConfig) {
-    this.config = config;
-    return this;
-  }
-
-  select(element: HTMLElement) {
-    this.element = element;
-    return this;
-  }
-
-  datum(data: BarTimeChartData) {
-    this.data = data;
-    return this;
-  }
-
   draw() {
-    this.initGeo();
+    const { width, height, margin } = this.config;
+    this.init({width, height}, margin);
     this.drawAxis();
     this.drawGrid();
 
     const bars = this.drawBar();
     this.appendAnimation(bars);
-    this.appendTooltip(bars);
 
-    this.drawTooltip();
+    this.initTooltip();
     return this;
-  }
-
-  initGeo() {
-    if (this.geo) {
-      this.geo.clear();
-    }
-    const rootContainer = d3.select(this.element).append('svg')
-      .attr('class', 'chart tdc-chart-bar')
-      .style('width', '100%')
-      .style('height', '100%');
-
-    const { width, height, margin } = this.config;
-    this.geo = GeoService.fromMarginContainer(rootContainer, { width, height }, margin);
-    this.geo.placeGrid()
-      .placeXAxis()
-      .placeYAxis()
-      .placeBackground();
   }
 
   drawAxis() {
     const { xAxis, yAxis } = this.config;
-    const { width, height } = this.geo.canvas2d;
-
-    this.xAxis = new TimeAxis(xAxis, this.geo.xAxis, 'bottom');
-    this.yAxis = new LinearAxis(yAxis, this.geo.yAxis, 'left');
-
-    const { series } = this.data;
-    this.xAxis.draw(this.data.domain, [0, width]);
-    this.yAxis.draw([0, d3.max(series.map(d => d.y))], [height, 0]);
+    const { xAxis: xContainer, yAxis: yContainer } = this.layout;
+    this.xAxis = TimeAxis.create(xAxis, xContainer, this.data.domain);
+    this.yAxis = LinearAxis.create(yAxis, yContainer, [0, d3.max(this.data.series.map(d => d.y))]);
   }
 
   drawGrid() {
-    const { canvas2d, gridVertical } = this.geo;
-    const gridRenderer = new Grid(gridVertical, canvas2d);
-    const { grid, tick } = this.config.yAxis;
-
-    gridRenderer.draw(grid, tick.count, this.yAxis.scale);
+    const { yAxis } = this.config;
+    this.grid = new Grid(this.layout.grid);
+    this.grid.drawY(this.yAxis.ticks(), yAxis.grid);
   }
 
-  drawTooltip() {
-    this.tooltip = d3.select('body')
-      .append('div')
-      .style('position', 'absolute')
-      .style('width', 'auto')
-      .style('z-index', '1000')
-      .style('background', 'rgba(0,0,0,0.6)')
-      .style('color', 'white')
-      .style('padding', '10px')
-      .style('border-radius', '5px')
-      .style('display', 'none');
-
-    // value
-    this.tooltip.append('div')
-      .attr('class', 'value')
-      .style('padding', '10 10px 0 0')
-      .style('display', 'flex')
-      .style('align-items', 'center')
-      .html((d, i) => {
-        return `<span class="color-label" style="color:${this.config.color};font-size:24px">●</span> <span class="value-label"></span>`;
+  initTooltip() {
+    const objects: TooltipBundle[] = [];
+    const { scale } = this.xAxis;
+    const { color } = this.config;
+    this.data.series.forEach((d) => {
+      const x = scale(d.x);
+      const object = new TooltipBundle(x);
+      object.items.push({
+        name: d.x.toISOString(),
+        value: d.y,
+        color,
       });
+      objects.push(object);
+    });
 
-      // date
-      this.tooltip.append('div')
-        .attr('class', 'date-label')
-        .style('padding', '0 10px 0 0')
-        .style('font-size', '14px')
-        .style('font-weight', 'bold');
+    const tooltipEvent = new TooltipEvent(this.layout.canvas, objects);
+    this.tooltip = new Tooltip(this.overlay.container).draw().subscribe(tooltipEvent);
+    this.axisIndicator = new AxisIndicator(this.grid, 'bar', this.bandWidth() + 4).draw().subscribe(tooltipEvent);
+  }
+
+  bandWidth() {
+    // TODO: 有可能出现series中数据时间间隔不一  此时会有问题
+    const dataSize = this.data.series.length;
+    return (this.layout.canvas.dim.width - dataSize * this.config.xAxis.tick.padding) / dataSize;
   }
 
   drawBar() {
     const { scale: xScale } = this.xAxis;
     const { scale: yScale } = this.yAxis;
 
-    const dataSize = this.data.series.length;
-    const bandwidth = (this.geo.canvas2d.width - dataSize * this.config.xAxis.tick.padding) / dataSize;
-    return this.geo.canvas.selectAll('.bar')
+    const bandwidth = this.bandWidth();
+    return this.layout.canvas.selection.selectAll('.bar')
       .data(this.data.series)
       .enter()
       .append('rect')
@@ -205,17 +172,6 @@ export class BarTimeChart implements ChartBase {
     bars.transition()
       .delay((d, i) => i * 10)
       .attr('y', (d) => yScale(d.y))
-      .attr('height', (d) => this.geo.canvas2d.height - yScale(d.y));
+      .attr('height', (d) => this.layout.canvas.dim.height - yScale(d.y));
   }
-
-  appendTooltip(bars) {
-    bars.on('mouseover', () => this.tooltip.style('display', 'block'))
-      .on('mouseout', () => this.tooltip.style('display', 'none'))
-      .on('mousemove', (d, i) => {
-        this.tooltip.style('top', (d3.event.pageY - 10) + 'px').style('left', (d3.event.pageX + 10) + 'px');
-        this.tooltip.select('.value-label').html(d.y);
-        this.tooltip.select('.date-label').html(moment(d.x).format('YYYY-MM-DD HH:mm'));
-      });
-  }
-
 }

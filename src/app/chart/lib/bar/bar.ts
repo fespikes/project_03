@@ -194,7 +194,7 @@ export class BarChart extends Chart {
     const tooltipEvent = new TooltipEvent(this.layout.canvas, objects);
     this.tooltip = new Tooltip(this.overlay.container).draw().subscribe(tooltipEvent);
     const bandwidth = this.xAxis.scale.bandwidth();
-    this.axisIndicator = new AxisIndicator(this.grid, 'bar', bandwidth).draw().subscribe(tooltipEvent);
+    this.axisIndicator = new AxisIndicator(this.grid, 'bar', bandwidth + 20).draw().subscribe(tooltipEvent);
   }
 
   drawAxis() {

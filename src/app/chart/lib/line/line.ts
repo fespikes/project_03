@@ -6,7 +6,6 @@ import { ChartBase, SelectionType } from '../chart-base';
 import { Chart } from '../chart';
 import { Legend, LegendConfig } from '../legend';
 import { ColorSchema } from '../color-schema';
-import { GeoService } from '../geo-service';
 import { Grid } from '../tooltip/grid';
 import {
   LinearAxis,

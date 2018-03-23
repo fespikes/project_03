@@ -43,27 +43,30 @@ export class Layout {
   layout(dim: Rect2D, margin: Margin, legend?: LegendConfig) {
     this.root.resize(dim).setMargin(margin);
     this.canvas.resize(this.root.innerDim);
-    this.legend = this.root.createChild('legend');
-    const { place } = legend;
-    if (place === 'left' || place === 'right') {
-      this.root.direction = 'row';
-      this.legend.resize({
-        width: legend.getContentWidth(),
-        height: this.root.innerDim.height,
-      })
-      .strict(true);
-    } else {
-      this.root.direction = 'column';
-      this.legend.resize({
-        width: this.root.innerDim.width,
-        height: legend.getContentWidth(),
-      })
-      .strict(true);
-    }
-    if (place === 'left' || place === 'top') {
-      this.root.alignChildren(['legend', 'canvas']);
-    } else {
-      this.root.alignChildren(['canvas', 'legend']);
+
+    if (legend) {
+      this.legend = this.root.createChild('legend');
+      const { place } = legend;
+      if (place === 'left' || place === 'right') {
+        this.root.direction = 'row';
+        this.legend.resize({
+          width: legend.getContentWidth(),
+          height: this.root.innerDim.height,
+        })
+        .strict(true);
+      } else {
+        this.root.direction = 'column';
+        this.legend.resize({
+          width: this.root.innerDim.width,
+          height: legend.getContentWidth(),
+        })
+        .strict(true);
+      }
+      if (place === 'left' || place === 'top') {
+        this.root.alignChildren(['legend', 'canvas']);
+      } else {
+        this.root.alignChildren(['canvas', 'legend']);
+      }
     }
 
     this.root.relayout();
