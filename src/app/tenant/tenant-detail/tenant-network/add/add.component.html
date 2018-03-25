@@ -1,0 +1,143 @@
+
+<div class="container">
+  <form
+    [formGroup]="myForm"
+    (ngSubmit)="onSubmit(myForm.value)"
+    class="form-specific"
+  >
+    <div
+      [class.error]="!myForm.get('policy').valid && myForm.get('policy').touched"
+    >
+      <div class="field-box">
+        <label for="policyId"><span>*</span>{{'TENANT.NETWORK.POLICY' | translate}}</label>
+        <input
+          class="field"
+          type="text"
+          placeholder=""
+          id="policyId"
+          autocomplete="off"
+          [formControl]="myForm.controls['policy']"
+         />
+        <!--
+        <tui-select
+          placeholder="tui select example"
+          [(ngModel)]="policies"
+        >
+          <tui-select-option *ngFor="let option of policies" [value]="option">
+            {{option | tuiDefault }}
+          </tui-select-option>
+        </tui-select>
+         -->
+      </div>
+
+      <div
+        *ngIf="myForm.controls['policy'].hasError('required') && myForm.controls['policy'].touched"
+        class="message"
+      >{{'TENANT.NETWORK.POLICY_TIP' | translate}}{{' [" ' + policies + ' "]'}}</div>
+    </div>
+
+    <div
+      [class.error]="!myForm.get('protocol').valid && myForm.get('protocol').touched"
+    >
+      <div class="field-box">
+        <label for="protocolId"><span>*</span>{{'TENANT.NETWORK.PROTOCOL' | translate}}</label>
+        <input
+          class="field"
+          type="text"
+          placeholder=""
+          id="protocolId"
+          autocomplete="off"
+          [formControl]="myForm.controls['protocol']"
+         />
+        <!-- <tui-select
+          placeholder="tui select example"
+          [(ngModel)]="protocols"
+        >
+          <tui-select-option *ngFor="let option of protocols" [value]="option">
+            {{option | tuiDefault }}
+          </tui-select-option>
+        </tui-select> -->
+      </div>
+
+      <div
+        *ngIf="myForm.controls['protocol'].hasError('required') && myForm.controls['protocol'].touched"
+        class="message"
+      >{{'TENANT.NETWORK.PROTOCOL_TIP' | translate}}{{' [" ' + protocols + ' "]'}}</div>
+    </div>
+
+    <div
+      [class.error]="!myForm.get('port').valid && myForm.get('port').touched"
+    >
+      <div class="field-box">
+        <label for="portId"><span>*</span>{{'TENANT.NETWORK.PORT' | translate}}</label>
+        <input
+          class="field"
+          type="text"
+          placeholder=""
+          id="portId"
+          autocomplete="off"
+          [formControl]="myForm.controls['port']"
+         />
+      </div>
+
+      <div
+        *ngIf="myForm.controls['port'].hasError('required') && myForm.controls['port'].touched"
+        class="message"
+      >{{'TENANT.NETWORK.PORT_TIP' | translate}}</div>
+    </div>
+
+    <div
+      [class.error]="!myForm.get('address').valid && myForm.get('address').touched"
+    >
+      <div class="field-box">
+        <label for="addressId"><span>*</span>{{'TENANT.NETWORK.ADDRESS' | translate}}</label>
+        <input
+          class="field"
+          type="text"
+          placeholder=""
+          id="addressId"
+          autocomplete="off"
+          [formControl]="myForm.controls['address']"
+         />
+      </div>
+
+      <div
+        *ngIf="myForm.controls['address'].hasError('required') && myForm.controls['address'].touched"
+        class="message"
+      >{{'TENANT.NETWORK.ADDRESS_TIP' | translate}}</div>
+    </div>
+
+    <div>
+      <div class="field-box">
+        <label for="descriptionId">{{'TENANT.NETWORK.DESCRIPTION' | translate}}</label>
+        <textarea rows="3" cols="20"
+          class="field"
+          type="text"
+          placeholder=""
+          id="descriptionId"
+          autocomplete="off"
+          [formControl]="myForm.controls['description']"
+        >
+        </textarea>
+      </div>
+
+      <div
+        *ngIf="myForm.controls['description'].hasError('required') && myForm.controls['description'].touched"
+        class="message"
+      >{{'TENANT.NETWORK.DESCRIPTION_TIP' | translate}}</div>
+    </div>
+
+    <div class="buttons">
+      <button
+        class="tui-btn-md tui-btn-primary tui-btn"
+        type="submit"
+        [disabled]="!myForm.valid ? 'disabled' : null"
+      >{{'TENANT.NETWORK.CONFIRM' | translate}}</button>
+      <button
+        class="tui-btn-md tui-btn-default tui-btn"
+        type="reset"
+      >{{'TENANT.NETWORK.RESET' | translate}}</button>
+    </div>
+  </form>
+</div>
+

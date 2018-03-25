@@ -68,9 +68,25 @@ TENANT:
   NETWORK:
     NAME: Network Name
     GATEWAY: Gateway
-    CREATED: Created User
+    CREATER: Created User
     CREATED_DATE: Created Date
     LIMIT: Network Limit
+    IP: IP
+    ACTIONS: Actions
+    POLICY: Policy
+    POLICY_TIP: 'Policy is required and must belongs to:'
+    PROTOCOL: Protocol
+    PROTOCOL_TIP: 'Protocol is required and must belongs to:'
+    PORT: Port
+    PORT_TIP: Port is required
+    ADDRESS: Address
+    ADDRESS_TIP: Address is required
+    DESCRIPTION: Description
+    CONFIRM: Confirm
+    RESET: Reset
+    FINANCIAL: Financial Tenant
+    CREATE: Create Rule
+    CREATE_NET_RULES: Create Network Rules
 
   ERROR:
     LEVEL: Level

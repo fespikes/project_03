@@ -2,7 +2,12 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
-import { TuiModalService } from 'tdc-ui';
+import {
+  TuiModalService,
+  TableModule,
+  IconModule,
+  BtnModule,
+} from 'tdc-ui';
 
 import { SharedModule } from '../shared';
 import { I18nModule } from '../i18n';
@@ -21,10 +26,15 @@ import { TenantNetworkComponent } from './tenant-detail/tenant-network/tenant-ne
 import { TenantBillComponent } from './tenant-detail/tenant-bill/tenant-bill.component';
 import { ModalBillClearComponent } from './tenant-detail/tenant-bill/modal-bill-clear/modal-bill-clear.component';
 import { ModalBillCorrectComponent } from './tenant-detail/tenant-bill/modal-bill-correct/modal-bill-correct.component';
+import { NetworkRulesComponent } from './tenant-detail/tenant-network/network-rules/network-rules.component';
+import { AddComponent } from './tenant-detail/tenant-network/add/add.component';
 
 @NgModule({
   imports: [
     CommonModule,
+    IconModule,
+    BtnModule,
+    TableModule,
     FormsModule,
     ReactiveFormsModule,
     TenantRoutingModule,
@@ -43,6 +53,8 @@ import { ModalBillCorrectComponent } from './tenant-detail/tenant-bill/modal-bil
     TenantBillComponent,
     ModalBillClearComponent,
     ModalBillCorrectComponent,
+    NetworkRulesComponent,
+    AddComponent,
   ],
   providers: [
     TenantService,
@@ -52,6 +64,7 @@ import { ModalBillCorrectComponent } from './tenant-detail/tenant-bill/modal-bil
   entryComponents: [
     ModalBillClearComponent,
     ModalBillCorrectComponent,
+    AddComponent,
   ],
 })
 export class TenantModule { }
