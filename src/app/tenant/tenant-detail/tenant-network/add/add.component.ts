@@ -46,7 +46,6 @@ export class AddComponent implements OnInit {
         '',
         Validators.compose([
           Validators.required,
-          // Validators.pattern(patterns.email),  // wangduan
         ]),
       ],
       'description': [''],

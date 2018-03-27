@@ -29,7 +29,6 @@ export class TenantNetworkComponent implements OnInit {
     this.loading = true;
 
     // frontEnd search
-    // this.filter;
     this.tenantService.getNetworks().subscribe(res => {
       this.loading = false;
       this.tableData = res.data;
@@ -47,8 +46,6 @@ export class TenantNetworkComponent implements OnInit {
   }
 
   onDelete(datum: Network) {
-    console.log(datum);
-
     this.loading = true;
     this.tenantService.deleteNetwork(datum.name).subscribe(res => {
       this.loading = false;
