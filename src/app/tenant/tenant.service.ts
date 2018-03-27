@@ -23,6 +23,21 @@ export class TenantService {
 
   constructor(private api: TecApiService) { }
 
+  public get uid(): string {
+    const uid = sessionStorage.getItem('eco:tenant:detail:uid');
+    return uid;
+  }
+
+  public get networks() {
+    const networks = sessionStorage.getItem('eco:tenant:detail:networks');
+    return networks;
+  }
+
+  public get networkName() {
+    const networkName = sessionStorage.getItem('eco:tenant:detail:networkName');
+    return networkName;
+  }
+
   fetchAllTenants(): Observable<TenantInfo[]> {
     return this.api.get('tenants');
   }
@@ -58,8 +73,14 @@ export class TenantService {
     return this.api.get(`tenant/${name}/errors`, filter);
   }
 
-  fetchQuota(name): Observable<Quota> {
-    return this.api.get(`tenant/${name}/quota`);
+  fetchQuotas(): Observable<any> {
+    const uid = sessionStorage.getItem('eco:tenant:detail:uid');
+    return this.api.get(`tenants/${uid}/quotas`);
+  }
+
+  putQuotas(body: Object): Observable<any> {
+    const uid = sessionStorage.getItem('eco:tenant:detail:uid');
+    return this.api.put(`tenants/${uid}/quotas`, {...body});
   }
 
   fetchBills(uid, pagination, keyword): Observable<Bills> {
@@ -78,6 +99,32 @@ export class TenantService {
 
   correctBill(id, corrections): Observable<OperationResult> {
     return this.api.post(`bills/${id}/corrections`, corrections);
+  }
+
+  // 网络管理: get tenant network list
+  getNetworks(): Observable<any> {
+    const uid = sessionStorage.getItem('eco:tenant:detail:uid');
+    return this.api.get(`tenants/${uid}/networks`);
+  }
+
+  // 网络规则:
+  getSecurityRules(networkName: string): Observable<any> {
+    return this.api.get(`networks/${networkName}/securityRules`);
+  }
+
+  // 新增网络规则
+  addSecurityRule(networkName: string, body: any): Observable<any> {
+    return this.api.post(`networks/${networkName}/securityRules`, {...body});
+  }
+
+  // 删除网络
+  deleteNetwork(networkName: string): Observable<any> {
+    return this.api.delete(`networks/${networkName}`);
+  }
+
+  // 删除网络规则
+  deleteSecurityRule(networkName: string): Observable<any> {
+    return this.api.delete(`networks/${networkName}/securityRules`);
   }
 
 }

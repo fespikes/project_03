@@ -68,9 +68,25 @@ TENANT:
   NETWORK:
     NAME: 网络名
     GATEWAY: 网关
-    CREATED: 创建者
+    CREATER: 创建者
     CREATED_DATE: 创建时间
     LIMIT: 带宽上限
+    IP: IP
+    ACTIONS: 操作
+    POLICY: 授权策略
+    POLICY_TIP: '授权策略为必填且必属于:'
+    PROTOCOL: 协议类型
+    PROTOCOL_TIP: '协议类型为必填且必属于:'
+    PORT: 端口
+    PORT_TIP: 端口为必填
+    ADDRESS: 网段
+    ADDRESS_TIP: 网段为必填
+    DESCRIPTION: 规则描述
+    CONFIRM: 提交
+    RESET: 重置
+    FINANCIAL: 金融租户
+    CREATE: 新建规则
+    CREATE_NET_RULES: 新建网络规则
 
   ERROR:
     LEVEL: 等级
@@ -82,10 +98,8 @@ TENANT:
     END_DATE: 截止时间
 
   QUOTA:
-    CPU: CPU上限
-    MEMORY: 内存上限
-    NETWORK: 子网络上限
-    STORAGE: 磁盘上限
+    UNDEFINED: 未设置
+    TOBEREMOVED: below
 
   STATUS:
     CREATING: 创建中

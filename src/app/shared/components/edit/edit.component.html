@@ -1,0 +1,36 @@
+<span *ngIf="editing && key===editingKey">
+  <button
+    tuiBtn="primary"
+    size="sm"
+    [disabled]="invalid"
+    (click)="edit('save')"
+  >
+    <svg
+      tuiIcon="check"
+      size="sm"
+      color="white"
+    ></svg>
+  </button>
+  <button
+    tuiBtn="default"
+    size="sm"
+    (click)="edit('cancel')"
+  >
+    <svg
+      tuiIcon="cross"
+      size="sm"
+      color="white"
+    ></svg>
+  </button>
+</span>
+
+<span
+  class="edit"
+  *ngIf="!editing || key!==editingKey"
+  tuiTooltip="{{'TENANT.DETAIL.EDIT' | translate}}"
+  (click)="edit('edit')"
+>
+  <svg
+    tuiIcon="pencil-square"
+  ></svg>
+</span>

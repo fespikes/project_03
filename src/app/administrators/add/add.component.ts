@@ -24,8 +24,6 @@ export class AddComponent implements OnInit {
     private modal: TuiModalRef,
     private administratorsService: AdministratorsService,
   ) {
-    const me = this;
-
     this.myForm = fb.group({
       'username': ['', Validators.required],
       'password': ['', Validators.compose([

@@ -4,6 +4,7 @@ import { RouterModule } from '@angular/router';
 import { I18nModule, TranslateDeactivator, TranslateResolver, TranslateToken } from '../i18n';
 import { TenantListComponent } from './tenant-list/tenant-list.component';
 import { TenantDetailComponent } from './tenant-detail/tenant-detail.component';
+import { NetworkRulesComponent } from './tenant-detail/tenant-network/network-rules/network-rules.component';
 
 const tanantChildren = [
   {
@@ -17,6 +18,10 @@ const tanantChildren = [
   {
     path: 'overview',
     component: TenantListComponent,
+  },
+  {
+    path: 'detail/:uid/:networkName',
+    component: NetworkRulesComponent,
   },
 ];
 

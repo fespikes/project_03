@@ -1,0 +1,69 @@
+<div class="tui-layout-body">
+
+  <tui-submenu [backUrl]="backUrl">
+    <tui-submenu-list
+      menuTitle="{{'TENANT.NETWORK.FINANCIAL' | translate}}"
+      [items]='submenuItems'
+    ></tui-submenu-list>
+  </tui-submenu>
+
+  <div class="tui-layout-vertical" [tuiLoading]="loading">
+    <div class="tui-layout-main-container">
+
+      <div class="maintain">
+        <span class="tui-layout-main-title">
+          {{networkName}}
+        </span>
+
+        <span class="right">
+          <button
+            tuiBtn="primary"
+            (click)="create()"
+          >
+            <svg
+              tuiIcon="create"
+              color="white"
+              size="md"
+            ></svg>
+            <span>{{'TENANT.NETWORK.FINANCIAL' | translate}}</span>
+          </button>
+        </span>
+      </div>
+
+      <tui-table class="tui-table" [tuiTableFlex]="[1,1,1,1,1,1]" [loading]="loading">
+
+        <tui-table-head>
+          <div>{{'TENANT.NETWORK.POLICY' | translate}}</div>
+          <div>{{'TENANT.NETWORK.PROTOCOL' | translate}}</div>
+          <div>{{'TENANT.NETWORK.PORT' | translate}}</div>
+          <div>{{'TENANT.NETWORK.ADDRESS' | translate}}</div>
+          <div>{{'TENANT.NETWORK.DESCRIPTION' | translate}}</div>
+          <div>{{'TENANT.NETWORK.ACTIONS' | translate}}</div>
+        </tui-table-head>
+
+        <tui-table-row *ngFor="let instance of networkRules">
+          <div class="text-ellipsis">{{instance.policy}}</div>
+          <div class="text-ellipsis">{{instance.protocol}}</div>
+          <div>{{instance.port}}</div>
+          <div>{{instance.address}}</div>
+          <div>{{instance.description}}</div>
+          <div>
+            <button
+              class="action-btn"
+              tuiBtn="primary"
+              size="sm"
+              (click)="remove(instance)"
+            >
+              <svg
+                tuiIcon="trash"
+                size="sm"
+              ></svg>
+            </button>
+          </div>
+        </tui-table-row>
+
+      </tui-table>
+    </div>
+  </div>
+
+</div>
