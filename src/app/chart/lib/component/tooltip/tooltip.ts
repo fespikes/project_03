@@ -1,6 +1,7 @@
 import * as d3 from 'd3';
 
-import { SelectionType } from '../../core';
+import { SelectionType, Container, ContainerMargin } from '../../core';
+import { Rect2D } from '../../helpers/transform-helper';
 import { ColorSchema } from '../color-schema';
 import { TooltipEvent } from './tooltip-event';
 
@@ -15,6 +16,14 @@ export class Tooltip {
   tooltip: SelectionType;
   title: SelectionType;
   content: SelectionType;
+  containerDim: Rect2D;
+  gap = 10;
+
+  get tooltipDim() {
+    const rect = this.tooltip.node().getBoundingClientRect();
+    const { width, height } = rect;
+    return new Rect2D(width, height);
+  }
 
   constructor(overlay: SelectionType) {
     this.overlay = overlay;
@@ -22,8 +31,9 @@ export class Tooltip {
 
   subscribe(event: TooltipEvent) {
     event.on('mousemove', ([x, y]) => {
+      const [cx, cy] = this.confinePosition(x, y);
       this.show();
-      this.setPosition(x + 60, y + 60);
+      this.move(cx, cy);
     });
 
     event.on('mouseleave', () => {
@@ -37,6 +47,11 @@ export class Tooltip {
     return this;
   }
 
+  boundary(rect: Rect2D) {
+    this.containerDim = rect;
+    return this;
+  }
+
   draw() {
     this.tooltip = this.overlay
       .append('div')
@@ -47,7 +62,12 @@ export class Tooltip {
       .style('color', 'white')
       .style('padding', '10px')
       .style('border-radius', '5px')
-      .style('display', 'none');
+      .style('display', 'none')
+      .style('transition', `
+        visibility 0.2s cubic-bezier(0.23, 1, 0.32, 1),
+        left 0.3s cubic-bezier(0.23, 1, 0.32, 1),
+        top 0.3s cubic-bezier(0.23, 1, 0.32, 1)
+      `);
 
     this.title = this.tooltip.append('div')
       .attr('class', 'chart-tooltip-title')
@@ -91,8 +111,36 @@ export class Tooltip {
     this.styleTooltip();
   }
 
-  setPosition(x: number, y: number) {
+  move(x: number, y: number) {
     this.tooltip.style('top', `${y}px`).style('left', `${x}px`);
+  }
+
+  getOverlayMousePosition() {
+    return d3.mouse(this.overlay.node());
+  }
+
+  confinePosition(x: number, y: number) {
+    // 计算overlay相对于container的位置
+    const [ox, oy] = this.getOverlayMousePosition();
+    const marginLeft = ox - x;
+    const marginTop = oy - y;
+
+    // 计算是否在规定的container里是否越界
+    const { width, height } = this.tooltipDim;
+    const { width: boundaryWidth, height: boundaryHeight } = this.containerDim;
+    if (x + width > boundaryWidth) {
+      x = x - width - this.gap;
+    } else {
+      x = x + this.gap;
+    }
+
+    if (y + height > boundaryHeight) {
+      y = y - height - 2 * this.gap;
+    } else {
+      y = y + this.gap;
+    }
+
+    return [x + marginLeft, y + marginTop];
   }
 
   styleTooltip() {
