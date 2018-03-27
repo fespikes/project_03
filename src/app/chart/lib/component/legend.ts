@@ -105,7 +105,6 @@ export class Legend {
     });
 
     const containerTranslate = this.getContainerTranslate(items, container.dim);
-    console.log('container.dim', container.dim);
     selection.attr('transform', containerTranslate.toTranslate());
   }
 

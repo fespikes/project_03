@@ -202,8 +202,13 @@ export class LineChart extends Chart {
     const objects = Object.keys(objectMap).map((key) => objectMap[key]);
 
     const tooltipEvent = new TooltipEvent(this.layout.canvas, objects);
-    this.tooltip = new Tooltip(this.overlay.container).draw().subscribe(tooltipEvent);
-    this.axisIndicator = new AxisIndicator(this.grid, 'line').draw().subscribe(tooltipEvent);
+    this.tooltip = new Tooltip(this.overlay.container)
+      .boundary(this.layout.canvas.innerDim)
+      .subscribe(tooltipEvent)
+      .draw();
+    this.axisIndicator = new AxisIndicator(this.grid, 'line')
+      .subscribe(tooltipEvent)
+      .draw();
   }
 
   drawGrid() {

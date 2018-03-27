@@ -141,8 +141,13 @@ export class BarTimeChart extends Chart {
     });
 
     const tooltipEvent = new TooltipEvent(this.layout.canvas, objects);
-    this.tooltip = new Tooltip(this.overlay.container).draw().subscribe(tooltipEvent);
-    this.axisIndicator = new AxisIndicator(this.grid, 'bar', this.bandWidth() + 4).draw().subscribe(tooltipEvent);
+    this.tooltip = new Tooltip(this.overlay.container)
+      .boundary(this.layout.canvas.innerDim)
+      .subscribe(tooltipEvent)
+      .draw();
+    this.axisIndicator = new AxisIndicator(this.grid, 'bar', this.bandWidth() + 4)
+      .subscribe(tooltipEvent)
+      .draw();
   }
 
   bandWidth() {
