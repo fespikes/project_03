@@ -17,6 +17,9 @@ export class Tooltip {
   title: SelectionType;
   content: SelectionType;
   containerDim: Rect2D;
+  /**
+   * tootip位置与数据的间距
+   */
   gap = 10;
 
   get tooltipDim() {
@@ -71,8 +74,7 @@ export class Tooltip {
 
     this.title = this.tooltip.append('div')
       .attr('class', 'chart-tooltip-title')
-      .style('padding', '0 10px 0 0')
-      .style('font-size', '14px')
+      .style('font-size', '13px')
       .style('font-weight', 'bold');
 
     this.content = this.tooltip.append('div')
@@ -98,12 +100,12 @@ export class Tooltip {
     .enter()
     .append('div')
       .attr('class', 'value')
-      .style('padding', '10 10px 0 0')
+      .style('padding', '3px 0 0 0')
       .style('display', 'flex')
       .style('align-items', 'center')
       .html((d, i) => {
         return `
-          <span class="chart-tooltip-marker" style="color:${d.color}">●</span>
+          <span class="chart-tooltip-marker" style="color:${d.color};margin-right:2px">●</span>
           <span class="chart-tooltip-label">${d.name}: ${d.value}</span>
         `;
       });
@@ -145,11 +147,11 @@ export class Tooltip {
 
   styleTooltip() {
     this.tooltip.selectAll('.chart-tooltip-marker')
-      .style('font-size', '24px');
+      .style('font-size', '16px');
 
     this.tooltip.selectAll('.chart-tooltip-label')
       .style('white-space', 'nowrap')
-      .style('font-size', '14px')
+      .style('font-size', '12px')
       .style('font-weight', 'bold');
   }
 }
