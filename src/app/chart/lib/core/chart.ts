@@ -48,6 +48,7 @@ export class Chart {
 
     const root = wrapper.append('svg')
     .attr('class', 'chart tdc-chart-line')
+    .style('pointer-events', 'all')
     .style('width', '100%')
     .style('height', '100%');
 

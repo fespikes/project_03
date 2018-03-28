@@ -82,7 +82,7 @@ export class Legend {
     const selection = this.container.selection.append('g');
     const legend = selection.append('g')
       .attr('font-family', 'sans-serif')
-      .attr('font-size', 14)
+      .attr('font-size', 12)
       .attr('text-anchor', 'start')
       .selectAll('g')
       .data(names)
@@ -94,8 +94,8 @@ export class Legend {
 
     legend.append('text')
       .attr('x', 20)
-      .attr('y', 9)
-      .attr('dy', '0.32rem')
+      .attr('y', 0)
+      .attr('dy', '0.6rem')
       .text((text) => text);
 
     const items = selection.selectAll('.legend-item').nodes();
@@ -113,21 +113,21 @@ export class Legend {
     if (marker === 'square') {
       legend.append('rect')
       .attr('x', 0)
-      .attr('width', 16)
-      .attr('height', 16)
+      .attr('width', 12)
+      .attr('height', 12)
       .attr('fill', (text, i) => this.colorSchema.getColor(i));
     } else if (marker === 'circle') {
       legend.append('circle')
-      .attr('cx', 8)
-      .attr('cy', 8)
-      .attr('r', 8)
+      .attr('cx', 6)
+      .attr('cy', 6)
+      .attr('r', 6)
       .attr('fill', (text, i) => this.colorSchema.getColor(i));
     } else {
       legend.append('line')
       .attr('x1', 0)
-      .attr('y1', 8)
-      .attr('x2', 16)
-      .attr('y2', 8)
+      .attr('y1', 6)
+      .attr('x2', 12)
+      .attr('y2', 6)
       .style('stroke-width', '2px')
       .style('stroke', (text, i) => this.colorSchema.getColor(i));
     }
