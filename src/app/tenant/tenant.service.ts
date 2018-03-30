@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 
-import { TecApiService } from '../shared';
-import { TenantFilter } from './tenant-model';
+import { TecApiService, ServiceList } from '../shared';
+import { TenantFilter, Instance } from './tenant-model';
 import { Pagination } from 'tdc-ui';
 import {
   TenantInfo,
@@ -38,16 +38,16 @@ export class TenantService {
     return networkName;
   }
 
-  fetchAllTenants(): Observable<TenantInfo[]> {
-    return this.api.get('tenants');
+  fetchAllTenants(filter = {}): Observable<TenantInfo[]> {
+    return this.api.get('tenants', filter);
   }
 
   fetchSummaries(filter: TenantFilter): Observable<TenantSummaries> {
     return this.api.get(`tenants/summaries`, {...filter});
   }
 
-  fetchTenantsCount(): Observable<TenantCount> {
-    return this.api.get(`tenants/count`);
+  fetchTenantsCount(filter = {}): Observable<TenantCount> {
+    return this.api.get(`tenants/count`, filter);
   }
 
   fetchConsumption(period: string): Observable<Consumption[]> {
@@ -125,6 +125,15 @@ export class TenantService {
   // 删除网络规则
   deleteSecurityRule(networkName: string): Observable<any> {
     return this.api.delete(`networks/${networkName}/securityRules`);
+  }
+
+  deleteTenant(body): Observable<any> {
+    return this.api.post(`tenants/cancel`, body);
+  }
+
+  getTenantServices(id, pagination = {}, filter = {}): Observable<ServiceList> {
+    const params = Object.assign(pagination, filter);
+    return this.api.get(`tenants/${id}/services`, params);
   }
 
 }

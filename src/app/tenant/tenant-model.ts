@@ -6,6 +6,7 @@ export class TenantInfo {
   admin = '';
   createTime = '';
   status = '';
+  statusAlias?: string;
   uid = '';
 }
 
@@ -13,6 +14,7 @@ export class TenantFilter {
   page?: number;
   size?: number;
   keyword?: string;
+  canceled?: Boolean;
 }
 
 export class TenantSummary {

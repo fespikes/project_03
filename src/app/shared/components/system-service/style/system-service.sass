@@ -1,0 +1,66 @@
+@import 'util'
+
+.tui-layout-main-container
+  display: flex
+  flex-direction: column
+  min-height: 100%
+  min-width: 50rem
+
+  .container-operation-bar
+    display: flex
+    justify-content: flex-end
+    align-items: center
+    padding: 0 20px
+    height: 50px
+    border-top: 1px solid #edf1f7
+
+    .tui-search
+      margin-left: 1rem
+
+    .tui-select
+      width: 10rem
+
+  .container-content
+    display: flex
+    flex-direction: column
+    justify-content: space-between
+    flex: 1
+
+    .tui-icon
+      vertical-align: middle
+
+    .instance-name
+      cursor: default
+
+      .open
+        transform: rotate(90deg)
+
+    .status-td .error
+      color: $brand-danger
+
+    .operation-td
+      span:not(:first-child) svg
+        margin-left: 1rem
+
+      .pod-title
+        text-align: left
+
+  .tui-dropdown-item
+    text-align: left
+
+  .tui-table-row > div, .tui-table-head > div
+    padding: .5rem 1rem
+
+.popover-tag-container
+  padding: 6px
+
+  .popover-tag-item
+    border-radius: 3px
+    background-color: #f1f4f9
+    color: #9aa3b4
+    font-size: $font-sm
+    margin-top: 5px
+    padding: 2px 5px
+
+  .popover-tag-item:first-child
+    margin-top: 0

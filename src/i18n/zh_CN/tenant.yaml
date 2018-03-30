@@ -13,6 +13,11 @@ TENANT:
     STATUS: 状态
     CREATE_TIME: 创建时间
     BILL: 总账单金额
+    SHOW_CANCELED_TENANT: 显示已删除用户
+    DELETE: 删除
+    OPERATION: 操作
+    CONFIRM_DELETE: 确认删除
+    CONFIRM_DELETE_MESSAGE: 删除租户需输入登录密码以验证您的身份
 
   DETAIL:
     GO_BACK: 返回
@@ -22,6 +27,7 @@ TENANT:
     TICKET: 工单处理
     ERROR: 故障历史
     QUOTA: 配额管理
+    SERVICE: 基础服务
     BILL: 账单信息
     ADMIN: 管理员
     CREATE_TIME: 创建时间
@@ -31,7 +37,10 @@ TENANT:
     DESC: 描述
     OP: 操作
     DELETE: 删除
+    DELETE_TENANT: 删除租户
     EDIT: 编辑
+    HINT: 提示
+    NO_TENANT_HINT: 当前条件下，不存在可用的租户
 
   ABSTRACT:
     PLATFORM_INFO: 平台概览
@@ -105,6 +114,20 @@ TENANT:
   QUOTA:
     UNDEFINED: 未设置
     TOBEREMOVED: below
+
+  SERVICE:
+    NAME: 服务名
+    STATUS: 状态
+    VERSION: 版本号
+    START_TIME: 启动时间
+    LABEL: 标签
+    OPERATION: 操作
+    SHOW_CANCELED_TENANT: 显示已删除的用户
+    STOP_SERVICE: 停止服务
+    START_SERVICE: 开启服务
+    VIEW_YAML: 查看Yaml文件
+    VIEW_POD: 查看Pod详情
+    VIEW_IMAGE: 查看镜像
 
   STATUS:
     CREATING: 创建中

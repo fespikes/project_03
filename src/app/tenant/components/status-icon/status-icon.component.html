@@ -1,0 +1,11 @@
+<!--
+  [ CREATING: 创建中
+    ACTIVATING: 运行中
+    BROKEN: 故障
+    CANCELED: 已删除 ]
+-->
+<svg *ngIf="status==='CREATING'" class="icon creating" tuiIcon="creating"></svg>
+<svg *ngIf="status==='ACTIVATING'" class="icon activating" tuiIcon="circle"></svg>
+<svg *ngIf="status==='BROKEN'" class="icon broken" tuiIcon="exclamation-circle"></svg>
+<svg *ngIf="status==='CANCELED'" class="icon canceled" tuiIcon="trash-circle"></svg>
+<span>{{alias}}</span>

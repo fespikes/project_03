@@ -7,10 +7,12 @@ import { TabPaneDirective, TuiModalService } from 'tdc-ui';
 
 import { TenantDetailComponent } from './tenant-detail.component';
 import { TenantService } from '../tenant.service';
-import { TranslatePipeStub } from 'app/mock';
+import { TranslatePipeStub, TranslateServiceMock } from 'app/mock';
+import { TranslateService } from 'app/i18n';
+import { Subject } from 'rxjs/Subject';
 
 class RouterStub {
-  navigateByUrl() { }
+  events = new Subject();
 }
 
 class TuiModalServiceStub {
@@ -54,8 +56,10 @@ describe('TenantDetailComponent', () => {
       providers: [
         {
           provide: ActivatedRoute,
-          useFactory: (r: Router) => r.routerState.root,
-          deps: [ Router ],
+          useValue: {
+            params: Observable.of({}),
+            queryParams: Observable.of({}),
+          },
         },
         {
           provide: TuiModalService,
@@ -64,6 +68,14 @@ describe('TenantDetailComponent', () => {
         {
           provide: TenantService,
           useClass: TenantServiceStub,
+        },
+        {
+          provide: TranslateService,
+          useClass: TranslateServiceMock,
+        },
+        {
+          provide: Router,
+          useClass: RouterStub,
         },
       ],
     })

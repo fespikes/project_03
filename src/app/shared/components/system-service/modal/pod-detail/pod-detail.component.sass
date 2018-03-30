@@ -1,0 +1,60 @@
+@import 'util';
+
+.pod-head
+  display: flex
+  justify-content: space-between
+
+  span:last-child
+    margin-left: 1rem
+
+    .error
+      color: $brand-danger
+
+
+.pod-content
+
+  .tui-tab
+    margin-top: 1rem
+
+    .tab-content
+      margin-top: -.5rem
+
+      .tui-table
+        overflow-y: auto
+        max-height: 25rem
+
+  .logs
+    display: flex
+    flex-direction: column
+    flex-grow: 1
+    border-bottom: 1px solid #edf1f7
+    font-size: $font-md
+
+    &-nav
+      padding: 0.5rem 1rem
+      border-bottom: 1px solid #edf1f7
+      .tui-overflow-container
+        height: 2rem
+        width: 100%
+
+    &-content
+      padding: 1rem
+      white-space: pre-line
+      overflow: auto
+      word-wrap: break-word
+
+      &-actions
+        display: flex
+        justify-content: center
+        align-items: center
+
+        .btn-link
+          color: $brand-primary
+          cursor: pointer
+
+          &:hover
+            text-decoration: underline
+
+    &-no-content
+      padding: 2rem 0
+      text-align: center

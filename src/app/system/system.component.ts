@@ -1,11 +1,17 @@
 import { Component, OnInit, HostBinding } from '@angular/core';
 
 import { Pagination, TuiModalService } from 'tdc-ui';
-import { Instance, InstanceList } from './model/system-model';
-import { SystemService } from './service/system.service';
-import { TranslateService } from '../i18n';
-import { SystemModalService } from './modal/system.modal.service';
-import { Observable } from 'rxjs/Observable';
+import { TranslateService } from 'app/i18n';
+
+import {
+  SystemService,
+  SystemModalService,
+  Service,
+  ServiceFilter,
+  ServiceList,
+} from 'app/shared';
+
+import { SystemModuleService } from './system.service';
 
 @Component({
   selector: 'tec-system',
@@ -16,125 +22,122 @@ export class SystemComponent implements OnInit {
   @HostBinding('class.tui-layout-body') hostClass = true;
 
   loading;
-  keyword = '';
   labels = [];
-  selectedLabel = undefined;
-  filter = {
-    serviceName: '',
-    tag: '',
-  };
-
-
-  instances: Instance[];
-
+  services: Service[];
+  filter = new ServiceFilter();
   pagination = new Pagination();
 
   constructor(
-    private system: SystemService,
+    private system: SystemModuleService,
+    private systemService: SystemService,
+    private systemModal: SystemModalService,
     private translate: TranslateService,
     private tuiModal: TuiModalService,
-    private systemModal: SystemModalService,
   ) { }
 
   ngOnInit() {
-    this.getInstanceLabels().subscribe();
-    this.getInstanceList().subscribe();
+    this.getServiceLabels().subscribe();
+    this.getServiceList().subscribe();
   }
 
-  getInstanceList() {
+  getServiceList() {
     this.loading = true;
-    return this.system.getInstanceList(this.filter, this.pagination)
-      .map(result => {
-        this.instances = result.data;
-        this.pagination = result.pagination;
-        this.loading = false;
-      },
-    );
-  }
-
-  getInstanceLabels() {
-    this.loading = true;
-    return this.system.getInstanceLabels()
-      .map(result => {
-        this.labels = result.map(label => {
-          return {
-            value: label,
-            label: label,
-          };
-        });
-      },
-    );
-  }
-
-  filterChange() {
-    this.filter = {
-      serviceName: this.keyword,
-      tag: this.selectedLabel,
-    };
-    this.getInstanceList().subscribe();
-  }
-
-  startInstance(instance) {
-    instance.status = 'LOADING';
-    this.system.startInstance(instance.name)
-    .subscribe(() => {
-      this.getInstanceList().subscribe();
-    }, (error) => {
-      this.tuiModal.apiError(error);
-    });
-  }
-
-  stopInstance(instance) {
-    instance.status = 'LOADING';
-    this.system.stopInstance(instance.name)
-    .subscribe(() => {
-      this.getInstanceList().subscribe();
-    }, (error) => {
-      this.tuiModal.apiError(error);
-    });
-  }
-
-  getInstancePods(instanceName) {
-    this.loading = true;
-    this.system.getInstancePods(instanceName)
-    .subscribe((result) => {
-      this.mergeServicePods(instanceName, result);
+    return this.system.getServiceList(this.filter, this.pagination)
+    .map(result => {
+      this.services = result.data;
+      this.pagination = result.pagination;
       this.loading = false;
     });
   }
 
-  toggleSubList(instance) {
-    instance.showSubList = !instance.showSubList;
-    this.getInstancePods(instance.name);
+  getServiceLabels() {
+    this.loading = true;
+    return this.systemService.getServiceLabels()
+    .map(result => {
+      this.labels = result.map(label => {
+        return {
+          value: label,
+          label: label,
+        };
+      });
+    });
+  }
+
+  filterChange() {
+    this.pagination.page = 1;
+    this.getServiceList().subscribe();
+  }
+
+  startService(service) {
+    this.systemService.startService(service.name)
+    .subscribe(() => {
+      this.getServiceList().subscribe();
+    }, (error) => {
+      this.tuiModal.apiError(error);
+    });
+  }
+
+  stopService(service) {
+    this.systemService.stopService(service.name)
+    .subscribe(() => {
+      this.getServiceList().subscribe();
+    }, (error) => {
+      this.tuiModal.apiError(error);
+    });
+  }
+
+  getServicePods(serviceName) {
+    this.loading = true;
+    this.systemService.getServicePods(serviceName)
+    .subscribe((result) => {
+      this.mergeServicePods(serviceName, result);
+      this.loading = false;
+    });
+  }
+
+  toggleSubList(service) {
+    service.showSubList = !service.showSubList;
+    this.getServicePods(service.name);
   }
 
   viewPod(pod) {
     this.systemModal.openPodModal(pod);
   }
 
-  viewImage(instance, service) {
-    this.systemModal.openImageModal(instance, service);
+  viewImage(service, microService) {
+    this.systemModal.openImageModal(service, microService);
   }
 
-  viewYaml(instance) {
-    this.systemModal.openYamlModal(instance);
+  viewYaml(service) {
+    this.systemModal.openYamlModal(service);
   }
 
-  mergeServicePods(instanceName, servicePods) {
-    const selectedInstance = this.instances.find(instance => instance.name === instanceName);
-    selectedInstance.serviceInfos.map(service => {
+  mergeServicePods(serviceName, microServicePods) {
+    const selectedService = this.services.find(service => service.name === serviceName);
+    selectedService.serviceInfos.map(microService => {
       const pods = [];
-      servicePods.map(servicePod => {
-        if (servicePod.serviceName === service.name) {
+      microServicePods.map(servicePod => {
+        if (servicePod.serviceName === microService.name) {
           pods.push(servicePod);
         }
       });
-      service.pods = pods;
+      microService.pods = pods;
     });
   }
 
+  getTooltipText(service) {
+    let tooltipText = this.translate.translateKey('SYSTEM.TOOLTIP.CANNOT_OPERATE_SERVICE');
+    if (service.status === 'RUNNING') {
+      tooltipText = this.translate.translateKey('SYSTEM.TOOLTIP.STOP_SERVICE');
+    } else if (service.status === 'TERMINATED') {
+      tooltipText = this.translate.translateKey('SYSTEM.TOOLTIP.START_SERVICE');
+    }
+
+    return tooltipText;
+  }
+
   paginationChange() {
-    this.getInstanceList().subscribe();
+    this.getServiceList().subscribe();
   }
 
 }
