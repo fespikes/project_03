@@ -1,4 +1,10 @@
-import { Component, OnInit, HostBinding } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  HostBinding,
+  OnChanges,
+  SimpleChange,
+} from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
 import { TuiModalService } from 'tdc-ui';
@@ -10,12 +16,13 @@ import { TenantService } from '../tenant.service';
   templateUrl: './tenant-detail.component.html',
   styleUrls: ['./tenant-detail.component.sass'],
 })
-export class TenantDetailComponent implements OnInit {
+export class TenantDetailComponent implements OnInit, OnChanges {
   @HostBinding('class.tui-layout-body') hostClass = true;
   submenuItems = [];
   tenant = new TenantInfo();
 
   tenantsCount = 0;
+  selectedTabIndex = 0;
   loading;
 
   constructor(
@@ -26,6 +33,20 @@ export class TenantDetailComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.route.queryParams.subscribe(params => {
+      const idx = +params['idx'];
+
+      if (this.selectedTabIndex === idx || !params['idx']) {
+        return;
+      } else {
+        this.selectedTabIndex = idx || 0;
+        const tabs: Array<any> = document.body.querySelectorAll('.tui-tab-item');
+        const evt = document.createEvent('MouseEvents');
+        evt.initEvent('click', false, false);
+        tabs[idx].dispatchEvent(evt);
+      }
+    });
+
     this.route.params
       .subscribe((params) => {
         this.loading = true;
@@ -55,6 +76,11 @@ export class TenantDetailComponent implements OnInit {
     this.router.navigateByUrl('/tenant/overview');
   }
 
-
+  selectedIndexChange($event) {
+    const idx = +$event;
+    const uid = sessionStorage.getItem('eco:tenant:detail:uid');
+    this.router.navigate([`/tenant/detail/${uid}`], { queryParams: { idx: idx } })
+      .then(_ => _ );
+  }
 
 }

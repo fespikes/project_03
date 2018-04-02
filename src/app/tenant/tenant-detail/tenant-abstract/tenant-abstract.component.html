@@ -28,7 +28,10 @@
   <div class="panel service-health flex-2">
     <!--2. 消费概况 -->
     <h5>{{'TENANT.ABSTRACT.CONSUMPTION_SUMMARY' | translate}}</h5>
-    <span class="view-details">{{'TENANT.ABSTRACT.VIEW_DETAILS' | translate}}</span>
+    <span
+      class="view-details"
+      (click)="toConsumptionDetails($event)"
+    >{{'TENANT.ABSTRACT.VIEW_DETAILS' | translate}}</span>
 
     <ul class="consumptionSummary">
       <li class="unpaidAmount">

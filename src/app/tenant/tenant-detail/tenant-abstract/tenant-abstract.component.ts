@@ -1,6 +1,8 @@
 import {
   Component, OnInit, HostBinding, AfterViewInit, OnDestroy,
-  ViewChild, ElementRef } from '@angular/core';
+  ViewChild, ElementRef, Output,
+} from '@angular/core';
+import { Router } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
 
@@ -71,6 +73,7 @@ export class TenantAbstractComponent implements OnInit, OnDestroy {
   constructor(
     private service: TenantAbstractService,
     private utilService: TecUtilService,
+    private router: Router,
   ) {
     this.chartTypes = chartTypes;
     this.hourOptions = this.utilService.getSelectOptions('hour');
@@ -160,4 +163,11 @@ export class TenantAbstractComponent implements OnInit, OnDestroy {
       wrapper.getChartData($event.value);
     }
   }
+
+  toConsumptionDetails($event) {
+    const uid = sessionStorage.getItem('eco:tenant:detail:uid');
+    this.router.navigate([`/tenant/detail/${uid}`], { queryParams: { idx: 4 } })
+      .then(_ => _ );
+  }
+
 }

@@ -17,7 +17,11 @@
       </div>
     </div>
   </div>
-  <tui-tab *ngIf="!loading">
+  <tui-tab
+    *ngIf="!loading"
+    [(selectedIndex)]="selectedTabIndex"
+    (selectedIndexChange)="selectedIndexChange($event)"
+  >
     <tec-tenant-abstract *tuiTabPane="'TENANT.DETAIL.ABSTRACT' | translate"></tec-tenant-abstract>
     <tec-tenant-instance *tuiTabPane="'TENANT.DETAIL.INSTANCE' | translate" [uid]="tenant.uid"></tec-tenant-instance>
     <tec-tenant-network *tuiTabPane="'TENANT.DETAIL.NETWORK' | translate"></tec-tenant-network>
