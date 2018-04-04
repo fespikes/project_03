@@ -20,8 +20,14 @@
     <div class="text-ellipsis">{{bill.totalAmount}}</div>
     <div class="text-ellipsis">{{'TENANT.BILL.' + bill.status.toUpperCase() | translate}}</div>
     <div class="text-ellipsis op">
-      <span (click)="openCorrectBillModal(bill)">{{'TENANT.BILL.CORRECT' | translate}}</span>
-      <span (click)="openClearBillModal(bill)">{{'TENANT.BILL.CLEAR' | translate}}</span>
+      <span
+        *ngIf="bill.status!=='paid'"
+        (click)="openCorrectBillModal(bill)"
+      >{{'TENANT.BILL.CORRECT' | translate}}</span>
+      <span
+        *ngIf="bill.status!=='paid'"
+        (click)="openClearBillModal(bill)"
+      >{{'TENANT.BILL.CLEAR' | translate}}</span>
     </div>
   </tui-table-row>
 </tui-table>

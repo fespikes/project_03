@@ -1,5 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { RouterTestingModule } from '@angular/router/testing';
 import { Observable } from 'rxjs/Observable';
 
 import { TranslatePipeStub, DefaultPipeStub } from '../../../mock';
@@ -18,6 +19,9 @@ describe('TenantAbstractComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       schemas: [NO_ERRORS_SCHEMA],
+      imports: [
+        RouterTestingModule,
+      ],
       declarations: [
         TenantAbstractComponent,
         TranslatePipeStub,

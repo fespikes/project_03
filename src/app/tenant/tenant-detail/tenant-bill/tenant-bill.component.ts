@@ -41,7 +41,6 @@ export class TenantBillComponent implements OnInit {
     this.loading = true;
     return this.tenantService.fetchBills(this.uid, this.pagination, this.keyword)
       .map((result) => {
-        console.log(result);
         this.bills = result.data;
         this.pagination = result.pagination;
         this.loading = false;

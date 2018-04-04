@@ -1,6 +1,8 @@
 import {
   Component, OnInit, HostBinding, AfterViewInit, OnDestroy,
-  ViewChild, ElementRef } from '@angular/core';
+  ViewChild, ElementRef, Output,
+} from '@angular/core';
+import { Router } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
 
@@ -68,9 +70,31 @@ export class TenantAbstractComponent implements OnInit, OnDestroy {
   storageLoadTrendParam: any;
   @ViewChild('storageLoadTrendWrapper') storageLoadTrendWrapper: ChartWrapperComponent;
 
+  CPULoadLastHour: any = {
+    avg: '',
+    max: '',
+    min: '',
+    now: '',
+  };
+
+  memoryLoadLastHour: any = {
+    avg: '',
+    max: '',
+    min: '',
+    now: '',
+  };
+
+  storageLoadLastHour: any = {
+    avg: '',
+    max: '',
+    min: '',
+    now: '',
+  };
+
   constructor(
     private service: TenantAbstractService,
     private utilService: TecUtilService,
+    private router: Router,
   ) {
     this.chartTypes = chartTypes;
     this.hourOptions = this.utilService.getSelectOptions('hour');
@@ -125,21 +149,39 @@ export class TenantAbstractComponent implements OnInit, OnDestroy {
 
     this.CPULoadTrendParam = { // 6.
       chartType: chartTypes.line,
-      fetchData: this.service.fetchResourcesTrend.bind(this.service),
+      fetchData: (cb, resourceType) => {
+        const callback = (data) => {
+          this.CPULoadLastHour = data.lastHour;
+          cb(data.result);
+        };
+        return this.service.fetchResourcesTrend.bind(this.service)(callback, resourceType);
+      },
       resourceType: resourceTypes.cpu,
       wrapperName: 'CPULoadTrendWrapper',
     };
 
     this.memoryLoadTrendParam = { // 7.
       chartType: chartTypes.line,
-      fetchData: this.service.fetchResourcesTrend.bind(this.service),
+      fetchData: (cb, resourceType) => {
+        const callback = (data) => {
+          this.memoryLoadLastHour = data.lastHour;
+          cb(data.result);
+        };
+        this.service.fetchResourcesTrend.bind(this.service)(callback, resourceType);
+      },
       resourceType: resourceTypes.memory,
       wrapperName: 'memoryLoadTrendWrapper',
     };
 
     this.storageLoadTrendParam = { // 8.
       chartType: chartTypes.line,
-      fetchData: this.service.fetchResourcesTrend.bind(this.service),
+      fetchData: (cb, resourceType) => {
+        const callback = (data) => {
+          this.storageLoadLastHour = data.lastHour;
+          cb(data.result);
+        };
+        this.service.fetchResourcesTrend.bind(this.service)(callback, resourceType);
+      },
       resourceType: resourceTypes.storage,
       wrapperName: 'storageLoadTrendWrapper',
     };
@@ -160,4 +202,11 @@ export class TenantAbstractComponent implements OnInit, OnDestroy {
       wrapper.getChartData($event.value);
     }
   }
+
+  toConsumptionDetails($event) {
+    const uid = sessionStorage.getItem('eco:tenant:detail:uid');
+    this.router.navigate([`/tenant/detail/${uid}`], { queryParams: { idx: 4 } })
+      .then(_ => _ );
+  }
+
 }

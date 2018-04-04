@@ -54,6 +54,11 @@ TENANT:
     UNPAID: Unpaid Amount
     MONTYLY: MONTYLY Amount
     HISTORICAL: Historical Amount
+    LAST_HOUR: The last hour
+    NOW: 'Now:'
+    MIN: 'Min:'
+    AVG: 'Avg:'
+    MAX: 'Max:'
 
   INSTANCE:
     NAME: Instance Name

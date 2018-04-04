@@ -1,6 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { RouterTestingModule } from '@angular/router/testing';
 import { Observable } from 'rxjs/Observable';
 import { TabPaneDirective, TuiModalService } from 'tdc-ui';
 
@@ -42,6 +43,9 @@ describe('TenantDetailComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       schemas: [NO_ERRORS_SCHEMA],
+      imports: [
+        RouterTestingModule,
+      ],
       declarations: [
         TabPaneDirective,
         TenantDetailComponent,
@@ -50,9 +54,8 @@ describe('TenantDetailComponent', () => {
       providers: [
         {
           provide: ActivatedRoute,
-          useValue: {
-            params: Observable.of({ name: 'tenant1' }),
-          },
+          useFactory: (r: Router) => r.routerState.root,
+          deps: [ Router ],
         },
         {
           provide: TuiModalService,
@@ -61,10 +64,6 @@ describe('TenantDetailComponent', () => {
         {
           provide: TenantService,
           useClass: TenantServiceStub,
-        },
-        {
-          provide: Router,
-          useClass: RouterStub,
         },
       ],
     })

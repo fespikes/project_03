@@ -184,7 +184,15 @@ export class TenantAbstractService {
       });
     });
 
-    return result;
+    return {
+      result: result,
+      lastHour: {
+        avg: data.avg.toFixed(1),
+        max: data.max.toFixed(1),
+        min: data.min.toFixed(1),
+        now: data.now.toFixed(1),
+      },
+    };
   }
 
   // TOTO: 9.网络使用量; 10.服务kill 情况
