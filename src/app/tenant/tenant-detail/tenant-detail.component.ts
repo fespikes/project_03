@@ -2,7 +2,6 @@ import {
   Component,
   OnInit,
   HostBinding,
-  OnChanges,
   SimpleChange,
 } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -16,7 +15,7 @@ import { TenantService } from '../tenant.service';
   templateUrl: './tenant-detail.component.html',
   styleUrls: ['./tenant-detail.component.sass'],
 })
-export class TenantDetailComponent implements OnInit, OnChanges {
+export class TenantDetailComponent implements OnInit {
   @HostBinding('class.tui-layout-body') hostClass = true;
   submenuItems = [];
   tenant = new TenantInfo();
@@ -40,7 +39,7 @@ export class TenantDetailComponent implements OnInit, OnChanges {
         return;
       } else {
         this.selectedTabIndex = idx || 0;
-        const tabs: Array<any> = document.body.querySelectorAll('.tui-tab-item');
+        const tabs = document.body.querySelectorAll('.tui-tab-item');
         const evt = document.createEvent('MouseEvents');
         evt.initEvent('click', false, false);
         tabs[idx].dispatchEvent(evt);

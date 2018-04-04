@@ -54,6 +54,11 @@ TENANT:
     UNPAID: 待付费账单金额
     MONTYLY: 当月已产生费用
     HISTORICAL: '历史账单总金额：'
+    LAST_HOUR: 最近一小时
+    NOW: '现在:'
+    MIN: '最小值:'
+    AVG: '平均:'
+    MAX: '最大值:'
 
   INSTANCE:
     NAME: 实例名

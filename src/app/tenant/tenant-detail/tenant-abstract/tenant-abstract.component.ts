@@ -70,6 +70,27 @@ export class TenantAbstractComponent implements OnInit, OnDestroy {
   storageLoadTrendParam: any;
   @ViewChild('storageLoadTrendWrapper') storageLoadTrendWrapper: ChartWrapperComponent;
 
+  CPULoadLastHour: any = {
+    avg: '',
+    max: '',
+    min: '',
+    now: '',
+  };
+
+  memoryLoadLastHour: any = {
+    avg: '',
+    max: '',
+    min: '',
+    now: '',
+  };
+
+  storageLoadLastHour: any = {
+    avg: '',
+    max: '',
+    min: '',
+    now: '',
+  };
+
   constructor(
     private service: TenantAbstractService,
     private utilService: TecUtilService,
@@ -128,21 +149,39 @@ export class TenantAbstractComponent implements OnInit, OnDestroy {
 
     this.CPULoadTrendParam = { // 6.
       chartType: chartTypes.line,
-      fetchData: this.service.fetchResourcesTrend.bind(this.service),
+      fetchData: (cb, resourceType) => {
+        const callback = (data) => {
+          this.CPULoadLastHour = data.lastHour;
+          cb(data.result);
+        };
+        return this.service.fetchResourcesTrend.bind(this.service)(callback, resourceType);
+      },
       resourceType: resourceTypes.cpu,
       wrapperName: 'CPULoadTrendWrapper',
     };
 
     this.memoryLoadTrendParam = { // 7.
       chartType: chartTypes.line,
-      fetchData: this.service.fetchResourcesTrend.bind(this.service),
+      fetchData: (cb, resourceType) => {
+        const callback = (data) => {
+          this.memoryLoadLastHour = data.lastHour;
+          cb(data.result);
+        };
+        this.service.fetchResourcesTrend.bind(this.service)(callback, resourceType);
+      },
       resourceType: resourceTypes.memory,
       wrapperName: 'memoryLoadTrendWrapper',
     };
 
     this.storageLoadTrendParam = { // 8.
       chartType: chartTypes.line,
-      fetchData: this.service.fetchResourcesTrend.bind(this.service),
+      fetchData: (cb, resourceType) => {
+        const callback = (data) => {
+          this.storageLoadLastHour = data.lastHour;
+          cb(data.result);
+        };
+        this.service.fetchResourcesTrend.bind(this.service)(callback, resourceType);
+      },
       resourceType: resourceTypes.storage,
       wrapperName: 'storageLoadTrendWrapper',
     };

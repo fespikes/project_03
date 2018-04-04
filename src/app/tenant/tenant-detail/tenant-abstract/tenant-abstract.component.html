@@ -111,9 +111,19 @@
       #instancesCountWrapper
     ></tec-chart-wrapper>
   </div>
+
   <div class="panel cpu-trend flex-3">
     <!--6.CPU负载率 -->
     <h5>{{'TENANT.ABSTRACT.CPU_TREND' | translate}}</h5>
+    <div class="recent-hour">
+      <div class="block">{{'TENANT.ABSTRACT.LAST_HOUR' | translate}}</div>
+      <ul>
+        <li><span>{{'TENANT.ABSTRACT.NOW' | translate}}</span><span>{{CPULoadLastHour.now}}</span></li>
+        <li><span>{{'TENANT.ABSTRACT.MIN' | translate}}</span><span>{{CPULoadLastHour.min}}</span></li>
+        <li><span>{{'TENANT.ABSTRACT.AVG' | translate}}</span><span>{{CPULoadLastHour.avg}}</span></li>
+        <li><span>{{'TENANT.ABSTRACT.MAX' | translate}}</span><span>{{CPULoadLastHour.max}}</span></li>
+      </ul>
+    </div>
     <tec-chart-wrapper
       [data]="CPULoadTrendParam"
       #CPULoadTrendWrapper
@@ -124,6 +134,15 @@
 <div class="row h348">
   <div class="panel memory-trend flex-3">
     <h5>{{'TENANT.ABSTRACT.MEMORY_TREND' | translate}}</h5>
+    <div class="recent-hour">
+      <div class="block">{{'TENANT.ABSTRACT.LAST_HOUR' | translate}}</div>
+      <ul>
+        <li><span>{{'TENANT.ABSTRACT.NOW' | translate}}</span><span>{{memoryLoadLastHour.now}}</span></li>
+        <li><span>{{'TENANT.ABSTRACT.MIN' | translate}}</span><span>{{memoryLoadLastHour.min}}</span></li>
+        <li><span>{{'TENANT.ABSTRACT.AVG' | translate}}</span><span>{{memoryLoadLastHour.avg}}</span></li>
+        <li><span>{{'TENANT.ABSTRACT.MAX' | translate}}</span><span>{{memoryLoadLastHour.max}}</span></li>
+      </ul>
+    </div>
     <tec-chart-wrapper
       [data]="memoryLoadTrendParam"
       #memoryLoadTrendWrapper
@@ -132,6 +151,15 @@
 
   <div class="panel storage-trend flex-5">
     <h5>{{'TENANT.ABSTRACT.STORAGE_TREND' | translate}}</h5>
+    <div class="recent-hour">
+      <div class="block">{{'TENANT.ABSTRACT.LAST_HOUR' | translate}}</div>
+      <ul>
+        <li><span>{{'TENANT.ABSTRACT.NOW' | translate}}</span><span>{{storageLoadLastHour.now}}</span></li>
+        <li><span>{{'TENANT.ABSTRACT.MIN' | translate}}</span><span>{{storageLoadLastHour.min}}</span></li>
+        <li><span>{{'TENANT.ABSTRACT.AVG' | translate}}</span><span>{{storageLoadLastHour.avg}}</span></li>
+        <li><span>{{'TENANT.ABSTRACT.MAX' | translate}}</span><span>{{storageLoadLastHour.max}}</span></li>
+      </ul>
+    </div>
     <tec-chart-wrapper
       [data]="storageLoadTrendParam"
       #storageLoadTrendWrapper
