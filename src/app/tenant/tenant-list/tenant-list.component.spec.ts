@@ -4,6 +4,7 @@ import { Observable } from 'rxjs/Observable';
 
 import { TenantListComponent } from './tenant-list.component';
 import { TenantService } from '../tenant.service';
+import { TecApiService } from 'app/shared';
 import { TranslateService } from 'app/i18n';
 import { TuiModalService } from 'tdc-ui';
 import { TranslatePipeStub, DefaultPipeStub, TranslateServiceMock } from 'app/mock';
@@ -45,6 +46,14 @@ describe('TenantListComponent', () => {
         {
           provide: TranslateService,
           useClass: TranslateServiceMock,
+        },
+        {
+          provide: TecApiService,
+          useValue: {
+            getFile() {
+              return Observable.of();
+            },
+          },
         },
       ],
     })

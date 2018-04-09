@@ -11,7 +11,7 @@
         <span class="tui-layout-main-title">{{'NODE.TOTALNODES' | translate}}{{pagination.total}}</span>
 
         <span class="right">
-          <button tuiBtn="primary">
+          <button tuiBtn="primary" (click)="export()">
             <svg tuiIcon="export" color="white"></svg>
             <span>{{'NODE.EXPORT' | translate}}</span>
           </button>
