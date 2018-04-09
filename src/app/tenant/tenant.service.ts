@@ -15,6 +15,7 @@ import {
   Quota,
   Bills,
   OperationResult,
+  NetworkRules,
 } from './tenant-model';
 
 
@@ -26,11 +27,6 @@ export class TenantService {
   public get uid(): string {
     const uid = sessionStorage.getItem('eco:tenant:detail:uid');
     return uid;
-  }
-
-  public get networks() {
-    const networks = sessionStorage.getItem('eco:tenant:detail:networks');
-    return networks;
   }
 
   public get networkName() {
@@ -108,8 +104,12 @@ export class TenantService {
   }
 
   // 网络规则:
-  getSecurityRules(networkName: string): Observable<any> {
-    return this.api.get(`networks/${networkName}/securityRules`);
+  getSecurityRules(networkRulesFilter: NetworkRules): Observable<any> {
+    const filter = {...networkRulesFilter};
+    sessionStorage.setItem('eco:tenant:detail:networkName', filter.networkName);
+
+    delete filter.networkName;
+    return this.api.get(`networks/${networkRulesFilter.networkName}/securityRules`, filter);
   }
 
   // 新增网络规则

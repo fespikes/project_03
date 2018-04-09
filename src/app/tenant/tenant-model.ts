@@ -112,3 +112,10 @@ export class Bill {
 export class OperationResult {
   data: {};
 }
+
+export class NetworkRules {
+  networkName: string;
+  filter: string;
+  page: number;
+  size: number;
+}

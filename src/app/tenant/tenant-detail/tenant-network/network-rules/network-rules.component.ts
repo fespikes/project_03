@@ -6,6 +6,8 @@ import { TenantService } from '../../../tenant.service';
 import { Network } from '../tenant-network-model';
 import { AddComponent } from '../add/add.component';
 import { TranslateService } from '../../../../i18n';
+import { Pagination } from 'tdc-ui';
+import { NetworkRules } from '../../../tenant-model';
 
 @Component({
   selector: 'tec-network-rules',
@@ -17,9 +19,10 @@ export class NetworkRulesComponent implements OnInit {
   loading = false;
   submenuItems: any[] = [];
   tenantsCount: 9;  // TODO:
-  networkName = '';
   networkRules: Array<any>;
   backUrl = '../';
+  pagination = new Pagination();
+  networkRulesFilter: NetworkRules;
 
   constructor(
     private route: ActivatedRoute,
@@ -27,11 +30,13 @@ export class NetworkRulesComponent implements OnInit {
     private tenantService: TenantService,
     private modalService: TuiModalService,
     private translateService: TranslateService,
-  ) { }
+  ) {}
+
   ngOnInit() {
-    const networks: any[] = JSON.parse(this.tenantService.networks);
+    const networks: any[] = JSON.parse(this.tenantService.networkName);
     const uid = this.tenantService.uid;
     this.loading = true;
+    this.networkRulesFilter = new NetworkRules();
 
     this.submenuItems = networks.map(network => ({
       name: network.name,
@@ -40,16 +45,14 @@ export class NetworkRulesComponent implements OnInit {
     }));
 
     this.fetchSecurityRules();
-
-    const networkName = this.route.snapshot.paramMap.get('networkName');
-    sessionStorage.setItem('eco:tenant:detail:networkName', networkName);
   }
 
   fetchSecurityRules() {
     this.route.params.subscribe(params => {
-      this.networkName = params['networkName'];
-      this.tenantService.getSecurityRules(this.networkName).subscribe(res => {
+      this.networkRulesFilter.networkName = params['networkName'];
+      this.tenantService.getSecurityRules(this.networkRulesFilter).subscribe(res => {
         this.networkRules = res.data;
+        this.pagination = res.pagination;
         this.loading = false;
       });
     });
@@ -67,7 +70,7 @@ export class NetworkRulesComponent implements OnInit {
 
   remove(network: Network) {
     this.loading = true;
-    this.tenantService.deleteSecurityRule(this.networkName).subscribe(res => {
+    this.tenantService.deleteSecurityRule(this.networkRulesFilter.networkName).subscribe(res => {
       this.loading = false;
       this.fetchSecurityRules();
     });
