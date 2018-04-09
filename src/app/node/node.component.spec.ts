@@ -7,6 +7,7 @@ import { NodeAsideComponent } from './node-aside/node-aside.component';
 import { NodeService } from './node.service';
 
 import { Observable } from 'rxjs/Observable';
+import { TecApiService } from 'app/shared';
 import { TranslatePipeStub, DefaultPipeStub } from 'app/mock';
 import { NodeServiceStub } from './node.service.stub';
 
@@ -29,6 +30,11 @@ describe('NodeComponent', () => {
       providers: [{
         provide: NodeService,
         useClass: NodeServiceStub,
+      }, {
+        provide: TecApiService,
+        getFile() {
+          return Observable.of();
+        },
       }],
     })
     .compileComponents();

@@ -1,8 +1,11 @@
 import { Component, OnInit, HostBinding } from '@angular/core';
 import { Pagination } from 'tdc-ui';
 
+import { TecApiService } from 'app/shared';
 import { NodeService } from './node.service';
 import { NodeFilter } from './node.model';
+
+const FileSaver = require('../tenant/tenant-list/FileSaver');
 
 @Component({
   selector: 'tec-node',
@@ -25,6 +28,7 @@ export class NodeComponent implements OnInit {
 
   constructor(
     private nodeService: NodeService,
+    private api: TecApiService,
   ) { }
 
   ngOnInit() {
@@ -56,6 +60,14 @@ export class NodeComponent implements OnInit {
     usage = (usage && unit) ? (usage + unit) : '';
     usagePercent = usagePercent ? (usagePercent + '%') : '';
     return usage + ' ' + usagePercent;
+  }
+
+  export() {
+    this.api.getFile('nodes/export')
+    .subscribe((data) => {
+      const fileBlob = new Blob([data], {type: 'application/vnd.ms-excel'});
+      FileSaver.saveAs(fileBlob, 'nodes.xlsx');
+    });
   }
 
 }

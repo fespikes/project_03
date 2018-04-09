@@ -1,12 +1,14 @@
 import { Component, OnInit, HostBinding } from '@angular/core';
-
 import { Pagination, TuiModalService } from 'tdc-ui';
 
 import { TenantFilter } from '../tenant-model';
 import { TenantService } from '../tenant.service';
 import { TranslateService } from 'app/i18n';
+import { TecApiService } from 'app/shared';
 import { TenantSummary } from '../tenant-model';
 import { ModalDeleteTenantComponent } from '../components/modal/delete-tenant.component';
+
+const FileSaver = require('./FileSaver');
 
 @Component({
   templateUrl: './tenant-list.component.html',
@@ -27,6 +29,7 @@ export class TenantListComponent implements OnInit {
     private tenantService: TenantService,
     private modalService: TuiModalService,
     private translateService: TranslateService,
+    private api: TecApiService,
   ) { }
 
   ngOnInit() {
@@ -65,4 +68,11 @@ export class TenantListComponent implements OnInit {
     });
   }
 
+  export() {
+    this.api.getFile('tenants/summaries/export')
+    .subscribe((data) => {
+      const fileBlob = new Blob([data], {type: 'application/vnd.ms-excel'});
+      FileSaver.saveAs(fileBlob, 'tenants.xlsx');
+    });
+  }
 }
