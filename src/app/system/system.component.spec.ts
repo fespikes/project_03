@@ -4,28 +4,21 @@ import { Observable } from 'rxjs/Observable';
 
 import {  MockModule } from 'app/mock';
 import { SystemComponent } from './system.component';
-import { SystemService } from './service/system.service';
-import { ServiceDurationPipe } from './pipe/duration.pipe';
-import { SystemModalService } from './modal/system.modal.service';
+import { SystemService, SystemModalService } from 'app/shared';
+import { SystemModuleService } from './system.service';
 import { TranslateService } from 'app/i18n';
 import { TuiModalService } from 'tdc-ui';
 import { TranslateServiceMock } from 'app/mock';
 
 
 class SystemServiceStub {
-  getInstanceList() {
-    return Observable.of({
-      data: [],
-      pagination: {},
-    });
-  }
-  getInstanceLabels() {
+  getServiceLabels() {
     return Observable.of();
   }
-  startInstance() {
+  startService() {
     return Observable.of();
   }
-  stopInstance() {
+  stopService() {
     return Observable.of();
   }
 }
@@ -54,7 +47,6 @@ describe('SystemComponent', () => {
       imports: [ MockModule ],
       declarations: [
         SystemComponent,
-        ServiceDurationPipe,
       ],
       providers: [
         {
@@ -74,6 +66,14 @@ describe('SystemComponent', () => {
         {
           provide: SystemService,
           useClass: SystemServiceStub,
+        },
+        {
+          provide: SystemModuleService,
+          useValue: {
+            getServiceList() {
+              return Observable.of();
+            },
+          },
         },
       ],
     })

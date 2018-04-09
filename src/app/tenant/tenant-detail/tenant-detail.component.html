@@ -1,10 +1,33 @@
-<tui-submenu>
-  <tui-submenu-list menuTitle="{{'TENANT.OVERVIEW.TOTAL' | translate}}: {{tenantsCount}}" [items]='submenuItems'></tui-submenu-list>
+<tui-submenu backUrl="../../overview">
+  <div class="submenu-filter">
+    <tui-search [(ngModel)]="filter.keyword" (ngModelChange)="filterChange()"
+    ></tui-search>
+    <tui-checkbox [(ngModel)]="filter.canceled" (ngModelChange)="filterChange(true)">
+      <span class="message">{{'TENANT.SERVICE.SHOW_CANCELED_TENANT' | translate}}</span>
+    </tui-checkbox>
+  </div>
+  <tui-submenu-list
+    menuTitle="{{'TENANT.OVERVIEW.TOTAL' | translate}}: {{tenantsCount}}"
+    [items]="submenuItems"
+  ></tui-submenu-list>
 </tui-submenu>
 <div class="tui-layout-vertical" [tuiLoading]="loading" tccLoadingHeight="600px">
   <div class="tui-layout-main-container">
     <div class="tui-layout-main-title">
-      {{tenant.name + ' (' + tenant.uid + ')'}}
+      <div class="left">
+        {{tenant.name + ' (' + tenant.uid + ')'}}
+        <tec-tenant-status-icon
+          class="tenant-status"
+          [status]="tenant.status"
+          [alias]="tenant.statusAlias"
+        ></tec-tenant-status-icon>
+      </div>
+      <div class="right">
+        <button *ngIf="!(tenant.status === 'CANCELED')" tuiBtn="primary" (click)="deleteTenant(tenant)">
+          <svg tuiIcon="trash"></svg>
+          <span>{{'TENANT.DETAIL.DELETE_TENANT' | translate}}</span>
+        </button>
+      </div>
     </div>
     <div class="tenant-detail">
       <div class="description">
@@ -31,6 +54,7 @@
     <tec-tenant-error *tuiTabPane="'TENANT.DETAIL.ERROR' | translate"></tec-tenant-error>
     -->
     <tec-tenant-quota *tuiTabPane="'TENANT.DETAIL.QUOTA' | translate"></tec-tenant-quota>
+    <tec-tenant-service *tuiTabPane="'TENANT.DETAIL.SERVICE' | translate"></tec-tenant-service>
     <tec-tenant-bill *tuiTabPane="'TENANT.DETAIL.BILL' | translate" [uid]="tenant.uid"></tec-tenant-bill>
   </tui-tab>
 </div>

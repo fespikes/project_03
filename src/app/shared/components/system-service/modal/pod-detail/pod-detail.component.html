@@ -1,0 +1,82 @@
+<div class="pod-head">
+  <div>
+    <span>{{ pod.name }}</span>
+    <span [ngClass]="{'error': pod.status === 'ERROR'}">{{ pod.status }}</span>
+  </div>
+  <div>
+    <span>{{'SYSTEM.POPUP.CREATE_TIME' | translate}}:</span>
+    <span>{{ pod.createTime | date:'yy-MM-dd HH:mm:ss'}}</span>
+  </div>
+</div>
+
+<div class="pod-content">
+  <tui-tab #tuiTab>
+    <div *tuiTabPane="'SYSTEM.POPUP.CONTAINER' | translate" class="tab-content">
+      <tui-table [tuiTableFlex]="[2,1]">
+        <tui-table-head>
+          <div>{{ 'SYSTEM.POPUP.CONTAINER_NAME' | translate }}</div>
+          <div>{{ 'SYSTEM.POPUP.HEALTHY_STATE' | translate }}</div>
+        </tui-table-head>
+        <tui-table-row *ngFor="let container of pod.containers">
+          <div>{{container.name}}</div>
+          <div>{{container.status}}</div>
+        </tui-table-row>
+      </tui-table>
+    </div>
+
+    <div *tuiTabPane="'SYSTEM.POPUP.EVENT' | translate" class="tab-content">
+      <tui-table [tuiTableFlex]="[4,2,2,1]">
+        <tui-table-head>
+          <div>{{ 'SYSTEM.POPUP.INFO' | translate }}</div>
+          <div>{{ 'SYSTEM.POPUP.LAST_APPEAR' | translate }}</div>
+          <div>{{ 'SYSTEM.POPUP.REASON' | translate }}</div>
+          <div>{{ 'SYSTEM.POPUP.NUMBER' | translate }}</div>
+        </tui-table-head>
+        <tui-table-row *ngFor="let event of events">
+          <div class="text-ellipsis">{{event.message}}</div>
+          <div>{{event.lastTimestamp | date:'yy-MM-dd HH:mm'}}</div>
+          <div class="text-ellipsis">{{event.reason}}</div>
+          <div>{{event.count}}</div>
+        </tui-table-row>
+      </tui-table>
+    </div>
+
+    <div *tuiTabPane="'SYSTEM.POPUP.LOG' | translate" class="tab-content">
+      <div class="logs">
+        <div class="logs-nav">
+          <tec-overflow-container>
+            <tui-radio-group
+              tuiRadioBtnGroup
+              [(ngModel)]="selectedLog"
+              (ngModelChange)="onSelectLog()"
+            >
+              <tui-radio-item *ngFor="let log of logs" [value]="log">
+                {{log.container_name}}
+              </tui-radio-item>
+            </tui-radio-group>
+          </tec-overflow-container>
+        </div>
+        <div class="logs-content" *ngIf="selectedLog">
+          <div>
+            {{renderedLog}}
+          </div>
+          <div class="logs-content-actions">
+            <div *ngIf="loadingLog">
+              <svg tuiIcon="loading" size="md" class="tui-rotate"></svg>
+            </div>
+            <div class="btn-link" (click)="loadCompleteLog()" *ngIf="hasMoreLog && !loadingLog">
+              {{ 'SYSTEM.POPUP.LOAD_COMPLETE_LOG' | translate }}
+            </div>
+          </div>
+        </div>
+        <div class="logs-no-content" *ngIf="!selectedLog">
+          {{'SYSTEM.NO_CONTENT' | translate}}
+        </div>
+      </div>
+    </div>
+  </tui-tab>
+</div>
+
+<div class="tui-modal-foot">
+  <button tuiBtn="primary" (click)="close()">{{'SYSTEM.POPUP.CLOSE' | translate}}</button>
+</div>

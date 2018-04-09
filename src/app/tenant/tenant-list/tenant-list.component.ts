@@ -1,10 +1,12 @@
 import { Component, OnInit, HostBinding } from '@angular/core';
 
-import { Pagination } from 'tdc-ui';
+import { Pagination, TuiModalService } from 'tdc-ui';
 
 import { TenantFilter } from '../tenant-model';
 import { TenantService } from '../tenant.service';
+import { TranslateService } from 'app/i18n';
 import { TenantSummary } from '../tenant-model';
+import { ModalDeleteTenantComponent } from '../components/modal/delete-tenant.component';
 
 @Component({
   templateUrl: './tenant-list.component.html',
@@ -14,7 +16,6 @@ export class TenantListComponent implements OnInit {
   @HostBinding('class.tui-layout-body') hostClass = true;
 
   loading;
-  keyword = '';
   tenantsCount = 0;
   filter = new TenantFilter();
 
@@ -24,6 +25,8 @@ export class TenantListComponent implements OnInit {
 
   constructor(
     private tenantService: TenantService,
+    private modalService: TuiModalService,
+    private translateService: TranslateService,
   ) { }
 
   ngOnInit() {
@@ -40,6 +43,26 @@ export class TenantListComponent implements OnInit {
         this.pagination = result.pagination;
         this.loading = false;
       });
+  }
+
+  filterChange() {
+    this.pagination.page = 1;
+    this.getTenants();
+  }
+
+  deleteTenant(tenant) {
+    const config = {
+      title: this.translateService.translateKey('TENANT.OVERVIEW.CONFIRM_DELETE'),
+      size: 'md',
+      data: {
+        name: tenant.tenantInfo.name,
+        uid: tenant.tenantInfo.uid,
+      },
+    };
+    this.modalService.open(ModalDeleteTenantComponent, config)
+    .subscribe(() => {
+      this.getTenants();
+    });
   }
 
 }

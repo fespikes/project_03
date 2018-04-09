@@ -23,7 +23,7 @@ import { SystemComponent } from './system.component';
     TranslateDeactivator,
     {
       provide: TranslateToken,
-      useValue: 'system',
+      useValue: 'common',
     },
   ],
 })

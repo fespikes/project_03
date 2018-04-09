@@ -7,7 +7,7 @@
 
     <div class="container-operation-bar">
       <tui-select
-        [(ngModel)]="selectedLabel"
+        [(ngModel)]="filter.tag"
         (ngModelChange)="filterChange()"
         placeholder="{{'SYSTEM.INSTANCE.SELECT_TAG' | translate}}"
       >
@@ -19,7 +19,7 @@
           {{label.label | tuiDefault | translate}}
         </tui-select-option>
       </tui-select>
-      <tui-search [(ngModel)]="keyword" (ngModelChange)="filterChange()">
+      <tui-search [(ngModel)]="filter.service" (ngModelChange)="filterChange()">
       </tui-search>
     </div>
 
@@ -33,52 +33,52 @@
           <div>{{'SYSTEM.INSTANCE.TAG' | translate}}</div>
           <div>{{'SYSTEM.OPERATION' | translate}}</div>
         </tui-table-head>
-        <ng-container *ngFor="let instance of instances">
+        <ng-container *ngFor="let service of services">
           <tui-table-row>
             <div
               class="text-ellipsis instance-name"
               tuiTooltip="{{'SYSTEM.INSTANCE.NAME' | translate}}"
-              (click)="toggleSubList(instance)"
+              (click)="toggleSubList(service)"
             >
               <svg
                 class="toggle-icon"
                 tuiIcon="caret-right"
-                [ngClass]="{open: instance.showSubList}"
-              ></svg>{{instance.name}}
+                [ngClass]="{open: service.showSubList}"
+              ></svg>{{service.name}}
             </div>
             <div class="status-td">
-              <span [ngClass]="{'error': instance.status === 'error'}">
-                {{instance.status}}
+              <span [ngClass]="{'error': service.status === 'ERROR'}">
+                {{service.status}}
               </span>
             </div>
-            <div class="text-ellipsis">{{instance.edition}}</div>
-            <div>{{instance.createTime | date:'yy-MM-dd HH:mm'}}</div>
+            <div class="text-ellipsis">{{service.edition}}</div>
+            <div>{{service.createTime | date:'yy-MM-dd HH:mm'}}</div>
             <div class="text-ellipsis system-service-tag">
               <tec-system-service-tag
-                [tags]="instance.labels"
+                [tags]="service.labels"
                 [tuiPopover]="tooltip_label"
               ></tec-system-service-tag>
               <tui-popover #tooltip_label placement="right">
                 <div class="popover-tag-container">
-                  <div class="popover-tag-item" *ngFor="let tag of instance.labels">
+                  <div class="popover-tag-item" *ngFor="let tag of service.labels">
                     {{tag}}
                   </div>
                 </div>
               </tui-popover>
             </div>
             <div class="operation-td">
-              <span tuiTooltip="{{instance?.started ? 'SYSTEM.TOOLTIP.STOP_SERVICE' : 'SYSTEM.TOOLTIP.START_SERVICE' | translate}}">
-                <svg *ngIf="instance.status === 'RUNNING' || instance.status === 'running'" tuiIcon="media-pause-circle" (click)="stopInstance(instance)"></svg>
-                <svg *ngIf="instance.status === 'TERMINATED' || instance.status === 'terminated'" tuiIcon="media-play-circle" (click)="startInstance(instance)"></svg>
-                <svg *ngIf="instance.status === 'LOADING'" tuiIcon="loading"></svg>
+              <span tuiTooltip="{{getTooltipText(service)}}">
+                <svg *ngIf="service.status === 'RUNNING'" tuiIcon="media-pause-circle" (click)="stopService(service)"></svg>
+                <svg *ngIf="service.status === 'TERMINATED'" tuiIcon="media-play-circle" (click)="startService(service)"></svg>
+                <svg *ngIf="service.status !== 'RUNNING' && service.status !== 'TERMINATED'" tuiIcon="loading"></svg>
               </span>
               <span tuiTooltip="{{'SYSTEM.TOOLTIP.VIEW_YAML' | translate}}">
-                <svg tuiIcon="yaml" (click)="viewYaml(instance)"></svg>
+                <svg tuiIcon="yaml" (click)="viewYaml(service)"></svg>
               </span>
             </div>
           </tui-table-row>
           <tui-table
-            *ngIf="instance?.showSubList && instance.serviceInfos?.length > 0"
+            *ngIf="service?.showSubList && service.serviceInfos?.length > 0"
             class="tui-table-tree" [tuiTableFlex]="[1,1,1,1]"
           >
             <tui-table-head>
@@ -87,33 +87,36 @@
               <div>{{'SYSTEM.INSTANCE.START_TIME' | translate}}</div>
               <div>{{'SYSTEM.OPERATION' | translate}}</div>
             </tui-table-head>
-            <tui-table-row *ngFor="let service of instance.serviceInfos">
-              <div class="text-ellipsis">{{service.name}}</div>
+            <tui-table-row *ngFor="let microService of service.serviceInfos">
+              <div class="text-ellipsis">{{microService.name}}</div>
               <div class=" status-td text-ellipsis">
-                <span [ngClass]="{'error': service.serviceStatus.status === 'error'}">
-                  {{service.serviceStatus}}
+                <span [ngClass]="{'error': microService.serviceStatus.status === 'error'}">
+                  {{microService.serviceStatus}}
                 </span>
               </div>
-              <div class="text-ellipsis">{{service.createTime | date:'yy-MM-dd HH:mm'}}</div>
+              <div class="text-ellipsis">{{microService.createTime | date:'yy-MM-dd HH:mm'}}</div>
               <div class="operation-td">
                 <span tuiTooltip="{{'SYSTEM.TOOLTIP.VIEW_POD' | translate}}">
                   <svg tuiIcon="search-square" [tuiDropdownTrigger]="operationDropdown"></svg>
                 </span>
                 <tui-dropdown #operationDropdown>
                   <tui-dropdown-item style="text-align:left; font-weight:bold;">Pod</tui-dropdown-item>
-                  <tui-dropdown-item *ngFor="let pod of service.pods" (click)="viewPod(pod)">
-                    <span>{{ pod.name }}</span>
+                  <tui-dropdown-item style="text-align:left;" *ngFor="let pod of microService.pods" (click)="viewPod(pod)">
+                    <span>{{ pod.name + '(' + pod.status + ')' }}</span>
+                  </tui-dropdown-item>
+                  <tui-dropdown-item *ngIf="!(microService?.pods?.length > 0)">
+                    <span>{{ 'SYSTEM.NO_CONTENT' | translate }}</span>
                   </tui-dropdown-item>
                 </tui-dropdown>
                 <span tuiTooltip="{{'SYSTEM.TOOLTIP.VIEW_IMAGE' | translate}}">
-                  <svg tuiIcon="image" (click)="viewImage(instance, service)"></svg>
+                  <svg tuiIcon="image" (click)="viewImage(service, microService)"></svg>
                 </span>
               </div>
             </tui-table-row>
           </tui-table>
           <div
             class="tui-table-tree-no-data"
-            *ngIf="instance.showSubList && instance.serviceInfos.length < 1"
+            *ngIf="service.showSubList && service.serviceInfos.length < 1"
           >
             {{'SYSTEM.NO_CONTENT' | translate}}
           </div>
@@ -128,3 +131,4 @@
     </div>
   </div>
 </div>
+

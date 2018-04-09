@@ -1,0 +1,17 @@
+<div class="yaml-head">
+  <span>{{ serviceName }}</span>
+  <tui-search
+    [(ngModel)]="this.keyword"
+    (ngModelChange)="highlightKeyword()"
+></tui-search>
+</div>
+<div class="yaml-content">
+  <tec-yaml-tree
+    [treeModel]="yamls"
+    [treeLevel]="0"
+    ></tec-yaml-tree>
+</div>
+
+<div class="tui-modal-foot">
+  <button tuiBtn="primary" (click)="close()">{{'SYSTEM.POPUP.CLOSE' | translate}}</button>
+</div>

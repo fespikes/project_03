@@ -23,11 +23,14 @@ import { TenantTicketComponent } from './tenant-detail/tenant-ticket/tenant-tick
 import { TenantErrorComponent } from './tenant-detail/tenant-error/tenant-error.component';
 import { TenantQuotaComponent } from './tenant-detail/tenant-quota/tenant-quota.component';
 import { TenantNetworkComponent } from './tenant-detail/tenant-network/tenant-network.component';
+import { TenantServiceComponent } from './tenant-detail/tenant-service/tenant-service.component';
 import { TenantBillComponent } from './tenant-detail/tenant-bill/tenant-bill.component';
+import { TenantStatusIconComponent } from './components/status-icon/status-icon.component';
 import { ModalBillClearComponent } from './tenant-detail/tenant-bill/modal-bill-clear/modal-bill-clear.component';
 import { ModalBillCorrectComponent } from './tenant-detail/tenant-bill/modal-bill-correct/modal-bill-correct.component';
 import { NetworkRulesComponent } from './tenant-detail/tenant-network/network-rules/network-rules.component';
 import { AddComponent } from './tenant-detail/tenant-network/add/add.component';
+import { ModalDeleteTenantComponent } from './components/modal/delete-tenant.component';
 
 @NgModule({
   imports: [
@@ -42,6 +45,9 @@ import { AddComponent } from './tenant-detail/tenant-network/add/add.component';
     I18nModule,
   ],
   declarations: [
+    ModalBillClearComponent,
+    ModalBillCorrectComponent,
+    ModalDeleteTenantComponent,
     TenantListComponent,
     TenantDetailComponent,
     TenantAbstractComponent,
@@ -50,11 +56,13 @@ import { AddComponent } from './tenant-detail/tenant-network/add/add.component';
     TenantErrorComponent,
     TenantQuotaComponent,
     TenantNetworkComponent,
+    TenantServiceComponent,
     TenantBillComponent,
     ModalBillClearComponent,
     ModalBillCorrectComponent,
     NetworkRulesComponent,
     AddComponent,
+    TenantStatusIconComponent,
   ],
   providers: [
     TenantService,
@@ -65,6 +73,7 @@ import { AddComponent } from './tenant-detail/tenant-network/add/add.component';
     ModalBillClearComponent,
     ModalBillCorrectComponent,
     AddComponent,
+    ModalDeleteTenantComponent,
   ],
 })
 export class TenantModule { }

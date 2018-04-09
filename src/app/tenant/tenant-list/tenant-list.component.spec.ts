@@ -4,7 +4,9 @@ import { Observable } from 'rxjs/Observable';
 
 import { TenantListComponent } from './tenant-list.component';
 import { TenantService } from '../tenant.service';
-import { TranslatePipeStub, DefaultPipeStub } from 'app/mock';
+import { TranslateService } from 'app/i18n';
+import { TuiModalService } from 'tdc-ui';
+import { TranslatePipeStub, DefaultPipeStub, TranslateServiceMock } from 'app/mock';
 
 class TenantServiceStub {
   fetchSummaries() {
@@ -31,6 +33,18 @@ describe('TenantListComponent', () => {
         {
           provide: TenantService,
           useClass: TenantServiceStub,
+        },
+        {
+          provide: TuiModalService,
+          useValue: {
+            open() {
+              return Observable.of();
+            },
+          },
+        },
+        {
+          provide: TranslateService,
+          useClass: TranslateServiceMock,
         },
       ],
     })

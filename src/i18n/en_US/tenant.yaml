@@ -13,6 +13,11 @@ TENANT:
     STATUS: Status
     CREATE_TIME: Create Time
     BILL: Bill
+    SHOW_CANCELED_TENANT: Show Canceled Tenant
+    DELETE: Delete
+    OPERATION: Operation
+    CONFIRM_DELETE: Confirm Delete
+    CONFIRM_DELETE_MESSAGE: Delete tenant need input login password to verity your identity
 
   DETAIL:
     GO_BACK: Back
@@ -22,6 +27,7 @@ TENANT:
     TICKET: Ticket
     ERROR: Error
     QUOTA: Quota
+    SERVICE: Basic Service
     BILL: Bill
     ADMIN: Admin
     CREATE_TIME: Create Time
@@ -31,7 +37,10 @@ TENANT:
     DESC: Description
     OP: Operation
     DELETE: Delete
+    DELETE_TENANT: Delete Tenant
     EDIT: Edit
+    HINT: Hint
+    NO_TENANT_HINT: No tenants are available under current conditions
 
   ABSTRACT:
     PLATFORM_INFO: Platform Info
@@ -105,6 +114,20 @@ TENANT:
   QUOTA:
     UNDEFINED: Undefined
     TOBEREMOVED: below
+
+  SERVICE:
+    NAME: Service Name
+    STATUS: Status
+    VERSION: Version
+    START_TIME: Start Time
+    LABEL: Label
+    OPERATION: Operation
+    SHOW_CANCELED_TENANT: Show Canceled Tenant
+    STOP_SERVICE: Stop Service
+    START_SERVICE: Start Service
+    VIEW_YAML: View Yaml File
+    VIEW_POD: View Pod Detail
+    VIEW_IMAGE: View Image
 
   STATUS:
     CREATING: Creating

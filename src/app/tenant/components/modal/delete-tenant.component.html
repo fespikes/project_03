@@ -1,0 +1,22 @@
+<div class="delete-tenant">
+  <div class="delete-tenant-icon">
+    <svg tuiIcon="trash" size="lg"></svg>
+  </div>
+  <div class="delete-tenant-text">
+    <p>
+      <span>{{'TENANT.OVERVIEW.CONFIRM_DELETE' | translate}}{{'TENANT.NAME' | translate}}</span>
+      <span>{{tenant.name}}({{tenant.uid}})</span>?
+    </p>
+    <p>{{'TENANT.OVERVIEW.CONFIRM_DELETE_MESSAGE' | translate}}</p>
+    <form #form="ngForm" tuiForm labelFlex="0" inputFlex="1">
+      <tui-form-item>
+        <tui-input name="password" type="password" [(ngModel)]="tenant.password" required></tui-input>
+      </tui-form-item>
+    </form>
+  </div>
+</div>
+
+<div class="tui-modal-foot">
+  <button tuiBtn="primary" (click)="confirm()" [disabled]="tenant.password.length === 0">{{'TUI.MODAL.CONFIRM' | translate}}</button>
+  <button tuiBtn="default" (click)="cancel()">{{'TUI.MODAL.CANCEL' | translate}}</button>
+</div>
