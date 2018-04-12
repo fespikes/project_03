@@ -30,7 +30,10 @@ class TenantServiceStub {
     return JSON.stringify([]);
   }
   getSecurityRules() {
-    return Observable.of([]);
+    return Observable.of({
+      data: [],
+      pagination: {},
+    });
   }
 }
 
