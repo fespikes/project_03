@@ -12,7 +12,7 @@
 
       <div class="maintain">
         <span class="tui-layout-main-title">
-          {{networkName}}
+          {{networkRulesFilter.networkName}}
         </span>
 
         <span class="right">
@@ -25,8 +25,9 @@
               color="white"
               size="md"
             ></svg>
-            <span>{{'TENANT.NETWORK.FINANCIAL' | translate}}</span>
+            <span>{{'TENANT.NETWORK.CREATE' | translate}}</span>
           </button>
+          <tui-search [(ngModel)]="networkRulesFilter.filter" (ngModelChange)="fetchSecurityRules()"></tui-search>
         </span>
       </div>
 
@@ -63,6 +64,10 @@
         </tui-table-row>
 
       </tui-table>
+      <div class="tui-layout-main-pagination-footer pagination-footer">
+        <tui-pagination [(pagination)]="pagination" (paginationChange)="fetchSecurityRules()">
+        </tui-pagination>
+      </div>
     </div>
   </div>
 
