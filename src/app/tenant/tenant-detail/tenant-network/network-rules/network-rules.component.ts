@@ -33,7 +33,7 @@ export class NetworkRulesComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    const networks: any[] = JSON.parse(this.tenantService.networkName);
+    const networks: any[] = JSON.parse(this.tenantService.networks);
     const uid = this.tenantService.uid;
     this.loading = true;
     this.networkRulesFilter = new NetworkRules();

@@ -29,6 +29,11 @@ export class TenantService {
     return uid;
   }
 
+  public get networks() {
+    const networks = sessionStorage.getItem('eco:tenant:detail:networks');
+    return networks;
+  }
+
   public get networkName() {
     const networkName = sessionStorage.getItem('eco:tenant:detail:networkName');
     return networkName;
