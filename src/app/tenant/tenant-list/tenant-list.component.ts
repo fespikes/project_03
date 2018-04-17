@@ -72,7 +72,7 @@ export class TenantListComponent implements OnInit {
     this.api.getFile('tenants/summaries/export')
     .subscribe((data) => {
       const fileBlob = new Blob([data], {type: 'application/vnd.ms-excel'});
-      FileSaver.saveAs(fileBlob, 'tenants.xlsx');
+      FileSaver.saveAs(fileBlob, 'tenants.xls');
     });
   }
 }
