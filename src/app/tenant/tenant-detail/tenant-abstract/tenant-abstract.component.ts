@@ -18,6 +18,7 @@ import {
 import { ElementWidthListener } from '../../../chart/element-width-listener';
 
 import { TenantAbstractService } from './tenant-abstract.service';
+import { hourlyDefaultFormat, xAxisCommon } from '../../../shared/patterns';
 
 @Component({
   selector: 'tec-tenant-abstract',
@@ -135,6 +136,30 @@ export class TenantAbstractComponent implements OnInit, OnDestroy {
         legend: {
           show: false,
         },
+        'yAxis': {
+          'tick': {
+            'padding': 0,
+          },
+          'grid': {
+            'style': 'solid',
+            'color': '#f0f3f7',
+            'strokeWidth': 1,
+          },
+          'lineStyle': {
+            'color': '#f0f3f7',
+            'strokeWidth': 1,
+          },
+          'textStyle': {
+            'color': '#c2c9d5',
+            'foneSize': 12,
+          },
+        },
+        'margin': {
+          'top': 10,
+          'right': 40,
+          'bottom': 40,
+          'left': 60,
+        },
       },
     };
 
@@ -147,6 +172,9 @@ export class TenantAbstractComponent implements OnInit, OnDestroy {
       wrapperName: 'instancesCountWrapper',
     };
 
+    const xAxis = {...xAxisCommon};
+    xAxis.tick.timeFormat = hourlyDefaultFormat;
+
     this.CPULoadTrendParam = { // 6.
       chartType: chartTypes.line,
       fetchData: (cb, resourceType) => {
@@ -155,6 +183,9 @@ export class TenantAbstractComponent implements OnInit, OnDestroy {
           cb(data.result);
         };
         return this.service.fetchResourcesTrend.bind(this.service)(callback, resourceType);
+      },
+      config: {
+        xAxis: xAxis,
       },
       resourceType: resourceTypes.cpu,
       wrapperName: 'CPULoadTrendWrapper',
@@ -169,6 +200,9 @@ export class TenantAbstractComponent implements OnInit, OnDestroy {
         };
         this.service.fetchResourcesTrend.bind(this.service)(callback, resourceType);
       },
+      config: {
+        xAxis: xAxis,
+      },
       resourceType: resourceTypes.memory,
       wrapperName: 'memoryLoadTrendWrapper',
     };
@@ -181,6 +215,9 @@ export class TenantAbstractComponent implements OnInit, OnDestroy {
           cb(data.result);
         };
         this.service.fetchResourcesTrend.bind(this.service)(callback, resourceType);
+      },
+      config: {
+        xAxis: xAxis,
       },
       resourceType: resourceTypes.storage,
       wrapperName: 'storageLoadTrendWrapper',

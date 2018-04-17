@@ -40,4 +40,22 @@ export class TecUtilService {
       wrapper.getChartData(dt);
     }
   }
+
+  /**
+  * if no config in params, this function only add namespace
+  */
+  addToNameSpace(tgt, names, config?): void {
+    const result = tgt;
+    const arr = names.split('.');
+    let temp = tgt;
+    for (let i = 0; i < arr.length; i++ ) {
+      if ((i === arr.length - 1) && config ) {
+        temp[arr[i]] = config;
+      } else {
+        temp[arr[i]] = temp[arr[i]] || {};
+        temp = temp[arr[i]];
+      }
+    }
+    return tgt;
+  }
 }
