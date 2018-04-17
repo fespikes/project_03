@@ -11,7 +11,7 @@ import { AbstractService } from './abstract.service';
 import {
   TecApiService, TimeOption, ChartWrapperComponent,
   TecUtilService, chartTypes, resourceTypes } from '../shared';
-
+import { hourlyDefaultFormat, xAxisCommon } from '../shared/patterns';
 import {
   BarChartConfig,
   BarChartData,
@@ -96,6 +96,7 @@ export class AbstractComponent implements OnInit, OnDestroy {
   tenantConsumptionRankingParam: any = {};
   instancesTotalCount: number;
 
+  private specialList: string[] = ['nodeLoadTrendOption'];
   // E: charts related
 
   constructor(
@@ -137,11 +138,15 @@ export class AbstractComponent implements OnInit, OnDestroy {
       },
       wrapperName: 'tenantGrowTrendWrapper',
     };
+
+    const xAxis = {...xAxisCommon};
+    xAxis.tick.timeFormat = hourlyDefaultFormat;
     this.nodeLoadTrendParam = {  // 4.
       chartType: chartTypes.line,
       fetchData: this.abstractService.getNodesLoadTrend.bind(this.abstractService),
       config: {
         drawGridY: false,
+        xAxis: xAxis,
       },
       wrapperName: 'nodeLoadTrendWrapper',
     };
@@ -194,6 +199,30 @@ export class AbstractComponent implements OnInit, OnDestroy {
         legend: {
           show: false,
         },
+        'yAxis': {
+          'tick': {
+            'padding': 0,
+          },
+          'grid': {
+            'style': 'solid',
+            'color': '#f0f3f7',
+            'strokeWidth': 1,
+          },
+          'lineStyle': {
+            'color': '#f0f3f7',
+            'strokeWidth': 1,
+          },
+          'textStyle': {
+            'color': '#c2c9d5',
+            'foneSize': 12,
+          },
+        },
+        'margin': {
+          'top': 10,
+          'right': 30,
+          'bottom': 30,
+          'left': 60,
+        },
       },
       wrapperName: 'tenantConsumptionRankingWrapper',
     };
@@ -218,7 +247,38 @@ export class AbstractComponent implements OnInit, OnDestroy {
     const option = this[optionName];
     if ($event.value !== option.value) {
       this[optionName] = $event;
+      this.adjustConfigByOption($event.value, optionName);
       wrapper.getChartData($event.value);
     }
   }
+
+  /**
+  * complicated rules here:
+  * - for a wrapper, the param and the option must have the same part like:
+  *   xxxxxxxxOption && xxxxxxxxParam
+  * - they has two types of formatter:
+  *   for monthly: '%x'  -  '%d %b'(when in one month)
+  *   for hourly: '%H:%M %b'  -  '%H:%M'(when in one month)
+  */
+  adjustConfigByOption(idx, optionName) {
+    let format: string;
+    const xAxis: any = {...xAxisCommon};
+    const configName: string = optionName.replace('Option', 'Param');
+
+    if (idx > 1) {
+      format = this.specialList.indexOf(optionName) > -1 ?
+        hourlyDefaultFormat : '%x';
+    } else {
+      format = this.specialList.indexOf(optionName) > -1 ?
+        '%H:%M' : '%d %b';
+    }
+
+    xAxis.tick.timeFormat = format;
+    this.utilService.addToNameSpace(
+      this[configName],
+      'config.xAxis',
+      xAxis,
+    );
+  }
+
 }
