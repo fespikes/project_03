@@ -194,6 +194,30 @@ export class AbstractComponent implements OnInit, OnDestroy {
         legend: {
           show: false,
         },
+        'yAxis': {
+          'tick': {
+            'padding': -10,
+          },
+          'grid': {
+            'style': 'solid',
+            'color': '#f0f3f7',
+            'strokeWidth': 1,
+          },
+          'lineStyle': {
+            'color': '#f0f3f7',
+            'strokeWidth': 1,
+          },
+          'textStyle': {
+            'color': '#c2c9d5',
+            'foneSize': 12,
+          },
+        },
+        'margin': {
+          'top': 20,
+          'right': 30,
+          'bottom': 40,
+          'left': 50,
+        },
       },
       wrapperName: 'tenantConsumptionRankingWrapper',
     };
