@@ -1,5 +1,5 @@
 export const patterns = {
-  password: /^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,8}$/,
+  password: /^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,15}$/,
   email: /^(\w)+(\.\w+)*@(\w)+((\.\w+)+)$/,
 };
 
