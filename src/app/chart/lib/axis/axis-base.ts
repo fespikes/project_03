@@ -1,5 +1,7 @@
 import * as d3 from 'd3';
 import { SelectionType } from '../core';
+import { AxisScale } from 'd3';
+import { Domain } from 'domain';
 
 export type AxisPosition = 'top' | 'right' | 'bottom' | 'left';
 
@@ -46,10 +48,10 @@ export class AxisConfigBase {
 }
 
 export abstract class AxisBase {
-  abstract scale;
+  abstract scale: any;
 
   constructor(
-    public container: SelectionType,
+    public selection: SelectionType,
     public position: AxisPosition,
     public config: AxisConfigBase,
   ) {
@@ -60,22 +62,30 @@ export abstract class AxisBase {
       case 'top':
         return d3.axisTop(this.scale);
       case 'right':
-        return d3.axisRight(this.scale);
+        return d3.axisRight(this.invertScale());
       case 'bottom':
         return d3.axisBottom(this.scale);
       case 'left':
-        return d3.axisLeft(this.scale);
+        return d3.axisLeft(this.invertScale());
     }
   }
 
+  invertScale() {
+    const scale = this.scale.copy();
+    const range = scale.range();
+    range.sort().reverse();
+    scale.rangeRound(range);
+    return scale;
+  }
+
   styleLine() {
-    this.container.selectAll('path, line')
+    this.selection.selectAll('path, line')
       .attr('stroke', this.config.lineStyle.color)
       .attr('stroke-width', this.config.lineStyle.strokeWidth);
   }
 
   styleText() {
-    this.container.selectAll('text')
+    this.selection.selectAll('text')
       .attr('fill', this.config.textStyle.color)
       .attr('font-size', this.config.textStyle.foneSize);
   }
