@@ -4,7 +4,7 @@ ACCOUNT:
   ORIGINAL_PWD_TIP: Original password is required.
   ORIGINAL_PWD_PLACEHOLDER: The password need to change
   NEW_PWD: New Password
-  NEW_PWD_PLACEHOLDER: Must content 6-8 letters and digits
+  NEW_PWD_PLACEHOLDER: Must content 6-15 letters and digits
   NEW_PWD_TIP_REQUIRED: New password is required and must be different from the old one.
   CONFIRM_PWD: Confirm password
   CONFIRM_PWD_PLACEHOLDER: New password again

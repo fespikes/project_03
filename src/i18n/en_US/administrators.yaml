@@ -15,7 +15,7 @@ ADMINISTRATORS:
   TIME: Date
   OPERATE: Operate
   PASSWORD: Password
-  PASSWORD_PLACEHOLDER: Must content 6-8 letters and digits
+  PASSWORD_PLACEHOLDER: Must content 6-15 letters and digits
   PASSWORD_TIP_REQUIRED: Password is required
   DELETABLE: Deletable
   UNSUPPERESSIBLE: unsuppressible
