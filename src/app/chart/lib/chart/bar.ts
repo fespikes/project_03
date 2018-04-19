@@ -1,14 +1,12 @@
 import * as d3 from 'd3';
-import {
-  ScaleLinear,
-  ScaleBand,
-  ScaleOrdinal,
-  Stack,
-  Axis,
-  Selection,
-} from 'd3';
+import { ScaleOrdinal } from 'd3';
 
-import { Chart } from '../core';
+import {
+  CanvasContainer,
+  Chart,
+  Coordinate,
+  SelectionType,
+} from '../core';
 import {
   LinearAxis,
   LinearAxisConfig,
@@ -26,6 +24,7 @@ import {
   Tooltip,
   AxisIndicator,
 } from '../component';
+import { Point2D, Rect2D } from '../helpers/transform-helper';
 
 
 export class BarChartData {
@@ -112,6 +111,7 @@ export class BarChartConfig {
   margin = {top: 20, right: 50, bottom: 40, left: 50};
   colorSchema = new ColorSchema();
   legend = new LegendConfig();
+  transpose = true;
 
   static from(config) {
     const _config = new BarChartConfig();
@@ -147,28 +147,18 @@ export class BarChart extends Chart {
   yAxis: LinearAxis;
 
   private ordinalScale: ScaleOrdinal<any, any>;
-  private stack: Stack<any, any, any>;
   grid: Grid;
   tooltip: Tooltip;
   axisIndicator: AxisIndicator;
 
   draw() {
-    const { width, height, margin, legend, colorSchema } = this.config;
+    const { width, height, margin, legend, colorSchema, stack } = this.config;
     this.init({width, height}, margin, legend);
 
     this.drawAxis();
     this.drawGrid();
-
-    if (this.config.stack) {
-      const bars = this.drawBarStack();
-      this.appendAnimationStack(bars);
-    } else {
-      const bars = this.drawBarGrouped();
-      this.appendAnimationGrouped(bars);
-    }
-
+    this.drawBars();
     this.drawLegend(legend, colorSchema, this.data.topics);
-
     this.initTooltip();
 
     return this;
@@ -196,13 +186,13 @@ export class BarChart extends Chart {
     });
     const objects = Object.keys(objectMap).map((key) => objectMap[key]);
 
-    const tooltipEvent = new TooltipEvent(this.layout.canvas, objects);
+    const tooltipEvent = new TooltipEvent(this.layout.canvas, objects, this.config.transpose);
     this.tooltip = new Tooltip(this.overlay.container)
       .boundary(this.layout.canvas.innerDim)
       .subscribe(tooltipEvent)
       .draw();
     const bandwidth = this.xAxis.scale.bandwidth();
-    this.axisIndicator = new AxisIndicator(this.grid, 'bar', bandwidth + 20)
+    this.axisIndicator = new AxisIndicator(this.grid, 'bar', bandwidth + 20, this.config.transpose)
       .subscribe(tooltipEvent)
       .draw();
   }
@@ -216,98 +206,155 @@ export class BarChart extends Chart {
       }
       const { xAxis, yAxis } = this.config;
       const { xAxis: xContainer, yAxis: yContainer } = this.layout;
-      this.xAxis = BandAxis.create(xAxis, xContainer, this.data.xs);
-      this.yAxis = LinearAxis.create(yAxis, yContainer, [0, yTop]);
+      if (this.config.transpose) {
+        this.xAxis = BandAxis.create(xAxis, yContainer, this.data.xs);
+        this.yAxis = LinearAxis.create(yAxis, xContainer, [0, yTop]);
+      } else {
+        this.xAxis = BandAxis.create(xAxis, xContainer, this.data.xs);
+        this.yAxis = LinearAxis.create(yAxis, yContainer, [0, yTop]);
+      }
 
       this.ordinalScale = d3.scaleOrdinal()
         .range(this.config.colorSchema.palette);
   }
 
   drawGrid() {
-    const { yAxis } = this.config;
+    const { yAxis, xAxis } = this.config;
     this.grid = new Grid(this.layout.grid);
-    this.grid.drawY(this.yAxis.ticks(), yAxis.grid);
+    if (this.config.transpose) {
+      this.grid.drawX(this.yAxis.ticks(), yAxis.grid);
+    } else {
+      this.grid.drawY(this.yAxis.ticks(), yAxis.grid);
+    }
   }
 
-  drawBarGrouped() {
-    const { scale: xScale } = this.xAxis;
-    const { scale: yScale } = this.yAxis;
+  drawBars() {
+    const xScale = this.xAxis.scale;
+    const yScale = this.yAxis.scale;
+    const selection = this.layout.canvas.selection;
     const xSubScale = d3.scaleBand().domain(this.data.topics).rangeRound([0, xScale.bandwidth()]);
+    const bars = [];
+    const barWidth = this.getBarWidth();
+    const accum = this.data.xs.map(() => 0);
 
-    return this.layout.canvas.selection.append('g')
-      .selectAll('g')
-      .data(this.data.xs)
-      .enter()
-      .append('g')
-        .attr('transform', (x, i) => {
-          return `translate(${xScale(x)}, 0)`;
-        })
-      .selectAll('rect')
-      .data((x, i) => {
-        return this.data.series.map((d) => {
-          return {
-            x: d.topic,
-            y: d.data[i],
-            xs: this.data.xs[i],
-            xIndex: i,
-          };
-        });
-      })
-      .enter()
-      .append('rect')
-        .attr('class', 'bar')
-        .attr('fill', (d, i) => this.ordinalScale(d.x))
-        .attr('x', (d) => xSubScale(d.x))
-        .attr('width', xSubScale.bandwidth())
-        .attr('y', (d) => yScale(0))
-        .attr('height', 0);
-  }
+    this.data.series.forEach((d) => {
+      d.data.forEach((value, i) => {
+        const color = this.ordinalScale(d.topic);
+        const barHeight = yScale(value);
+        let x1, y1, x2, y2;
+        // 纵向堆叠，每次记录上一次堆叠高度
+        if (this.config.stack) {
+          x1 = xScale(this.data.xs[i]);
+          y1 = accum[i];
+          x2 = x1 + barWidth;
+          y2 = y1 + barHeight;
+          accum[i] = y2;
+        } else {
+          x1 = xScale(this.data.xs[i]) + xSubScale(d.topic);
+          y1 = yScale(0);
+          x2 = x1 + barWidth;
+          y2 = barHeight;
+        }
 
-  drawBarStack() {
-    const { scale: xScale } = this.xAxis;
-    const { scale: yScale } = this.yAxis;
-    const dataByTopic = this.data.dataByTopic;
-
-    return this.layout.canvas.selection.append('g')
-      .selectAll('g')
-      .data(d3.stack().keys(this.data.topics)(dataByTopic))
-      .enter()
-      .append('g')
-        .attr('fill', (d) => {
-          return this.ordinalScale(d.key);
-        })
-      .selectAll('rect')
-      .data((d) => d)
-      .enter()
-      .append('rect')
-      .attr('x', (d, i) => {
-        const x = this.data.xs[i];
-        return xScale(x);
-      })
-      .attr('y', this.layout.canvas.dim.height)
-      .attr('width', xScale.bandwidth)
-      .attr('height', 0);
-  }
-
-  appendAnimationGrouped(bars) {
-    const { scale: xScale } = this.xAxis;
-    const { scale: yScale } = this.yAxis;
-    bars.transition()
-      .delay((d, i) => i * 10)
-      .attr('y', (d) => yScale(d.y))
-      .attr('height', (d) => this.layout.canvas.dim.height - yScale(d.y));
-  }
-
-  appendAnimationStack(bars) {
-    const { scale: xScale } = this.xAxis;
-    const { scale: yScale } = this.yAxis;
-    bars.transition()
-      .delay((d, i) => i * 10)
-      .attr('y', (d, i) => {
-        return yScale(d[1]);
-      })
-      .attr('height', (d, i) => {
-        return yScale(d[0]) - yScale(d[1]);
+        const bar = new Bar(selection)
+        .from(this.coordinate.apply(new Point2D(x1, y1)))
+        .to(this.coordinate.apply(new Point2D(x2, y2)))
+        .color(color);
+        bars.push(bar);
       });
+    });
+
+    bars.forEach((bar) => bar.draw().animate(this.config.transpose));
+  }
+
+  getBarWidth() {
+    if (this.config.stack) {
+      return this.xAxis.scale.bandwidth();
+    } else {
+      const scale = d3.scaleBand().domain(this.data.topics).rangeRound([0, this.xAxis.scale.bandwidth()]);
+      return scale.bandwidth();
+    }
+  }
+}
+
+class Bar {
+  selection: SelectionType;
+  private fill: string;
+  private p1: Point2D;
+  private p2: Point2D;
+
+  get shape() {
+    return this.selection.select('rect');
+  }
+
+  get width() {
+    return Math.abs(this.p1.x - this.p2.x);
+  }
+
+  get height() {
+    return Math.abs(this.p1.y - this.p2.y);
+  }
+
+  /**
+   * rect base 需取小的坐标值
+   */
+  get base() {
+    const { p1, p2 } = this;
+    const x = p1.x < p2.x ? p1.x : p2.x;
+    const y = p1.y < p2.y ? p1.y : p2.y;
+    return new Point2D(x, y);
+  }
+
+  get top() {
+    const { p1, p2 } = this;
+    const x = p1.x > p2.x ? p1.x : p2.x;
+    const y = p1.y > p2.y ? p1.y : p2.y;
+    return new Point2D(x, y);
+  }
+
+  constructor(selection: SelectionType) {
+    this.selection = selection.append('g');
+  }
+
+  from(from: Point2D) {
+    this.p1 = from;
+    return this;
+  }
+
+  to(to: Point2D) {
+    this.p2 = to;
+    return this;
+  }
+
+  color(color: string) {
+    this.fill = color;
+    return this;
+  }
+
+  draw() {
+    const { width, height } = this;
+    const { x, y } = this.base;
+    this.selection.append('rect')
+    .attr('width', width)
+    .attr('height', height)
+    .attr('fill', this.fill)
+    .attr('x', x)
+    .attr('y', y);
+
+    return this;
+  }
+
+  animate(horizontal = false) {
+    if (!horizontal) {
+      this.shape.attr('height', 0)
+        .attr('y', this.top.y)
+        .transition()
+          .attr('y', this.base.y)
+          .attr('height', this.height);
+    } else {
+      this.shape.attr('width', 0)
+        .transition()
+          .attr('width', this.width);
+    }
   }
 }

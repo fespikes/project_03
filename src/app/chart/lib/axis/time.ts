@@ -31,10 +31,10 @@ export class TimeAxis extends AxisBase {
 
   constructor(
     public config: TimeAxisConfig,
-    container: SelectionType,
+    selection: SelectionType,
     position: AxisPosition,
   ) {
-    super(container, position, config);
+    super(selection, position, config);
   }
 
   draw(domain: any[], range: [number, number]) {
@@ -51,7 +51,7 @@ export class TimeAxis extends AxisBase {
       .tickPadding(tick.padding)
       .tickFormat(d3.timeFormat(tick.timeFormat));
 
-    this.container.append('g')
+    this.selection.append('g')
       .attr('class', 'time-axis')
       .call(this.axis);
 

@@ -31,10 +31,10 @@ export class LinearAxis extends AxisBase {
 
   constructor(
     public config: LinearAxisConfig,
-    container: SelectionType,
+    selection: SelectionType,
     position: AxisPosition,
   ) {
-    super(container, position, config);
+    super(selection, position, config);
   }
 
   draw(domain: any[], range: [number, number]) {
@@ -49,7 +49,7 @@ export class LinearAxis extends AxisBase {
     this.axis.ticks(tick.count)
       .tickPadding(tick.padding);
 
-    this.container.append('g')
+    this.selection.append('g')
       .attr('class', 'linear-axis')
       .call(this.axis);
 
