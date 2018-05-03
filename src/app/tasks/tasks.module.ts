@@ -4,8 +4,8 @@ import { I18nModule } from '../i18n';
 import { FormsModule } from '@angular/forms';
 
 import { TuiModule, TuiModalService } from 'tdc-ui';
-import { SharedModule } from '../shared';
 
+import { SharedModule, TecApiService } from '../shared';
 import { TasksComponent } from './tasks.component';
 import { TasksRoutingModule } from './tasks-routing.module';
 import { TasksService } from './tasks.service';
@@ -25,6 +25,7 @@ import { TasksService } from './tasks.service';
   providers: [
     TuiModalService,
     TasksService,
+    TecApiService,
   ],
   entryComponents: [
   ],

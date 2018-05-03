@@ -16,7 +16,7 @@
 
       <span>
         <tui-select
-          [(ngModel)]="objectOption"
+          [(ngModel)]="objectOption.statusAlias"
           (ngModelChange)="fetchData(true)"
           style="width: 160px;"
         >
@@ -77,7 +77,7 @@
       </tui-table>
     </div>
     <div class="tui-layout-main-pagination-footer">
-      <tui-pagination [(pagination)]="pagination" (paginationChange)="getTenants()">
+      <tui-pagination [(pagination)]="pagination" (paginationChange)="fetchData()">
       </tui-pagination>
     </div>
   </div>

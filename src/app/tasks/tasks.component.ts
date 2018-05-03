@@ -4,7 +4,7 @@ import { TuiModalRef, TUI_MODAL_DATA, Pagination, TuiMessageService } from 'tdc-
 import { TranslateService } from '../i18n';
 
 import { Task } from '../shared';
-import { TaskFilter } from './tasks.model';
+import { TaskFilter, status } from './tasks.model';
 import { TasksService } from './tasks.service';
 
 @Component({
@@ -22,7 +22,7 @@ export class TasksComponent implements OnInit {
   allData: any[] = [];
   filter = new TaskFilter();
   options: any;
-  objectOption: string = '';
+  objectOption: any = {};
 
   constructor(
     private service: TasksService,
@@ -40,7 +40,7 @@ export class TasksComponent implements OnInit {
         options.push(item);
       });
       this.options = options;
-      this.objectOption = this.options[0]['statusAlias'];
+      this.objectOption = this.options[0]/*['statusAlias']*/;
     });
 
     this.fetchData();
@@ -50,7 +50,7 @@ export class TasksComponent implements OnInit {
     this.loading = true;
     this.filter.page = this.pagination.page;
     this.filter.size = this.pagination.size;
-    this.filter.status = this.objectOption;
+    this.filter.status = this.objectOption.status;
     this.service.getTasks(this.filter).subscribe(response => {
       this.tableData = response.data;
       this.pagination = response.pagination;
