@@ -1,0 +1,19 @@
+TASKS:
+  TOTAL: 任务总计
+  DETAILS: 任务详情
+  ALL: 全部状态
+  NO_LINK: 链接地址不存在
+  REMOVE_SUCCEED: 删除成功
+  REMOVE_FAILURE: 删除失败
+  SHOW_REMOVED: 显示已删除任务
+  ID: 编号
+  DESCRIPTION: 任务描述
+  TYPE: 类型
+  STATUS: 状态
+  LAST_UPDATED: 最近更新时间
+  CREATOR: 创建人
+  APPLICANT: 申请人
+  APPLY_TENANT: 申请租户
+  VIEW_DETAILS: 查看任务详情
+  OPERATE: 操作
+  REMOVE: 删除

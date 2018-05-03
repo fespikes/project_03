@@ -63,6 +63,10 @@ const routes: Routes = [
         loadChildren: './account/account.module#AccountModule',
       },
       {
+        path: 'tasks',
+        loadChildren: './tasks/tasks.module#TasksModule',
+      },
+      {
         path: '',
         redirectTo: 'abstract',
         pathMatch: 'full',

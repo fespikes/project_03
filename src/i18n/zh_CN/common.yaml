@@ -4,6 +4,7 @@ LAYOUT:
   TENANT: 租户
   NODE: 主机
   SYSTEM: 系统服务
+  TASKS: 任务
   TICKET: 工单
   ORGANIZATION: 组织结构
   ADMINISTRATOR_LIST: 管理员列表

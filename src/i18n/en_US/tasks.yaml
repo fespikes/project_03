@@ -1,0 +1,19 @@
+TASKS:
+  TOTAL: Total
+  DETAILS: Task details
+  ALL: All
+  NO_LINK: "Link doesn't exist"
+  REMOVE_SUCCEED: Remove succeed
+  REMOVE_FAILURE: Failure remove
+  SHOW_REMOVED: Show removed tasks
+  ID: ID
+  DESCRIPTION: Description
+  TYPE: Type
+  STATUS: Status
+  LAST_UPDATED: Last Updated
+  CREATOR: Creator
+  APPLICANT: Applicant
+  APPLY_TENANT: Apply Tenant
+  VIEW_DETAILS: View Task Details
+  OPERATE: Operate
+  REMOVE: Remove

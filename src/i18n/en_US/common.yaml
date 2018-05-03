@@ -4,6 +4,7 @@ LAYOUT:
   TENANT: Tenant
   NODE: Node
   SYSTEM: System Service
+  TASKS: tasks
   TICKET: Ticket
   ORGANIZATION: Organization
   ADMINISTRATOR_LIST: administrators
