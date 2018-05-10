@@ -32,7 +32,7 @@ export class AdministratorsComponent implements OnInit {
       this.tableData = response.data || [];
       this.pagination = response.pagination || {
         'page': 1,
-        'total': 3,
+        'total': 0,
         'size': 10,
       };
       this.loading = false;

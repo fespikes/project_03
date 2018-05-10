@@ -7,6 +7,9 @@ import { I18nModule } from '../i18n';
 
 import { TicketRoutingModule } from './ticket-routing.module';
 import { TicketComponent } from './ticket.component';
+import { TicketService } from './ticket.service';
+import { TicketDetailsComponent } from './ticket-details/ticket-details.component';
+import { ConfirmComponent } from './confirm/confirm.component';
 
 @NgModule({
   imports: [
@@ -18,6 +21,14 @@ import { TicketComponent } from './ticket.component';
   ],
   declarations: [
     TicketComponent,
+    TicketDetailsComponent,
+    ConfirmComponent,
+  ],
+  entryComponents: [
+    ConfirmComponent,
+  ],
+  providers: [
+    TicketService,
   ],
 })
 export class TicketModule { }

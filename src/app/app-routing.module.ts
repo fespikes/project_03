@@ -39,7 +39,7 @@ const routes: Routes = [
         loadChildren: './system/system.module#SystemModule',
       },
       {
-        path: 'ticket',
+        path: 'tickets',
         loadChildren: './ticket/ticket.module#TicketModule',
       },
       {
@@ -61,6 +61,10 @@ const routes: Routes = [
       {
         path: 'account',
         loadChildren: './account/account.module#AccountModule',
+      },
+      {
+        path: 'tasks',
+        loadChildren: './tasks/tasks.module#TasksModule',
       },
       {
         path: '',

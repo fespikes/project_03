@@ -57,3 +57,17 @@ export const resourceTypes = {
   storage: 'STORAGE',
   memory: 'MEMORY',
 };
+
+export class Task {
+  id: string;
+  applyTenant: string;
+  applyUser: string;
+  creator: string;
+  description: string;
+  link: string;
+  status: string;
+  statusAlias: string;
+  type: string;
+  typeAlias: string;
+  updateTime: string;
+}

@@ -1,2 +1,38 @@
 TICKET:
   NAME: Ticket
+  All: All Tickets
+  NO_DESCRIPTION: No Description
+  UNRESOLVED: Unresolved Job
+  TOTAL: Total
+  SHOW_HANDLED: Show handled tickets
+  ID: ID
+  TICKET_DETAILS: Ticket Details
+  PRIORITY: Priority
+  TITLE: Title
+  STATUS: Status
+  CREATOR: Creator
+  CREATE_TIME: Create time
+  END_TIME: End Time
+  TIME_SCOPE: Time Scope
+  OPERATE: Operate
+  VIEW_DETAILS: View Details
+  TENANT: Tenant
+  ATTACHMENT: Attachment
+  APPLIED_DATA: Application Record
+  TABLES: Tables
+  COLUMNS: Columns
+  FILTER_PARAM: Filter Condition
+  SYNC_CYCLE: Sync Cycle
+  OPERATION_RECORD: Operation Record
+  TICKET_STATUS: Deal With
+  APPROVE: Approve
+  COMMENT_RESOLUTION: Comments/Resolution
+  CONFIRM: Submit
+  SURE: Confirm that
+  REJECT: Reject
+  REJECT_TICKET: Reject Ticket
+  AGREE_ON_TICKET: Agree on Ticket
+  QUIT: Quit
+  USE: Changed
+  FROM: From
+  CHANGED_TO: To

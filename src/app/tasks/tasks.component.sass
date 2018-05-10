@@ -1,0 +1,46 @@
+@import 'util'
+
+.container
+  display: flex
+  flex-direction: column
+  min-height: 100%
+
+.content
+  flex: 1
+
+.flex-title
+  display: flex
+  justify-content: space-between
+
+  span
+    height: 38px
+    line-height: 38px
+
+  #show
+    margin-left: 30px
+    margin-top: -3px
+
+  .search-field
+    margin-left: 30px
+
+.table
+  flex: 1
+  font-size: 13px
+
+  .fixed-div
+    position: relative
+
+  .fixed-span
+    width: 100%
+    overflow: hidden
+    text-overflow: ellipsis
+    white-space: nowrap
+    &:before, &:after
+      z-index: 100
+
+
+  .operation
+
+    .remove
+      position: relative
+      left: 24px

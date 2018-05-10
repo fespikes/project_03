@@ -1,0 +1,84 @@
+<div class="tui-layout-vertical">
+  <div class="tui-layout-main-container container">
+    <div class="tui-layout-main-title flex-title">
+      <span>
+        {{'TASKS.TOTAL' | translate}}:
+        <span>{{pagination.total}}</span>
+        <span>
+          <input
+            [(ngModel)]="filter.deleted"
+            type="checkbox" id="show"
+            (ngModelChange)="fetchData(true)"
+          />
+          <label for="show">{{'TASKS.SHOW_REMOVED' | translate}}</label>
+        </span>
+      </span>
+
+      <span>
+        <tui-select
+          [(ngModel)]="objectOption.statusAlias"
+          (ngModelChange)="fetchData(true)"
+          style="width: 160px;"
+        >
+          <tui-select-option
+            *ngFor="let option of options"
+            [value]="option.status"
+            [label]="option.statusAlias"
+          >
+            {{ option.statusAlias }}
+          </tui-select-option>
+        </tui-select>
+
+        <tui-search
+          [(ngModel)]="filter.keyword"
+          (ngModelChange)="fetchData(true)"
+          class="search-field"
+        ></tui-search>
+      </span>
+    </div>
+
+    <div class="container-operation-bar"></div>
+
+    <div class="container-content content">
+      <tui-table [tuiTableFlex]="[1.5,2,1,1,1.5,1,1,1,1]" [loading]="loading" class="tui-table table">
+        <tui-table-head>
+          <div>{{'TASKS.ID' | translate}}</div>
+          <div>{{'TASKS.DESCRIPTION' | translate}}</div>
+          <div>{{'TASKS.TYPE' | translate}}</div>
+          <div>{{'TASKS.STATUS' | translate}}</div>
+          <div>{{'TASKS.LAST_UPDATED' | translate}}</div>
+          <div>{{'TASKS.CREATOR' | translate}}</div>
+          <div>{{'TASKS.APPLICANT' | translate}}</div>
+          <div>{{'TASKS.APPLY_TENANT' | translate}}</div>
+          <div>{{'TASKS.OPERATE' | translate}}</div>
+        </tui-table-head>
+
+        <tui-table-row *ngFor="let task of tableData">
+          <div>{{task.id}}</div>
+          <div class="fixed-div">
+            <span class="text-ellipsis" tuiTooltip="{{task.description}}">{{task.description}}</span>
+          </div>
+          <div>{{task.typeAlias}}</div>
+          <div>{{task.statusAlias}}</div>
+          <div>{{task.updateTime | date: 'yyyy/MM/dd h:mm a'}}</div>
+          <div>{{task.creator}}</div>
+          <div>{{task.applyUser}}</div>
+          <div class="text-ellipsis">{{task.applyTenant}}</div>
+          <div class="operation">
+            <span tuiTooltip="{{'TASKS.VIEW_DETAILS' | translate}}">
+              <svg tuiIcon="search-square" (click)="viewDetails(task)"></svg>
+            </span>
+
+            <span tuiTooltip="{{'TASKS.REMOVE' | translate}}" class="remove">
+              <svg tuiIcon="trash" (click)="removeTask(task)"></svg>
+            </span>
+          </div>
+        </tui-table-row>
+      </tui-table>
+    </div>
+    <div class="tui-layout-main-pagination-footer">
+      <tui-pagination [(pagination)]="pagination" (paginationChange)="fetchData()">
+      </tui-pagination>
+    </div>
+  </div>
+</div>

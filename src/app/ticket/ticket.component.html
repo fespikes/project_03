@@ -1,3 +1,72 @@
-<p>
-  ticket works!
-</p>
+<div class="tui-layout-vertical">
+  <div class="tui-layout-main-container container">
+    <div class="tui-layout-main-title flex-title">
+      <span>
+        {{'TICKET.TOTAL' | translate}}:
+        <span>{{pagination.total}}</span>
+      </span>
+
+      <span>
+        <input
+          [(ngModel)]="filter.isResolved"
+          type="checkbox" id="show"
+          (ngModelChange)="fetchData(true)"
+        />
+        <label for="show">{{'TICKET.SHOW_HANDLED' | translate}}</label>
+        <tui-search
+          [(ngModel)]="search"
+          (ngModelChange)="fetchData(true)"
+          class="search-field"
+        ></tui-search>
+      </span>
+    </div>
+
+    <!-- <div class="container-operation-bar"></div> -->
+
+    <div class="container-content content">
+      <tui-table [tuiTableFlex]="[0.8,1,2,1.5,1.5,1.5,1.5,1]" [loading]="loading" class="tui-table table">
+        <tui-table-head>
+          <div>{{'TICKET.ID' | translate}}</div>
+          <div>{{'TICKET.PRIORITY' | translate}}</div>
+          <div>{{'TICKET.TITLE' | translate}}</div>
+          <div>{{'TICKET.STATUS' | translate}}</div>
+          <div>{{'TICKET.CREATOR' | translate}}</div>
+          <div>{{'TICKET.CREATE_TIME' | translate}}</div>
+          <div>{{'TICKET.END_TIME' | translate}}</div>
+          <div>{{'TICKET.OPERATE' | translate}}</div>
+        </tui-table-head>
+
+        <tui-table-row *ngFor="let item of tableData">
+          <div>{{item.id}}</div>
+          <div>
+            <span class="{{item.priority | lowercase}} priority">{{item.priority}}</span>
+          </div>
+          <div>{{item.title}}</div>
+          <div>
+            <svg
+              [class.resolved]="item.status !== statuses['unresolved']"
+              class="icon-circle"
+              tuiIcon="circle"></svg>
+            {{item.status}}
+            </div>
+          <div>{{item.submitter}}</div>
+          <div>{{item.createdTime | date: 'yyyy/MM/dd h:mm a'}}</div>
+          <div class="text-ellipsis">{{item.dueDate | date: 'yyyy/MM/dd h:mm a'}}</div>
+          <div class="operation">
+            <span
+              tuiTooltip="{{'TICKET.VIEW_DETAILS' | translate}}"
+              (click)="gotoTicketDetail(item)"
+              class="hand"
+            >
+              <svg tuiIcon="search-square"></svg>
+            </span>
+          </div>
+        </tui-table-row>
+      </tui-table>
+    </div>
+    <div class="tui-layout-main-pagination-footer">
+      <tui-pagination [(pagination)]="pagination" (paginationChange)="fetchData()">
+      </tui-pagination>
+    </div>
+  </div>
+</div>
