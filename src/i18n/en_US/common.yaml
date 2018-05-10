@@ -5,7 +5,7 @@ LAYOUT:
   NODE: Node
   SYSTEM: System Service
   TASKS: tasks
-  TICKET: Ticket
+  TICKETS: Tickets
   ORGANIZATION: Organization
   ADMINISTRATOR_LIST: administrators
   CHANGE_PWD: change password

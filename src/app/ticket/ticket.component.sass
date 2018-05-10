@@ -1,0 +1,60 @@
+@import 'util'
+
+.container
+  display: flex
+  flex-direction: column
+  min-height: 100%
+
+.content
+  flex: 1
+
+.flex-title
+  display: flex
+  justify-content: space-between
+
+  span
+    height: 38px
+    line-height: 38px
+
+  #show
+    margin-left: 30px
+    margin-top: -3px
+
+  .search-field
+    margin-left: 30px
+
+.table
+  flex: 1
+  font-size: 13px
+
+  .hand
+    cursor: pointer
+
+  .priority
+    height: 14px
+    line-height: 14px
+    padding: 0 3px
+    border-radius: 4px
+    font-size: 10px
+    color: #fff
+    &.critical
+      background: #f24747
+    &.high
+      background: #fba23a
+    &.normal
+      background: #4a75d3
+    &.low
+      background: #41bbf2
+    &.very_low
+      background: #c6d2e5
+
+  .icon-circle
+    position: relative
+    top: 3px
+    fill: #2FC2D5
+
+    &.resolved
+      fill: #C2C9D5
+
+  .operation
+

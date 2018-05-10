@@ -19,7 +19,6 @@ export class TasksComponent implements OnInit {
   loading = false;
   pagination = new Pagination();
   tableData: any[] = [];
-  allData: any[] = [];
   filter = new TaskFilter();
   options: any;
   objectOption: any = {};

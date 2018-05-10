@@ -10,16 +10,20 @@ import {
 } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 
-import { TasksService } from './tasks.service';
 import { TranslateService } from '../i18n';
+import { TicketServiceStub } from './ticket.service.stub';
+import { TicketService } from './ticket.service';
 
-describe('TasksService', () => {
+describe('TicketService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [
+        {
+          provide: TicketService,
+          useClass: TicketServiceStub,
+        },
         MockBackend,
         BaseRequestOptions,
-        TasksService,
         TecApiService,
         { provide: Http,
           useFactory: (backend: ConnectionBackend,
@@ -28,19 +32,11 @@ describe('TasksService', () => {
           },
           deps: [MockBackend, BaseRequestOptions],
         },
-        {
-          provide: TranslateService,
-          useValue: {
-            get() {
-              return Observable.of();
-            },
-          },
-        },
       ],
     });
   });
 
-  it('should be created', inject([TasksService], (service: TasksService) => {
+  it('should be created', inject([TicketService], (service: TicketService) => {
     expect(service).toBeTruthy();
   }));
 });

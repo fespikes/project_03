@@ -39,7 +39,7 @@ const routes: Routes = [
         loadChildren: './system/system.module#SystemModule',
       },
       {
-        path: 'ticket',
+        path: 'tickets',
         loadChildren: './ticket/ticket.module#TicketModule',
       },
       {

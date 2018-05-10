@@ -1,0 +1,204 @@
+@import 'util'
+
+.tui-property
+  @include flex-align(center, flex-start)
+
+  svg, .icon-img
+    width: 24px
+    height: 24px
+    margin-right: 0.5rem
+    fill: $color-icon
+
+  .value
+    min-height: 1rem
+    font-size: $font-md
+
+  .label
+    line-height: 1.25rem
+    font-size: $font-sm
+    color: $text-mute
+
+@mixin tui-property-mixin($type, $color)
+  \:host(.tui-property-#{$type})
+    .value
+      color: $color
+
+@include tui-property-mixin(danger, $brand-danger)
+@include tui-property-mixin(normal, $text-mute)
+
+
+\:host /deep/
+  display: flex
+  flex-direction: row
+  .tui-submenu
+    position: relative
+
+    &-body .content
+      margin-top: 0
+
+    &-collapsed
+      .submenu-filter
+        visibility: hidden
+
+  .tui-layout-main-nav
+    span
+      display: flex
+      align-items: center
+      cursor: pointer
+
+    svg
+      fill: $brandblue
+      margin-right: 0.5rem
+
+  .tui-layout-main-container
+    display: flex
+    flex-direction: column
+    margin: 0
+    min-height: 100%
+    min-width: 50rem
+
+    .tui-layout-main-title
+      font-size: 1.5rem
+      display: flex
+      justify-content: space-between
+
+      .left
+        display: flex
+        align-items: center
+
+      .icon-circle
+        margin: 0 8px 0 50px
+
+      .status
+        font-weight: 300
+        font-size: 14px
+
+.ticket-detail
+  display: flex
+  align-items: center
+  padding-left: 1rem
+
+  .description
+    display: flex
+    flex: 1
+    flex-direction: column
+    height: 60px
+    overflow-y: auto
+    word-break: break-all
+    margin-top: 20px
+    font-size: 14px
+    padding-right: 1.5rem
+
+    .attachments
+      height: 40px
+      line-height: 50px
+
+      .names
+        cursor: pointer
+        color: #305ab5
+      a
+        text-decoration: none
+
+
+  .ticket-property
+    flex: 1
+    display: flex
+    align-items: center
+    align-content: flex-start
+    padding-left: 2rem
+    border-left: 1px solid $lightgrey
+
+    .tui-property
+      flex: 1
+      min-width: 10rem
+      margin: 0.75rem 5rem 0.75rem 0
+
+.ticket-parts
+
+  .title
+    line-height: 48px
+    height: 48px
+    border-bottom: 1px #edf1f7 solid
+    position: relative
+    text-indent: 30px
+    font-size: 14px
+    -webkit-margin-before: 0
+    -webkit-margin-after: 0
+
+    &:before
+      content: ""
+      display: inline-block
+      width: 0
+      height: 16px
+      border-left: 3px #305ab5 solid
+      position: absolute
+      left: 20px
+      top: 16px
+
+  .applications-ul
+    padding: 0 16px
+
+    li
+      line-height: 42px
+      height: 42px
+      display: flex
+      flex-direction: row
+    span
+      font-size: 12px
+
+    span:first-child
+      flex-basis: 100px
+      text-align: right
+      padding-right: 20px
+
+  .record-ul
+    padding: 0 16px 0 30px
+
+    li
+      line-height: 32px
+      height: 32px
+      font-size: 12px
+
+    span
+      padding: 0 3px
+
+form
+  margin: 16px
+  padding: 16px
+  background: #f7f8fc
+  font-size: 12px
+
+  .row
+    display: flex
+    flex-direction: row
+
+  .row>label
+    flex-basis: 100px
+    padding-right: 20px
+    line-height: 48px
+    min-height: 48px
+    text-align: right
+
+  .field
+    display: flex
+    flex: 1
+    line-height: 48px
+    min-height: 48px
+
+    .radio
+      position: relative
+      top: 17px
+      &:focus
+        outline: none
+    label
+      padding-left: 9px
+
+    #no
+      margin-left: 32px
+
+  textarea
+    flex: 1
+
+  .buttons
+    text-align: center
+    padding-top: 24px

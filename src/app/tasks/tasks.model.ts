@@ -15,4 +15,4 @@ export enum status {
   deleted = 'DELETED',
   terminating = 'TERMINATING',
   all = 'ALL',
-};
+}

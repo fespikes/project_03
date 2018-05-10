@@ -39,11 +39,11 @@ describe('TasksComponent', () => {
         SharedModule,
       ],
       providers: [
+        TasksService,
+        TecApiService,
         MockBackend,
         BaseRequestOptions,
         TuiModalService,
-        TasksService,
-        TecApiService,
         { provide: Http,
           useFactory: (backend: ConnectionBackend,
                        defaultOptions: BaseRequestOptions) => {
@@ -59,7 +59,7 @@ describe('TasksComponent', () => {
             },
             translateKey() {},
           },
-        }
+        },
       ],
     })
     .compileComponents();

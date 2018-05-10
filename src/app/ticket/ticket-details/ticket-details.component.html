@@ -1,0 +1,192 @@
+<tui-submenu backUrl="../../">
+  <tui-submenu-list
+    menuTitle="{{(isResolved? 'TICKET.All': 'TICKET.UNRESOLVED') | translate}}"
+    [items]="submenuItems"
+  ></tui-submenu-list>
+</tui-submenu>
+
+<div class="tui-layout-vertical" [tuiLoading]="loading" tccLoadingHeight="500px">
+  <div class="tui-layout-main-container">
+    <div class="tui-layout-main-title">
+      <div class="left">
+        {{('TICKET.TICKET_DETAILS' | translate) + ' - ' + ticket.id}}
+        <svg
+          [class.resolved]="ticket.status !== statuses['unresolved']"
+          class="icon-circle"
+          tuiIcon="circle"></svg>
+        <span class="status">{{ticket.status}}</span>
+      </div>
+      <div class="right">
+      </div>
+    </div>
+
+    <div class="ticket-detail">
+      <div class="description">
+        <span>{{ticket.description}}</span>
+        <span *ngIf="!ticket.description">{{'TICKET.NO_DESCRIPTION' | translate}}</span>
+        <!--no attachment this version-->
+        <!---
+        <span
+          class="attachments"
+        >
+          {{'TICKET.ATTACHMENT' | translate}}
+          <span class="names">
+            <a href="" target="_blank">{{ticket.attachments + 'abacwge.csv'}}</a>
+            <a href="">{{ticket.attachments + 'cwge.csv'}}</a>
+          </span>
+        </span>
+        -->
+      </div>
+      <div>
+        <div class="ticket-property">
+          <!-- <tui-property icon="network" label="{{'TICKET.PRIORITY' | translate}}" [value]="ticket.priority"> </tui-property> -->
+          <div class="tui-property">
+            <img class="icon-img" tecImgSrc="priority.svg" tecImgPrefix="/assets/svg" />
+            <div>
+              <div class="value">{{ticket.priority}}</div>
+              <div class="label">{{'TICKET.PRIORITY' | translate}}</div>
+            </div>
+          </div>
+          <tui-property icon="clock" label="{{'TICKET.TIME_SCOPE' | translate}}" [value]="(ticket.createdTime | date:'y/M/d') + ' - ' + (ticket.modifiedTime | date:'y/M/d')"></tui-property>
+        </div>
+
+        <div class="ticket-property">
+          <tui-property icon="user-slash
+  " label="{{'TICKET.CREATOR' | translate}}" [value]="ticket.submitter"></tui-property>
+          <!-- <tui-property icon="user-slash
+            " label="{{'TICKET.TENANT' | translate}}" [value]="ticket.submitter"></tui-property> -->
+
+          <div class="tui-property">
+            <img class="icon-img" tecImgSrc="talent.svg" tecImgPrefix="/assets/svg" />
+            <div>
+              <div class="value">{{ticket.tenant}}</div>
+              <div class="label">{{'TICKET.TENANT' | translate}}</div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <!--S: 申请数据-->
+    <div class="application ticket-parts">
+      <h4 class="title">{{'TICKET.APPLIED_DATA' | translate}}</h4>
+      <ul class="applications-ul">
+        <li>
+          <span>{{'TICKET.TABLES' | translate}}:</span>
+          <span>{{applyInfoTable}}</span>
+        </li>
+        <li>
+          <span>{{'TICKET.COLUMNS' | translate}}:</span>
+          <span>{{applyInfoColumns}}</span>
+        </li>
+        <!--
+        due to the api have no data, this version hide it.
+        <li>
+          <span>{{'TICKET.FILTER_PARAM' | translate}}:</span>
+          <span>create_time > 1242r3253545 and create_time < 23t3fefewfewfef</span>
+        </li>
+        -->
+        <li>
+          <span>{{'TICKET.SYNC_CYCLE' | translate}}:</span>
+          <span>{{applyInfoCycle}}</span>
+        </li>
+      </ul>
+    </div>
+
+    <div
+      *ngIf="ticketChanges && (ticketChanges.length>0)"
+      class="operation-record ticket-parts"
+    >
+      <h4 class="title">{{'TICKET.OPERATION_RECORD' | translate}}</h4>
+      <ul class="record-ul">
+        <li *ngFor="let item of ticketChanges; let idx = index;">
+          <span>{{(idx + 1)}}.</span>
+          <span *ngIf="!!item.operateTime">{{item.operateTime | date: 'yyyy/MM/dd h:mm a'}}</span>
+          <span *ngIf="!!item.operator">{{item.operator}}</span>
+          <span>{{'TICKET.USE' | translate}}</span>
+          <span *ngIf="!!item.field">{{item.field}}</span>
+          <!--
+            TODO: confirm with BE when API change.
+            http://172.16.0.244:8080/browse/WARP-23757
+          -->
+          <span *ngIf="item.field!=='Comment'">{{'TICKET.FROM' | translate}}</span>
+          <span *ngIf="!!item.oldValue">{{item.oldValue}}</span>
+          <span>{{'TICKET.CHANGED_TO' | translate}}</span>
+          <span *ngIf="!!item.newValue">{{item.newValue}}</span>
+        </li>
+        <!--
+        <li>1.2018/4/27  admin 将 状态 从 未处理 变为 已同意</li>
+        <li>2.2018/4/27  admin 将 状态 从 未处理 变为 已同意</li>
+        -->
+      </ul>
+    </div>
+
+    <!--due to the logic: in ECO ticket changes/ -->
+    <div
+      *ngIf="ticketChanges && (ticketChanges.length===0)"
+      class="ticket-operation ticket-parts"
+    >
+      <h4 class="title">{{'TICKET.OPERATE' | translate}}</h4>
+        <form
+          [formGroup]="myForm"
+          (ngSubmit)="onSubmit(myForm.value)"
+          class="form-operate"
+        >
+          <div
+            [class.error]="!myForm.get('agreed').valid && myForm.get('agreed').touched"
+            class="row"
+          >
+            <label for="yes">{{'TICKET.TICKET_STATUS' | translate}}</label>
+            <div class="field">
+              <input class="radio true"
+                name="agreed"
+                type="radio"
+                id="yes"
+                value=true
+                [attr.checked]="true"
+                [formControl]="myForm.controls['agreed']"
+              />
+              <label for="yes">{{'TICKET.APPROVE' | translate}}</label>
+              <input class="radio false"
+                name="agreed"
+                type="radio"
+                id="no"
+                value=false
+                [formControl]="myForm.controls['agreed']"
+              />
+              <label for="no">{{'TICKET.REJECT' | translate}}</label>
+            </div>
+          </div>
+
+          <div
+            [class.error]="!myForm.get('comment').valid && myForm.get('comment').touched"
+            class="row"
+          >
+            <label for="commentId">{{'TICKET.COMMENT_RESOLUTION' | translate}}</label>
+            <div class="field">
+              <textarea
+                rows="3"
+                class="textarea"
+                placeholder=""
+                id="commentId"
+                [formControl]="myForm.controls['comment']"
+              >
+                {{''}}
+              </textarea>
+            </div>
+          </div>
+
+          <div class="buttons">
+            <button
+              class="tui-btn-md tui-btn-primary tui-btn"
+              type="submit"
+              [disabled]="!myForm.valid ? 'disabled' : null"
+            >{{'TICKET.CONFIRM' | translate}}</button>
+          </div>
+
+        </form>
+
+    </div>
+  </div>
+</div>
