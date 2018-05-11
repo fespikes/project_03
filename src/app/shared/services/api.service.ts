@@ -86,14 +86,14 @@ export class TecApiService {
       .map((res: Response) => this.formatResponse(res));
   }
 
-  post(url: string, body: Object = {}): Observable<any> {
+  post(url: string, body: Object = {}, config?: ApiConfig): Observable<any> {
     return this.http.post(
       this.makeUrl(url),
       JSON.stringify(body),
       { headers: this.headers },
     )
       .catch(this.formatErrors)
-      .map((res: Response) => this.formatResponse(res));
+      .map((res: Response) => this.formatResponse(res, config));
   }
 
   delete(url): Observable<any> {

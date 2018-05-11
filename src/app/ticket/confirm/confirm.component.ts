@@ -70,6 +70,7 @@ export class ConfirmComponent {
 
   fields: any = {};
   ticket: Ticket;
+  poptitle: string;
 
   constructor(
     private modal: TuiModalRef,
@@ -80,6 +81,7 @@ export class ConfirmComponent {
   ) {
     this.ticket = data.ticket || {};
     this.fields = data.fields;
+    this.poptitle = data.poptitle;
   }
 
   submit() {
@@ -89,7 +91,11 @@ export class ConfirmComponent {
     };
     this.service.updateTheTicket(param)
       .subscribe(res => {
-        this.message.warning('no tickets, thus have no left menu');
+        if (res.resultCode === '000000') {
+          this.message.success(this.poptitle + this.translateService.translateKey('TICKET.SUCCEED'));
+        } else {
+          this.message.error(this.poptitle + this.translateService.translateKey('TICKET.FAILURE'));
+        }
         this.closeSelf();
       });
   }
