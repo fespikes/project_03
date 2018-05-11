@@ -18,7 +18,9 @@ export class TicketService {
   }
 
   updateTheTicket(param: any): Observable<any> {
-    return this.api.post(`tickets/${param.ticketId}/operation`, {...param.followUpEntity});
+    return this.api.post(`tickets/${param.ticketId}/operation`,
+      {...param.followUpEntity},
+      {fullResponse: true});
   }
 
 }

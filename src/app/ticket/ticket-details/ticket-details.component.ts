@@ -184,7 +184,11 @@ export class TicketDetailsComponent implements OnInit {
       data: {
         fields: fields,
         ticket: this.ticket,
+        poptitle: title,
       },
+    }).subscribe(res => {
+      this.getRouterParams();
+      this.getMenuData();
     });
   }
 

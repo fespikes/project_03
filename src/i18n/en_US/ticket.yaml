@@ -36,3 +36,5 @@ TICKET:
   USE: Changed
   FROM: From
   CHANGED_TO: To
+  SUCCEED: Succeed
+  FAILURE: Failure

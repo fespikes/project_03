@@ -36,3 +36,5 @@ TICKET:
   USE: 将
   FROM: 从
   CHANGED_TO: 变为
+  SUCCEED: 成功
+  FAILURE: 失败
