@@ -21,7 +21,7 @@ export class TasksComponent implements OnInit {
   tableData: any[] = [];
   filter = new TaskFilter();
   options: any;
-  objectOption: any = {};
+  objectOption: string; // any = {};
 
   constructor(
     private service: TasksService,
@@ -39,7 +39,7 @@ export class TasksComponent implements OnInit {
         options.push(item);
       });
       this.options = options;
-      this.objectOption = this.options[0]/*['statusAlias']*/;
+      this.objectOption = this.options[0]['statusAlias'];
     });
 
     this.fetchData();
@@ -49,7 +49,7 @@ export class TasksComponent implements OnInit {
     this.loading = true;
     this.filter.page = this.pagination.page;
     this.filter.size = this.pagination.size;
-    this.filter.status = this.objectOption.status;
+    this.filter.status = this.objectOption;
     this.service.getTasks(this.filter).subscribe(response => {
       this.tableData = response.data;
       this.pagination = response.pagination;

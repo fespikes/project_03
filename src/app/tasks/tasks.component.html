@@ -16,7 +16,7 @@
 
       <span>
         <tui-select
-          [(ngModel)]="objectOption.statusAlias"
+          [(ngModel)]="objectOption"
           (ngModelChange)="fetchData(true)"
           style="width: 160px;"
         >
@@ -25,7 +25,7 @@
             [value]="option.status"
             [label]="option.statusAlias"
           >
-            {{ option.statusAlias }}
+            {{ option.statusAlias | tuiDefault }}
           </tui-select-option>
         </tui-select>
 
