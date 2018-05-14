@@ -58,4 +58,8 @@ export class TecUtilService {
     }
     return tgt;
   }
+
+  checkSucceed(res) {
+    return res.resultCode === '000000' ? true: false;
+  }
 }

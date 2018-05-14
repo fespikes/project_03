@@ -1,6 +1,7 @@
 import { Component, OnInit, Inject, Injectable  } from '@angular/core';
 import { TuiModalRef, TUI_MODAL_DATA, TuiMessageService } from 'tdc-ui';
 
+import { TecUtilService } from '../../shared';
 import { TicketService } from '../ticket.service';
 import { TranslateService } from '../../i18n';
 import { Ticket } from '../ticket.model';
@@ -78,6 +79,7 @@ export class ConfirmComponent {
     private translateService: TranslateService,
     private service: TicketService,
     private message: TuiMessageService,
+    private util: TecUtilService,
   ) {
     this.ticket = data.ticket || {};
     this.fields = data.fields;
@@ -91,7 +93,7 @@ export class ConfirmComponent {
     };
     this.service.updateTheTicket(param)
       .subscribe(res => {
-        if (res.resultCode === '000000') {
+        if (this.util.checkSucceed(res)) {
           this.message.success(this.poptitle + this.translateService.translateKey('TICKET.SUCCEED'));
         } else {
           this.message.error(this.poptitle + this.translateService.translateKey('TICKET.FAILURE'));
