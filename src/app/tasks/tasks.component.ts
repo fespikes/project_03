@@ -49,7 +49,11 @@ export class TasksComponent implements OnInit {
     this.loading = true;
     this.filter.page = this.pagination.page;
     this.filter.size = this.pagination.size;
+
     this.filter.status = this.objectOption;
+    if ( this.options && (this.objectOption === this.options[0]['statusAlias'])) {
+      this.filter.status = '';
+    }
     this.service.getTasks(this.filter).subscribe(response => {
       this.tableData = response.data;
       this.pagination = response.pagination;
