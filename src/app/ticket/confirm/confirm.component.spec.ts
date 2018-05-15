@@ -12,7 +12,7 @@ import { Observable } from 'rxjs/Observable';
 
 import { TuiModule, TuiModalService, TuiModalRef, TUI_MODAL_DATA, TuiMessageService } from 'tdc-ui';
 
-import { SharedModule, TecApiService } from '../../shared';
+import { SharedModule, TecApiService, TecUtilService } from '../../shared';
 import { TranslateService, I18nModule } from '../../i18n';
 import { ConfirmComponent } from './confirm.component';
 import { TicketService } from '../ticket.service';
@@ -35,6 +35,7 @@ describe('ConfirmComponent', () => {
       ],
       providers: [
         TuiModalRef,
+        TecUtilService,
         {
           provide: TUI_MODAL_DATA,
           useValue: {},
