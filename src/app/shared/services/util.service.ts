@@ -60,6 +60,6 @@ export class TecUtilService {
   }
 
   checkSucceed(res) {
-    return res.resultCode === '000000' ? true: false;
+    return res.resultCode === '000000' ? true : false;
   }
 }
