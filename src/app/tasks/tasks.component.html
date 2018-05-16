@@ -4,7 +4,10 @@
       <span>
         {{'TASKS.TOTAL' | translate}}:
         <span>{{pagination.total}}</span>
-        <span>
+      </span>
+
+      <span>
+        <span style="margin-right: 30px">
           <input
             [(ngModel)]="filter.deleted"
             type="checkbox" id="show"
@@ -12,9 +15,6 @@
           />
           <label for="show">{{'TASKS.SHOW_REMOVED' | translate}}</label>
         </span>
-      </span>
-
-      <span>
         <tui-select
           [(ngModel)]="objectOption"
           (ngModelChange)="fetchData(true)"
