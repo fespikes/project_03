@@ -55,9 +55,7 @@
 
         <tui-table-row *ngFor="let task of tableData">
           <div class="text-ellipsis">{{task.id}}</div>
-          <div class="fixed-div">
-            <span class="text-ellipsis" tuiTooltip="{{task.description}}">{{task.description}}</span>
-          </div>
+          <div class="fixed-div">{{task.description}}</div>
           <div class="text-ellipsis">{{task.typeAlias}}</div>
           <div class="text-ellipsis">{{task.statusAlias}}</div>
           <div>{{task.updateTime | date: 'yyyy/MM/dd h:mm a'}}</div>
