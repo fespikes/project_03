@@ -34,6 +34,11 @@ export class TicketComponent implements OnInit {
     this.fetchData();
   }
 
+  showResolved() {
+    this.pagination.page = 1;
+    this.fetchData();
+  }
+
   fetchData(fromStart = false) {
     this.loading = true;
     this.filter.page = this.pagination.page;

@@ -8,7 +8,7 @@
           <input
             [(ngModel)]="filter.deleted"
             type="checkbox" id="show"
-            (ngModelChange)="fetchData(true)"
+            (ngModelChange)="showRemoved()"
           />
           <label for="show">{{'TASKS.SHOW_REMOVED' | translate}}</label>
         </span>
