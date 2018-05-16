@@ -10,7 +10,7 @@
         <input
           [(ngModel)]="filter.isResolved"
           type="checkbox" id="show"
-          (ngModelChange)="fetchData(true)"
+          (ngModelChange)="showResolved()"
         />
         <label for="show">{{'TICKET.SHOW_HANDLED' | translate}}</label>
         <tui-search

@@ -45,6 +45,11 @@ export class TasksComponent implements OnInit {
     this.fetchData();
   }
 
+  showRemoved() {
+    this.pagination.page = 1;
+    this.fetchData();
+  }
+
   fetchData(fromStart = false) {
     this.loading = true;
     this.filter.page = this.pagination.page;
