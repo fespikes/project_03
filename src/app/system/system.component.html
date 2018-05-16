@@ -1,26 +1,30 @@
 <div class="tui-layout-vertical">
   <div class="tui-layout-main-container">
     <div class="tui-layout-main-title">
-      <span>{{'SYSTEM.NAME' | translate}}:</span>
-      <span>{{pagination.total}}</span>
-    </div>
 
-    <div class="container-operation-bar">
-      <tui-select
-        [(ngModel)]="filter.tag"
-        (ngModelChange)="filterChange()"
-        placeholder="{{'SYSTEM.INSTANCE.SELECT_TAG' | translate}}"
-      >
-        <tui-select-option
-          *ngFor="let label of labels"
-          [value]="label.value"
-          [label]="label.label"
+      <span class="left">
+        <span>{{'SYSTEM.NAME' | translate}}:</span>
+        <span>{{pagination.total}}</span>
+      </span>
+
+      <span class="right">
+        <tui-select
+          [(ngModel)]="filter.tag"
+          (ngModelChange)="filterChange()"
+          placeholder="{{'SYSTEM.INSTANCE.SELECT_TAG' | translate}}"
+          style="margin-right: 30px"
         >
-          {{label.label | tuiDefault | translate}}
-        </tui-select-option>
-      </tui-select>
-      <tui-search [(ngModel)]="filter.service" (ngModelChange)="filterChange()">
-      </tui-search>
+          <tui-select-option
+            *ngFor="let label of labels"
+            [value]="label.value"
+            [label]="label.label"
+          >
+            {{label.label | tuiDefault | translate}}
+          </tui-select-option>
+        </tui-select>
+        <tui-search [(ngModel)]="filter.service" (ngModelChange)="filterChange()">
+        </tui-search>
+      </span>
     </div>
 
     <div class="container-content">

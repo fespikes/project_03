@@ -1,18 +1,17 @@
 <div class="tui-layout-vertical">
   <div class="tui-layout-main-container">
-    <div class="tui-layout-main-title">
-      <span>{{'TENANT.OVERVIEW.TOTAL' | translate}}:</span>
-      <span>{{pagination.total}}</span>
-    </div>
-
-    <div class="container-operation-bar">
+    <div class="tui-layout-main-title flex-title">
       <div class="left">
+        <span>{{'TENANT.OVERVIEW.TOTAL' | translate}}:</span>
+        <span>{{pagination.total}}</span>
+      </div>
+      <div class="right">
         <tui-checkbox [(ngModel)]="filter.canceled" (ngModelChange)="filterChange()">
           <span class="message">{{'TENANT.OVERVIEW.SHOW_CANCELED_TENANT' | translate}}</span>
         </tui-checkbox>
-      </div>
-      <div class="right">
-        <button tuiBtn="primary" (click)="export()">
+        <button tuiBtn="primary" (click)="export()"
+          style="margin-right: 30px"
+        >
           <svg tuiIcon="export"></svg>
           <span>{{'TENANT.OVERVIEW.EXPORT' | translate}}</span>
         </button>

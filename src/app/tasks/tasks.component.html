@@ -4,7 +4,10 @@
       <span>
         {{'TASKS.TOTAL' | translate}}:
         <span>{{pagination.total}}</span>
-        <span>
+      </span>
+
+      <span>
+        <span style="margin-right: 30px">
           <input
             [(ngModel)]="filter.deleted"
             type="checkbox" id="show"
@@ -12,9 +15,6 @@
           />
           <label for="show">{{'TASKS.SHOW_REMOVED' | translate}}</label>
         </span>
-      </span>
-
-      <span>
         <tui-select
           [(ngModel)]="objectOption"
           (ngModelChange)="fetchData(true)"
@@ -55,13 +55,19 @@
 
         <tui-table-row *ngFor="let task of tableData">
           <div class="text-ellipsis">{{task.id}}</div>
-          <div class="fixed-div">{{task.description}}</div>
+          <div tuiTooltip="{{task.description}}">
+            <span class="text-ellipsis desc inner">{{task.description}}</span>
+          </div>
           <div class="text-ellipsis">{{task.typeAlias}}</div>
           <div class="text-ellipsis">{{task.statusAlias}}</div>
           <div>{{task.updateTime | date: 'yyyy/MM/dd h:mm a'}}</div>
           <div>{{task.creator}}</div>
           <div>{{task.applyUser}}</div>
-          <div class="text-ellipsis">{{task.applyTenant}}</div>
+          <div
+            tuiTooltip="{{task.applyTenant}}"
+          >
+            <span class="text-ellipsis applyTenant inner">{{task.applyTenant}}</span>
+          </div>
           <div class="operation">
             <span tuiTooltip="{{'TASKS.VIEW_DETAILS' | translate}}">
               <svg tuiIcon="search-square" (click)="viewDetails(task)"></svg>
