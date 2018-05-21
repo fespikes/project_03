@@ -6,6 +6,7 @@ import { TicketFilter, Ticket } from './ticket.model';
 
 @Injectable()
 export class TicketServiceStub {
+  constructor(private api: TecApiService) { }
 
   getTickets(filter?: TicketFilter): Observable<any> {
     return Observable.of({

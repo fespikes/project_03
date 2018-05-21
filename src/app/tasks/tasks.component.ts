@@ -22,6 +22,7 @@ export class TasksComponent implements OnInit {
   filter = new TaskFilter();
   options: any;
   objectOption: string; // any = {};
+  status: any = status;
 
   constructor(
     private service: TasksService,
@@ -60,7 +61,7 @@ export class TasksComponent implements OnInit {
       this.filter.status = '';
     }
     this.service.getTasks(this.filter).subscribe(response => {
-      this.tableData = response.data;
+      this.tableData = response.data || [];
       this.pagination = response.pagination;
       this.loading = false;
     });

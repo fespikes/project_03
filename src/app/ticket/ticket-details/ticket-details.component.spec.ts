@@ -12,6 +12,7 @@ import {
   ResponseOptions,
 } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
+import { TranslatePipeStub, TranslateServiceMock } from '../../mock';
 
 import { TranslateDeactivator, TranslateResolver, TranslateToken } from '../../i18n';
 import {
@@ -26,6 +27,7 @@ import { TicketDetailsComponent } from './ticket-details.component';
 // import { ticketRoutes } from '../ticket-routing.module';
 import { TicketService } from '../ticket.service';
 import { TuiModule, TuiModalService, TuiMessageService } from 'tdc-ui';
+import { TicketServiceStub } from '../ticket.service.stub';
 const ticketRoutes: Routes = [
   {
     path: '',
@@ -59,23 +61,39 @@ describe('TicketDetailsComponent', () => {
       declarations: [
         TicketDetailsComponent,
         BlankComponent,
+        TranslatePipeStub,
       ],
       providers: [
-        TicketService,
+        {
+          provide: TicketService,
+          useFactory: (api: TecApiService) => {
+            return new TicketServiceStub(api);
+          },
+          deps: [TecApiService],
+        },
         TecApiService,
-        TuiMessageService,
+        {
+          provide: TuiMessageService,
+          useValue: {
+            warning() {
+              return () => {};
+            },
+          },
+        },
         {
           provide: TranslateService,
-          useValue: {
-            get() {
-              return Observable.of();
-            },
-            translateKey() {},
-          },
+          useClass: TranslateServiceMock,
         },
         MockBackend,
         BaseRequestOptions,
-        TuiModalService,
+        {
+          provide: TuiModalService,
+          useValue: {
+            open() {
+              return function(res) {};
+            },
+          },
+        },
         { provide: Http,
           useFactory: (backend: ConnectionBackend,
                        defaultOptions: BaseRequestOptions) => {
@@ -91,10 +109,13 @@ describe('TicketDetailsComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(TicketDetailsComponent);
     component = fixture.componentInstance;
+    component.getRouterParams = () => {
+      return false;
+    };
     fixture.detectChanges();
   });
 
-  // it('should create', () => {
-  //   expect(component).toBeTruthy();
-  // });
+  it('should create', () => {
+    expect(component).toBeTruthy();
+  });
 });

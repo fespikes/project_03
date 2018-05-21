@@ -24,7 +24,13 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 export class AdministratorsServiceStub {
   fetchAdministrators(filter?: any): Observable<any> {
-    return Observable.of({});
+    return Observable.of({
+      paginations: {
+        page: 1,
+        size: 10,
+        total: 20,
+      },
+    });
   }
 
   addAdministrator(params) {
@@ -58,7 +64,9 @@ describe('AdministratorsComponent', () => {
       providers: [
         {
           provide: AdministratorsService,
-          useClass: AdministratorsServiceStub,
+          useFactory: () => {
+            return new AdministratorsServiceStub();
+          },
         },
         TuiModalService,
         TecApiService,

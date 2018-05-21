@@ -73,7 +73,7 @@
               <svg tuiIcon="search-square" (click)="viewDetails(task)"></svg>
             </span>
 
-            <span tuiTooltip="{{'TASKS.REMOVE' | translate}}" class="remove">
+            <span *ngIf="task.status !== status.deleted" tuiTooltip="{{'TASKS.REMOVE' | translate}}" class="remove">
               <svg tuiIcon="trash" (click)="removeTask(task)"></svg>
             </span>
           </div>

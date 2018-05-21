@@ -9,14 +9,15 @@ import {
 } from '@angular/http';
 
 import { Observable } from 'rxjs/Observable';
-
+import { TranslatePipeStub, TranslateServiceMock } from '../../mock';
 import { TuiModule, TuiModalService, TuiModalRef, TUI_MODAL_DATA, TuiMessageService } from 'tdc-ui';
 
 import { SharedModule, TecApiService, TecUtilService } from '../../shared';
 import { TranslateService, I18nModule } from '../../i18n';
 import { ConfirmComponent } from './confirm.component';
 import { TicketService } from '../ticket.service';
-import { TranslatePipeStub } from '../../mock';
+import { TicketFilter, Ticket } from '../ticket.model';
+import { TicketServiceStub } from '../ticket.service.stub';
 
 describe('ConfirmComponent', () => {
   let component: ConfirmComponent;
@@ -42,14 +43,15 @@ describe('ConfirmComponent', () => {
         },
         {
           provide: TranslateService,
-          useValue: {
-            get() {
-              return Observable.of();
-            },
-            translateKey() {},
-          },
+          useClass: TranslateServiceMock,
         },
-        TicketService,
+        {
+          provide: TicketService,
+          useFactory: (api: TecApiService) => {
+            return new TicketServiceStub(api);
+          },
+          deps: [TecApiService],
+        },
         TecApiService,
         TuiMessageService,
 
