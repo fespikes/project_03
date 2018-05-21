@@ -54,7 +54,10 @@ describe('TicketComponent', () => {
       providers: [
         {
           provide: TicketService,
-          useClass: TicketServiceStub,
+          useFactory: (api: TecApiService) => {
+            return new TicketServiceStub(api);
+          },
+          deps: [TecApiService],
         },
         TecApiService,
         MockBackend,

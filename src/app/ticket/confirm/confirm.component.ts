@@ -72,6 +72,8 @@ export class ConfirmComponent {
   fields: any = {};
   ticket: Ticket;
   poptitle: string;
+  timer: any;
+  toggle: boolean;
 
   constructor(
     private modal: TuiModalRef,
@@ -91,6 +93,12 @@ export class ConfirmComponent {
       ticketId: this.ticket.id,
       followUpEntity: this.fields,
     };
+
+    if (this.toggle) {
+      return;
+    }
+
+    this.toggle = true;
     this.service.updateTheTicket(param)
       .subscribe(res => {
         if (this.util.checkSucceed(res)) {
@@ -100,6 +108,11 @@ export class ConfirmComponent {
         }
         this.closeSelf();
       });
+
+    setTimeout(() => {
+        this.toggle = false;
+    }, 500);
+
   }
 
   closeSelf() {
