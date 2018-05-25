@@ -47,7 +47,7 @@
               [class.resolved]="item.status !== statuses['unresolved']"
               class="icon-circle"
               tuiIcon="circle"></svg>
-            {{item.status}}
+            {{item.statusAlias}}
             </div>
           <div>{{item.submitter}}</div>
           <div>{{item.createdTime | date: 'yyyy/MM/dd h:mm a'}}</div>

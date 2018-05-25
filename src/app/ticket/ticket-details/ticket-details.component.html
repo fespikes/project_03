@@ -14,7 +14,7 @@
           [class.resolved]="ticket.status !== statuses['unresolved']"
           class="icon-circle"
           tuiIcon="circle"></svg>
-        <span class="status">{{ticket.status}}</span>
+        <span class="status">{{ticket.statusAlias}}</span>
       </div>
       <div class="right">
       </div>
@@ -43,7 +43,7 @@
           <div class="tui-property">
             <img class="icon-img" tecImgSrc="priority.svg" tecImgPrefix="/assets/svg" />
             <div>
-              <div class="value">{{ticket.priority}}</div>
+              <div class="value">{{ticket.priorityAlias}}</div>
               <div class="label">{{'TICKET.PRIORITY' | translate}}</div>
             </div>
           </div>
