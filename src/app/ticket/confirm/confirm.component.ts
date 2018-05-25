@@ -20,11 +20,21 @@ import { Ticket } from '../ticket.model';
       <span class="highlight">{{ticket.title}}</span>?
     </p>
     <div class="buttons">
-      <button
+      <button *ngIf="toggle!=='disabled'"
+        class="left"
+        class="left"
+        tuiBtn="primary"
+        tuiBtn="primary"
+        (click)="submit()"
+        (click)="submit()"
+      >{{'TICKET.CONFIRM' | translate}}</button>
+      <button *ngIf="toggle==='disabled'"
         class="left"
         tuiBtn="primary"
         (click)="submit()"
+        disabled
       >{{'TICKET.CONFIRM' | translate}}</button>
+
       <button
         class="right"
         tuiBtn="default"
@@ -73,7 +83,7 @@ export class ConfirmComponent {
   ticket: Ticket;
   poptitle: string;
   timer: any;
-  toggle: boolean;
+  toggle = '';
 
   constructor(
     private modal: TuiModalRef,
@@ -94,11 +104,11 @@ export class ConfirmComponent {
       followUpEntity: this.fields,
     };
 
-    if (this.toggle) {
+    if (this.toggle === 'disabled') {
       return;
     }
 
-    this.toggle = true;
+    this.toggle = 'disabled';
     this.service.updateTheTicket(param)
       .subscribe(res => {
         if (this.util.checkSucceed(res)) {
@@ -106,11 +116,15 @@ export class ConfirmComponent {
         } else {
           this.message.error(this.poptitle + this.translateService.translateKey('TICKET.FAILURE'));
         }
+        if (this.timer) {
+          clearTimeout(this.timer);
+        }
+
         this.closeSelf();
       });
 
     setTimeout(() => {
-        this.toggle = false;
+        this.toggle = '';
     }, 500);
 
   }

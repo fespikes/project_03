@@ -46,10 +46,12 @@ export class Ticket {
   dueDate?: string;
   modifiedTime?: string;
   priority?: string;
+  priorityAlias?: string;
   resolution?: string;
   scope?: string;
   serviceType?: string;
   status?: string;
+  statusAlias?: string;
   submitter?: string;
   title?: string;
 
