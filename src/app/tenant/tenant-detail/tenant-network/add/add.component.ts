@@ -25,6 +25,7 @@ export class AddComponent implements OnInit {
   networkName: string;
   // TODO: get it from API
   policies: Array<string>;
+  policy: string;
   protocols: Array<string>;
 
   constructor(
@@ -36,6 +37,7 @@ export class AddComponent implements OnInit {
 
   ngOnInit() {
     this.policies = policies;
+    this.policy = policies[0];
     this.protocols = protocols;
 
     this.myForm = this.fb.group({

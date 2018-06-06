@@ -10,24 +10,25 @@
     >
       <div class="field-box">
         <label for="policyId"><span>*</span>{{'TENANT.NETWORK.POLICY' | translate}}</label>
-        <input
-          class="field"
-          type="text"
-          placeholder=""
-          id="policyId"
-          autocomplete="off"
-          [formControl]="myForm.controls['policy']"
-         />
-        <!--
+<!--         <input
+  class="field"
+  type="text"
+  placeholder=""
+  id="policyId"
+  autocomplete="off"
+  [formControl]="myForm.controls['policy']"
+ /> -->
         <tui-select
           placeholder="tui select example"
-          [(ngModel)]="policies"
+          [formControl]="myForm.controls['policy']"
+          [(ngModel)]="policy"
+          required
         >
-          <tui-select-option *ngFor="let option of policies" [value]="option">
+          <tui-select-option *ngFor="let option of policies"
+            [value]="option">
             {{option | tuiDefault }}
           </tui-select-option>
         </tui-select>
-         -->
       </div>
 
       <div
