@@ -128,8 +128,8 @@ export class TenantService {
   }
 
   // 删除网络规则
-  deleteSecurityRule(networkName: string): Observable<any> {
-    return this.api.delete(`networks/${networkName}/securityRules`);
+  deleteSecurityRule(networkName: string, body: any): Observable<any> {
+    return this.api.post(`networks/${networkName}/securityRules/deletions`, body);
   }
 
   deleteTenant(body): Observable<any> {

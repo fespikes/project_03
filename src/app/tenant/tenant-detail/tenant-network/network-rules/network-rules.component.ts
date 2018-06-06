@@ -70,7 +70,9 @@ export class NetworkRulesComponent implements OnInit {
 
   remove(network: Network) {
     this.loading = true;
-    this.tenantService.deleteSecurityRule(this.networkRulesFilter.networkName).subscribe(res => {
+    const body = {...network};
+    delete body.description;
+    this.tenantService.deleteSecurityRule(this.networkRulesFilter.networkName, body).subscribe(res => {
       this.loading = false;
       this.fetchSecurityRules();
     });
