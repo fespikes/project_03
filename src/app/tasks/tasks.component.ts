@@ -23,6 +23,7 @@ export class TasksComponent implements OnInit {
   options: any;
   objectOption: string; // any = {};
   status: any = status;
+  sortMode: 'single';  // 'multiple'
 
   constructor(
     private service: TasksService,
@@ -51,7 +52,7 @@ export class TasksComponent implements OnInit {
     this.fetchData();
   }
 
-  fetchData(fromStart = false) {
+  fetchData(changes?, fromStart = false) {
     this.loading = true;
     this.filter.page = this.pagination.page;
     this.filter.size = this.pagination.size;
@@ -60,7 +61,17 @@ export class TasksComponent implements OnInit {
     if ( this.options && (this.objectOption === this.options[0]['statusAlias'])) {
       this.filter.status = '';
     }
-    this.service.getTasks(this.filter).subscribe(response => {
+
+    if (changes && changes.sortedBy) {
+      const {sortedBy, order} = changes;
+      this.filter.sortedBy = sortedBy;
+      this.filter.order = order;
+    }else {
+      delete this.filter.order;
+      delete this.filter.sortedBy;
+    }
+
+    return this.service.getTasks(this.filter).subscribe(response => {
       this.tableData = response.data || [];
       this.pagination = response.pagination;
       this.loading = false;

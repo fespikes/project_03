@@ -42,6 +42,7 @@ const ticketRoutes: Routes = [
 ];
 
 describe('TicketDetailsComponent', () => {
+  let originalTime;
   let component: TicketDetailsComponent;
   let fixture: ComponentFixture<TicketDetailsComponent>;
 
@@ -107,12 +108,19 @@ describe('TicketDetailsComponent', () => {
   }));
 
   beforeEach(() => {
+    originalTime = jasmine.DEFAULT_TIMEOUT_INTERVAL;
+    jasmine.DEFAULT_TIMEOUT_INTERVAL = 20000;
+
     fixture = TestBed.createComponent(TicketDetailsComponent);
     component = fixture.componentInstance;
     component.getRouterParams = () => {
       return false;
     };
     fixture.detectChanges();
+  });
+
+  afterEach(() => {
+    jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTime;
   });
 
   it('should create', () => {

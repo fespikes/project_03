@@ -14,6 +14,8 @@ export class TicketFilter {
   ticketId?: string;
   statuses?: string[];
   keywords?: string[];
+  sortedBy?: any;
+  order?: any;
 }
 
 

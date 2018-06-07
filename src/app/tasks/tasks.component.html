@@ -41,12 +41,15 @@
 
     <div class="container-content content">
       <tui-table [tuiTableFlex]="[0.5,2.5,1,0.8,1.5,1,1,1,1]" [loading]="loading" class="tui-table table">
-        <tui-table-head>
-          <div>{{'TASKS.ID' | translate}}</div>
+        <tui-table-head
+          [sortMode]="sortMode"
+          (sortChange)="fetchData($event)"
+        >
+          <tui-table-head-cell sortKey="id">{{'TASKS.ID' | translate}}</tui-table-head-cell>
           <div>{{'TASKS.DESCRIPTION' | translate}}</div>
           <div>{{'TASKS.TYPE' | translate}}</div>
           <div>{{'TASKS.STATUS' | translate}}</div>
-          <div>{{'TASKS.LAST_UPDATED' | translate}}</div>
+          <tui-table-head-cell sortKey="updateTime">{{'TASKS.LAST_UPDATED' | translate}}</tui-table-head-cell>
           <div>{{'TASKS.CREATOR' | translate}}</div>
           <div>{{'TASKS.APPLICANT' | translate}}</div>
           <div>{{'TASKS.APPLY_TENANT' | translate}}</div>

@@ -20,6 +20,7 @@ import { TicketFilter, Ticket } from '../ticket.model';
 import { TicketServiceStub } from '../ticket.service.stub';
 
 describe('ConfirmComponent', () => {
+  let originalTime;
   let component: ConfirmComponent;
   let fixture: ComponentFixture<ConfirmComponent>;
 
@@ -71,10 +72,16 @@ describe('ConfirmComponent', () => {
   }));
 
   beforeEach(() => {
+    originalTime = jasmine.DEFAULT_TIMEOUT_INTERVAL;
+    jasmine.DEFAULT_TIMEOUT_INTERVAL = 20000;
     fixture = TestBed.createComponent(ConfirmComponent);
     component = fixture.componentInstance;
     component.fields = {};
     fixture.detectChanges();
+  });
+
+  afterEach(() => {
+    jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTime;
   });
 
   it('should create', () => {

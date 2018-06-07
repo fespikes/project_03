@@ -43,6 +43,7 @@ export class AdministratorsServiceStub {
 }
 
 describe('AdministratorsComponent', () => {
+  let originalTimeout;
   let component: AdministratorsComponent;
   let fixture: ComponentFixture<AdministratorsComponent>;
 
@@ -92,11 +93,16 @@ describe('AdministratorsComponent', () => {
   }));
 
   beforeEach(() => {
+    originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
+    jasmine.DEFAULT_TIMEOUT_INTERVAL = 50000;
+
     fixture = TestBed.createComponent(AdministratorsComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
-
+  afterEach(() => {
+    jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
+  });
   it('should create', () => {
     expect(component).toBeTruthy();
   });

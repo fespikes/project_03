@@ -25,14 +25,17 @@
 
     <div class="container-content content">
       <tui-table [tuiTableFlex]="[0.8,1,2,1.5,1.5,1.5,1.5,1]" [loading]="loading" class="tui-table table">
-        <tui-table-head>
-          <div>{{'TICKET.ID' | translate}}</div>
-          <div>{{'TICKET.PRIORITY' | translate}}</div>
+        <tui-table-head
+          [sortMode]="sortMode"
+          (sortChange)="fetchData($event)"
+        >
+          <tui-table-head-cell sortKey="id">{{'TASKS.ID' | translate}}</tui-table-head-cell>
+          <tui-table-head-cell sortKey="priority">{{'TICKET.PRIORITY' | translate}}</tui-table-head-cell>
           <div>{{'TICKET.TITLE' | translate}}</div>
           <div>{{'TICKET.STATUS' | translate}}</div>
           <div>{{'TICKET.CREATOR' | translate}}</div>
-          <div>{{'TICKET.CREATE_TIME' | translate}}</div>
-          <div>{{'TICKET.END_TIME' | translate}}</div>
+          <tui-table-head-cell sortKey="createdTime">{{'TICKET.CREATE_TIME' | translate}}</tui-table-head-cell>
+          <tui-table-head-cell sortKey="dueDate">{{'TICKET.END_TIME' | translate}}</tui-table-head-cell>
           <div>{{'TICKET.OPERATE' | translate}}</div>
         </tui-table-head>
 

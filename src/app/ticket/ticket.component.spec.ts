@@ -28,6 +28,7 @@ import { TicketServiceStub } from './ticket.service.stub';
 import { TicketService } from './ticket.service';
 
 describe('TicketComponent', () => {
+  let originalTimeout;
   let component: TicketComponent;
   let fixture: ComponentFixture<TicketComponent>;
 
@@ -84,9 +85,16 @@ describe('TicketComponent', () => {
   }));
 
   beforeEach(() => {
+    originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
+    jasmine.DEFAULT_TIMEOUT_INTERVAL = 20000;
+
     fixture = TestBed.createComponent(TicketComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
+  });
+
+  afterEach(() => {
+    jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
   });
 
   it('should create', () => {
