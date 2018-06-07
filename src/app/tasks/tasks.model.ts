@@ -4,6 +4,8 @@ export class TaskFilter {
   deleted? = false;
   status?: string;
   keyword?: string;
+  sortedBy?: any;
+  order?: any;
 }
 
 

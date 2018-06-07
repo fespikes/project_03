@@ -23,6 +23,7 @@
           [formControl]="myForm.controls['policy']"
           [(ngModel)]="policy"
           required
+          ngDefaultControl
         >
           <tui-select-option *ngFor="let option of policies"
             [value]="option">

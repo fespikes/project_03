@@ -35,11 +35,11 @@
     "d3": "^4.10.0",
     "lodash": "4.17.4",
     "lodash-es": "^4.17.4",
-    "moment": "^2.18.1",
     "mark.js": "^8.11.1",
+    "moment": "^2.18.1",
     "normalize.css": "^7.0.0",
     "rxjs": "^5.5.2",
-    "tdc-ui": "^0.3.7",
+    "tdc-ui": "^0.4.6",
     "zone.js": "^0.8.14"
   },
   "devDependencies": {

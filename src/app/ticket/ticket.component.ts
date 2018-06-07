@@ -21,6 +21,7 @@ export class TicketComponent implements OnInit {
   filter = new TicketFilter();
   search: string;
   statuses = Statuses;
+  sortMode: 'single';  // 'multiple'
 
   constructor(
     private route: ActivatedRoute,
@@ -39,11 +40,21 @@ export class TicketComponent implements OnInit {
     this.fetchData();
   }
 
-  fetchData(fromStart = false) {
+  fetchData(changes?, fromStart = false) {
     this.loading = true;
     this.filter.page = this.pagination.page;
     this.filter.size = this.pagination.size;
     this.filter.keywords = [this.search];
+
+    if (changes && changes.sortedBy) {
+      const {sortedBy, order} = changes;
+      this.filter.sortedBy = sortedBy;
+      this.filter.order = order;
+    }else {
+      delete this.filter.order;
+      delete this.filter.sortedBy;
+    }
+
     this.service.getTickets(this.filter).subscribe(res => {
       this.tableData = res.data;
       this.pagination = res.pagination;
