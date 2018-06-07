@@ -47,8 +47,6 @@ describe('TicketDetailsComponent', () => {
   let fixture: ComponentFixture<TicketDetailsComponent>;
 
   beforeEach(async(() => {
-    originalTime = jasmine.DEFAULT_TIMEOUT_INTERVAL;
-    jasmine.DEFAULT_TIMEOUT_INTERVAL = 20000;
     TestBed.configureTestingModule({
       schemas: [NO_ERRORS_SCHEMA],
 
@@ -110,6 +108,9 @@ describe('TicketDetailsComponent', () => {
   }));
 
   beforeEach(() => {
+    originalTime = jasmine.DEFAULT_TIMEOUT_INTERVAL;
+    jasmine.DEFAULT_TIMEOUT_INTERVAL = 20000;
+
     fixture = TestBed.createComponent(TicketDetailsComponent);
     component = fixture.componentInstance;
     component.getRouterParams = () => {
