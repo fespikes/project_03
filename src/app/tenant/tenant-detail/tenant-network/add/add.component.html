@@ -19,7 +19,6 @@
   [formControl]="myForm.controls['policy']"
  /> -->
         <tui-select
-          placeholder="tui select example"
           [formControl]="myForm.controls['policy']"
           [(ngModel)]="policy"
           required
@@ -43,22 +42,24 @@
     >
       <div class="field-box">
         <label for="protocolId"><span>*</span>{{'TENANT.NETWORK.PROTOCOL' | translate}}</label>
-        <input
-          class="field"
-          type="text"
-          placeholder=""
-          id="protocolId"
-          autocomplete="off"
+<!--         <input
+  class="field"
+  type="text"
+  placeholder=""
+  id="protocolId"
+  autocomplete="off"
+  [formControl]="myForm.controls['protocol']"
+ /> -->
+        <tui-select
           [formControl]="myForm.controls['protocol']"
-         />
-        <!-- <tui-select
-          placeholder="tui select example"
-          [(ngModel)]="protocols"
+          [(ngModel)]="protocol"
+          required
+          ngDefaultControl
         >
           <tui-select-option *ngFor="let option of protocols" [value]="option">
             {{option | tuiDefault }}
           </tui-select-option>
-        </tui-select> -->
+        </tui-select>
       </div>
 
       <div

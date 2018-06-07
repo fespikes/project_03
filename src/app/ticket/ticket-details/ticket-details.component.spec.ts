@@ -42,10 +42,13 @@ const ticketRoutes: Routes = [
 ];
 
 describe('TicketDetailsComponent', () => {
+  let originalTime;
   let component: TicketDetailsComponent;
   let fixture: ComponentFixture<TicketDetailsComponent>;
 
   beforeEach(async(() => {
+    originalTime = jasmine.DEFAULT_TIMEOUT_INTERVAL;
+    jasmine.DEFAULT_TIMEOUT_INTERVAL = 20000;
     TestBed.configureTestingModule({
       schemas: [NO_ERRORS_SCHEMA],
 
@@ -113,6 +116,10 @@ describe('TicketDetailsComponent', () => {
       return false;
     };
     fixture.detectChanges();
+  });
+
+  afterEach(() => {
+    jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTime;
   });
 
   it('should create', () => {

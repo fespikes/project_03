@@ -13,4 +13,4 @@ export class Network {
 // 授权策略
 export const policies = [ 'ACCEPT', 'REJECT'];
 // 协议类型
-export const protocols = [ 'tcp'];
+export const protocols = [ ' ', 'TCP', 'UDP'];

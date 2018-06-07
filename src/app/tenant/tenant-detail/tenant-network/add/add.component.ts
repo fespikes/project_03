@@ -27,6 +27,7 @@ export class AddComponent implements OnInit {
   policies: Array<string>;
   policy: string;
   protocols: Array<string>;
+  protocol: string;
 
   constructor(
     private fb: FormBuilder,
@@ -39,6 +40,7 @@ export class AddComponent implements OnInit {
     this.policies = policies;
     this.policy = policies[0];
     this.protocols = protocols;
+    this.protocol = protocols[1];
 
     this.myForm = this.fb.group({
       'policy': [policies[0], Validators.required],
