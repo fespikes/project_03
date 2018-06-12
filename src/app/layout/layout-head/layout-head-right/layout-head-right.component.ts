@@ -12,6 +12,7 @@ export class LayoutHeadRightComponent implements OnInit {
   dropdownDirection = 'bottomCenter';
   profile: any = {
     fullName: '',
+    avatar: '/assets/images/admin.jpeg',
   };
 
   constructor(

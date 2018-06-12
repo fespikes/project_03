@@ -17,6 +17,6 @@
 </div>
 
 <div class="tui-modal-foot">
-  <button tuiBtn="primary" (click)="confirm()" [disabled]="tenant.password.length === 0">{{'TUI.MODAL.CONFIRM' | translate}}</button>
+  <button tuiBtn="primary" (click)="confirm()" [disabled]="(tenant.password.length === 0) || disabled">{{'TUI.MODAL.CONFIRM' | translate}}</button>
   <button tuiBtn="default" (click)="cancel()">{{'TUI.MODAL.CANCEL' | translate}}</button>
 </div>
