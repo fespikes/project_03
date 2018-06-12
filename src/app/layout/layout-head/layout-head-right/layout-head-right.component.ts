@@ -15,6 +15,8 @@ export class LayoutHeadRightComponent implements OnInit {
     avatar: '/assets/images/admin.jpeg',
   };
 
+  entrances: any;
+
   constructor(
     private layoutService: LayoutService,
   ) { }
@@ -22,6 +24,10 @@ export class LayoutHeadRightComponent implements OnInit {
   ngOnInit() {
     this.layoutService.getProfile().subscribe(res => {
       this.profile = res || this.profile;
+    });
+
+    this.layoutService.getEntrances().subscribe(res => {
+      this.entrances = res || this.entrances;
     });
   }
 
