@@ -15,4 +15,8 @@ export class LayoutService {
     window.location.href = '/sso-logout';
   }
 
+  getEntrances(): Observable<any> {
+    return this.api.get(`entrances`);
+  }
+
 }

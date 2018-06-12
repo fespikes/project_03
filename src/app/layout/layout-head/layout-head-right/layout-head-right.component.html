@@ -11,6 +11,16 @@
   {{'LAYOUT.ORGANIZATION' | translate}}
 </div>
 -->
+
+<div class="op-icon position-relative">
+  <img class="icon-img tui-icon" tecImgSrc="ops.svg" tecImgPrefix="/assets/svg"  [tuiDropdownTrigger]="dropOps" />
+</div>
+<tui-dropdown #dropOps [direction]="dropdownDirection" [caret]="true">
+  <tui-dropdown-item class="items no-bolder" *ngFor="let item of entrances">
+    <a href="{{item.link}}" target="_blank">{{item.name}}</a>
+  </tui-dropdown-item>
+</tui-dropdown>
+
 <button class="user-dropdown" tuiBtn="primary" [tuiDropdownTrigger]="dropdown">
   {{profile.fullName}}
 </button>
@@ -29,4 +39,4 @@
   </tui-dropdown-item>
 </tui-dropdown>
 
-<tui-avatar src="assets/images/naruto.png" size="md"></tui-avatar>
+<tui-avatar src="{{profile.avatar}}" size="md"></tui-avatar>

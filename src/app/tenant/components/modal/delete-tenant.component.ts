@@ -14,6 +14,7 @@ export class ModalDeleteTenantComponent implements OnInit {
     uid: '',
     password: '',
   };
+  disabled = false;
 
   constructor(
     private modalRef: TuiModalRef,
@@ -30,13 +31,16 @@ export class ModalDeleteTenantComponent implements OnInit {
   }
 
   confirm() {
+    this.disabled = true;
     this.tenantService.deleteTenant({
       password: this.tenant.password,
       tenantUid: this.tenant.uid,
     })
     .subscribe((result) => {
+      this.disabled = false;
       this.modalRef.close(true);
     }, (error) => {
+      this.disabled = false;
       this.modalService.apiError(error);
     });
   }
