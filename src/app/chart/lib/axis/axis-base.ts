@@ -49,7 +49,7 @@ export abstract class AxisBase {
   abstract scale;
 
   constructor(
-    public selection: SelectionType,
+    public container: SelectionType,
     public position: AxisPosition,
     public config: AxisConfigBase,
   ) {
@@ -69,13 +69,13 @@ export abstract class AxisBase {
   }
 
   styleLine() {
-    this.selection.selectAll('path, line')
+    this.container.selectAll('path, line')
       .attr('stroke', this.config.lineStyle.color)
       .attr('stroke-width', this.config.lineStyle.strokeWidth);
   }
 
   styleText() {
-    this.selection.selectAll('text')
+    this.container.selectAll('text')
       .attr('fill', this.config.textStyle.color)
       .attr('font-size', this.config.textStyle.foneSize);
   }

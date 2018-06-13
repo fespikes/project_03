@@ -2,7 +2,7 @@ export class Rect2D {
   width: number;
   height: number;
 
-  constructor(width = 0, height = 0) {
+  constructor(width: number, height: number) {
     this.width = width;
     this.height = height;
   }
@@ -30,11 +30,6 @@ export class Vector2D {
 export class Point2D {
   x: number;
   y: number;
-
-  constructor(x = 0, y = 0) {
-    this.x = x;
-    this.y = y;
-  }
 }
 
 export class RelativePosition {
