@@ -19,6 +19,7 @@ export class AxisIndicator {
   indicator: Movable;
   x = 0;
   barWidth: number;
+  transpose = false;
 
   get selection() {
     return this.grid.container.selection;
@@ -28,10 +29,17 @@ export class AxisIndicator {
     return this.grid.container.dim.height;
   }
 
-  constructor(grid: Grid, type: AxisIndicatorType, barWidth?: number) {
+  get gridWidth() {
+    return this.grid.container.dim.width;
+  }
+
+  constructor(grid: Grid, type: AxisIndicatorType, barWidth?: number, transpose?: boolean) {
     this.grid = grid;
     this.type = type;
     this.barWidth = barWidth;
+    if (transpose) {
+      this.transpose = transpose;
+    }
   }
 
   subscribe(event: TooltipEvent) {
@@ -69,9 +77,15 @@ export class AxisIndicator {
   }
 
   drawBar() {
-    const base = {x: - this.barWidth / 2, y: 0};
-    this.indicator = ShapeFactory.drawMovableRect(this.selection, base, this.gridHeight,
-      { width: this.barWidth, color: 'rgba(6, 47, 91, .05)' });
+    if (this.transpose) {
+      const base = {x: 0, y: - this.barWidth / 2};
+      this.indicator = ShapeFactory.drawMovableRect(this.selection, base, this.barWidth,
+        { width: this.gridWidth, color: 'rgba(6, 47, 91, .05)' });
+    } else {
+      const base = {x: - this.barWidth / 2, y: 0};
+      this.indicator = ShapeFactory.drawMovableRect(this.selection, base, this.gridHeight,
+        { width: this.barWidth, color: 'rgba(6, 47, 91, .05)' });
+    }
   }
 
   show() {
@@ -83,7 +97,12 @@ export class AxisIndicator {
   }
 
   move(x: number) {
-    const vec = new Vector2D(1, 0);
+    let vec;
+    if (this.transpose) {
+      vec = new Vector2D(0, 1);
+    } else {
+      vec = new Vector2D(1, 0);
+    }
     this.indicator.move(vec, x - this.x);
     this.x = x;
   }

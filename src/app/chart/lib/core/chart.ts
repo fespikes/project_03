@@ -14,6 +14,7 @@ import { Rect2D } from '../helpers/transform-helper';
 import { Margin } from './chart-base';
 import { Overlay } from './overlay';
 import { Layout } from './layout';
+import { Coordinate, Coord } from './coordinate';
 
 export type Constructor<T> = new(...args: any[]) => T;
 
@@ -24,6 +25,7 @@ export class Chart {
   data: any;
   layout: Layout;
   overlay: Overlay;
+  coordinate: Coordinate;
 
   setConfig(config: any) {
     this.config = config;
@@ -57,6 +59,11 @@ export class Chart {
     this.layout = new Layout(this.overlay);
     this.layout.init(root);
     this.layout.layout(dim, margin, legend);
+    const { width: canvasWidth, height: canvasHeight } = this.layout.canvas.innerDim;
+    this.coordinate = Coord.create(canvasWidth, canvasHeight);
+    if (this.config.transpose) {
+      this.coordinate.transpose();
+    }
   }
 
   drawBackgroud() {
