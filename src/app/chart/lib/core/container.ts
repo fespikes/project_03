@@ -228,8 +228,7 @@ export class AxisContainer extends Container {
   get range(): [number, number] {
     const { width, height } = this.dim;
     if (this.align === 'vertical') {
-      // return [height, 0];
-      return [0, height];
+      return [height, 0];
     } else {
       return [0, width];
     }
