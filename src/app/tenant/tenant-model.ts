@@ -121,3 +121,20 @@ export class NetworkRules {
   page: number;
   size: number;
 }
+
+export class TenantAdminFilter {
+  page?: number;
+  size?: number;
+  keyword?: string;
+}
+
+export class TenantAdmin {
+  id?: number;
+  username?: string;
+  password?: string;
+  userEmail?: string;
+  maxTenantQuantity?: string;
+  fullName?: string;
+  company?: string;
+  department?: string;
+}

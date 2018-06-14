@@ -1,13 +1,13 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
-
-import { TuiModalRef } from 'tdc-ui';
+import { OverlayModule } from '@angular/cdk/overlay';
 
 import { TranslatePipeStub, DefaultPipeStub } from 'app/mock';
 import { AddComponent } from './add.component';
 import { AdministratorsService } from '../administrators.service';
 import { TecApiService } from '../../shared';
+import { TuiModalRef, TuiMessageService } from 'tdc-ui';
 
 
 describe('AddComponent', () => {
@@ -20,6 +20,7 @@ describe('AddComponent', () => {
         HttpModule,
         FormsModule,
         ReactiveFormsModule,
+        OverlayModule,
       ],
       declarations: [
         TranslatePipeStub,
@@ -28,6 +29,7 @@ describe('AddComponent', () => {
       ],
       providers: [
         TuiModalRef,
+        TuiMessageService,
         AdministratorsService,
         TecApiService,
       ],

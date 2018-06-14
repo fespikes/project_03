@@ -3,12 +3,13 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { RouterTestingModule } from '@angular/router/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { OverlayModule } from '@angular/cdk/overlay';
 
 import { TranslatePipeStub, DefaultPipeStub } from 'app/mock';
 import { AddComponent } from './add.component';
 import { TenantService } from '../../../tenant.service';
 import { TecApiService } from 'app/shared';
-import { TuiModalRef } from 'tdc-ui';
+import { TuiModalRef, TuiMessageService } from 'tdc-ui';
 
 describe('AddComponent', () => {
   let component: AddComponent;
@@ -19,6 +20,7 @@ describe('AddComponent', () => {
       schemas: [NO_ERRORS_SCHEMA],
       imports: [
         HttpModule,
+        OverlayModule,
         FormsModule,
         ReactiveFormsModule,
         RouterTestingModule,
@@ -32,6 +34,7 @@ describe('AddComponent', () => {
         TuiModalRef,
         TecApiService,
         TenantService,
+        TuiMessageService,
       ],
     })
     .compileComponents();

@@ -12,40 +12,21 @@ import {
 } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 
-import { SharedModule } from '../shared';
-import { TranslateService } from '../i18n';
-import { TuiModalService, TuiMessageService } from 'tdc-ui';
+import { SharedModule } from '../../shared';
+import { TranslateService } from '../../i18n';
+import { TuiModalService } from 'tdc-ui';
 import { TranslatePipeStub, DefaultPipeStub } from 'app/mock';
-import { AdministratorsComponent } from './administrators.component';
-import { AdministratorsService } from './administrators.service';
-import { TecApiService } from '../shared';
+import { TecApiService } from '../../shared';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
+import { OverviewComponent } from './overview.component';
+import { TenantService } from '../tenant.service';
+import TenantServiceStub from '../tenant.service.stub';
 
-export class AdministratorsServiceStub {
-  fetchAdministrators(filter?: any): Observable<any> {
-    return Observable.of({
-      paginations: {
-        page: 1,
-        size: 10,
-        total: 20,
-      },
-    });
-  }
-
-  addAdministrator(params) {
-    return Observable.of({});
-  }
-  deleteAdministrator(id: number) {
-    return Observable.of({});
-  }
-
-}
-
-describe('AdministratorsComponent', () => {
+describe('OverviewComponent', () => {
+  let component: OverviewComponent;
+  let fixture: ComponentFixture<OverviewComponent>;
   let originalTimeout;
-  let component: AdministratorsComponent;
-  let fixture: ComponentFixture<AdministratorsComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -58,15 +39,15 @@ describe('AdministratorsComponent', () => {
       ],
       schemas: [NO_ERRORS_SCHEMA],
       declarations: [
-        AdministratorsComponent,
+        OverviewComponent,
         TranslatePipeStub,
         DefaultPipeStub,
       ],
       providers: [
         {
-          provide: AdministratorsService,
+          provide: TenantService,
           useFactory: () => {
-            return new AdministratorsServiceStub();
+            return new TenantServiceStub();
           },
         },
         TuiModalService,
@@ -80,7 +61,6 @@ describe('AdministratorsComponent', () => {
         MockBackend,
         BaseRequestOptions,
         TuiModalService,
-        TuiMessageService,
         { provide: Http,
           useFactory: (backend: ConnectionBackend,
                        defaultOptions: BaseRequestOptions) => {
@@ -96,15 +76,15 @@ describe('AdministratorsComponent', () => {
   beforeEach(() => {
     originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
     jasmine.DEFAULT_TIMEOUT_INTERVAL = 50000;
-
-    fixture = TestBed.createComponent(AdministratorsComponent);
+    fixture = TestBed.createComponent(OverviewComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
-  afterEach(() => {
-    jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
-  });
+
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+  afterEach(() => {
+    jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
   });
 });

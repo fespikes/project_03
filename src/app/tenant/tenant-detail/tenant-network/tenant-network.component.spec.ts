@@ -10,11 +10,13 @@ import {
   Response,
   ResponseOptions,
 } from '@angular/http';
+import { OverlayModule } from '@angular/cdk/overlay';
 
 import { TenantNetworkComponent } from './tenant-network.component';
 import { TranslatePipeStub } from 'app/mock';
 import { TecApiService } from '../../../shared';
 import { TenantService } from '../../tenant.service';
+import { TuiMessageService } from 'tdc-ui';
 
 describe('TenantNetworkComponent', () => {
   let component: TenantNetworkComponent;
@@ -25,6 +27,7 @@ describe('TenantNetworkComponent', () => {
       schemas: [NO_ERRORS_SCHEMA],
       imports: [
         RouterTestingModule,
+        OverlayModule,
       ],
       declarations: [
         TenantNetworkComponent,
@@ -42,6 +45,7 @@ describe('TenantNetworkComponent', () => {
           },
           deps: [MockBackend, BaseRequestOptions],
         },
+        TuiMessageService,
       ],
     })
     .compileComponents();

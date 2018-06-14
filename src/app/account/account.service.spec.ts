@@ -7,11 +7,13 @@ import {
   Response,
   ResponseOptions,
 } from '@angular/http';
+import { OverlayModule } from '@angular/cdk/overlay';
 
 import { TecApiService } from '../shared';
 import { TecApiServiceMock } from '../shared/services/api.serviceMock';
 import { makeUrl } from '../shared/test';
 import { AccountService } from './account.service';
+import { TuiMessageService } from 'tdc-ui';
 
 const response: any = {
   'data': {},
@@ -34,11 +36,15 @@ describe('AccountService', () => {
         },
         AccountService,
         TecApiServiceMock,
+        TuiMessageService,
         {
           provide: TecApiService,
-          useFactory: (http: Http) => new TecApiServiceMock(http),
-          deps: [Http],
+          useFactory: (http: Http, message: TuiMessageService) => new TecApiServiceMock(http, message),
+          deps: [Http, TuiMessageService],
         },
+      ],
+      imports: [
+        OverlayModule,
       ],
     });
   });

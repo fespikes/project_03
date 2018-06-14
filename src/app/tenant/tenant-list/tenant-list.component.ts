@@ -11,6 +11,7 @@ import { ModalDeleteTenantComponent } from '../components/modal/delete-tenant.co
 const FileSaver = require('./FileSaver');
 
 @Component({
+  selector: 'tec-tenant-list',
   templateUrl: './tenant-list.component.html',
   styleUrls: ['./tenant-list.component.sass'],
 })

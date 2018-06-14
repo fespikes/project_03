@@ -86,7 +86,7 @@ describe('TicketComponent', () => {
 
   beforeEach(() => {
     originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
-    jasmine.DEFAULT_TIMEOUT_INTERVAL = 20000;
+    jasmine.DEFAULT_TIMEOUT_INTERVAL = 50000;
 
     fixture = TestBed.createComponent(TicketComponent);
     component = fixture.componentInstance;

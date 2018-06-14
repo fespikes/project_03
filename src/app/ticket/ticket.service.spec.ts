@@ -8,7 +8,10 @@ import {
   Response,
   ResponseOptions,
 } from '@angular/http';
+import { OverlayModule } from '@angular/cdk/overlay';
 import { Observable } from 'rxjs/Observable';
+
+import { TuiMessageService } from 'tdc-ui';
 
 import { TranslateService } from '../i18n';
 import { TicketServiceStub } from './ticket.service.stub';
@@ -17,7 +20,9 @@ import { TicketService } from './ticket.service';
 describe('TicketService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
+      imports: [OverlayModule],
       providers: [
+        TuiMessageService,
         {
           provide: TicketService,
           useClass: TicketServiceStub,

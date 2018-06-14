@@ -5,7 +5,9 @@ import { Headers, Http, Response, URLSearchParams, ResponseContentType } from '@
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
+import 'rxjs/add/observable/throw';
 
+import { TuiMessageService  } from 'tdc-ui';
 import { PartialCollection } from '../models';
 
 export class ApiConfig {
@@ -14,7 +16,12 @@ export class ApiConfig {
 
 @Injectable()
 export class TecApiService {
-  constructor(private http: Http) { }
+  constructor(
+    private http: Http,
+    private message: TuiMessageService,
+  ) {
+    this.formatErrors = this.formatErrors.bind(this);
+  }
 
   private get headers(): Headers {
     return new Headers({
@@ -30,6 +37,8 @@ export class TecApiService {
     } catch (err) {
       data = { error: 'fail to parse' };
     }
+
+    this.message.error(data.message);
     return Observable.throw(data);
   }
 

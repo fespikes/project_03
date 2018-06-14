@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 
 import { TecApiService, ServiceList } from '../shared';
-import { TenantFilter, Instance } from './tenant-model';
+import { TenantFilter, Instance, TenantAdminFilter, TenantAdmin } from './tenant-model';
 import { Pagination } from 'tdc-ui';
 import {
   TenantInfo,
@@ -139,6 +139,21 @@ export class TenantService {
   getTenantServices(id, pagination = {}, filter = {}): Observable<ServiceList> {
     const params = Object.assign(pagination, filter);
     return this.api.get(`tenants/${id}/services`, params);
+  }
+
+  // 查看ignitor用户
+  getTenantAdmins(filter: TenantAdminFilter): Observable<any> {
+    return this.api.get(`managers`, {...filter});
+  }
+
+  // 创建ignitor用户
+  addTenantAdmin(manager: TenantAdmin): Observable<any> {
+    return this.api.post(`managers`, {...manager});
+  }
+
+  // 通过连接邀请ignitor用户
+  sendRegisterLink(invitation: any): Observable<any> {
+    return this.api.post(`managers/invitations`, {...invitation});
   }
 
 }

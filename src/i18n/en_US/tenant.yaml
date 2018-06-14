@@ -1,6 +1,22 @@
 TENANT:
   NAME: Tenant
 
+  TENANT_ADMIN:
+    NAME: Tenant Admin
+    TOTAL: Tenant Admin Amount
+    ADD: Add Tenant Admin
+    SEND: Send Register Link
+    USER_NAME: Admin Name
+    PASSWORD: Password
+    EMAIL: Email
+    MAX_TENANT_NUMBER: Maximal Tenant Number
+    FULL_NAME: Full Name
+    COMPANY: Company
+    DEPARTMENT: Department
+    QUIT: Quit
+    REQUIRED: This field is required
+    LIMITS: No amount limit by default
+
   OVERVIEW:
     TOTAL: All Tenants
     EXPORT: Export
@@ -92,7 +108,7 @@ TENANT:
     PROTOCOL: Protocol
     PROTOCOL_TIP: 'Protocol is required and must belongs to:'
     PORT: Port
-    PORT_TIP: Port is required
+    PORT_TIP: Port is required, 0 stands for no limits
     ADDRESS: Address
     ADDRESS_TIP: Address is required
     DESCRIPTION: Description

@@ -31,6 +31,10 @@ import { ModalBillCorrectComponent } from './tenant-detail/tenant-bill/modal-bil
 import { NetworkRulesComponent } from './tenant-detail/tenant-network/network-rules/network-rules.component';
 import { AddComponent } from './tenant-detail/tenant-network/add/add.component';
 import { ModalDeleteTenantComponent } from './components/modal/delete-tenant.component';
+import { OverviewComponent } from './overview/overview.component';
+import { TenantAdminComponent } from './tenant-admin/tenant-admin.component';
+import { SendRegisterLinkComponent } from './tenant-admin/send-register-link/send-register-link.component';
+import { AddComponent as TenantAdminAddComponent } from './tenant-admin/add/add.component';
 
 @NgModule({
   imports: [
@@ -63,6 +67,10 @@ import { ModalDeleteTenantComponent } from './components/modal/delete-tenant.com
     NetworkRulesComponent,
     AddComponent,
     TenantStatusIconComponent,
+    OverviewComponent,
+    TenantAdminComponent,
+    TenantAdminAddComponent,
+    SendRegisterLinkComponent,
   ],
   providers: [
     TenantService,
@@ -74,6 +82,8 @@ import { ModalDeleteTenantComponent } from './components/modal/delete-tenant.com
     ModalBillCorrectComponent,
     AddComponent,
     ModalDeleteTenantComponent,
+    TenantAdminAddComponent,
+    SendRegisterLinkComponent,
   ],
 })
 export class TenantModule { }

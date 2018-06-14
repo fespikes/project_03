@@ -9,7 +9,8 @@ import {
   Response,
   ResponseOptions,
 } from '@angular/http';
-import { TuiModule, TuiModalService } from 'tdc-ui';
+import { TuiModule, TuiModalService, TuiMessageService } from 'tdc-ui';
+import { Overlay } from '@angular/cdk/overlay';
 
 import { TranslatePipeStub, DefaultPipeStub } from 'app/mock';
 import { Observable } from 'rxjs/Observable';
@@ -39,6 +40,8 @@ describe('TasksComponent', () => {
         SharedModule,
       ],
       providers: [
+        Overlay,
+        TuiMessageService,
         TasksService,
         TecApiService,
         MockBackend,

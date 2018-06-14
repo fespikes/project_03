@@ -8,8 +8,9 @@ import {
   ResponseOptions,
 } from '@angular/http';
 import { MockBackend } from '@angular/http/testing';
+import { OverlayModule } from '@angular/cdk/overlay';
 
-import { TuiModalService } from 'tdc-ui';
+import { TuiModalService, TuiMessageService } from 'tdc-ui';
 import { MockModule } from '../../../mock';
 import { I18nLangService, TranslateService } from '../../../i18n';
 import { LayoutHeadRightComponent } from './layout-head-right.component';
@@ -24,12 +25,13 @@ describe('LayoutHeadRightComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       schemas: [NO_ERRORS_SCHEMA],
-      imports: [MockModule],
+      imports: [MockModule, OverlayModule],
       declarations: [ LayoutHeadRightComponent ],
       providers: [
         LayoutService,
         TecApiService,
         TuiModalService,
+        TuiMessageService,
         BaseRequestOptions,
         MockBackend,
         {

@@ -7,14 +7,19 @@ import {
   Response,
   ResponseOptions,
 } from '@angular/http';
+import { OverlayModule } from '@angular/cdk/overlay';
 import * as path from 'path';
 
+import { TuiMessageService } from 'tdc-ui';
 import { LayoutService } from './layout.service';
 import { TecApiService } from '../shared';
 
 describe('LayoutService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
+      imports: [
+        OverlayModule,
+      ],
       providers: [
         LayoutService,
         TecApiService,
@@ -27,6 +32,7 @@ describe('LayoutService', () => {
           },
           deps: [MockBackend, BaseRequestOptions],
         },
+        TuiMessageService,
       ],
     });
   });
