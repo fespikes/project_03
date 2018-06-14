@@ -107,7 +107,7 @@ TENANT:
     PROTOCOL: 协议类型
     PROTOCOL_TIP: '协议类型为必填且必属于:'
     PORT: 端口
-    PORT_TIP: 端口为必填
+    PORT_TIP: 端口为必填, 0表示不限制端口
     ADDRESS: 网段
     ADDRESS_TIP: 网段为必填
     DESCRIPTION: 规则描述
