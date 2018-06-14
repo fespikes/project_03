@@ -1,0 +1,145 @@
+
+<div class="container">
+  <form
+    [formGroup]="myForm"
+    (ngSubmit)="onSubmit(myForm.value)"
+    class="form-specific"
+  >
+    <div
+      [class.error]="!myForm.get('username').valid && myForm.get('username').touched"
+    >
+      <div class="field-box">
+        <label for="usernameId"><span>*</span>{{'TENANT.TENANT_ADMIN.USER_NAME' | translate}}</label>
+        <input
+          class="field"
+          type="text"
+          id="usernameId"
+          autocomplete="off"
+          [formControl]="myForm.controls['username']"
+         />
+      </div>
+
+      <div
+        *ngIf="myForm.controls['username'].hasError('required') && myForm.controls['username'].touched"
+        class="message"
+      >{{'TENANT.TENANT_ADMIN.REQUIRED' | translate}}</div>
+    </div>
+
+    <div
+      [class.error]="!myForm.get('password').valid && myForm.get('password').touched"
+    >
+      <div class="field-box">
+        <label for="passwordId"><span>*</span>{{'TENANT.TENANT_ADMIN.PASSWORD' | translate}}</label>
+        <input
+          class="field"
+          type="password"
+          id="passwordId"
+          autocomplete="off"
+          [formControl]="myForm.controls['password']"
+         />
+      </div>
+
+      <div
+        *ngIf="myForm.controls['password'].hasError('required') && myForm.controls['password'].touched"
+        class="message"
+      >{{'TENANT.TENANT_ADMIN.REQUIRED' | translate}}</div>
+    </div>
+
+    <div
+      [class.error]="!myForm.get('userEmail').valid && myForm.get('userEmail').touched"
+    >
+      <div class="field-box">
+        <label for="userEmailId"><span>*</span>{{'TENANT.TENANT_ADMIN.EMAIL' | translate}}</label>
+        <input
+          class="field"
+          type="email"
+          id="userEmailId"
+          autocomplete="off"
+          [formControl]="myForm.controls['userEmail']"
+         />
+      </div>
+
+      <div
+        *ngIf="myForm.controls['userEmail'].hasError('required') && myForm.controls['userEmail'].touched"
+        class="message"
+      >{{'TENANT.TENANT_ADMIN.REQUIRED' | translate}}</div>
+    </div>
+
+    <div
+      [class.error]="!myForm.get('fullName').valid && myForm.get('fullName').touched"
+    >
+      <div class="field-box">
+        <label for="fullNameId"><span>*</span>{{'TENANT.TENANT_ADMIN.FULL_NAME' | translate}}</label>
+        <input
+          class="field"
+          type="text"
+          id="fullNameId"
+          autocomplete="off"
+          [formControl]="myForm.controls['fullName']"
+         />
+      </div>
+
+      <div
+        *ngIf="myForm.controls['fullName'].hasError('required') && myForm.controls['fullName'].touched"
+        class="message"
+      >{{'TENANT.TENANT_ADMIN.REQUIRED' | translate}}</div>
+    </div>
+
+    <div>
+      <div class="field-box">
+        <label for="maxTenantQuantityId">{{'TENANT.TENANT_ADMIN.MAX_TENANT_NUMBER' | translate}}</label>
+        <input
+          class="field"
+          type="text"
+          id="maxTenantQuantityId"
+          autocomplete="off"
+          [formControl]="myForm.controls['maxTenantQuantity']"
+          novalidate="novalidate"
+         />
+      </div>
+      <div class="message gray">{{'TENANT.TENANT_ADMIN.LIMITS' | translate}}</div>
+    </div>
+
+    <div>
+      <div class="field-box">
+        <label for="companyId">{{'TENANT.TENANT_ADMIN.COMPANY' | translate}}</label>
+        <input
+          class="field"
+          type="text"
+          id="companyId"
+          autocomplete="off"
+          [formControl]="myForm.controls['company']"
+          novalidate="novalidate"
+         />
+      </div>
+    </div>
+
+    <div>
+      <div class="field-box">
+        <label for="departmentId">{{'TENANT.TENANT_ADMIN.DEPARTMENT' | translate}}</label>
+        <input
+          class="field"
+          type="text"
+          id="departmentId"
+          autocomplete="off"
+          [formControl]="myForm.controls['department']"
+          novalidate="novalidate"
+         />
+      </div>
+    </div>
+
+    <div class="buttons">
+      <button
+        class="tui-btn-md tui-btn-primary tui-btn"
+        type="submit"
+        [disabled]="!myForm.valid ? 'disabled' : null"
+      >{{'TENANT.NETWORK.CONFIRM' | translate}}</button>
+      <button
+        class="tui-btn-md tui-btn-default tui-btn"
+        type="button"
+        (click)="closeSelf()"
+      >{{'TENANT.TENANT_ADMIN.QUIT' | translate}}</button>
+    </div>
+  </form>
+</div>
+

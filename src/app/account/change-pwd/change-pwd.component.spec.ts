@@ -8,10 +8,12 @@ import {
   Response,
   ResponseOptions,
 } from '@angular/http';
+import { Overlay } from '@angular/cdk/overlay';
 import { HttpModule } from '@angular/http';
 import { By } from '@angular/platform-browser';
+import { OverlayModule } from '@angular/cdk/overlay';
 
-import { TuiModalRef } from 'tdc-ui';
+import { TuiModalRef, TuiMessageService } from 'tdc-ui';
 import { TranslatePipeStub, DefaultPipeStub } from 'app/mock';
 import {
   ConsoleSpy,
@@ -41,6 +43,7 @@ describe('ChangePwdComponent', () => {
         HttpModule,
         FormsModule,
         ReactiveFormsModule,
+        OverlayModule,
       ],
       declarations: [
         TranslatePipeStub,  // no translation
@@ -51,6 +54,7 @@ describe('ChangePwdComponent', () => {
         TuiModalRef,
         AccountService,
         TecApiService,
+        TuiMessageService,
       ],
     })
     .compileComponents();

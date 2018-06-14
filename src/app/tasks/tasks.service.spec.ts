@@ -8,7 +8,10 @@ import {
   Response,
   ResponseOptions,
 } from '@angular/http';
+import { OverlayModule } from '@angular/cdk/overlay';
+
 import { Observable } from 'rxjs/Observable';
+import { TuiMessageService } from 'tdc-ui';
 
 import { TasksService } from './tasks.service';
 import { TranslateService } from '../i18n';
@@ -16,7 +19,11 @@ import { TranslateService } from '../i18n';
 describe('TasksService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
+      imports: [
+        OverlayModule,
+      ],
       providers: [
+        TuiMessageService,
         MockBackend,
         BaseRequestOptions,
         TasksService,

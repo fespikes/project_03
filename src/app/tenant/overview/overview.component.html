@@ -1,0 +1,14 @@
+<div class="tui-layout-vertical">
+
+  <div class="tui-layout-main-container flex-auto">
+    <tui-tab
+      *ngIf="!loading"
+      [(selectedIndex)]="selectedIndex"
+      (selectedIndexChange)="tabIndexChange($event)"
+    >
+      <tec-tenant-list *tuiTabPane="'TENANT.NAME' | translate"></tec-tenant-list>
+      <tec-tenant-admin *tuiTabPane="'TENANT.TENANT_ADMIN.NAME' | translate"></tec-tenant-admin>
+    </tui-tab>
+
+  </div>
+</div>

@@ -40,6 +40,7 @@ class TenantServiceStub {
 describe('NetworkRulesComponent', () => {
   let component: NetworkRulesComponent;
   let fixture: ComponentFixture<NetworkRulesComponent>;
+  let originalTime: any;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -56,9 +57,13 @@ describe('NetworkRulesComponent', () => {
         MockBackend,
         BaseRequestOptions,
         TecApiService,
+        TenantServiceStub,
         {
           provide: TenantService,
-          useClass: TenantServiceStub,
+          useFactory: (stub: TenantServiceStub) => {
+            return new TenantServiceStub();
+          },
+          deps: [TenantServiceStub],
         },
         {
           provide: ActivatedRoute,
@@ -82,6 +87,9 @@ describe('NetworkRulesComponent', () => {
   }));
 
   beforeEach(() => {
+    originalTime = jasmine.DEFAULT_TIMEOUT_INTERVAL;
+    jasmine.DEFAULT_TIMEOUT_INTERVAL = 50000;
+
     fixture = TestBed.createComponent(NetworkRulesComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
@@ -89,5 +97,9 @@ describe('NetworkRulesComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  afterEach(() => {
+    jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTime;
   });
 });

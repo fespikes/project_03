@@ -5,6 +5,7 @@ import { I18nModule, TranslateDeactivator, TranslateResolver, TranslateToken } f
 import { TenantListComponent } from './tenant-list/tenant-list.component';
 import { TenantDetailComponent } from './tenant-detail/tenant-detail.component';
 import { NetworkRulesComponent } from './tenant-detail/tenant-network/network-rules/network-rules.component';
+import { OverviewComponent } from './overview/overview.component';
 
 const tanantChildren = [
   {
@@ -17,7 +18,7 @@ const tanantChildren = [
   },
   {
     path: 'overview',
-    component: TenantListComponent,
+    component: OverviewComponent,
   },
   {
     path: 'detail/:uid/:networkName',

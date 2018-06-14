@@ -7,8 +7,11 @@ import {
   Response,
   ResponseOptions,
 } from '@angular/http';
-import { MockBackend } from '@angular/http/testing';
+import { OverlayModule } from '@angular/cdk/overlay';
 
+
+import { TuiMessageService } from 'tdc-ui';
+import { MockBackend } from '@angular/http/testing';
 import { TenantQuotaComponent } from './tenant-quota.component';
 import { TranslatePipeStub, DefaultPipeStub } from 'app/mock';
 import { TenantService } from '../../tenant.service';
@@ -37,9 +40,13 @@ describe('TenantQuotaComponent', () => {
             defaultOptions: BaseRequestOptions,
           ) => {
             return new Http(backend, defaultOptions);
-            },
-            deps: [MockBackend, BaseRequestOptions] }
-                       ,
+          },
+          deps: [MockBackend, BaseRequestOptions],
+        },
+        TuiMessageService,
+      ],
+      imports: [
+        OverlayModule,
       ],
     })
     .compileComponents();

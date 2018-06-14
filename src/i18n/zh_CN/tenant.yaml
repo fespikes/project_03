@@ -1,5 +1,20 @@
 TENANT:
   NAME: 租户
+  TENANT_ADMIN:
+    NAME: 租户管理员
+    TOTAL: 租户管理员总计
+    ADD: 添加租户管理员
+    SEND: 发送注册链接
+    USER_NAME: 用户名
+    PASSWORD: 密码
+    EMAIL: 邮箱
+    MAX_TENANT_NUMBER: 最大租户数
+    FULL_NAME: 全名
+    COMPANY: 公司
+    DEPARTMENT: 部门
+    QUIT: 取消
+    REQUIRED: 此字段为必填
+    LIMITS: 默认无数量上限
 
   OVERVIEW:
     TOTAL: 租户总计

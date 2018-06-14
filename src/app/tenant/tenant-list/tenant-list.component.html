@@ -1,76 +1,73 @@
-<div class="tui-layout-vertical">
-  <div class="tui-layout-main-container">
-    <div class="tui-layout-main-title flex-title">
-      <div class="left">
-        <span>{{'TENANT.OVERVIEW.TOTAL' | translate}}:</span>
-        <span>{{pagination.total}}</span>
-      </div>
-      <div class="right">
-        <tui-checkbox [(ngModel)]="filter.canceled" (ngModelChange)="filterChange()">
-          <span class="message">{{'TENANT.OVERVIEW.SHOW_CANCELED_TENANT' | translate}}</span>
-        </tui-checkbox>
-        <button tuiBtn="primary" (click)="export()"
-          style="margin-right: 30px"
-        >
-          <svg tuiIcon="export"></svg>
-          <span>{{'TENANT.OVERVIEW.EXPORT' | translate}}</span>
-        </button>
-        <tui-search
-          [(ngModel)]="filter.keyword"
-          (ngModelChange)="filterChange()"
-        ></tui-search>
-      </div>
-    </div>
 
-    <div class="container-content">
-      <tui-table [tuiTableFlex]="[2,2,1,1,2,1,1,1,1,1]" [loading]="loading">
-        <tui-table-head>
-          <div>{{'TENANT.OVERVIEW.NAME' | translate}}</div>
-          <div>{{'TENANT.OVERVIEW.DESC' | translate}}</div>
-          <div>{{'TENANT.OVERVIEW.INSTANCE' | translate}}</div>
-          <div>{{'TENANT.OVERVIEW.USER' | translate}}</div>
-          <div>{{'TENANT.OVERVIEW.ADMIN' | translate}}</div>
-          <div>{{'TENANT.OVERVIEW.CREATE_TIME' | translate}}</div>
-          <div>{{'TENANT.OVERVIEW.BILL' | translate}}</div>
-          <div>{{'TENANT.OVERVIEW.CONSUMPTION' | translate}}</div>
-          <div>{{'TENANT.OVERVIEW.STATUS' | translate}}</div>
-          <div>{{'TENANT.OVERVIEW.OPERATION' | translate}}</div>
-        </tui-table-head>
-        <tui-table-row *ngFor="let tenant of tenants">
-          <div class="text-ellipsis">
-            <a
-              class="tenant-name"
-              [routerLink]="'/tenant/detail/' + tenant.tenantInfo.uid"
-              [queryParams]="{canceled: filter.canceled}"
-            >{{tenant.tenantInfo.name + ' (' + tenant.tenantInfo.uid + ')'}}</a>
-          </div>
-          <div class="text-ellipsis">{{tenant.tenantInfo.description | tuiDefault}}</div>
-          <div>{{tenant.instanceCount}}</div>
-          <div>{{tenant.userCount}}</div>
-          <div class="text-ellipsis">{{tenant.tenantInfo.admin}}</div>
-          <div class="text-ellipsis">{{tenant.tenantInfo.createTime | date:'y/M/d'}}</div>
-          <div class="text-ellipsis">{{tenant.totalAmount | tuiDefault}}</div>
-          <div class="text-ellipsis">{{tenant.unpaidAmount | tuiDefault}}</div>
-          <div class="status-td">
-            <tec-tenant-status-icon
-              [status]="tenant.tenantInfo.status"
-              [alias]="tenant.tenantInfo.statusAlias"
-            ></tec-tenant-status-icon>
-          </div>
-          <div class="operation-td">
-            <span
-              *ngIf="!(tenant.tenantInfo.status === 'CANCELED')"
-              tuiTooltip="{{'TENANT.OVERVIEW.DELETE' | translate}}"
-            >
-              <svg tuiIcon="trash" (click)="deleteTenant(tenant)"></svg>
-            </span>
-          </div>
-        </tui-table-row>
-      </tui-table>
-    </div>
-    <div class="tui-layout-main-pagination-footer">
-      <tui-pagination [(pagination)]="pagination" (paginationChange)="getTenants()">
-      </tui-pagination>
-    </div>
+<div class="tui-layout-main-title flex-title">
+  <div class="left">
+    <span>{{'TENANT.OVERVIEW.TOTAL' | translate}}:</span>
+    <span>{{pagination.total}}</span>
   </div>
+  <div class="right">
+    <tui-checkbox [(ngModel)]="filter.canceled" (ngModelChange)="filterChange()">
+      <span class="message">{{'TENANT.OVERVIEW.SHOW_CANCELED_TENANT' | translate}}</span>
+    </tui-checkbox>
+    <button tuiBtn="primary" (click)="export()"
+      style="margin-right: 30px"
+    >
+      <svg tuiIcon="export"></svg>
+      <span>{{'TENANT.OVERVIEW.EXPORT' | translate}}</span>
+    </button>
+    <tui-search
+      [(ngModel)]="filter.keyword"
+      (ngModelChange)="filterChange()"
+    ></tui-search>
+  </div>
+</div>
+
+<div class="container-content">
+  <tui-table [tuiTableFlex]="[2,2,1,1,2,1,1,1,1,1]" [loading]="loading">
+    <tui-table-head>
+      <div>{{'TENANT.OVERVIEW.NAME' | translate}}</div>
+      <div>{{'TENANT.OVERVIEW.DESC' | translate}}</div>
+      <div>{{'TENANT.OVERVIEW.INSTANCE' | translate}}</div>
+      <div>{{'TENANT.OVERVIEW.USER' | translate}}</div>
+      <div>{{'TENANT.OVERVIEW.ADMIN' | translate}}</div>
+      <div>{{'TENANT.OVERVIEW.CREATE_TIME' | translate}}</div>
+      <div>{{'TENANT.OVERVIEW.BILL' | translate}}</div>
+      <div>{{'TENANT.OVERVIEW.CONSUMPTION' | translate}}</div>
+      <div>{{'TENANT.OVERVIEW.STATUS' | translate}}</div>
+      <div>{{'TENANT.OVERVIEW.OPERATION' | translate}}</div>
+    </tui-table-head>
+    <tui-table-row *ngFor="let tenant of tenants">
+      <div class="text-ellipsis">
+        <a
+          class="tenant-name"
+          [routerLink]="'/tenant/detail/' + tenant.tenantInfo.uid"
+          [queryParams]="{canceled: filter.canceled}"
+        >{{tenant.tenantInfo.name + ' (' + tenant.tenantInfo.uid + ')'}}</a>
+      </div>
+      <div class="text-ellipsis">{{tenant.tenantInfo.description | tuiDefault}}</div>
+      <div>{{tenant.instanceCount}}</div>
+      <div>{{tenant.userCount}}</div>
+      <div class="text-ellipsis">{{tenant.tenantInfo.admin}}</div>
+      <div class="text-ellipsis">{{tenant.tenantInfo.createTime | date:'y/M/d'}}</div>
+      <div class="text-ellipsis">{{tenant.totalAmount | tuiDefault}}</div>
+      <div class="text-ellipsis">{{tenant.unpaidAmount | tuiDefault}}</div>
+      <div class="status-td">
+        <tec-tenant-status-icon
+          [status]="tenant.tenantInfo.status"
+          [alias]="tenant.tenantInfo.statusAlias"
+        ></tec-tenant-status-icon>
+      </div>
+      <div class="operation-td">
+        <span
+          *ngIf="!(tenant.tenantInfo.status === 'CANCELED')"
+          tuiTooltip="{{'TENANT.OVERVIEW.DELETE' | translate}}"
+        >
+          <svg tuiIcon="trash" (click)="deleteTenant(tenant)"></svg>
+        </span>
+      </div>
+    </tui-table-row>
+  </tui-table>
+</div>
+<div class="tui-layout-main-pagination-footer">
+  <tui-pagination [(pagination)]="pagination" (paginationChange)="getTenants()">
+  </tui-pagination>
 </div>
