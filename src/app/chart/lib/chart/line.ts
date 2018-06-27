@@ -1,6 +1,6 @@
 import * as d3 from 'd3';
 import * as moment from 'moment';
-import { Selection, ScaleTime, ScaleLinear, Axis, Line } from 'd3';
+import merge from 'lodash-es/merge';
 
 import { Chart } from '../core';
 import {
@@ -53,7 +53,7 @@ export class LineChartConfig {
   width: number;
   height: number;
   xAxis = new TimeAxisConfig();
-  yAxis = new LinearAxisConfig();
+  yAxis = new LinearAxisConfig(5);
   hasAnimation = false;
   hasShadow = false;
   hasArea = false;
@@ -66,9 +66,7 @@ export class LineChartConfig {
 
   static from(config) {
     const _config = new LineChartConfig();
-    Object.assign(_config, config);
-    _config.colorSchema = ColorSchema.from(_config.colorSchema);
-    _config.legend = LegendConfig.from(config.legend);
+    merge(_config, config);
     return _config;
   }
 
@@ -213,8 +211,12 @@ export class LineChart extends Chart {
   drawGrid() {
     const { xAxis, yAxis } = this.config;
     this.grid = new Grid(this.layout.grid);
-    this.grid.drawX(this.xAxis.ticks(), xAxis.grid);
-    this.grid.drawY(this.yAxis.ticks(), yAxis.grid);
+    if (xAxis.grid !== false) {
+      this.grid.drawX(this.xAxis.ticks(), xAxis.grid);
+    }
+    if (yAxis.grid !== false) {
+      this.grid.drawY(this.yAxis.ticks(), yAxis.grid);
+    }
   }
 
   drawLines() {

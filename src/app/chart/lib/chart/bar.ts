@@ -1,5 +1,6 @@
 import * as d3 from 'd3';
 import { ScaleOrdinal } from 'd3';
+import merge from 'lodash-es/merge';
 
 import { Chart } from '../core';
 import {
@@ -100,7 +101,7 @@ export class BarChartConfig {
   height: number;
   stack = false;
   xAxis = new BandAxisConfig();
-  yAxis = new LinearAxisConfig();
+  yAxis = new LinearAxisConfig(5);
   background: string;
   margin = {top: 20, right: 50, bottom: 40, left: 50};
   colorSchema = new ColorSchema();
@@ -109,9 +110,7 @@ export class BarChartConfig {
 
   static from(config) {
     const _config = new BarChartConfig();
-    Object.assign(_config, config);
-    _config.colorSchema = ColorSchema.from(_config.colorSchema);
-    _config.legend = LegendConfig.from(_config.legend);
+    merge(_config, config);
     return _config;
   }
 
@@ -215,6 +214,9 @@ export class BarChart extends Chart {
   drawGrid() {
     const { yAxis, xAxis } = this.config;
     this.grid = new Grid(this.layout.grid);
+    if (yAxis.grid === false) {
+      return;
+    }
     if (this.config.transpose) {
       this.grid.drawX(this.yAxis.ticks(), yAxis.grid);
     } else {

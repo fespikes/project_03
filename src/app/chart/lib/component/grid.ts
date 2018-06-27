@@ -51,7 +51,7 @@ export class Grid {
     line.attr('stroke', color);
     line.attr('stroke-width', strokeWidth);
     if (style === 'dash') {
-      line.attr('stroke-dasharray', '8, 4');
+      line.attr('stroke-dasharray', '4, 2');
     }
   }
 }

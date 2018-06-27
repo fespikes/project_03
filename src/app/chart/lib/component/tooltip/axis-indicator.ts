@@ -73,7 +73,7 @@ export class AxisIndicator {
   drawLine() {
     const from = {x: 0, y: 0};
     const to = {x: 0, y: this.gridHeight};
-    this.indicator = ShapeFactory.drawMovableLine(this.selection, from, to, {});
+    this.indicator = ShapeFactory.drawMovableLine(this.selection, from, to, {color: 'rgba(204,204,204, .5)'});
   }
 
   drawBar() {

@@ -1,26 +1,35 @@
 import * as d3 from 'd3';
 import { Axis, ScaleLinear } from 'd3';
+import min from 'lodash-es/min';
+import max from 'lodash-es/max';
 
 import { AxisContainer, SelectionType } from '../core';
 import {
   AxisBase,
   AxisPosition,
-  AxisTickConfig,
+  AxisLinearTickConfig,
   AxisGridConfig,
   AxisLineStyle,
   AxisTextStyle,
 } from './axis-base';
 
 export class LinearAxisConfig {
-  tick = new AxisTickConfig();
-  grid = new AxisGridConfig();
+  tick = new AxisLinearTickConfig();
+  grid: AxisGridConfig | false = new AxisGridConfig();
   lineStyle = new AxisLineStyle();
   textStyle = new AxisTextStyle();
+
+  constructor(tickCount?: number) {
+    if (tickCount >= 0) {
+      this.tick.count = tickCount;
+    }
+  }
 }
 
 export class LinearAxis extends AxisBase {
   scale: ScaleLinear<any, any>;
   axis: Axis<any>;
+  count: number;
 
   static create(config: LinearAxisConfig, container: AxisContainer, domain: any[]) {
     const { selection, placement, range } = container;
@@ -45,9 +54,21 @@ export class LinearAxis extends AxisBase {
       .rangeRound(range)
       .nice();
 
+    this.count = tick.count;
+    // 防止整形坐标轴出现大于domain范围的tick数量 -> 导致坐标刻度重复
+    if (tick.format === 'd') {
+      const dist = max(domain) - min(domain);
+      if (dist < 5) {
+        this.count = dist;
+      }
+    }
+
     this.axis = this.initAxis(this.position);
-    this.axis.ticks(tick.count)
+    this.axis.ticks(this.count)
       .tickPadding(tick.padding);
+    if (tick.format) {
+      this.axis.tickFormat(d3.format(tick.format));
+    }
 
     this.selection.append('g')
       .attr('class', 'linear-axis')
@@ -58,7 +79,7 @@ export class LinearAxis extends AxisBase {
   }
 
   ticks() {
-    return this.scale.ticks(this.config.tick.count)
+    return this.scale.ticks(this.count)
       .map((t) => this.scale(t));
   }
 }

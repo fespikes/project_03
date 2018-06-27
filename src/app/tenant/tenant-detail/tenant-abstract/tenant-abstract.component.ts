@@ -120,6 +120,17 @@ export class TenantAbstractComponent implements OnInit, OnDestroy {
       wrapperName: 'instancesCountTrendWrapper',
       config: {
         drawGridY: false,
+        xAxis: {
+          tick: {
+            count: 3,
+          },
+          grid: false,
+        },
+        yAxis: {
+          tick: {
+            format: 'd',
+          },
+        },
         legend: {
           show: false,
         },
@@ -136,29 +147,22 @@ export class TenantAbstractComponent implements OnInit, OnDestroy {
         legend: {
           show: false,
         },
-        'yAxis': {
-          'tick': {
-            'padding': 0,
+        xAxis: {
+          tick: {
+            count: 4,
           },
-          'grid': {
-            'style': 'solid',
-            'color': '#f0f3f7',
-            'strokeWidth': 1,
-          },
-          'lineStyle': {
-            'color': '#f0f3f7',
-            'strokeWidth': 1,
-          },
-          'textStyle': {
-            'color': '#c2c9d5',
-            'foneSize': 12,
+          grid: false,
+        },
+        yAxis: {
+          tick: {
+            padding: 0,
           },
         },
-        'margin': {
-          'top': 10,
-          'right': 40,
-          'bottom': 40,
-          'left': 60,
+        margin: {
+          top: 10,
+          right: 40,
+          bottom: 40,
+          left: 60,
         },
       },
     };
@@ -168,12 +172,14 @@ export class TenantAbstractComponent implements OnInit, OnDestroy {
       fetchData: this.service.fetchInstancesCount.bind(this.service),
       config: {
         stack: true,
+        yAxis: {
+          tick: {
+            format: 'd',
+          },
+        },
       },
       wrapperName: 'instancesCountWrapper',
     };
-
-    const xAxis = {...xAxisCommon};
-    xAxis.tick.timeFormat = hourlyDefaultFormat;
 
     this.CPULoadTrendParam = { // 6.
       chartType: chartTypes.line,
@@ -185,7 +191,13 @@ export class TenantAbstractComponent implements OnInit, OnDestroy {
         return this.service.fetchResourcesTrend.bind(this.service)(callback, resourceType);
       },
       config: {
-        xAxis: xAxis,
+        xAxis: {
+          tick: {
+            count: 4,
+            timeFormat: '%H:%M',
+          },
+          grid: false,
+        },
       },
       resourceType: resourceTypes.cpu,
       wrapperName: 'CPULoadTrendWrapper',
@@ -201,7 +213,13 @@ export class TenantAbstractComponent implements OnInit, OnDestroy {
         this.service.fetchResourcesTrend.bind(this.service)(callback, resourceType);
       },
       config: {
-        xAxis: xAxis,
+        xAxis: {
+          tick: {
+            count: 4,
+            timeFormat: '%H:%M',
+          },
+          grid: false,
+        },
       },
       resourceType: resourceTypes.memory,
       wrapperName: 'memoryLoadTrendWrapper',
@@ -217,7 +235,13 @@ export class TenantAbstractComponent implements OnInit, OnDestroy {
         this.service.fetchResourcesTrend.bind(this.service)(callback, resourceType);
       },
       config: {
-        xAxis: xAxis,
+        xAxis: {
+          tick: {
+            count: 4,
+            timeFormat: '%H:%M',
+          },
+          grid: false,
+        },
       },
       resourceType: resourceTypes.storage,
       wrapperName: 'storageLoadTrendWrapper',

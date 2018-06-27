@@ -1,5 +1,5 @@
 export class ColorSchema {
-  palette = ['#336fd3', '#42c0df', '#9784eb', '#39c2c9', '#39c2c9', '#ffce00', '#ffa71a', '#f866b9'];
+  palette = ['#336fd3', '#42c0df', '#9784eb', '#ffa71a', '#39c2c9', '#ffce00', '#f866b9'];
   filling = ['#edf2ff'];
 
   static from(config) {

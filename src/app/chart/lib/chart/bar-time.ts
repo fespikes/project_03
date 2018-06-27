@@ -1,5 +1,6 @@
 import * as d3 from 'd3';
 import * as moment from 'moment';
+import merge from 'lodash-es/merge';
 
 import { Chart } from '../core';
 import {
@@ -52,15 +53,11 @@ export class BarTimeChartConfig {
   xAxis: TimeAxisConfig = {
     ...new TimeAxisConfig(),
     tick: {
-      useTimeInterval: true,
-      count: 0,
-      timeInterval: 'timeMinute',
-      interval: 10,
       padding: 2,
       timeFormat: '%I:%M',
     },
   };
-  yAxis = new LinearAxisConfig();
+  yAxis = new LinearAxisConfig(5);
   hasAnimation = false;
   color = '#305ab5';
   background: string;
@@ -68,7 +65,7 @@ export class BarTimeChartConfig {
 
   static from(config) {
     const _config = new BarTimeChartConfig();
-    Object.assign(_config, config);
+    merge(_config, config);
     return _config;
   }
 
@@ -122,7 +119,9 @@ export class BarTimeChart extends Chart {
   drawGrid() {
     const { yAxis } = this.config;
     this.grid = new Grid(this.layout.grid);
-    this.grid.drawY(this.yAxis.ticks(), yAxis.grid);
+    if (yAxis.grid !== false) {
+      this.grid.drawY(this.yAxis.ticks(), yAxis.grid);
+    }
   }
 
   initTooltip() {
