@@ -12,7 +12,6 @@ import {
 import {
   Grid,
   ColorSchema,
-  Legend,
   LegendConfig,
   MarkerFactory,
   MarkerBase,
@@ -164,10 +163,10 @@ export class LineChart extends Chart {
     this.points = this.data.map((dataset, idx) => {
       const color = this.config.colorSchema.getColor(idx);
       return dataset.data.map((d) => {
-        const center = {
+        const center = this.coordinate.apply({
           x: xScale(d.x),
           y: yScale(d.y),
-        };
+        });
         const marker = MarkerFactory.createMarker(this.layout.canvas.selection, {center, color});
         return new MarkerPoint(dataset.topic, d, center, marker);
       });
@@ -219,12 +218,10 @@ export class LineChart extends Chart {
   }
 
   drawLines() {
-    const { scale: xScale } = this.xAxis;
-    const { scale: yScale } = this.yAxis;
     this.points.forEach((series, idx) => {
       const points = series.map((p) => p.coord);
       const { hasAnimation, hasShadow, hasArea, areaColor } = this.config;
-      const path = ShapeFactory.drawPath(this.layout.canvas.selection, points, { color: this.config.colorSchema.getColor(idx) })
+      ShapeFactory.drawPath(this.layout.canvas.selection, points, { color: this.config.colorSchema.getColor(idx) })
       .animate(hasAnimation)
       .shadow(hasShadow)
       .area(hasArea, {color: areaColor, animation: hasAnimation, canvasHeight: this.layout.canvas.dim.height});

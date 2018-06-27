@@ -7,7 +7,6 @@ import {
   LinearAxisConfig,
   TimeAxisConfig,
   TimeAxis,
-  BandAxisConfig,
 } from '../axis';
 import {
   Grid,
@@ -16,6 +15,8 @@ import {
   Tooltip,
   AxisIndicator,
 } from '../component';
+import { Bar } from '../shapes';
+import { Point2D } from '../helpers/transform-helper';
 
 export class BarPoint {
   x: Date;
@@ -97,7 +98,7 @@ export class BarTimeChart extends Chart {
   grid: Grid;
   axisIndicator: AxisIndicator;
 
-  private tooltip;
+  private tooltip: Tooltip;
 
   draw() {
     const { width, height, margin } = this.config;
@@ -105,8 +106,7 @@ export class BarTimeChart extends Chart {
     this.drawAxis();
     this.drawGrid();
 
-    const bars = this.drawBar();
-    this.appendAnimation(bars);
+    this.drawBar();
 
     this.initTooltip();
     return this;
@@ -161,26 +161,16 @@ export class BarTimeChart extends Chart {
     const { scale: yScale } = this.yAxis;
 
     const bandwidth = this.bandWidth();
-    return this.layout.canvas.selection.selectAll('.bar')
-      .data(this.data.series)
-      .enter()
-      .append('rect')
-      .attr('class', '.bar')
-      .attr('fill', this.config.color)
-      .attr('x', (d, i) => xScale(d.x) - bandwidth / 2)
-      .attr('width', (d, i) => bandwidth)
-      .attr('y', (d) => yScale(0))
-      .attr('height', 0)
-      .attr('rx', bandwidth / 2.2);
-  }
-
-  appendAnimation(bars) {
-    const { scale: xScale } = this.xAxis;
-    const { scale: yScale } = this.yAxis;
-
-    bars.transition()
-      .delay((d, i) => i * 10)
-      .attr('y', (d) => yScale(d.y))
-      .attr('height', (d) => this.layout.canvas.dim.height - yScale(d.y));
+    this.data.series.map(({x, y}) => {
+      const from = new Point2D(xScale(x) - bandwidth / 2, yScale(0));
+      const to = new Point2D(xScale(x) + bandwidth / 2, yScale(y));
+      return new Bar(this.layout.canvas.selection)
+      .from(this.coordinate.apply(from))
+      .to(this.coordinate.apply(to))
+      .color(this.config.color)
+      .draw()
+      .round(0.45 * bandwidth)
+      .animate();
+    });
   }
 }

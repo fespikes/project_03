@@ -18,23 +18,34 @@ export class TooltipEvent extends EventEmitter {
   overlay: Overlay;
   canvas: CanvasContainer;
   active: TooltipBundleCls;
+  horizontal: boolean;
 
-  constructor(canvas: CanvasContainer, items: TooltipBundleCls[]) {
+  constructor(canvas: CanvasContainer, items: TooltipBundleCls[], horizontal?: boolean) {
     super();
     this.items = items;
     this.canvas = canvas;
+    this.horizontal = horizontal;
     this.setup();
   }
 
   setup() {
     this.canvas.mouseEvent.on('mousemove', ([x, y]) => {
       this.emit('mousemove', [x, y]);
-      const curActive = this.getActive(x);
+      let curActive;
+      if (this.horizontal) {
+        curActive = this.getActive(this.canvas.dim.height - y);
+      } else {
+        curActive = this.getActive(x);
+      }
       if (this.active !== curActive) {
         this.active = curActive;
         this.deactivateAllItems();
         this.active.activate();
-        this.emit('axismove', this.active.x);
+        if (this.horizontal) {
+          this.emit('axismove', this.canvas.dim.height - this.active.x);
+        } else {
+          this.emit('axismove', this.active.x);
+        }
         this.emit('tooltip', {
           title: this.active.title,
           items: this.active.items,

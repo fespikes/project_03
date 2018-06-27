@@ -31,10 +31,10 @@ export class BandAxis extends AxisBase {
 
   constructor(
     public config: BandAxisConfig,
-    container: SelectionType,
+    selection: SelectionType,
     position: AxisPosition,
   ) {
-    super(container, position, config);
+    super(selection, position, config);
   }
 
   draw(domain: any[], range: [number, number]) {
@@ -47,7 +47,7 @@ export class BandAxis extends AxisBase {
       .paddingOuter(padding.outer);
 
     this.axis = this.initAxis(this.position);
-    this.container.append('g')
+    this.selection.append('g')
       .attr('class', 'band-axis')
       .call(this.axis);
 
