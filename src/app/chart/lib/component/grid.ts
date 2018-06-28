@@ -16,7 +16,8 @@ export class Grid {
 
   drawY(ticks: number[], config: AxisGridConfig) {
     this.yTicks = ticks;
-    const { width } = this.container.dim;
+    // TODO: refactor height here. use canvas -> screen coordinate transformation
+    const { width, height } = this.container.dim;
     this.gridLineY = this.container.selection
     .selectAll('g')
     .data(ticks)
@@ -24,8 +25,8 @@ export class Grid {
       .append('line')
       .attr('x1', 0)
       .attr('x2', width)
-      .attr('y1', (d) => d)
-      .attr('y2', (d) => d);
+      .attr('y1', (d) => height - d)
+      .attr('y2', (d) => height - d);
 
     this.styleLine(this.gridLineY, config);
   }

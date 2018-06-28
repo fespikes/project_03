@@ -54,10 +54,8 @@ export class LineChartConfig {
   height: number;
   xAxis = new TimeAxisConfig();
   yAxis = new LinearAxisConfig(5);
-  hasAnimation = false;
+  hasAnimation = true;
   hasShadow = false;
-  hasArea = false;
-  areaColor = 'rgba(227,230,237, 0.5)';
   curveStyle: curveStyle = 'curveMonotoneX';
   margin = {top: 20, right: 50, bottom: 40, left: 50};
   background: string;
@@ -231,11 +229,10 @@ export class LineChart extends Chart<LineChartConfig, LineChartData[]> {
   drawLines() {
     this.points.forEach((series, idx) => {
       const points = series.map((p) => p.coord);
-      const { hasAnimation, hasShadow, hasArea, areaColor } = this.config;
+      const { hasAnimation, hasShadow } = this.config;
       ShapeFactory.drawPath(this.layout.canvas.selection, points, { color: this.config.colorSchema.getColor(idx) })
       .animate(hasAnimation)
-      .shadow(hasShadow)
-      .area(hasArea, {color: areaColor, animation: hasAnimation, canvasHeight: this.layout.canvas.dim.height});
+      .shadow(hasShadow);
     });
   }
 }
