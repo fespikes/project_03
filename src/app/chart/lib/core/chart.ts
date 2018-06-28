@@ -66,10 +66,6 @@ export class Chart <T, P> {
     this.layout.layout(dim, margin, legend);
     const { width: canvasWidth, height: canvasHeight } = this.layout.canvas.innerDim;
     this.coordinate = Coord.create(canvasWidth, canvasHeight);
-    // TODO: make type better
-    if (this.config['transpose']) {
-      this.coordinate.transpose();
-    }
   }
 
   drawBackgroud() {

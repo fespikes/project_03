@@ -131,7 +131,6 @@ export class AbstractComponent implements OnInit, OnDestroy {
       chartType: chartTypes.line,
       fetchData: this.abstractService.getTenantCountTrend.bind(this.abstractService),
       config: {
-        drawGridY: false,
         xAxis: {
           tick: {
             count: 4,
@@ -140,6 +139,7 @@ export class AbstractComponent implements OnInit, OnDestroy {
         },
         legend: {
           show: false,
+          contentWidth: 0,
         },
       },
       wrapperName: 'tenantGrowTrendWrapper',
@@ -149,7 +149,6 @@ export class AbstractComponent implements OnInit, OnDestroy {
       chartType: chartTypes.line,
       fetchData: this.abstractService.getNodesLoadTrend.bind(this.abstractService),
       config: {
-        drawGridY: false,
         xAxis: {
           tick: {
             timeFormat: '%H:%M',
@@ -162,7 +161,6 @@ export class AbstractComponent implements OnInit, OnDestroy {
       chartType: chartTypes.line,
       fetchData: this.abstractService.getNodesCountTrend.bind(this.abstractService),
       config: {
-        drawGridY: false,
         xAxis: {
           tick: {
             count: 4,
@@ -171,6 +169,7 @@ export class AbstractComponent implements OnInit, OnDestroy {
         },
         legend: {
           show: false,
+          contentWidth: 0,
         },
       },
       wrapperName: 'nodeAmountTrendWrapper',
@@ -199,7 +198,6 @@ export class AbstractComponent implements OnInit, OnDestroy {
       chartType: chartTypes.line,
       fetchData: this.abstractService.getInstancesCountTrend.bind(this.abstractService),
       config: {
-        drawGridY: false,
         xAxis: {
           tick: {
             count: 4,
@@ -208,6 +206,7 @@ export class AbstractComponent implements OnInit, OnDestroy {
         },
         legend: {
           show: false,
+          contentWidth: 0,
         },
       },
       wrapperName: 'instancesAmountTrendWrapper',
@@ -222,7 +221,9 @@ export class AbstractComponent implements OnInit, OnDestroy {
             count: 5,
           },
         },
-        drawGridY: false,
+        legend: {
+          contentWidth: 45,
+        },
       },
       wrapperName: 'productsInstancesTrendWrapper',
     };

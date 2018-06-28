@@ -71,6 +71,8 @@ export class LegendConfig {
 export class Legend {
   container: Container;
   padding = 15;
+  legend: SelectionType;
+
 
   constructor(
     private colorSchema: ColorSchema,
@@ -79,8 +81,8 @@ export class Legend {
 
   draw(container: Container, names: string[]) {
     this.container = container;
-    const selection = this.container.selection.append('g');
-    const legend = selection.append('g')
+    this.legend = this.container.selection.append('g').attr('class', 'legend');
+    const legendItems = this.legend.append('g')
       .attr('font-family', 'sans-serif')
       .attr('font-size', 12)
       .attr('text-anchor', 'start')
@@ -90,22 +92,102 @@ export class Legend {
         .append('g')
         .classed('legend-item', true);
 
-    this.drawMarkers(legend);
+    this.drawMarkers(legendItems);
 
-    legend.append('text')
+    legendItems.append('text')
       .attr('x', 20)
       .attr('y', 0)
       .attr('dy', '0.6rem')
       .text((text) => text);
 
-    const items = selection.selectAll('.legend-item').nodes();
+    const trans = this.calcTranslate(container.dim);
+    legendItems.attr('transform', (text, i) => trans[i]);
 
-    legend.attr('transform', (text, i) => {
-      return this.getItemsTranslate(items.slice(0, i));
-    });
-
+    const items = this.legend.selectAll('.legend-item').nodes();
     const containerTranslate = this.getContainerTranslate(items, container.dim);
-    selection.attr('transform', containerTranslate.toTranslate());
+    this.legend.attr('transform', containerTranslate.toTranslate());
+  }
+
+  calcTranslate(dim: {height: number, width: number}) {
+    const {height, width} = dim;
+    const {orient} = this.config;
+    let trans;
+    if (orient === 'horizontal') {
+      trans = this.calcTranslateX(width);
+    } else {
+      trans = this.calcTranslateY(height);
+    }
+
+    return trans.reduce((flatMap: string[], _items) => {
+      const transArr = _items.map((t) => {
+        return `translate(${t.x}, ${t.y})`;
+      });
+      return flatMap.concat(transArr);
+    }, []);
+  }
+
+  /**
+   * 计算horizontal方向时各个item的平移，假如一行过长会自行折行
+   * @param width 容器宽度
+   */
+  calcTranslateX(width: number) {
+    const items = this.legend.selectAll('.legend-item').nodes();
+    let accum = 0;
+    const itemTransEnd = [];
+    items.forEach((item) => {
+      const itemWidth = this.getItemWidth(item as any);
+
+      if (accum + itemWidth > width || itemTransEnd.length === 0) {
+        itemTransEnd.push([{
+          x: 0,
+          y: itemTransEnd.length * 18,
+        }]);
+        accum = itemWidth + this.padding;
+      } else {
+        itemTransEnd[itemTransEnd.length - 1].push({
+          x: accum,
+          y: (itemTransEnd.length - 1) * 18,
+        });
+        accum += itemWidth + this.padding;
+      }
+    });
+    return itemTransEnd;
+  }
+
+  /**
+   * 计算vertical方向时各个item的平移，假如一列过长会自行换下一列(未重复测试) TODO: 测试
+   * @param height 容器高度
+   */
+  calcTranslateY(height: number) {
+    const items = this.legend.selectAll('.legend-item').nodes();
+    let accum = 0;
+    let maxWidth = 0;
+    let columnStartX = 0;
+    const itemTransEnd = [];
+    items.forEach((item) => {
+      const itemHeight = this.getItemHeight(item as any);
+      const itemWidth = this.getItemWidth(item as any);
+
+      if (accum + itemHeight > height || itemTransEnd.length === 0) {
+        itemTransEnd.push([{
+          x: columnStartX,
+          y: 0,
+        }]);
+        columnStartX += maxWidth;
+        maxWidth = 0;
+      } else {
+        itemTransEnd[itemTransEnd.length - 1].push({
+          x: columnStartX,
+          y: accum,
+        });
+      }
+      accum += itemHeight + 2;
+
+      if (itemWidth + this.padding > maxWidth) {
+        maxWidth = itemWidth + this.padding;
+      }
+    });
+    return itemTransEnd;
   }
 
   drawMarkers(legend: SelectionType) {
@@ -133,30 +215,10 @@ export class Legend {
     }
   }
 
-  getItemsTranslate(items: any[]) {
-    // 恒定的padding，应写进legend config中
-    if (this.config.orient === 'horizontal') {
-      const translateX = this.getItemsWidth(items);
-
-      return `translate(${translateX}, 0)`;
-    } else {
-      const translateY = this.getItemsHeight(items);
-
-      return `translate(0, ${translateY})`;
-    }
-  }
-
   getContainerTranslate(items: any[], legend2d: Rect2D) {
-    let containerWidth;
-    let containerHeight;
     const { orient, align } = this.config;
-    if (orient === 'horizontal') {
-      containerWidth = this.getItemsWidth(items, false);
-      containerHeight = defaultContentHeight;
-    } else {
-      containerWidth = this.getItemsMaxWidth(items);
-      containerHeight = this.getItemsHeight(items, false);
-    }
+    const containerWidth = (this.legend.node() as any).getBoundingClientRect().width;
+    const containerHeight = (this.legend.node() as any).getBoundingClientRect().height;
 
     let translateX = (legend2d.width - containerWidth) / 2;
     let translateY = (legend2d.height - containerHeight) / 2;
@@ -177,38 +239,11 @@ export class Legend {
     return Transform2D.fromOffset(translateX, translateY);
   }
 
-  getItemsMaxWidth(items: Element[]) {
-    return items.reduce((max, item) => {
-      const width = this.getItemWidth(item);
-      return width > max ? width : max;
-    }, 0);
-  }
-
   getItemWidth(item: Element) {
     return item.getBoundingClientRect().width;
   }
 
   getItemHeight(item: Element) {
     return item.getBoundingClientRect().height;
-  }
-
-  getItemsWidth(items: Element[], trailingPadding = true) {
-    const itemWidth = items.map((item) => this.getItemWidth(item))
-    .reduce((accum, width) => accum + width + this.padding, 0);
-    if (!trailingPadding) {
-      return itemWidth - this.padding;
-    } else {
-      return itemWidth;
-    }
-  }
-
-  getItemsHeight(items: Element[], trailingPadding = true) {
-    const itemHeight = items.map((item) => this.getItemHeight(item))
-    .reduce((accum, height) => accum + height + this.padding, 0);
-    if (!trailingPadding) {
-      return itemHeight - this.padding;
-    } else {
-      return itemHeight;
-    }
   }
 }

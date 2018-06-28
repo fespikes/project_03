@@ -155,6 +155,10 @@ export class BarChart extends Chart<BarChartConfig, BarChartData> {
     const { width, height, margin, legend, colorSchema, stack } = this.config;
     this.init({width, height}, margin, legend);
 
+    if (this.config.transpose) {
+      this.coordinate.transpose();
+    }
+
     this.drawAxis();
     this.drawGrid();
     this.drawBars();

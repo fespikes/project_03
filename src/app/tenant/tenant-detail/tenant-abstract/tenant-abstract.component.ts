@@ -119,7 +119,6 @@ export class TenantAbstractComponent implements OnInit, OnDestroy {
       fetchData: this.service.fetchInstancesCountTrend.bind(this.service),
       wrapperName: 'instancesCountTrendWrapper',
       config: {
-        drawGridY: false,
         xAxis: {
           tick: {
             count: 3,
@@ -133,6 +132,7 @@ export class TenantAbstractComponent implements OnInit, OnDestroy {
         },
         legend: {
           show: false,
+          contentWidth: 0,
         },
       },
     };
@@ -143,9 +143,9 @@ export class TenantAbstractComponent implements OnInit, OnDestroy {
       fetchData: this.service.fetchConsumptionsTrend.bind(this.service),
       wrapperName: 'consumptionsTrendWrapper',
       config: {
-        drawGridY: false,
         legend: {
           show: false,
+          contentWidth: 0,
         },
         xAxis: {
           tick: {
