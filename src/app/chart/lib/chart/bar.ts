@@ -132,10 +132,7 @@ class TooltipBundle extends TooltipBundleCls {
   }
 }
 
-export class BarChart extends Chart {
-  data: BarChartData;
-  config: BarChartConfig;
-  element: HTMLElement;
+export class BarChart extends Chart<BarChartConfig, BarChartData> {
   xAxis: BandAxis;
   yAxis: LinearAxis;
 
@@ -143,6 +140,16 @@ export class BarChart extends Chart {
   grid: Grid;
   tooltip: Tooltip;
   axisIndicator: AxisIndicator;
+
+  setConfig(config: BarChartConfig) {
+    this.config = BarChartConfig.from(config);
+    return this;
+  }
+
+  datum(data: BarChartData) {
+    this.data = BarChartData.create(data);
+    return this;
+  }
 
   draw() {
     const { width, height, margin, legend, colorSchema, stack } = this.config;

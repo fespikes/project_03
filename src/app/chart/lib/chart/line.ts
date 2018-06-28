@@ -35,7 +35,7 @@ export class LineChartData {
   topic: string;
   data: LinePoint[];
 
-  static create(topic, data: {x: string, y: number}[]) {
+  static create(topic, data: {x: string | Date, y: number}[]) {
     const lineData = new LineChartData();
     lineData.data = data.map((d) => {
       return {
@@ -127,16 +127,25 @@ class TooltipBundle implements TooltipBundleCls {
 }
 
 
-export class LineChart extends Chart {
-  data: LineChartData[] = [];
-  config: LineChartConfig;
-  element: HTMLElement;
+export class LineChart extends Chart<LineChartConfig, LineChartData[]> {
   xAxis: TimeAxis;
   yAxis: LinearAxis;
   grid: Grid;
   tooltip: Tooltip;
   axisIndicator: AxisIndicator;
   points: MarkerPoint[][] = [];
+
+  setConfig(config: LineChartConfig) {
+    this.config = LineChartConfig.from(config);
+    return this;
+  }
+
+  datum(data: LineChartData[]) {
+    this.data = data.map((d) => {
+      return LineChartData.create(d.topic, d.data);
+    });
+    return this;
+  }
 
   draw() {
     const { width, height, margin, legend, colorSchema } = this.config;

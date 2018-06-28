@@ -2,18 +2,18 @@ import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
 import { I18nModule, TranslateDeactivator, TranslateResolver, TranslateToken } from '../i18n';
-import { ChartComponent } from './chart.component';
-import { LineChartComponent } from './line-chart/line-chart.component';
-import { BarChartComponent } from './bar-chart/bar-chart.component';
-import { DonutChartComponent } from './donut-chart/donut-chart.component';
-import { BarTimeChartComponent } from './bar-time-chart/bar-time-chart.component';
+import { ChartExampleComponent } from './chart-example.component';
+import { LineChartExampleComponent } from './line-chart-example/line-chart-example.component';
+import { BarChartExampleComponent } from './bar-chart-example/bar-chart-example.component';
+import { DonutChartExampleComponent } from './donut-chart-example/donut-chart-example.component';
+import { BarTimeChartExampleComponent } from './bar-time-chart-example/bar-time-chart-example.component';
 
 @NgModule({
   imports: [
     RouterModule.forChild([
       {
         path: '',
-        component: ChartComponent,
+        component: ChartExampleComponent,
         resolve: [TranslateResolver],
         canDeactivate: [TranslateDeactivator],
         children: [
@@ -24,19 +24,19 @@ import { BarTimeChartComponent } from './bar-time-chart/bar-time-chart.component
           },
           {
             path: 'line',
-            component: LineChartComponent,
+            component: LineChartExampleComponent,
           },
           {
             path: 'bar',
-            component: BarChartComponent,
+            component: BarChartExampleComponent,
           },
           {
             path: 'bartime',
-            component: BarTimeChartComponent,
+            component: BarTimeChartExampleComponent,
           },
           {
             path: 'donut',
-            component: DonutChartComponent,
+            component: DonutChartExampleComponent,
           },
         ],
       },

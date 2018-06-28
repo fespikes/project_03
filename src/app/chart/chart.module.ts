@@ -6,11 +6,12 @@ import { TuiModule } from 'tdc-ui';
 import { I18nModule } from 'app/i18n';
 
 import { ChartRoutingModule } from './chart-routing.module';
-import { ChartComponent } from './chart.component';
-import { LineChartComponent } from './line-chart/line-chart.component';
-import { BarChartComponent } from './bar-chart/bar-chart.component';
-import { DonutChartComponent } from './donut-chart/donut-chart.component';
-import { BarTimeChartComponent } from './bar-time-chart/bar-time-chart.component';
+import { ChartExampleComponent } from './chart-example.component';
+import { LineChartExampleComponent } from './line-chart-example/line-chart-example.component';
+import { BarChartExampleComponent } from './bar-chart-example/bar-chart-example.component';
+import { DonutChartExampleComponent } from './donut-chart-example/donut-chart-example.component';
+import { BarTimeChartExampleComponent } from './bar-time-chart-example/bar-time-chart-example.component';
+import { LineChartComponent, BarChartComponent, BarTimeChartComponent } from './chart/chart.component';
 
 @NgModule({
   imports: [
@@ -21,10 +22,13 @@ import { BarTimeChartComponent } from './bar-time-chart/bar-time-chart.component
     ChartRoutingModule,
   ],
   declarations: [
-    ChartComponent,
+    ChartExampleComponent,
+    LineChartExampleComponent,
+    BarChartExampleComponent,
+    DonutChartExampleComponent,
+    BarTimeChartExampleComponent,
     LineChartComponent,
     BarChartComponent,
-    DonutChartComponent,
     BarTimeChartComponent,
   ],
 })

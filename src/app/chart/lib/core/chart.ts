@@ -18,16 +18,21 @@ import { Coordinate, Coord } from './coordinate';
 
 export type Constructor<T> = new(...args: any[]) => T;
 
-export class Chart {
-  // TODO: remove any. 利用泛型
-  config: any;
+export interface ChartInterface {
+  setConfig(config: any);
+  select(HTMLElement);
+  datum(data: any);
+}
+
+export class Chart <T, P> {
+  config: T;
   element: HTMLElement;
-  data: any;
+  data: P;
   layout: Layout;
   overlay: Overlay;
   coordinate: Coordinate;
 
-  setConfig(config: any) {
+  setConfig(config: T) {
     this.config = config;
     return this;
   }
@@ -37,7 +42,7 @@ export class Chart {
     return this;
   }
 
-  datum(data: any) {
+  datum(data: P) {
     this.data = data;
     return this;
   }
@@ -61,13 +66,15 @@ export class Chart {
     this.layout.layout(dim, margin, legend);
     const { width: canvasWidth, height: canvasHeight } = this.layout.canvas.innerDim;
     this.coordinate = Coord.create(canvasWidth, canvasHeight);
-    if (this.config.transpose) {
+    // TODO: make type better
+    if (this.config['transpose']) {
       this.coordinate.transpose();
     }
   }
 
   drawBackgroud() {
-    if (this.config.background) {
+    // TODO: make type better
+    if (this.config['background']) {
       const { selection, dim: { width, height } } = this.layout.background;
       ShapeFactory.drawRect(selection, {x: 0, y: 0}, height, { width });
     }

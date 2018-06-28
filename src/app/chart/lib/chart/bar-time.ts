@@ -27,7 +27,7 @@ export class BarPoint {
 export class BarTimeChartData {
   series: BarPoint[];
 
-  static create(series: { x: string, y: number }[]) {
+  static create(series: { x: string | Date, y: number }[]) {
     const barTimeData = new BarTimeChartData();
     barTimeData.series = series.map(d => {
       return {
@@ -40,9 +40,15 @@ export class BarTimeChartData {
 
   get domain() {
     const length = this.series.length;
+    if (length === 0) {
+      return [];
+    } else if (length === 1) {
+      return [this.series[0].x, this.series[0].x];
+    }
+
     const duration = moment(this.series[0].x).diff(this.series[1].x);
     const end = this.series[length - 1].x;
-    const start = moment(this.series[0].x).subtract(duration).toDate();
+    const start = moment(this.series[0].x).add(duration).toDate();
     return [start, end];
   }
 }
@@ -58,7 +64,7 @@ export class BarTimeChartConfig {
     },
   };
   yAxis = new LinearAxisConfig(5);
-  hasAnimation = false;
+  hasAnimation = true;
   color = '#305ab5';
   background: string;
   margin = { top: 20, right: 50, bottom: 40, left: 50 };
@@ -86,16 +92,23 @@ class TooltipBundle extends TooltipBundleCls {
   }
 }
 
-export class BarTimeChart extends Chart {
-  data: BarTimeChartData;
-  config: BarTimeChartConfig;
-  element: HTMLElement;
+export class BarTimeChart extends Chart<BarTimeChartConfig, BarTimeChartData> {
   xAxis: TimeAxis;
   yAxis: LinearAxis;
   grid: Grid;
   axisIndicator: AxisIndicator;
 
   private tooltip: Tooltip;
+
+  setConfig(config: BarTimeChartConfig) {
+    this.config = BarTimeChartConfig.from(config);
+    return this;
+  }
+
+  datum(data: BarTimeChartData) {
+    this.data = BarTimeChartData.create(data.series);
+    return this;
+  }
 
   draw() {
     const { width, height, margin } = this.config;
@@ -132,7 +145,7 @@ export class BarTimeChart extends Chart {
       const x = scale(d.x);
       const object = new TooltipBundle(x);
       object.items.push({
-        name: d.x.toISOString(),
+        name:  this.xAxis.format(d.x),
         value: d.y,
         color,
       });

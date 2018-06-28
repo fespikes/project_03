@@ -7,11 +7,11 @@ import {
 import { SubmenuItem } from 'tdc-ui';
 
 @Component({
-  selector: 'tec-chart',
-  templateUrl: './chart.component.html',
-  styleUrls: ['./chart.component.sass'],
+  selector: 'tec-chart-example',
+  templateUrl: './chart-example.component.html',
+  styleUrls: ['./chart-example.component.sass'],
 })
-export class ChartComponent implements OnInit {
+export class ChartExampleComponent implements OnInit {
   @HostBinding('class.tui-layout-body') hostClass = true;
 
   menuItems: SubmenuItem[] = [];

@@ -22,11 +22,11 @@ import { ElementWidthListener } from '../element-width-listener';
 @desc: this is the container component of Donut chart
 */
 @Component({
-  selector: 'tec-donut-chart',
-  templateUrl: './donut-chart.component.html',
-  styleUrls: ['./donut-chart.component.sass'],
+  selector: 'tec-donut-chart-example',
+  templateUrl: './donut-chart-example.component.html',
+  styleUrls: ['./donut-chart-example.component.sass'],
 })
-export class DonutChartComponent implements OnDestroy, AfterViewInit {
+export class DonutChartExampleComponent implements OnDestroy, AfterViewInit {
 
   @HostBinding('class.tui-layout-vertical') hostClass = true;
 

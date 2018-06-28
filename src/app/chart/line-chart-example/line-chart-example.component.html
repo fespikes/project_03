@@ -1,8 +1,12 @@
 <div class="tui-layout-main-container flex-auto">
   <div class="tui-layout-main-title">
-    Bar chart
+    Line chart
   </div>
-  <div #chart style="width:100%;height:600px"></div>
+  <tec-line-chart
+    style="width:100%;height:600px"
+    [config]="config"
+    [data]="data"
+  ></tec-line-chart>
   <form #form="ngForm" tuiForm labelFlex="1" inputFlex="8">
     <tui-form-item label="data">
       <tui-textarea name="data" rows="10" [(ngModel)]="chartDataJson"></tui-textarea>

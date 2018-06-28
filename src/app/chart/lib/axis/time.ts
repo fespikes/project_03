@@ -52,8 +52,7 @@ export class TimeAxis extends AxisBase {
 
     this.scale = d3.scaleTime()
       .domain(d3.extent(domain))
-      .rangeRound(range)
-      .nice();
+      .rangeRound(range);
 
     this.axis = this.initAxis(this.position);
     this.axis.ticks(this.count)
