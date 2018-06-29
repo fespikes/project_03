@@ -7,7 +7,7 @@ import { Point2D } from '../helpers/transform-helper';
 
 export class MarkerConfig {
   center: Point2D;
-  // 目前只支持 double-circel
+  // 目前只支持 double-circle
   // shape: string;
   color: string;
 }
@@ -41,6 +41,8 @@ export class DoubleCircleMarker {
     const sub = container.append('g').classed(this.className, true);
     this.outerCircle.draw(sub);
     this.innerCircle.draw(sub);
+    this.outerCircle.fadeIn();
+    this.innerCircle.fadeIn();
 
     this.node = sub;
     this.color = color;

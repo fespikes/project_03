@@ -10,25 +10,27 @@ export type GridStyle = 'solid' | 'dash';
 export type TimeInterval = 'timeSecond' | 'timeMinute' | 'timeHour' | 'timeDay' | 'timeMonth';
 
 export class AxisTickConfig {
-  count: number;
+  count?: number;
   padding = 10;
 }
 
-export class AxisTimeTickConfig implements AxisTickConfig {
-  useTimeInterval = false;
-  count: number;
-  timeInterval: TimeInterval = 'timeMinute';
-  interval = 10;
-  padding = 10;
+export class AxisTimeTickConfig extends AxisTickConfig {
+  timeInterval?: TimeInterval;
+  interval?: number;
   timeFormat = '%x';
 
   // timeFormat examples and interval examples
   // https://github.com/xswei/d3js_doc/tree/master/API/d3-scale-master#time_domain
 }
 
+export class AxisLinearTickConfig extends AxisTickConfig {
+  // https://github.com/d3/d3/wiki/%E6%A0%BC%E5%BC%8F%E5%8C%96
+  format?: string;
+}
+
 export class AxisGridConfig {
-  style: GridStyle = 'solid';
-  color = '#f0f3f7';
+  style: GridStyle = 'dash';
+  color = 'rgba(240,243,247, .5)';
   strokeWidth = 1;
 }
 

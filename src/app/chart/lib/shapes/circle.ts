@@ -52,11 +52,25 @@ export class Circle {
     .attr('r', radius)
     .attr('stroke-width', border.width)
     .attr('stroke', border.color)
-    .attr('transform', `translate(${x}, ${y})`)
-    .style('transition', 'r 200ms');
+    .attr('transform', `translate(${x}, ${y})`);
+  }
+
+  fadeIn() {
+    this.circle.attr('stroke', 'rgba(255, 255, 255, 1)')
+    .transition()
+    .duration(50)
+    .attr('stroke', this.border.color);
+
+    this.circle.attr('fill', 'rgba(255, 255, 255, 1)')
+    .transition()
+    .duration(500)
+    .attr('fill', this.fill);
   }
 
   enlarge(r: number) {
-    this.circle.attr('r', r);
+    this.circle
+      .transition()
+      .duration(200)
+      .attr('r', r);
   }
 }

@@ -1,6 +1,6 @@
 import * as d3 from 'd3';
 import * as moment from 'moment';
-import { Selection, ScaleTime, ScaleLinear, Axis, Line } from 'd3';
+import merge from 'lodash-es/merge';
 
 import { Chart } from '../core';
 import {
@@ -35,7 +35,7 @@ export class LineChartData {
   topic: string;
   data: LinePoint[];
 
-  static create(topic, data: {x: string, y: number}[]) {
+  static create(topic, data: {x: string | Date, y: number}[]) {
     const lineData = new LineChartData();
     lineData.data = data.map((d) => {
       return {
@@ -53,11 +53,9 @@ export class LineChartConfig {
   width: number;
   height: number;
   xAxis = new TimeAxisConfig();
-  yAxis = new LinearAxisConfig();
-  hasAnimation = false;
+  yAxis = new LinearAxisConfig(5);
+  hasAnimation = true;
   hasShadow = false;
-  hasArea = false;
-  areaColor = 'rgba(227,230,237, 0.5)';
   curveStyle: curveStyle = 'curveMonotoneX';
   margin = {top: 20, right: 50, bottom: 40, left: 50};
   background: string;
@@ -66,9 +64,7 @@ export class LineChartConfig {
 
   static from(config) {
     const _config = new LineChartConfig();
-    Object.assign(_config, config);
-    _config.colorSchema = ColorSchema.from(_config.colorSchema);
-    _config.legend = LegendConfig.from(config.legend);
+    merge(_config, config);
     return _config;
   }
 
@@ -129,16 +125,25 @@ class TooltipBundle implements TooltipBundleCls {
 }
 
 
-export class LineChart extends Chart {
-  data: LineChartData[] = [];
-  config: LineChartConfig;
-  element: HTMLElement;
+export class LineChart extends Chart<LineChartConfig, LineChartData[]> {
   xAxis: TimeAxis;
   yAxis: LinearAxis;
   grid: Grid;
   tooltip: Tooltip;
   axisIndicator: AxisIndicator;
   points: MarkerPoint[][] = [];
+
+  setConfig(config: LineChartConfig) {
+    this.config = LineChartConfig.from(config);
+    return this;
+  }
+
+  datum(data: LineChartData[]) {
+    this.data = data.map((d) => {
+      return LineChartData.create(d.topic, d.data);
+    });
+    return this;
+  }
 
   draw() {
     const { width, height, margin, legend, colorSchema } = this.config;
@@ -213,18 +218,21 @@ export class LineChart extends Chart {
   drawGrid() {
     const { xAxis, yAxis } = this.config;
     this.grid = new Grid(this.layout.grid);
-    this.grid.drawX(this.xAxis.ticks(), xAxis.grid);
-    this.grid.drawY(this.yAxis.ticks(), yAxis.grid);
+    if (xAxis.grid !== false) {
+      this.grid.drawX(this.xAxis.ticks(), xAxis.grid);
+    }
+    if (yAxis.grid !== false) {
+      this.grid.drawY(this.yAxis.ticks(), yAxis.grid);
+    }
   }
 
   drawLines() {
     this.points.forEach((series, idx) => {
       const points = series.map((p) => p.coord);
-      const { hasAnimation, hasShadow, hasArea, areaColor } = this.config;
+      const { hasAnimation, hasShadow } = this.config;
       ShapeFactory.drawPath(this.layout.canvas.selection, points, { color: this.config.colorSchema.getColor(idx) })
       .animate(hasAnimation)
-      .shadow(hasShadow)
-      .area(hasArea, {color: areaColor, animation: hasAnimation, canvasHeight: this.layout.canvas.dim.height});
+      .shadow(hasShadow);
     });
   }
 }

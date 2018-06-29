@@ -1,5 +1,6 @@
 import * as d3 from 'd3';
 import * as moment from 'moment';
+import merge from 'lodash-es/merge';
 
 import { Chart } from '../core';
 import {
@@ -26,7 +27,7 @@ export class BarPoint {
 export class BarTimeChartData {
   series: BarPoint[];
 
-  static create(series: { x: string, y: number }[]) {
+  static create(series: { x: string | Date, y: number }[]) {
     const barTimeData = new BarTimeChartData();
     barTimeData.series = series.map(d => {
       return {
@@ -39,9 +40,15 @@ export class BarTimeChartData {
 
   get domain() {
     const length = this.series.length;
+    if (length === 0) {
+      return [];
+    } else if (length === 1) {
+      return [this.series[0].x, this.series[0].x];
+    }
+
     const duration = moment(this.series[0].x).diff(this.series[1].x);
     const end = this.series[length - 1].x;
-    const start = moment(this.series[0].x).subtract(duration).toDate();
+    const start = moment(this.series[0].x).add(duration).toDate();
     return [start, end];
   }
 }
@@ -52,23 +59,19 @@ export class BarTimeChartConfig {
   xAxis: TimeAxisConfig = {
     ...new TimeAxisConfig(),
     tick: {
-      useTimeInterval: true,
-      count: 0,
-      timeInterval: 'timeMinute',
-      interval: 10,
       padding: 2,
       timeFormat: '%I:%M',
     },
   };
-  yAxis = new LinearAxisConfig();
-  hasAnimation = false;
+  yAxis = new LinearAxisConfig(5);
+  hasAnimation = true;
   color = '#305ab5';
   background: string;
   margin = { top: 20, right: 50, bottom: 40, left: 50 };
 
   static from(config) {
     const _config = new BarTimeChartConfig();
-    Object.assign(_config, config);
+    merge(_config, config);
     return _config;
   }
 
@@ -89,16 +92,23 @@ class TooltipBundle extends TooltipBundleCls {
   }
 }
 
-export class BarTimeChart extends Chart {
-  data: BarTimeChartData;
-  config: BarTimeChartConfig;
-  element: HTMLElement;
+export class BarTimeChart extends Chart<BarTimeChartConfig, BarTimeChartData> {
   xAxis: TimeAxis;
   yAxis: LinearAxis;
   grid: Grid;
   axisIndicator: AxisIndicator;
 
   private tooltip: Tooltip;
+
+  setConfig(config: BarTimeChartConfig) {
+    this.config = BarTimeChartConfig.from(config);
+    return this;
+  }
+
+  datum(data: BarTimeChartData) {
+    this.data = BarTimeChartData.create(data.series);
+    return this;
+  }
 
   draw() {
     const { width, height, margin } = this.config;
@@ -122,7 +132,9 @@ export class BarTimeChart extends Chart {
   drawGrid() {
     const { yAxis } = this.config;
     this.grid = new Grid(this.layout.grid);
-    this.grid.drawY(this.yAxis.ticks(), yAxis.grid);
+    if (yAxis.grid !== false) {
+      this.grid.drawY(this.yAxis.ticks(), yAxis.grid);
+    }
   }
 
   initTooltip() {
@@ -133,7 +145,7 @@ export class BarTimeChart extends Chart {
       const x = scale(d.x);
       const object = new TooltipBundle(x);
       object.items.push({
-        name: d.x.toISOString(),
+        name:  this.xAxis.format(d.x),
         value: d.y,
         color,
       });
