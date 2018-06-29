@@ -8,6 +8,7 @@ export class TenantInfo {
   status = '';
   statusAlias?: string;
   uid = '';
+  adminEmail?: string;
 }
 
 export class TenantFilter {

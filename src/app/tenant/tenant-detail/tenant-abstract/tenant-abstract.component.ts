@@ -266,7 +266,7 @@ export class TenantAbstractComponent implements OnInit, OnDestroy {
 
   toConsumptionDetails($event) {
     const uid = sessionStorage.getItem('eco:tenant:detail:uid');
-    this.router.navigate([`/tenant/detail/${uid}`], { queryParams: { idx: 4 } })
+    this.router.navigate([`/tenant/detail/${uid}`], { queryParams: { idx: 5 } })
       .then(_ => _ );
   }
 

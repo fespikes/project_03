@@ -59,6 +59,9 @@ export class TenantDetailComponent implements OnInit {
       this.filter = {...this.filter, canceled: queryParams['canceled'] === 'true'};
       this.uid = pathParams['uid'];
       this.getTenantPageInfo(this.uid);
+
+      const selectedTabIndex = queryParams['idx'];
+      this.selectedTabIndex = +selectedTabIndex || this.selectedTabIndex;
     });
   }
 
@@ -103,6 +106,9 @@ export class TenantDetailComponent implements OnInit {
 
   selectedIndexChange(selectedId) {
     this.selectedTabIndex = selectedId;
+    const uid = sessionStorage.getItem('eco:tenant:detail:uid');
+    this.router.navigate([`/tenant/detail/${uid}`], { queryParams: { idx: selectedId } })
+      .then(_ => _);
   }
 
   makeSubMenuItems(tenants = []) {
