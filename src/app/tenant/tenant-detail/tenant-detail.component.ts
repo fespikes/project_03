@@ -87,10 +87,12 @@ export class TenantDetailComponent implements OnInit {
   }
 
   filterChange(checkboxChange = false) {
+    this.loading = true;
+
     this.tenantService.fetchAllTenants(this.filter)
     .subscribe((tenants) => {
       this.submenuItems = this.makeSubMenuItems(tenants);
-
+      this.loading = false;
       if (checkboxChange) {
         let nextUid;
         if (this.submenuItems.length === 0) {
@@ -160,12 +162,12 @@ export class TenantDetailComponent implements OnInit {
           color: 'primary',
         };
         break;
-      case 'ACTIVATING':
-        suffix = {
-          icon: 'circle',
-          color: 'success',
-        };
-        break;
+      // case 'ACTIVATING':
+      //   suffix = {
+      //     icon: 'circle',
+      //     color: 'success',
+      //   };
+      //   break;
       case 'BROKEN':
         suffix = {
           icon: 'exclamation-circle',

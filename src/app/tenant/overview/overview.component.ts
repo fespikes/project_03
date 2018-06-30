@@ -7,7 +7,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class OverviewComponent implements OnInit {
 
-  selectedIndex = 1;
+  selectedIndex = 0;
   loading: false;
 
   constructor() { }
