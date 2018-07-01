@@ -19,7 +19,7 @@ export class SystemModalService {
   openYamlModal(service, uid = null) {
     const config = {
       title: `${this.translate.translateKey('SYSTEM.POPUP.YAML_FILE')}`,
-      size: 'md',
+      size: 'lg',
       data: {
         service: service,
         uid: uid,

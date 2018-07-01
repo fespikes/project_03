@@ -23,11 +23,22 @@
       .submenu-filter
         visibility: hidden
 
+    .item-name.text-ellipsis
+      padding-left: 0
+      margin-left: -2px
+    .item-suffix
+      margin-left: 0
+      margin-right: 1rem
+    .tui-submenu-body-collapsed .item-suffix
+      display: none
+
+
   .tui-layout-main-nav
     span
       display: flex
       align-items: center
       cursor: pointer
+      padding-left: 0
 
     svg
       fill: $brandblue
@@ -74,16 +85,16 @@
         padding-right: 1.5rem
 
       .tenant-property
-        flex: 1
+        flex: 2
         display: flex
         align-items: center
         padding-left: 2rem
         border-left: 1px solid $lightgrey
 
         .tui-property
-          flex: 1
+          flex: .6
           min-width: 10rem
-          margin: 0.75rem 5rem 0.75rem 0
+          margin: 0.75rem 0.5rem 0.75rem 0
 
   .tui-tab
     flex: 1

@@ -1,26 +1,18 @@
 <tui-submenu backUrl="../../overview">
   <div class="submenu-filter">
-    <tui-search [(ngModel)]="filter.keyword" (ngModelChange)="filterChange()"
-    ></tui-search>
+    <tui-search [(ngModel)]="filter.keyword" (ngModelChange)="filterChange()"></tui-search>
     <tui-checkbox [(ngModel)]="filter.canceled" (ngModelChange)="filterChange(true)">
       <span class="message">{{'TENANT.SERVICE.SHOW_CANCELED_TENANT' | translate}}</span>
     </tui-checkbox>
   </div>
-  <tui-submenu-list
-    menuTitle="{{'TENANT.OVERVIEW.TOTAL' | translate}}: {{tenantsCount}}"
-    [items]="submenuItems"
-  ></tui-submenu-list>
+  <tui-submenu-list menuTitle="{{'TENANT.OVERVIEW.TOTAL' | translate}}: {{tenantsCount}}" [items]="submenuItems"></tui-submenu-list>
 </tui-submenu>
 <div class="tui-layout-vertical" [tuiLoading]="loading" tccLoadingHeight="600px">
   <div class="tui-layout-main-container">
     <div class="tui-layout-main-title">
       <div class="left">
         {{tenant.name + ' (' + tenant.uid + ')'}}
-        <tec-tenant-status-icon
-          class="tenant-status"
-          [status]="tenant.status"
-          [alias]="tenant.statusAlias"
-        ></tec-tenant-status-icon>
+        <tec-tenant-status-icon class="tenant-status" [status]="tenant.status" [alias]="tenant.statusAlias"></tec-tenant-status-icon>
       </div>
       <div class="right">
         <button *ngIf="!(tenant.status === 'CANCELED')" tuiBtn="primary" (click)="deleteTenant(tenant)">
@@ -37,14 +29,11 @@
       <div class="tenant-property">
         <tui-property icon="user-slash" label="{{'TENANT.DETAIL.ADMIN' | translate}}" [value]="tenant.admin"> </tui-property>
         <tui-property icon="clock" label="{{'TENANT.DETAIL.CREATE_TIME' | translate}}" [value]="tenant.createTime | date:'y/M/d HH:mm'"></tui-property>
+        <tui-property icon="mail" label="Email" [value]="tenant.adminEmail"></tui-property>
       </div>
     </div>
   </div>
-  <tui-tab
-    *ngIf="!loading"
-    [(selectedIndex)]="selectedTabIndex"
-    (selectedIndexChange)="selectedIndexChange($event)"
-  >
+  <tui-tab *ngIf="!loading" [(selectedIndex)]="selectedTabIndex" (selectedIndexChange)="selectedIndexChange($event)">
     <tec-tenant-abstract *tuiTabPane="'TENANT.DETAIL.ABSTRACT' | translate"></tec-tenant-abstract>
     <tec-tenant-instance *tuiTabPane="'TENANT.DETAIL.INSTANCE' | translate" [uid]="tenant.uid"></tec-tenant-instance>
     <tec-tenant-network *tuiTabPane="'TENANT.DETAIL.NETWORK' | translate"></tec-tenant-network>

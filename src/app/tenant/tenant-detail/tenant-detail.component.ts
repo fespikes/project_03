@@ -59,6 +59,9 @@ export class TenantDetailComponent implements OnInit {
       this.filter = {...this.filter, canceled: queryParams['canceled'] === 'true'};
       this.uid = pathParams['uid'];
       this.getTenantPageInfo(this.uid);
+
+      const selectedTabIndex = queryParams['idx'];
+      this.selectedTabIndex = +selectedTabIndex || this.selectedTabIndex;
     });
   }
 
@@ -84,10 +87,12 @@ export class TenantDetailComponent implements OnInit {
   }
 
   filterChange(checkboxChange = false) {
+    this.loading = true;
+
     this.tenantService.fetchAllTenants(this.filter)
     .subscribe((tenants) => {
       this.submenuItems = this.makeSubMenuItems(tenants);
-
+      this.loading = false;
       if (checkboxChange) {
         let nextUid;
         if (this.submenuItems.length === 0) {
@@ -103,6 +108,9 @@ export class TenantDetailComponent implements OnInit {
 
   selectedIndexChange(selectedId) {
     this.selectedTabIndex = selectedId;
+    const uid = sessionStorage.getItem('eco:tenant:detail:uid');
+    this.router.navigate([`/tenant/detail/${uid}`], { queryParams: { idx: selectedId } })
+      .then(_ => _);
   }
 
   makeSubMenuItems(tenants = []) {
@@ -154,12 +162,12 @@ export class TenantDetailComponent implements OnInit {
           color: 'primary',
         };
         break;
-      case 'ACTIVATING':
-        suffix = {
-          icon: 'circle',
-          color: 'success',
-        };
-        break;
+      // case 'ACTIVATING':
+      //   suffix = {
+      //     icon: 'circle',
+      //     color: 'success',
+      //   };
+      //   break;
       case 'BROKEN':
         suffix = {
           icon: 'exclamation-circle',

@@ -137,7 +137,7 @@ TENANT:
     START_TIME: 启动时间
     LABEL: 标签
     OPERATION: 操作
-    SHOW_CANCELED_TENANT: 显示已删除的用户
+    SHOW_CANCELED_TENANT: 显示已删除的租户
     STOP_SERVICE: 停止服务
     START_SERVICE: 开启服务
     VIEW_YAML: 查看Yaml文件
