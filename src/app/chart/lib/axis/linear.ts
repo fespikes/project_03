@@ -18,6 +18,7 @@ export class LinearAxisConfig {
   grid: AxisGridConfig | false = new AxisGridConfig();
   lineStyle = new AxisLineStyle();
   textStyle = new AxisTextStyle();
+  name: string;
 
   constructor(tickCount?: number) {
     if (tickCount >= 0) {
@@ -73,6 +74,14 @@ export class LinearAxis extends AxisBase {
     this.selection.append('g')
       .attr('class', 'linear-axis')
       .call(this.axis);
+
+    if (this.config.name) {
+      const textNode = this.selection.append('text')
+        .text(this.config.name);
+      // 水平垂直平移1/2长度
+      const {width, height} = (textNode.node() as any).getBoundingClientRect();
+      textNode.attr('transform', `translate(-${width / 2}, -${height / 2})`);
+    }
 
     this.styleLine();
     this.styleText();
