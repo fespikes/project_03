@@ -1,4 +1,3 @@
-
 <!--WARP-21827: templately hide ticket tab and all related parts:-->
 <!--
 <div class="op-icon position-relative" [routerLink]="['/message']">
@@ -13,10 +12,11 @@
 -->
 
 <div class="op-icon position-relative">
-  <img class="icon-img tui-icon" tecImgSrc="ops.svg" tecImgPrefix="/assets/svg"  [tuiDropdownTrigger]="dropOps" />
+  <img class="icon-img tui-icon" tecImgSrc="ops.svg" tecImgPrefix="/assets/svg" [tuiDropdownTrigger]="dropOps" />
 </div>
 <tui-dropdown #dropOps [direction]="dropdownDirection" [caret]="true">
-  <tui-dropdown-item class="items no-bolder" *ngFor="let item of entrances">
+  <tui-dropdown-item class="items no-bolder align-left-items" *ngFor="let item of entrances">
+    <img class="icon-img" tecImgSrc="{{entrancesTemp[item.name] + '.svg'}}" tecImgPrefix="/assets/svg" />
     <a href="{{item.link}}" target="_blank">{{item.name}}</a>
   </tui-dropdown-item>
 </tui-dropdown>
