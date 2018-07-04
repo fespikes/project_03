@@ -2,6 +2,13 @@ import { Component, OnInit } from '@angular/core';
 
 import { LayoutService } from '../../layout.service';
 
+enum entrancesTemp {
+  'kong dashboard' = 'kong',
+  'grafana' = 'grafana',
+  'prometheus' = 'prometheus',
+  'milano' = 'milano',
+}
+
 @Component({
   selector: 'tec-layout-head-right',
   templateUrl: './layout-head-right.component.html',
@@ -14,6 +21,7 @@ export class LayoutHeadRightComponent implements OnInit {
     fullName: '',
     avatar: '/assets/images/admin.jpeg',
   };
+  entrancesTemp: any = entrancesTemp;
 
   entrances: any;
 
