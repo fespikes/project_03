@@ -139,11 +139,31 @@ export class ChartWrapperComponent implements OnInit {
     this.chart.draw();
   }
 
+  emptyCanvas() {
+    const element: HTMLElement = this.chartHolder.nativeElement;
+
+    const div = `<div
+      style="
+        position: absolute;
+        top: 50%;
+        width: 100%;
+        height: 24px;
+        text-align: center;
+        margin-top: -20px;"
+      >
+        Have no data
+      </div>`;
+    (element as any).innerHTML = div;
+  }
+
   public getChartData(num?: number) {
     const data = this.data;
 
     if (typeof data.fetchData === 'function') {
       data.fetchData(adjustedData => {
+        if (adjustedData === null) {
+          this.emptyCanvas();
+        }
         this.chartData = adjustedData;
         this.chartType = data.chartType;
         this.drawChart();
