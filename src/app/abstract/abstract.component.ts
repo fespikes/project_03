@@ -137,6 +137,11 @@ export class AbstractComponent implements OnInit, OnDestroy {
           },
           grid: false,
         },
+        yAxis: {
+          tick: {
+            format: 'd',
+          },
+        },
         legend: {
           show: false,
           contentWidth: 0,
@@ -221,6 +226,11 @@ export class AbstractComponent implements OnInit, OnDestroy {
             count: 5,
           },
         },
+        yAxis: {
+          tick: {
+            format: 'd',
+          },
+        },
         legend: {
           contentWidth: 45,
         },
@@ -233,15 +243,11 @@ export class AbstractComponent implements OnInit, OnDestroy {
       config: {
         legend: {
           show: false,
+          contentWidth: 0,
         },
         transpose: true,
         margin: {
           left: 100,
-        },
-        yAxis: {
-          tick: {
-            format: 'd',
-          },
         },
       },
       wrapperName: 'tenantConsumptionRankingWrapper',
