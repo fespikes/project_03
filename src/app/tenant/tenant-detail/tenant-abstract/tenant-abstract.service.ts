@@ -186,6 +186,7 @@ export class TenantAbstractService {
 
     return {
       result: result,
+      unit: data.unit,
       lastHour: {
         avg: data.avg.toFixed(1),
         max: data.max.toFixed(1),
