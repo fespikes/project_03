@@ -11,7 +11,7 @@ export type TimeInterval = 'timeSecond' | 'timeMinute' | 'timeHour' | 'timeDay' 
 
 export class AxisTickConfig {
   count?: number;
-  padding = 10;
+  padding = 5;
 }
 
 export class AxisTimeTickConfig extends AxisTickConfig {

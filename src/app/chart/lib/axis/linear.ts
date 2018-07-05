@@ -77,10 +77,13 @@ export class LinearAxis extends AxisBase {
 
     if (this.config.name) {
       const textNode = this.selection.append('text')
+        .attr('text-anchor', 'end')
         .text(this.config.name);
       // 水平垂直平移1/2长度
-      const {width, height} = (textNode.node() as any).getBoundingClientRect();
-      textNode.attr('transform', `translate(-${width / 2}, -${height / 2})`);
+      const {height} = (textNode.node() as any).getBoundingClientRect();
+      // tick长度(6) + padding 使之和tick label右对齐
+      // TODO: did not work in transpose mode
+      textNode.attr('transform', `translate(-${tick.padding + 6}, -${height})`);
     }
 
     this.styleLine();
