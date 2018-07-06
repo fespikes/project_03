@@ -186,6 +186,7 @@ export class TenantAbstractComponent implements OnInit, OnDestroy {
       fetchData: (cb, resourceType) => {
         const callback = (data) => {
           this.CPULoadLastHour = data.lastHour;
+          this.CPULoadTrendParam.config.yAxis.name = data.unit;
           cb(data.result);
         };
         return this.service.fetchResourcesTrend.bind(this.service)(callback, resourceType);
@@ -198,6 +199,9 @@ export class TenantAbstractComponent implements OnInit, OnDestroy {
           },
           grid: false,
         },
+        yAxis: {
+          name: '',
+        },
       },
       resourceType: resourceTypes.cpu,
       wrapperName: 'CPULoadTrendWrapper',
@@ -208,6 +212,7 @@ export class TenantAbstractComponent implements OnInit, OnDestroy {
       fetchData: (cb, resourceType) => {
         const callback = (data) => {
           this.memoryLoadLastHour = data.lastHour;
+          this.memoryLoadTrendParam.config.yAxis.name = data.unit;
           cb(data.result);
         };
         this.service.fetchResourcesTrend.bind(this.service)(callback, resourceType);
@@ -220,6 +225,9 @@ export class TenantAbstractComponent implements OnInit, OnDestroy {
           },
           grid: false,
         },
+        yAxis: {
+          name: '',
+        },
       },
       resourceType: resourceTypes.memory,
       wrapperName: 'memoryLoadTrendWrapper',
@@ -230,6 +238,7 @@ export class TenantAbstractComponent implements OnInit, OnDestroy {
       fetchData: (cb, resourceType) => {
         const callback = (data) => {
           this.storageLoadLastHour = data.lastHour;
+          this.storageLoadTrendParam.config.yAxis.name = data.unit;
           cb(data.result);
         };
         this.service.fetchResourcesTrend.bind(this.service)(callback, resourceType);
@@ -241,6 +250,9 @@ export class TenantAbstractComponent implements OnInit, OnDestroy {
             timeFormat: '%H:%M',
           },
           grid: false,
+        },
+        yAxis: {
+          name: '',
         },
       },
       resourceType: resourceTypes.storage,
