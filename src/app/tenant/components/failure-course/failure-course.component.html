@@ -1,0 +1,17 @@
+<div class="failure">
+  <div class="failure-icon">
+    <svg tuiIcon="exclamation-circle"></svg>
+  </div>
+  <div class="failure-text">
+    <p>
+      <span>{{'TENANT.NAME' | translate}}</span>
+      <span class="special">{{nameStr}}:</span>
+      <span>{{'TENANT.EXECUTED_FAILURE'| translate}}.</span>
+    </p>
+    <p>{{message}}</p>
+  </div>
+</div>
+
+<div class="tui-modal-foot">
+  <button tuiBtn="primary" (click)="cancel()">{{'TENANT.CLOSE' | translate}}</button>
+</div>

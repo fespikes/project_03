@@ -1,5 +1,8 @@
 TENANT:
   NAME: Tenant
+  FAILURE_CAUSE: Failure Cause
+  EXECUTED_FAILURE: executed failure
+  CLOSE: Close
 
   TENANT_ADMIN:
     NAME: Tenant Admin
@@ -34,6 +37,7 @@ TENANT:
     OPERATION: Operation
     CONFIRM_DELETE: Confirm Delete
     CONFIRM_DELETE_MESSAGE: Delete tenant need input login password to verity your identity
+    MORE_TIP: View failure cause
 
   DETAIL:
     GO_BACK: Back

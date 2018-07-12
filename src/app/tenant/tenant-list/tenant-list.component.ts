@@ -5,8 +5,9 @@ import { TenantFilter } from '../tenant-model';
 import { TenantService } from '../tenant.service';
 import { TranslateService } from 'app/i18n';
 import { TecApiService } from 'app/shared';
-import { TenantSummary } from '../tenant-model';
+import { TenantSummary, statuses, TenantInfo } from '../tenant-model';
 import { ModalDeleteTenantComponent } from '../components/modal/delete-tenant.component';
+import { FailureCourseComponent } from '../components/failure-course/failure-course.component';
 
 const FileSaver = require('./FileSaver');
 
@@ -20,6 +21,7 @@ export class TenantListComponent implements OnInit {
 
   loading;
   tenantsCount = 0;
+  statuses = statuses;
   filter = new TenantFilter();
 
   tenants: TenantSummary[];
@@ -76,4 +78,18 @@ export class TenantListComponent implements OnInit {
       FileSaver.saveAs(fileBlob, 'tenants.xls');
     });
   }
+
+  viewFailureCourse(tenant: TenantInfo) {
+    const config = {
+      title: this.translateService.translateKey('TENANT.FAILURE_CAUSE'),
+      size: 'md',
+      data: {
+        msg: tenant.failure,
+        nameStr: tenant.name + ' (' + tenant.uid + ')',
+      },
+    };
+    this.modalService.open(FailureCourseComponent, config)
+      .subscribe(_ => _);
+  }
+
 }

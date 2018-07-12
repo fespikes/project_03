@@ -13,6 +13,9 @@
       <div class="left">
         {{tenant.name + ' (' + tenant.uid + ')'}}
         <tec-tenant-status-icon class="tenant-status" [status]="tenant.status" [alias]="tenant.statusAlias"></tec-tenant-status-icon>
+        <span *ngIf="tenant.status ===statuses.broken" class="status-span" tuiTooltip="{{'TENANT.OVERVIEW.MORE_TIP' | translate}}">
+          <svg class="view-more" tuiIcon="more" (click)="viewFailureCourse(tenant)"></svg>
+        </span>
       </div>
       <div class="right">
         <button *ngIf="!(tenant.status === 'CANCELED')" tuiBtn="primary" (click)="deleteTenant(tenant)">

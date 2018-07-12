@@ -3,11 +3,10 @@ import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
 
 import { TuiModalService } from 'tdc-ui';
 
-import { TenantInfo } from '../tenant-model';
+import { TenantInfo, statuses } from '../tenant-model';
 import { TenantService } from '../tenant.service';
 import { TranslateService } from 'app/i18n';
-import { TranslateServiceStub } from 'tdc-ui/mock/mock';
-
+import { FailureCourseComponent } from '../components/failure-course/failure-course.component';
 import { ModalDeleteTenantComponent } from '../components/modal/delete-tenant.component';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/combineLatest';
@@ -20,7 +19,7 @@ export class TenantDetailComponent implements OnInit {
   @HostBinding('class.tui-layout-body') hostClass = true;
   submenuItems = [];
   tenant = new TenantInfo();
-
+  statuses = statuses;
   tenantsCount = 0;
   selectedTabIndex = 0;
   loading;
@@ -198,5 +197,18 @@ export class TenantDetailComponent implements OnInit {
 
       return curIndex === (tenantList.lenght - 1) ? tenantList[0].uid : tenantList[curIndex + 1].uid;
     }
+  }
+
+  viewFailureCourse(tenant: TenantInfo) {
+    const config = {
+      title: this.translateService.translateKey('TENANT.FAILURE_CAUSE'),
+      size: 'md',
+      data: {
+        msg: tenant.failure,
+        nameStr: tenant.name + ' (' + tenant.uid + ')',
+      },
+    };
+    this.modal.open(FailureCourseComponent, config)
+      .subscribe(_ => _);
   }
 }
