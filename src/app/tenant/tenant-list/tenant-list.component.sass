@@ -45,9 +45,17 @@
   .status-td
     display: flex
     align-items: center
+    span
+      display: inline-block
+      position: relative
+      left: 3px
+      top: 3px
+      &:hover
+        .view-more
+          fill: #336FD3
+    .view-more
+      fill: #A8AFC0
 
   .tenant-name
     color: $royalblue
     text-decoration: none
-
-

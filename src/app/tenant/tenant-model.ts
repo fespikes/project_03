@@ -9,6 +9,7 @@ export class TenantInfo {
   statusAlias?: string;
   uid = '';
   adminEmail?: string;
+  failure?: string;
 }
 
 export class TenantFilter {
@@ -138,4 +139,10 @@ export class TenantAdmin {
   fullName?: string;
   company?: string;
   department?: string;
+}
+
+
+export enum statuses {
+  broken= 'BROKEN',
+
 }

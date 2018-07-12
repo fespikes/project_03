@@ -1,5 +1,9 @@
 TENANT:
   NAME: 租户
+  FAILURE_CAUSE: 租户故障
+  EXECUTED_FAILURE: 执行动作失败
+  CLOSE: 关闭
+
   TENANT_ADMIN:
     NAME: 租户管理员
     TOTAL: 租户管理员总计
@@ -33,6 +37,7 @@ TENANT:
     OPERATION: 操作
     CONFIRM_DELETE: 确认删除
     CONFIRM_DELETE_MESSAGE: 删除租户需输入登录密码以验证您的身份
+    MORE_TIP: 查看原因
 
   DETAIL:
     GO_BACK: 返回

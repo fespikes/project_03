@@ -35,6 +35,7 @@ import { OverviewComponent } from './overview/overview.component';
 import { TenantAdminComponent } from './tenant-admin/tenant-admin.component';
 import { SendRegisterLinkComponent } from './tenant-admin/send-register-link/send-register-link.component';
 import { AddComponent as TenantAdminAddComponent } from './tenant-admin/add/add.component';
+import { FailureCourseComponent } from './components/failure-course/failure-course.component';
 
 @NgModule({
   imports: [
@@ -71,6 +72,7 @@ import { AddComponent as TenantAdminAddComponent } from './tenant-admin/add/add.
     TenantAdminComponent,
     TenantAdminAddComponent,
     SendRegisterLinkComponent,
+    FailureCourseComponent,
   ],
   providers: [
     TenantService,
@@ -84,6 +86,7 @@ import { AddComponent as TenantAdminAddComponent } from './tenant-admin/add/add.
     ModalDeleteTenantComponent,
     TenantAdminAddComponent,
     SendRegisterLinkComponent,
+    FailureCourseComponent,
   ],
 })
 export class TenantModule { }

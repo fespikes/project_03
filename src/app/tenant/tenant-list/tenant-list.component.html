@@ -1,4 +1,3 @@
-
 <div class="tui-layout-main-title flex-title">
   <div class="left">
     <span>{{'TENANT.OVERVIEW.TOTAL' | translate}}:</span>
@@ -8,21 +7,16 @@
     <tui-checkbox [(ngModel)]="filter.canceled" (ngModelChange)="filterChange()">
       <span class="message">{{'TENANT.OVERVIEW.SHOW_CANCELED_TENANT' | translate}}</span>
     </tui-checkbox>
-    <button tuiBtn="primary" (click)="export()"
-      style="margin-right: 30px"
-    >
+    <button tuiBtn="primary" (click)="export()" style="margin-right: 30px">
       <svg tuiIcon="export"></svg>
       <span>{{'TENANT.OVERVIEW.EXPORT' | translate}}</span>
     </button>
-    <tui-search
-      [(ngModel)]="filter.keyword"
-      (ngModelChange)="filterChange()"
-    ></tui-search>
+    <tui-search [(ngModel)]="filter.keyword" (ngModelChange)="filterChange()"></tui-search>
   </div>
 </div>
 
 <div class="container-content">
-  <tui-table [tuiTableFlex]="[2,2,1,1,2,1,1,1,1,1]" [loading]="loading">
+  <tui-table [tuiTableFlex]="[2,2,1,1,2,1,1,1,1.5,1]" [loading]="loading">
     <tui-table-head>
       <div>{{'TENANT.OVERVIEW.NAME' | translate}}</div>
       <div>{{'TENANT.OVERVIEW.DESC' | translate}}</div>
@@ -37,11 +31,7 @@
     </tui-table-head>
     <tui-table-row *ngFor="let tenant of tenants">
       <div class="text-ellipsis">
-        <a
-          class="tenant-name"
-          [routerLink]="'/tenant/detail/' + tenant.tenantInfo.uid"
-          [queryParams]="{canceled: filter.canceled}"
-        >{{tenant.tenantInfo.name + ' (' + tenant.tenantInfo.uid + ')'}}</a>
+        <a class="tenant-name" [routerLink]="'/tenant/detail/' + tenant.tenantInfo.uid" [queryParams]="{canceled: filter.canceled}">{{tenant.tenantInfo.name + ' (' + tenant.tenantInfo.uid + ')'}}</a>
       </div>
       <div class="text-ellipsis">{{tenant.tenantInfo.description | tuiDefault}}</div>
       <div>{{tenant.instanceCount}}</div>
@@ -51,16 +41,13 @@
       <div class="text-ellipsis">{{tenant.totalAmount | tuiDefault}}</div>
       <div class="text-ellipsis">{{tenant.unpaidAmount | tuiDefault}}</div>
       <div class="status-td">
-        <tec-tenant-status-icon
-          [status]="tenant.tenantInfo.status"
-          [alias]="tenant.tenantInfo.statusAlias"
-        ></tec-tenant-status-icon>
+        <tec-tenant-status-icon [status]="tenant.tenantInfo.status" [alias]="tenant.tenantInfo.statusAlias"></tec-tenant-status-icon>
+        <span *ngIf="tenant.tenantInfo.status ===statuses.broken" tuiTooltip="{{'TENANT.OVERVIEW.MORE_TIP' | translate}}">
+          <svg class="view-more" tuiIcon="more" (click)="viewFailureCourse(tenant.tenantInfo)"></svg>
+        </span>
       </div>
       <div class="operation-td">
-        <span
-          *ngIf="!(tenant.tenantInfo.status === 'CANCELED')"
-          tuiTooltip="{{'TENANT.OVERVIEW.DELETE' | translate}}"
-        >
+        <span *ngIf="!(tenant.tenantInfo.status === 'CANCELED')" tuiTooltip="{{'TENANT.OVERVIEW.DELETE' | translate}}">
           <svg tuiIcon="trash" (click)="deleteTenant(tenant)"></svg>
         </span>
       </div>
