@@ -39,14 +39,16 @@ export class BandAxis extends AxisBase {
 
   draw(domain: any[], range: [number, number]) {
     const { padding } = this.config;
+    const bandDomain = Array.apply(null, {length: domain.length}).map((_, i) => '' + i);
 
     this.scale = d3.scaleBand()
-      .domain(domain)
+      .domain(bandDomain)
       .rangeRound(range)
       .paddingInner(padding.inner)
       .paddingOuter(padding.outer);
 
     this.axis = this.initAxis(this.position);
+    this.axis.tickFormat((i) => domain[+i]);
     this.selection.append('g')
       .attr('class', 'band-axis')
       .call(this.axis);
@@ -55,8 +57,13 @@ export class BandAxis extends AxisBase {
     this.styleText();
   }
 
-  center(x: string) {
+  scaleAt(index: number) {
+    const idx = '' + index;
+    return this.scale(idx);
+  }
+
+  center(x: number) {
     const bandWidth = this.scale.bandwidth();
-    return this.scale(x) + bandWidth / 2;
+    return this.scaleAt(x) + bandWidth / 2;
   }
 }

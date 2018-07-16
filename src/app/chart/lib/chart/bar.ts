@@ -141,6 +141,12 @@ export class BarChart extends Chart<BarChartConfig, BarChartData> {
   tooltip: Tooltip;
   axisIndicator: AxisIndicator;
 
+  get xSubScale() {
+    const xScale = this.xAxis.scale;
+    const xSubScaleDomain = Array.apply(null, {length: this.data.series.length}).map((_, i) =>  '' + i);
+    return d3.scaleBand().domain(xSubScaleDomain).rangeRound([0, xScale.bandwidth()]);
+  }
+
   setConfig(config: BarChartConfig) {
     this.config = BarChartConfig.from(config);
     return this;
@@ -169,7 +175,6 @@ export class BarChart extends Chart<BarChartConfig, BarChartData> {
   }
 
   initTooltip() {
-    const { scale } = this.xAxis;
     const objectMap: {[key: string]: TooltipBundleCls} = {};
 
     this.data.series.forEach((series, i) => {
@@ -177,11 +182,11 @@ export class BarChart extends Chart<BarChartConfig, BarChartData> {
       const color = this.config.colorSchema.getColor(i);
       series.data.forEach((data, idx) => {
         const title = this.data.xs[idx];
-        if (!objectMap[title]) {
-          const x = this.xAxis.center(title);
-          objectMap[title] = new TooltipBundle(x, title)  ;
+        if (!objectMap[idx]) {
+          const x = this.xAxis.center(idx);
+          objectMap[idx] = new TooltipBundle(x, title)  ;
         }
-        objectMap[title].items.push({
+        objectMap[idx].items.push({
           name: topic,
           value: data,
           color,
@@ -236,28 +241,26 @@ export class BarChart extends Chart<BarChartConfig, BarChartData> {
   }
 
   drawBars() {
-    const xScale = this.xAxis.scale;
     const yScale = this.yAxis.scale;
     const selection = this.layout.canvas.selection;
-    const xSubScale = d3.scaleBand().domain(this.data.topics).rangeRound([0, xScale.bandwidth()]);
     const bars = [];
     const barWidth = this.getBarWidth();
     const accum = this.data.xs.map(() => 0);
 
-    this.data.series.forEach((d) => {
+    this.data.series.forEach((d, index) => {
       d.data.forEach((value, i) => {
-        const color = this.ordinalScale(d.topic);
+        const color = this.ordinalScale(index);
         const barHeight = yScale(value);
         let x1, y1, x2, y2;
         // 纵向堆叠，每次记录上一次堆叠高度
         if (this.config.stack) {
-          x1 = xScale(this.data.xs[i]);
+          x1 = this.xAxis.scaleAt(i);
           y1 = accum[i];
           x2 = x1 + barWidth;
           y2 = y1 + barHeight;
           accum[i] = y2;
         } else {
-          x1 = xScale(this.data.xs[i]) + xSubScale(d.topic);
+          x1 = this.xAxis.scaleAt(i) + this.xSubScale('' + index);
           y1 = yScale(0);
           x2 = x1 + barWidth;
           y2 = barHeight;
@@ -277,8 +280,7 @@ export class BarChart extends Chart<BarChartConfig, BarChartData> {
     if (this.config.stack) {
       return this.xAxis.scale.bandwidth();
     } else {
-      const scale = d3.scaleBand().domain(this.data.topics).rangeRound([0, this.xAxis.scale.bandwidth()]);
-      return scale.bandwidth();
+      return this.xSubScale.bandwidth();
     }
   }
 }
