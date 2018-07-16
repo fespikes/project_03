@@ -1,15 +1,7 @@
 <div class="tui-layout-main-container">
   <div class="container-operation-bar">
-    <tui-select
-      [(ngModel)]="filter.tag"
-      (ngModelChange)="filterChange()"
-      placeholder="{{'SYSTEM.INSTANCE.SELECT_TAG' | translate}}"
-    >
-      <tui-select-option
-        *ngFor="let label of labels"
-        [value]="label.value"
-        [label]="label.label"
-      >
+    <tui-select [(ngModel)]="filter.tag" (ngModelChange)="filterChange()" placeholder="{{'SYSTEM.INSTANCE.SELECT_TAG' | translate}}">
+      <tui-select-option *ngFor="let label of labels" [value]="label.value" [label]="label.label">
         {{label.label | tuiDefault | translate}}
       </tui-select-option>
     </tui-select>
@@ -17,7 +9,7 @@
     </tui-search>
   </div>
   <div class="container-content">
-    <tui-table [tuiTableFlex]="[1, 1, 1, 1, 2, 1]" [loading]="loading">
+    <tui-table [tuiTableFlex]="[2.5, 1, 0.5, 1, 2, 1]" [loading]="loading">
       <tui-table-head>
         <div>{{'TENANT.SERVICE.NAME' | translate}}</div>
         <div>{{'TENANT.SERVICE.STATUS' | translate}}</div>
@@ -28,16 +20,8 @@
       </tui-table-head>
       <ng-container *ngFor="let service of services">
         <tui-table-row>
-          <div
-            class="text-ellipsis instance-name"
-            tuiTooltip="{{'SYSTEM.INSTANCE.NAME' | translate}}"
-            (click)="toggleSubList(service)"
-          >
-            <svg
-              class="toggle-icon"
-              tuiIcon="caret-right"
-              [ngClass]="{open: service.showSubList}"
-            ></svg>{{service.name}}
+          <div class="instance-name" tuiTooltip="{{service.name}}" (click)="toggleSubList(service)" style="overflow-y:visible">
+            <span class="text-ellipsis" style="display: inline-block; width: 240px"><svg class="toggle-icon" tuiIcon="caret-right" [ngClass]="{open: service.showSubList}"></svg>{{service.name}}</span>
           </div>
           <div class="status-td">
             <span [ngClass]="{'error': service.status === 'ERROR'}">
@@ -47,10 +31,7 @@
           <div class="text-ellipsis">{{service.edition}}</div>
           <div>{{service.createTime | date:'yy-MM-dd HH:mm'}}</div>
           <div class="text-ellipsis system-service-tag">
-            <tec-system-service-tag
-              [tags]="service.labels"
-              [tuiPopover]="tooltip_label"
-            ></tec-system-service-tag>
+            <tec-system-service-tag [tags]="service.labels" [tuiPopover]="tooltip_label"></tec-system-service-tag>
             <tui-popover #tooltip_label placement="right">
               <div class="popover-tag-container">
                 <div class="popover-tag-item" *ngFor="let tag of service.labels">
@@ -70,10 +51,7 @@
             </span>
           </div>
         </tui-table-row>
-        <tui-table
-          *ngIf="service?.showSubList && service.serviceInfos?.length > 0"
-          class="tui-table-tree" [tuiTableFlex]="[1,1,1,1]"
-        >
+        <tui-table *ngIf="service?.showSubList && service.serviceInfos?.length > 0" class="tui-table-tree" [tuiTableFlex]="[1,1,1,1]">
           <tui-table-head>
             <div>{{'SYSTEM.INSTANCE.MICRO_SERVICE' | translate}}</div>
             <div>{{'SYSTEM.INSTANCE.STATE' | translate}}</div>
@@ -107,19 +85,14 @@
             </div>
           </tui-table-row>
         </tui-table>
-        <div
-          class="tui-table-tree-no-data"
-          *ngIf="service.showSubList && service.serviceInfos.length < 1"
-        >
+        <div class="tui-table-tree-no-data" *ngIf="service.showSubList && service.serviceInfos.length < 1">
           {{'SYSTEM.NO_CONTENT' | translate}}
         </div>
       </ng-container>
     </tui-table>
   </div>
   <div class="tui-layout-main-pagination-footer">
-    <tui-pagination
-      [(pagination)]="pagination"
-      (paginationChange)="paginationChange()">
+    <tui-pagination [(pagination)]="pagination" (paginationChange)="paginationChange()">
     </tui-pagination>
   </div>
 </div>
