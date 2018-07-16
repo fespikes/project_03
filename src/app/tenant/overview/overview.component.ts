@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, HostBinding } from '@angular/core';
 
 @Component({
   selector: 'tec-overview',
@@ -6,6 +6,7 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./overview.component.sass'],
 })
 export class OverviewComponent implements OnInit {
+  @HostBinding('class.tui-layout-body') hostClass = true;
 
   selectedIndex = 0;
   loading: false;

@@ -7,6 +7,7 @@ enum entrancesTemp {
   'grafana' = 'grafana',
   'prometheus' = 'prometheus',
   'milano' = 'milano',
+  'zipkin' = 'zipkin',
 }
 
 @Component({

@@ -172,6 +172,11 @@ export class AbstractComponent implements OnInit, OnDestroy {
           },
           grid: false,
         },
+        yAxis: {
+          tick: {
+            format: 'd',
+          },
+        },
         legend: {
           show: false,
           contentWidth: 0,
@@ -208,6 +213,11 @@ export class AbstractComponent implements OnInit, OnDestroy {
             count: 4,
           },
           grid: false,
+        },
+        yAxis: {
+          tick: {
+            format: 'd',
+          },
         },
         legend: {
           show: false,

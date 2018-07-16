@@ -17,7 +17,7 @@
 <tui-dropdown #dropOps [direction]="dropdownDirection" [caret]="true">
   <tui-dropdown-item class="items no-bolder align-left-items" *ngFor="let item of entrances">
     <img class="icon-img" tecImgSrc="{{entrancesTemp[item.name] + '.svg'}}" tecImgPrefix="/assets/svg" />
-    <a href="{{item.link}}" target="_blank">{{item.name}}</a>
+    <a href="{{item.link}}" target="_blank">{{item.nameAlias}}</a>
   </tui-dropdown-item>
 </tui-dropdown>
 
