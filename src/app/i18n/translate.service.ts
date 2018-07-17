@@ -7,6 +7,7 @@ import { Http, Response } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import merge from 'lodash-es/merge';
 import 'rxjs/add/operator/map';
+import 'rxjs/add/observable/of';
 import 'rxjs/add/observable/forkJoin';
 
 import { I18nLangService } from './i18n-lang.service';

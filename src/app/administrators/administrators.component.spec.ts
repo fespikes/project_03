@@ -11,6 +11,7 @@ import {
   ResponseOptions,
 } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
+import { of } from 'rxjs';
 
 import { SharedModule } from '../shared';
 import { TranslateService } from '../i18n';
@@ -24,7 +25,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 export class AdministratorsServiceStub {
   fetchAdministrators(filter?: any): Observable<any> {
-    return Observable.of({
+    return of({
       paginations: {
         page: 1,
         size: 10,
@@ -34,10 +35,10 @@ export class AdministratorsServiceStub {
   }
 
   addAdministrator(params) {
-    return Observable.of({});
+    return of({});
   }
   deleteAdministrator(id: number) {
-    return Observable.of({});
+    return of({});
   }
 
 }

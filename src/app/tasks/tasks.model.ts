@@ -1,7 +1,7 @@
 export class TaskFilter {
   page?: number;
   size?: number;
-  deleted? = false;
+  deleted ? = false;
   status?: string;
   keyword?: string;
   sortedBy?: any;

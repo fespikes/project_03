@@ -8,7 +8,8 @@ import {
   ChangeDetectorRef,
   Input,
 } from '@angular/core';
-import { Subject } from 'rxjs/Subject';
+import { Subject } from 'rxjs';
+import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 
 import { ServiceTag } from '../../model/system-model';
 
@@ -40,10 +41,10 @@ export class ServiceTagComponent implements OnInit, OnDestroy, AfterViewInit {
   ) { }
 
   ngOnInit() {
-    this.sizeSubject
-    .debounceTime(200)
-    .distinctUntilChanged()
-    .subscribe(() => {
+    this.sizeSubject.pipe(
+      debounceTime(200),
+      distinctUntilChanged(),
+    ).subscribe(() => {
       this.arrangeTags();
       this.change.detectChanges();
     });
@@ -60,7 +61,7 @@ export class ServiceTagComponent implements OnInit, OnDestroy, AfterViewInit {
     let maxAccomNum = Math.floor((actualWidth + this.TAG_PADDING) / (this.TAG_WIDTH + this.TAG_PADDING));
     if (maxAccomNum >= this.tags.length) {
       this.setShowTags(this.tags.length);
-    }else {
+    } else {
       maxAccomNum = Math.floor((actualWidth - this.TAG_ELLIPSIS_WIDTH) / (this.TAG_WIDTH + this.TAG_PADDING));
       this.setShowTags(maxAccomNum);
       this.addTagEllipsis(maxAccomNum);

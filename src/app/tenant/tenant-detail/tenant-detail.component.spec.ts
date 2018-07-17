@@ -9,7 +9,7 @@ import { TenantDetailComponent } from './tenant-detail.component';
 import { TenantService } from '../tenant.service';
 import { TranslatePipeStub, TranslateServiceMock } from 'app/mock';
 import { TranslateService } from 'app/i18n';
-import { Subject } from 'rxjs/Subject';
+import { Subject } from 'rxjs';
 
 class RouterStub {
   events = new Subject();

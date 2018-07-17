@@ -1,6 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-
 import { Pagination, TuiModalService, TuiModalConfig } from 'tdc-ui';
 import { TranslateService } from 'app/i18n';
 import { TenantService } from 'app/tenant/tenant.service';
@@ -54,7 +53,6 @@ export class TenantBillComponent implements OnInit {
     };
 
     this.modal.open(ModalBillClearComponent, config)
-      .filter(result => result)
       .subscribe(() => {
         this.fetchBills().subscribe();
       });
@@ -67,7 +65,6 @@ export class TenantBillComponent implements OnInit {
     };
 
     this.modal.open(ModalBillCorrectComponent, config)
-      .filter(result => result)
       .subscribe(() => {
         this.fetchBills().subscribe();
       });

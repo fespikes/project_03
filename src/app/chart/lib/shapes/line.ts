@@ -4,8 +4,8 @@ import { SelectionType } from '../core';
 import { Point2D, Vector2D } from '../helpers/transform-helper';
 
 export class LineShapeConfig {
-  width? = 1;
-  color? = '#ccc';
+  width ? = 1;
+  color ? = '#ccc';
 
   static default(config: LineShapeConfig) {
     const _config = new LineShapeConfig();

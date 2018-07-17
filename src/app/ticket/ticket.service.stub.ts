@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
+import { of } from 'rxjs';
 
 import { TecApiService } from '../shared';
 import { TicketFilter, Ticket } from './ticket.model';
@@ -9,17 +10,17 @@ export class TicketServiceStub {
   constructor(private api: TecApiService) { }
 
   getTickets(filter?: TicketFilter): Observable<any> {
-    return Observable.of({
+    return of({
       pagination: {},
     });
   }
 
   getTheTicket(ticketId: string): Observable<Ticket> {
-    return Observable.of(new Ticket());
+    return of(new Ticket());
   }
 
   updateTheTicket(param: any): Observable<any> {
-    return Observable.of({});
+    return of({});
   }
 
 }
