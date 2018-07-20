@@ -8,9 +8,9 @@ import {
   HostListener,
   ChangeDetectorRef,
 } from '@angular/core';
-
+import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { Router } from '@angular/router';
-import { Subject } from 'rxjs/Subject';
+import { Subject } from 'rxjs';
 import { Subscription } from 'rxjs/Subscription';
 
 import { TranslateService } from '../../../i18n';
@@ -51,9 +51,9 @@ export class LayoutHeadNavComponent implements AfterViewInit, OnDestroy {
     this.flowNavs();
     this.change.detectChanges();
 
-    this.sizeSubject
-      .debounceTime(200)
-      .distinctUntilChanged()
+    this.sizeSubject.pipe(
+      debounceTime(200),
+      distinctUntilChanged())
       .subscribe(() => {
         this.flowNavs();
       });

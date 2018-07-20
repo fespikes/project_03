@@ -8,7 +8,7 @@ export type curveStyle = 'curveLinear' | 'curveStep' | 'curveBasis'
   | 'curveCardinal' | 'curveMonotoneX' | 'curveCatmullRom';
 
 export class PathShapeConfig {
-  width? = 2;
+  width ? = 2;
   color = '#ccc';
   curve?: curveStyle = 'curveMonotoneX';
 

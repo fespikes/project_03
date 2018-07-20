@@ -5,7 +5,7 @@ import { Point2D, Vector2D } from '../helpers/transform-helper';
 
 export class RectShapeConfig {
   width: number;
-  color? = '#ccc';
+  color ? = '#ccc';
 
   static default(config: RectShapeConfig) {
     const _config = new RectShapeConfig();

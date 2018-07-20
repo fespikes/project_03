@@ -1,4 +1,4 @@
-import * as path from 'path';
+import * as path from 'path-browserify';
 import { Injectable } from '@angular/core';
 import { environment } from '../../../environments/environment';
 import { Headers, Http, Response, URLSearchParams, ResponseContentType } from '@angular/http';

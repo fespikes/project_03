@@ -1,6 +1,6 @@
 import { Component, OnInit, HostBinding } from '@angular/core';
 import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
-
+import { filter } from 'rxjs/operators';
 import { TuiModalService } from 'tdc-ui';
 
 import { TenantInfo, statuses } from '../tenant-model';
@@ -18,7 +18,7 @@ import 'rxjs/add/observable/combineLatest';
 export class TenantDetailComponent implements OnInit {
   @HostBinding('class.tui-layout-body') hostClass = true;
   submenuItems = [];
-  tenant = new TenantInfo();
+  tenant: any = new TenantInfo();
   statuses = statuses;
   tenantsCount = 0;
   selectedTabIndex = 0;
@@ -40,8 +40,9 @@ export class TenantDetailComponent implements OnInit {
 
   ngOnInit() {
     this.getRouterParams();
-    this.router.events
-    .filter(event => event instanceof NavigationEnd)
+    this.router.events.pipe(
+      filter(event => event instanceof NavigationEnd),
+    )
     .subscribe(() => {
       this.getRouterParams();
     });
@@ -79,7 +80,7 @@ export class TenantDetailComponent implements OnInit {
     Observable.forkJoin(promises)
     .subscribe(([tenant, count, tenantList]) => {
       this.tenant = tenant;
-      this.tenantsCount = count.count;
+      this.tenantsCount = (count as any).count;
       this.submenuItems = this.makeSubMenuItems(tenantList);
       this.loading = false;
     });
@@ -112,7 +113,7 @@ export class TenantDetailComponent implements OnInit {
       .then(_ => _);
   }
 
-  makeSubMenuItems(tenants = []) {
+  makeSubMenuItems(tenants: any = []) {
     const submenuItems = tenants.map((tenant) => ({
       name: tenant.name + ' (' + tenant.uid + ')' ,
       url: `/tenant/detail/${tenant.uid}?canceled=${this.filter.canceled}`,

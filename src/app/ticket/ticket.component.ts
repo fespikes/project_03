@@ -50,7 +50,7 @@ export class TicketComponent implements OnInit {
       const {sortedBy, order} = changes;
       this.filter.sortedBy = sortedBy;
       this.filter.order = order;
-    }else {
+    } else {
       delete this.filter.order;
       delete this.filter.sortedBy;
     }

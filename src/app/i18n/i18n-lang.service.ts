@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-
+import { distinctUntilChanged } from 'rxjs/operators';
 import { TecApiService } from '../shared/services/api.service';
 
 export const LANG_KEY = 'tec_language';
@@ -20,7 +20,7 @@ const BCP47Mapping = {
 export class I18nLangService {
   private langId: Language;
   private currentLangSubject = new BehaviorSubject<string>(this.lang);
-  current = this.currentLangSubject.asObservable().distinctUntilChanged();
+  current = this.currentLangSubject.asObservable().pipe(distinctUntilChanged());
   currentBCP47 = this.current.map((lang) => {
     return BCP47Mapping[lang];
   });
