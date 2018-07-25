@@ -134,9 +134,18 @@
       position: absolute
       left: 20px
       top: 16px
+  .toggle-icon
+    position: relative
+    top: 3px
+    &.open
+      transform: rotate(90deg)
 
   .applications-ul
     padding: 0 16px
+    display: none
+    background: #eee
+    &.open
+      display: block
 
     li
       line-height: 42px

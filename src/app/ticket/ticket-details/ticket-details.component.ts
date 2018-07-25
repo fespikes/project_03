@@ -36,9 +36,7 @@ export class TicketDetailsComponent implements OnInit {
   isResolved: boolean;
   statuses = Statuses;
 
-  applyInfoTable: string;
-  applyInfoColumns: string;
-  applyInfoCycle: string;
+  applyInfos: any[];
 
   ticketChanges: any[];
 
@@ -101,9 +99,9 @@ export class TicketDetailsComponent implements OnInit {
     this.loading = true;
     this.service.getTheTicket(id).subscribe(res => {
       try {
-        const applyInfo = res.payload.applyInfo;
+        const applyInfos = res.payload.applyInfos;
         const ticketChanges = res.ticketChanges;
-        this.getApplyData(applyInfo);
+        this.getApplyData(applyInfos);
         this.getOperationRecord(ticketChanges);
         this.ticket = res;
         this.loading = false;
@@ -115,24 +113,41 @@ export class TicketDetailsComponent implements OnInit {
     });
   }
 
-  getApplyData(applyInfo) {
-    const tableInfo = applyInfo.tableInfo;
-    let columns = '';
+  getApplyData(applyInfos) {
+    // every applyInfo has only a tableInfo
+    applyInfos.forEach(applyInfo => {
+      const tableInfo = applyInfo.tableInfo;
+      applyInfo.showSubList = false;
+      applyInfo.applyInfoColumns = '';
 
-    this.applyInfoTable = tableInfo. database + '.' + tableInfo.table;
-    if ( tableInfo.columns && (tableInfo.columns.length > 0)) {
-      tableInfo.columns.forEach((item, idx, arr) => {
-        if (idx < arr.length - 1) {
-          columns += item.name + '，';
-        } else {
-          columns += item.name ;
-        }
-      });
-      this.applyInfoColumns = columns;
-    } else {
-      this.applyInfoColumns = '';
-    }
-    this.applyInfoCycle = applyInfo.schedule;
+      applyInfo.TableTitle = tableInfo.database + '.' + tableInfo.table;
+
+      if (tableInfo.columns && (tableInfo.columns.length > 0)) {
+        tableInfo.columns.forEach((item, idx, arr) => {
+          if (idx < arr.length - 1) {
+            applyInfo.applyInfoColumns += item.name + '，';
+          } else {
+            applyInfo.applyInfoColumns += item.name;
+          }
+        });
+      }
+      /**
+       * applyInfo:
+       *    tableInfo
+       *
+       *    showSubList
+       *    applyInfoColumns     列
+       *    schedule             同步周期
+       *    filters              过滤条件
+       */
+    });
+    this.applyInfos = applyInfos;
+
+    console.log(applyInfos);
+  }
+
+  toggleSubList(item) {
+    item.showSubList = !item.showSubList;
   }
 
   getOperationRecord(ticketChanges) {
