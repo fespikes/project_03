@@ -1,8 +1,5 @@
 <tui-submenu backUrl="../../">
-  <tui-submenu-list
-    menuTitle="{{(isResolved? 'TICKET.All': 'TICKET.UNRESOLVED') | translate}}"
-    [items]="submenuItems"
-  ></tui-submenu-list>
+  <tui-submenu-list menuTitle="{{(isResolved? 'TICKET.All': 'TICKET.UNRESOLVED') | translate}}" [items]="submenuItems"></tui-submenu-list>
 </tui-submenu>
 
 <div class="tui-layout-vertical" [tuiLoading]="loading" tccLoadingHeight="500px">
@@ -10,10 +7,7 @@
     <div class="tui-layout-main-title">
       <div class="left">
         {{('TICKET.TICKET_DETAILS' | translate) + ' - ' + ticket.id}}
-        <svg
-          [class.resolved]="ticket.status !== statuses['unresolved']"
-          class="icon-circle"
-          tuiIcon="circle"></svg>
+        <svg [class.resolved]="ticket.status !== statuses['unresolved']" class="icon-circle" tuiIcon="circle"></svg>
         <span class="status">{{ticket.statusAlias}}</span>
       </div>
       <div class="right">
@@ -70,34 +64,37 @@
 
     <!--S: 申请数据-->
     <div class="application ticket-parts">
-      <h4 class="title">{{'TICKET.APPLIED_DATA' | translate}}</h4>
-      <ul class="applications-ul">
-        <li>
-          <span>{{'TICKET.TABLES' | translate}}:</span>
-          <span>{{applyInfoTable}}</span>
-        </li>
-        <li>
-          <span>{{'TICKET.COLUMNS' | translate}}:</span>
-          <span>{{applyInfoColumns}}</span>
-        </li>
-        <!--
-        due to the api have no data, this version hide it.
-        <li>
-          <span>{{'TICKET.FILTER_PARAM' | translate}}:</span>
-          <span>create_time > 1242r3253545 and create_time < 23t3fefewfewfef</span>
-        </li>
-        -->
-        <li>
-          <span>{{'TICKET.SYNC_CYCLE' | translate}}:</span>
-          <span>{{applyInfoCycle}}</span>
-        </li>
-      </ul>
+      <!-- <h4 class="title">{{'TICKET.APPLIED_DATA' | translate}}</h4> -->
+      <tui-table [tuiTableFlex]="[1]" [loading]="loading">
+        <ng-container *ngFor="let applyInfo of applyInfos">
+          <tui-table-row>
+            <div class="text-ellipsis" (click)="toggleSubList(applyInfo)">
+              <svg class="toggle-icon" tuiIcon="caret-right" [ngClass]="{open: applyInfo.showSubList}"></svg>{{applyInfo.TableTitle}}
+            </div>
+          </tui-table-row>
+          <ul [ngClass]="{open: applyInfo.showSubList}" class="applications-ul">
+            <!--           <li>
+              <span>{{'TICKET.TABLES' | translate}}:</span>
+              <span>{{applyInfo.applyInfoColumns}}</span>
+            </li> -->
+            <li>
+              <span>{{'TICKET.COLUMNS' | translate}}:</span>
+              <span>{{applyInfo.applyInfoColumns}}</span>
+            </li>
+            <li>
+              <span>{{'TICKET.FILTER_PARAM' | translate}}:</span>
+              <span>{{applyInfo.filters.toString()}}</span>
+            </li>
+            <li>
+              <span>{{'TICKET.SYNC_CYCLE' | translate}}:</span>
+              <span>{{applyInfo.schedule}}</span>
+            </li>
+          </ul>
+        </ng-container>
+      </tui-table>
     </div>
 
-    <div
-      *ngIf="ticketChanges && (ticketChanges.length>0)"
-      class="operation-record ticket-parts"
-    >
+    <div *ngIf="ticketChanges && (ticketChanges.length>0)" class="operation-record ticket-parts">
       <h4 class="title">{{'TICKET.OPERATION_RECORD' | translate}}</h4>
       <ul class="record-ul">
         <li *ngFor="let item of ticketChanges; let idx = index;">
@@ -123,69 +120,33 @@
     </div>
 
     <!--due to the logic: in ECO ticket changes/ -->
-    <div
-      *ngIf="ticketChanges && (ticketChanges.length===0)"
-      class="ticket-operation ticket-parts"
-    >
+    <div *ngIf="ticketChanges && (ticketChanges.length===0)" class="ticket-operation ticket-parts">
       <h4 class="title">{{'TICKET.OPERATE' | translate}}</h4>
-        <form
-          [formGroup]="myForm"
-          (ngSubmit)="onSubmit(myForm.value)"
-          class="form-operate"
-        >
-          <div
-            [class.error]="!myForm.get('agreed').valid && myForm.get('agreed').touched"
-            class="row"
-          >
-            <label for="yes">{{'TICKET.TICKET_STATUS' | translate}}</label>
-            <div class="field">
-              <input class="radio true"
-                name="agreed"
-                type="radio"
-                id="yes"
-                value=true
-                [attr.checked]="true"
-                [formControl]="myForm.controls['agreed']"
-              />
-              <label for="yes">{{'TICKET.APPROVE' | translate}}</label>
-              <input class="radio false"
-                name="agreed"
-                type="radio"
-                id="no"
-                value=false
-                [formControl]="myForm.controls['agreed']"
-              />
-              <label for="no">{{'TICKET.REJECT' | translate}}</label>
-            </div>
+      <form [formGroup]="myForm" (ngSubmit)="onSubmit(myForm.value)" class="form-operate">
+        <div [class.error]="!myForm.get('agreed').valid && myForm.get('agreed').touched" class="row">
+          <label for="yes">{{'TICKET.TICKET_STATUS' | translate}}</label>
+          <div class="field">
+            <input class="radio true" name="agreed" type="radio" id="yes" value=true [attr.checked]="true" [formControl]="myForm.controls['agreed']" />
+            <label for="yes">{{'TICKET.APPROVE' | translate}}</label>
+            <input class="radio false" name="agreed" type="radio" id="no" value=false [formControl]="myForm.controls['agreed']" />
+            <label for="no">{{'TICKET.REJECT' | translate}}</label>
           </div>
+        </div>
 
-          <div
-            [class.error]="!myForm.get('comment').valid && myForm.get('comment').touched"
-            class="row"
-          >
-            <label for="commentId">{{'TICKET.COMMENT_RESOLUTION' | translate}}</label>
-            <div class="field">
-              <textarea
-                rows="3"
-                class="textarea"
-                placeholder=""
-                id="commentId"
-                [formControl]="myForm.controls['comment']"
-              >
+        <div [class.error]="!myForm.get('comment').valid && myForm.get('comment').touched" class="row">
+          <label for="commentId">{{'TICKET.COMMENT_RESOLUTION' | translate}}</label>
+          <div class="field">
+            <textarea rows="3" class="textarea" placeholder="" id="commentId" [formControl]="myForm.controls['comment']">
                 {{''}}
               </textarea>
-            </div>
           </div>
+        </div>
 
-          <div class="buttons">
-            <button
-              class="tui-btn-md tui-btn-primary tui-btn"
-              type="submit"
-              [disabled]="!myForm.valid ? 'disabled' : null"
-            >{{'TICKET.CONFIRM' | translate}}</button>
-          </div>
+        <div class="buttons">
+          <button class="tui-btn-md tui-btn-primary tui-btn" type="submit" [disabled]="!myForm.valid ? 'disabled' : null">{{'TICKET.CONFIRM' | translate}}</button>
+        </div>
 
-        </form>
+      </form>
 
     </div>
   </div>
