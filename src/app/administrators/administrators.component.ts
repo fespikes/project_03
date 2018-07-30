@@ -44,7 +44,9 @@ export class AdministratorsComponent implements OnInit {
       title: this.translateService.translateKey('ADMINISTRATORS.TITLE'),
       size,
     })
-    .subscribe((word: string) => {});
+    .subscribe((word: string) => {
+      this.fetchTableData();
+    });
   }
 
   ngOnInit() {

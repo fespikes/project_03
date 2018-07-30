@@ -11,4 +11,6 @@ ACCOUNT:
   CONFIRM_PWD_TIP: Confirm password is required and must be the same with new password.
   CONFIRM: Confirm
   RESET: Reset
+  SUCCEED: Succeed
+  FAILURE: Failure
 

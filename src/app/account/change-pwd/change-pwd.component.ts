@@ -6,8 +6,9 @@ import {
   FormControl,
 } from '@angular/forms';
 
-import { TuiModalRef } from 'tdc-ui';
+import { TuiModalRef, TuiMessageService } from 'tdc-ui';
 import { patterns } from '../../shared';
+import { TranslateService } from '../../i18n/translate.service';
 
 import { AccountService } from '../account.service';
 
@@ -32,8 +33,9 @@ export class ChangePwdComponent implements OnInit {
 
   constructor(
     fb: FormBuilder,
-    private modal: TuiModalRef,
     private accountService: AccountService,
+    private message: TuiMessageService,
+    private translateService: TranslateService,
   ) {
     const me = this;
 
@@ -75,7 +77,12 @@ export class ChangePwdComponent implements OnInit {
   onSubmit(value: {[s: string]: string}) {
     delete value.confirm;
     this.accountService.changePWD({...value}).subscribe(res => {
-      this.modal.close('closed');
+      this.message.success(this.translateService.translateKey('ACCOUNT.SUCCEED'));
+      setTimeout(function() {
+        history.go(-1);
+      }, 600);
+    }, err => {
+      this.message.error(this.translateService.translateKey('ACCOUNT.SUCCEED'));
     });
   }
 

@@ -13,13 +13,14 @@ import { HttpModule } from '@angular/http';
 import { By } from '@angular/platform-browser';
 import { OverlayModule } from '@angular/cdk/overlay';
 
-import { TuiModalRef, TuiMessageService } from 'tdc-ui';
+import { TuiMessageService } from 'tdc-ui';
 import { TranslatePipeStub, DefaultPipeStub } from 'app/mock';
 import {
   ConsoleSpy,
   dispatchEvent,
   createEvent,
 } from '../../shared/test';
+import { TranslateService } from '../../i18n/translate.service';
 
 import { ChangePwdComponent } from './change-pwd.component';
 import { AccountService } from '../account.service';
@@ -51,10 +52,15 @@ describe('ChangePwdComponent', () => {
         ChangePwdComponent,
       ],
       providers: [
-        TuiModalRef,
         AccountService,
         TecApiService,
         TuiMessageService,
+        {
+          provide: TranslateService,
+          useValue: {
+            use() { },
+          },
+        },
       ],
     })
     .compileComponents();

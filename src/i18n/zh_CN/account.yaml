@@ -11,4 +11,6 @@ ACCOUNT:
   CONFIRM_PWD_TIP: 确认密码为必填且和新密码相同
   CONFIRM: 确认
   RESET: 取消
+  SUCCEED: 修改成功
+  FAILURE: 修改失败
 
