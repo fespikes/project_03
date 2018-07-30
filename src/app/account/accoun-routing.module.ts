@@ -15,7 +15,7 @@ export const accountRoutes: Routes = [{
     path: '',
     children: [
       { path: 'change-pwd', component: ChangePwdComponent },
-      { path: '', redirectTo: '/account/login', pathMatch: 'full' },
+      // { path: '', redirectTo: '/account/login', pathMatch: 'full' },
     ],
   }],
 }];
