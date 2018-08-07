@@ -81,9 +81,9 @@
               <span>{{'TICKET.COLUMNS' | translate}}:</span>
               <span>{{applyInfo.applyInfoColumns}}</span>
             </li>
-            <li>
+            <li *ngIf="stringify(applyInfo.filters) != '{}'">
               <span>{{'TICKET.FILTER_PARAM' | translate}}:</span>
-              <span>{{applyInfo.filters.toString()}}</span>
+              <span>{{stringify(applyInfo.filters)}}</span>
             </li>
             <li>
               <span>{{'TICKET.SYNC_CYCLE' | translate}}:</span>
