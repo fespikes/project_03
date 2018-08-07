@@ -95,6 +95,10 @@ export class TicketDetailsComponent implements OnInit {
     });
   }
 
+  stringify(param) {
+    return JSON.stringify(param);
+  }
+
   getTheTicket(id: string) {
     this.loading = true;
     this.service.getTheTicket(id).subscribe(res => {
