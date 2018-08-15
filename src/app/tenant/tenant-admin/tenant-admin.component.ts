@@ -16,7 +16,6 @@ import { SendRegisterLinkComponent } from './send-register-link/send-register-li
   styleUrls: ['./tenant-admin.component.sass'],
 })
 export class TenantAdminComponent implements OnInit {
-  @HostBinding('class.tui-layout-body') hostClass = true;
 
   loading = false;
   pagination = new Pagination();
