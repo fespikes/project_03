@@ -20,7 +20,7 @@
 </div>
 
 <div class="container-content">
-  <tui-table [tuiTableFlex]="[1,2,1,1,1,1]" [loading]="loading">
+  <tui-table [tuiTableFlex]="[1,2,1.5,1,1,1]" [loading]="loading">
     <tui-table-head>
       <div>{{'TENANT.TENANT_ADMIN.USER_NAME' | translate}}</div>
       <div>{{'TENANT.TENANT_ADMIN.EMAIL' | translate}}</div>
@@ -29,10 +29,25 @@
       <div>{{'TENANT.TENANT_ADMIN.COMPANY' | translate}}</div>
       <div>{{'TENANT.TENANT_ADMIN.DEPARTMENT' | translate}}</div>
     </tui-table-head>
-    <tui-table-row *ngFor="let item of TenantAdmins">
+    <tui-table-row *ngFor="let item of TenantAdmins; let i=index;">
       <div class="text-ellipsis">{{item.username}}</div>
       <div class="text-ellipsis">{{item.userEmail}}</div>
-      <div>{{item.maxTenantQuantity}}</div>
+      <div>
+        <ng-container *ngIf="!quantityEditing || editingIndex!=i">
+          <span>{{item.maxTenantQuantity}}</span>
+          <svg (click)="edit(true, i)" tuiIcon="pencil" style="margin-left: 12px"></svg>
+        </ng-container>
+        <ng-container *ngIf="!!quantityEditing && (i===editingIndex)">
+          <input
+            type="text"
+            class="text-ellipsis replacement"
+            value="{{item.maxTenantQuantity || ''}}"
+            #max
+          />
+          <svg (click)="put(item, max)" tuiIcon="check" style="margin-left: 12px"></svg>
+          <svg (click)="edit(false, i)" tuiIcon="cross" style="margin-left: 12px"></svg>
+        </ng-container>
+      </div>
       <div>{{item.fullName}}</div>
       <div class="text-ellipsis">{{item.company}}</div>
       <div class="text-ellipsis">{{item.department}}</div>
