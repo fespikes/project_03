@@ -130,6 +130,8 @@ TENANT:
     DATE_RANGE: Time Range
     START_DATE: Start Date
     END_DATE: End Date
+    MUST_BIGGER: Amount must greater than
+    BLANK_MEANS: Blank means no limits
 
   QUOTA:
     UNDEFINED: Undefined

@@ -130,6 +130,8 @@ TENANT:
     DATE_RANGE: 起止时间
     START_DATE: 起始时间
     END_DATE: 截止时间
+    MUST_BIGGER: 数字需大于或等于
+    BLANK_MEANS: 置空表示不限定大小
 
   QUOTA:
     UNDEFINED: 未设置
