@@ -3,7 +3,7 @@
 \:host
   display: flex
   flex-direction: column
-  min-height: 100%
+  height: calc(100vh - 165px)
   min-width: 50rem
   background: #fff
   margin-top: -0.5rem
@@ -42,6 +42,14 @@
     flex-direction: column
     justify-content: space-between
     flex: 1
+    overflow: auto
+    span, .replacement
+      display: inline-block
+      width: 40%
+      text-align: center
+      line-height: 100%
+      margin-top: -5px
+      margin-bottom: -5px
 
   .tui-table-row > div, .tui-table-head > div
     padding: .5rem 1rem
