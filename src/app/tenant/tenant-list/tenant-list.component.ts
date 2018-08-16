@@ -17,6 +17,7 @@ const FileSaver = require('./FileSaver');
   styleUrls: ['./tenant-list.component.sass'],
 })
 export class TenantListComponent implements OnInit {
+  @HostBinding('class.tui-layout-body') hostClass = true;
 
   loading;
   tenantsCount = 0;

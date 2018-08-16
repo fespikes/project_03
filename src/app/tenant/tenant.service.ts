@@ -156,8 +156,4 @@ export class TenantService {
     return this.api.post(`managers/invitations`, {...invitation});
   }
 
-  putQuantity(username, quantity) {
-    return this.api.put(`managers/${username}/quantities`, {quantity: quantity});
-  }
-
 }

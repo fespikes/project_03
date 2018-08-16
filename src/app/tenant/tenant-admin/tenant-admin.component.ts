@@ -1,6 +1,6 @@
 import { Component, OnInit, HostBinding } from '@angular/core';
 
-import { Pagination, TuiModalService, TuiMessageService } from 'tdc-ui';
+import { Pagination, TuiModalService } from 'tdc-ui';
 
 import { TenantService } from '../tenant.service';
 import { TranslateService } from 'app/i18n';
@@ -16,19 +16,18 @@ import { SendRegisterLinkComponent } from './send-register-link/send-register-li
   styleUrls: ['./tenant-admin.component.sass'],
 })
 export class TenantAdminComponent implements OnInit {
+  @HostBinding('class.tui-layout-body') hostClass = true;
 
   loading = false;
   pagination = new Pagination();
   filter = new TenantAdminFilter;
   TenantAdmins: TenantAdmin[];
-  quantityEditing = false;
-  editingIndex: number;
 
   constructor(
     private tenantService: TenantService,
     private modalService: TuiModalService,
     private translateService: TranslateService,
-    private message: TuiMessageService,
+
   ) { }
 
   ngOnInit() {
@@ -68,33 +67,6 @@ export class TenantAdminComponent implements OnInit {
       size,
     })
     .subscribe((word: string) => {});
-  }
-
-  edit(param: boolean, i) {
-    this.quantityEditing = param;
-    this.editingIndex = i;
-  }
-
-  put(item, max: HTMLInputElement) {
-    const val = max.value;
-    if (val === item.maxTenantQuantity) {
-      return ;
-    }
-
-    this.loading = true;
-    if (val >= item.usedTenantQuantity) {
-      this.tenantService.putQuantity(item.username, max.value)
-        .subscribe(res => {
-          setTimeout( _ => {
-            this.getTenantAdmins();
-            this.quantityEditing = false;
-            this.loading = false;
-          }, 300);
-        });
-      } else {
-        this.loading = false;
-        this.message.error(`must >= ${item.usedTenantQuantity}, blank means no limits`);
-    }
   }
 
 }
