@@ -35,7 +35,7 @@
       <div>
         <ng-container *ngIf="!quantityEditing || editingIndex!=i">
           <span>{{item.maxTenantQuantity}}</span>
-          <svg (click)="edit(true, i)" tuiIcon="pencil" style="margin-left: 12px"></svg>
+          <svg class="pencil" (click)="edit(true, i)" tuiIcon="pencil" style="margin-left: 12px"></svg>
         </ng-container>
         <ng-container *ngIf="!!quantityEditing && (i===editingIndex)">
           <input

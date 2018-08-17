@@ -45,11 +45,22 @@
 
     span, .replacement
       display: inline-block
+      padding-left: 12px
       width: 40%
-      text-align: center
+      text-align: left
       line-height: 100%
       margin-top: -5px
       margin-bottom: -5px
+      margin-left: -12px
+    span
+      border-left: 1px transparent solid
+
+    .tui-table-row
+      .pencil
+        visibility: hidden
+      &:hover
+        .pencil
+          visibility: visible
 
   .tui-table-row > div, .tui-table-head > div
     padding: .5rem 1rem
