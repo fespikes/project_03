@@ -82,7 +82,7 @@ export class TenantAdminComponent implements OnInit {
     }
 
     this.loading = true;
-    if (val >= item.usedTenantQuantity) {
+    if (val >= item.usedTenantQuantity || val === '') {
       this.tenantService.putQuantity(item.username, max.value)
         .subscribe(res => {
           setTimeout( _ => {
