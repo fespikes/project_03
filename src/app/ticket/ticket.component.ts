@@ -22,6 +22,8 @@ export class TicketComponent implements OnInit {
   search: string;
   statuses = Statuses;
   sortMode: 'single';  // 'multiple'
+  options: any;
+  type: string; // any = {};
 
   constructor(
     private route: ActivatedRoute,
@@ -32,6 +34,19 @@ export class TicketComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    const options = [{
+      type: '', // TODO:
+      typeAlias: this.translateService.translateKey('TICKET.All'),
+    }];
+    this.service.getTicketsServiceTypes()
+      .subscribe(res => {
+        res.forEach(item => {
+          options.push(item);
+        });
+        this.options = options;
+        this.type = this.options[0]['typeAlias'];
+      });
+
     this.fetchData();
   }
 
@@ -44,7 +59,9 @@ export class TicketComponent implements OnInit {
     this.loading = true;
     this.filter.page = this.pagination.page;
     this.filter.size = this.pagination.size;
-    this.filter.keywords = [this.search];
+    if (!!this.search) {
+      this.filter.keywords = [this.search];
+    }
 
     if (changes && changes.sortedBy) {
       const {sortedBy, order} = changes;

@@ -2,12 +2,13 @@ import { TestBed, inject } from '@angular/core/testing';
 import { SharedModule, TecApiService } from '../shared';
 import { MockBackend } from '@angular/http/testing';
 import {
-  Http,
   ConnectionBackend,
   BaseRequestOptions,
   Response,
   ResponseOptions,
 } from '@angular/http';
+import { HttpClientModule, HttpClient } from '@angular/common/http';
+
 import { OverlayModule } from '@angular/cdk/overlay';
 
 import { Observable } from 'rxjs/Observable';
@@ -21,6 +22,7 @@ describe('TasksService', () => {
     TestBed.configureTestingModule({
       imports: [
         OverlayModule,
+        HttpClientModule,
       ],
       providers: [
         TuiMessageService,
@@ -28,13 +30,7 @@ describe('TasksService', () => {
         BaseRequestOptions,
         TasksService,
         TecApiService,
-        { provide: Http,
-          useFactory: (backend: ConnectionBackend,
-                       defaultOptions: BaseRequestOptions) => {
-            return new Http(backend, defaultOptions);
-          },
-          deps: [MockBackend, BaseRequestOptions],
-        },
+        HttpClient,
         {
           provide: TranslateService,
           useValue: {

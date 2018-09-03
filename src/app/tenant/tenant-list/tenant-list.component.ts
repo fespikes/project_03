@@ -9,7 +9,7 @@ import { TenantSummary, statuses, TenantInfo } from '../tenant-model';
 import { ModalDeleteTenantComponent } from '../components/modal/delete-tenant.component';
 import { FailureCourseComponent } from '../components/failure-course/failure-course.component';
 
-const FileSaver = require('./FileSaver');
+const FileSaver = require('app/shared/FileSaver');
 
 @Component({
   selector: 'tec-tenant-list',

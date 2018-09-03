@@ -1,12 +1,14 @@
 import { TestBed, inject, fakeAsync, tick } from '@angular/core/testing';
 import { MockBackend } from '@angular/http/testing';
 import {
-  Http,
   ConnectionBackend,
   BaseRequestOptions,
   Response,
   ResponseOptions,
 } from '@angular/http';
+import { HttpClientModule } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
+
 import { OverlayModule } from '@angular/cdk/overlay';
 import * as path from 'path';
 
@@ -19,19 +21,13 @@ describe('LayoutService', () => {
     TestBed.configureTestingModule({
       imports: [
         OverlayModule,
+        HttpClientModule,
       ],
       providers: [
         LayoutService,
         TecApiService,
         BaseRequestOptions,
         MockBackend,
-        { provide: Http,
-          useFactory: (backend: ConnectionBackend,
-                       defaultOptions: BaseRequestOptions) => {
-            return new Http(backend, defaultOptions);
-          },
-          deps: [MockBackend, BaseRequestOptions],
-        },
         TuiMessageService,
       ],
     });

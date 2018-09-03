@@ -1,6 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { HttpModule } from '@angular/http';
+import { HttpClientModule, HttpClient } from '@angular/common/http';
 import { OverlayModule } from '@angular/cdk/overlay';
 
 import { TranslatePipeStub, DefaultPipeStub } from 'app/mock';
@@ -17,7 +17,7 @@ describe('AddComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [
-        HttpModule,
+        HttpClientModule,
         FormsModule,
         ReactiveFormsModule,
         OverlayModule,

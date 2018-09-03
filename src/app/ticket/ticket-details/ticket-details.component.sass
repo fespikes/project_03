@@ -58,13 +58,18 @@
     min-width: 50rem
 
     .tui-layout-main-title
-      font-size: 1.5rem
+      font-size: 1.2rem
       display: flex
       justify-content: space-between
 
       .left
         display: flex
         align-items: center
+      .title-span
+        width: 400px
+        overflow: hidden
+        text-overflow: ellipsis
+        white-space: nowrap
 
       .icon-circle
         margin: 0 8px 0 50px
@@ -110,8 +115,12 @@
 
     .tui-property
       flex: 1
-      min-width: 11rem
-      margin: 0.75rem 4rem 0.75rem 0
+      width: 12rem
+      margin: 0.75rem 1rem 0.75rem 0
+      &.flex2
+        flex: 2
+        position: relative
+        left: -5px
 
 .ticket-parts
 
@@ -173,6 +182,53 @@
 
     span
       padding: 0 3px
+
+  .resource-dl
+    padding-bottom: 20px
+    dd
+      float: left
+      display: inline-block
+      font-size: 14px
+      -webkit-margin-start: 32px
+  .attachments
+    overflow: hidden
+    margin: 0 20px 20px
+
+    span
+      float: left
+      display: inline-block
+      width: 33.33%
+      height: 48px
+      padding: 0 10px
+      box-sizing: border-box
+      margin: 16px 0 0
+      position: relative
+      &:before
+        content: ''
+        display: inline-block
+        width: 100%
+        height: 100%
+        border: 1px #d3dcea solid
+        border-radius: 4px
+
+      h4
+        width: 240px
+        line-height: 48px
+        padding: 0 0 0 16px
+        margin: 0 38px 0 0
+        font-size: 16px
+        overflow: hidden
+        text-overflow: ellipsis
+        white-space: nowrap
+        font-weight: 400
+        position: absolute
+        top: 0
+        left: 12px
+      .download
+        position: absolute
+        right: 26px
+        top: 16px
+        cursor: pointer
 
 form
   margin: 16px

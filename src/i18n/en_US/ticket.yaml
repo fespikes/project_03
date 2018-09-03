@@ -19,6 +19,7 @@ TICKET:
   TENANT: Tenant
   ATTACHMENT: Attachment
   APPLIED_DATA: Application Record
+  APPLIED_RESOURCE: Applied Resource
   TABLES: Tables
   COLUMNS: Columns
   FILTER_PARAM: Filter Condition
@@ -38,3 +39,5 @@ TICKET:
   CHANGED_TO: To
   SUCCEED: Succeed
   FAILURE: Failure
+  CATEGORY: Category
+  ATTACHMENTS: Attachments

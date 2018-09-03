@@ -8,7 +8,7 @@ import { MockBackend } from '@angular/http/testing';
 //   ResponseOptions,
 // } from '@angular/http';
 import { TuiMessageService } from 'tdc-ui';
-import { HttpModule } from '@angular/http';
+import { HttpClientModule } from '@angular/common/http';
 import { Overlay } from '@angular/cdk/overlay';
 import { OverlayModule } from '@angular/cdk/overlay';
 
@@ -23,14 +23,13 @@ describe('AdministratorsService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [
-        HttpModule,
+        HttpClientModule,
         OverlayModule,
       ],
       providers: [
         AdministratorsService,
         TecApiService,
         // BaseRequestOptions,
-        HttpModule,
         MockBackend,
         TuiMessageService,
         Overlay,

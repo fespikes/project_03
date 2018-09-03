@@ -13,6 +13,22 @@
           (ngModelChange)="showResolved()"
         />
         <label for="show">{{'TICKET.SHOW_HANDLED' | translate}}</label>
+
+        <tui-select
+          [(ngModel)]="filter.types"
+          (ngModelChange)="fetchData(true)"
+          style="width: 160px;"
+          class="filter"
+        >
+          <tui-select-option
+            *ngFor="let option of options"
+            [value]="option.type"
+            [label]="option.typeAlias"
+          >
+            {{ option.typeAlias | tuiDefault }}
+          </tui-select-option>
+        </tui-select>
+        
         <tui-search
           [(ngModel)]="search"
           (ngModelChange)="fetchData(true)"
@@ -24,7 +40,7 @@
     <!-- <div class="container-operation-bar"></div> -->
 
     <div class="container-content content">
-      <tui-table [tuiTableFlex]="[0.8,1,2,1.5,1.5,1.5,1.5,1]" [loading]="loading" class="tui-table table">
+      <tui-table [tuiTableFlex]="[0.8,1,2,1,1.5,1,1.5,1.5,0.5]" [loading]="loading" class="tui-table table">
         <tui-table-head
           [sortMode]="sortMode"
           (sortChange)="fetchData($event)"
@@ -33,6 +49,7 @@
           <tui-table-head-cell sortKey="priority">{{'TICKET.PRIORITY' | translate}}</tui-table-head-cell>
           <div>{{'TICKET.TITLE' | translate}}</div>
           <div>{{'TICKET.STATUS' | translate}}</div>
+          <div>{{'TICKET.CATEGORY' | translate}}</div>
           <div>{{'TICKET.CREATOR' | translate}}</div>
           <tui-table-head-cell sortKey="createdTime">{{'TICKET.CREATE_TIME' | translate}}</tui-table-head-cell>
           <tui-table-head-cell sortKey="dueDate">{{'TICKET.END_TIME' | translate}}</tui-table-head-cell>
@@ -51,7 +68,8 @@
               class="icon-circle"
               tuiIcon="circle"></svg>
             {{item.statusAlias}}
-            </div>
+          </div>
+          <div>{{item.serviceTypeAlias}}</div>
           <div>{{item.submitter}}</div>
           <div>{{item.createdTime | date: 'yyyy/MM/dd h:mm a'}}</div>
           <div class="text-ellipsis">{{item.dueDate | date: 'yyyy/MM/dd h:mm a'}}</div>

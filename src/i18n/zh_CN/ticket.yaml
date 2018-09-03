@@ -19,6 +19,7 @@ TICKET:
   TENANT: 租户
   ATTACHMENT: 附件
   APPLIED_DATA: 申请数据
+  APPLIED_RESOURCE: 申请资源
   TABLES: 数据表
   COLUMNS: 选择列
   FILTER_PARAM: 过滤条件
@@ -38,3 +39,5 @@ TICKET:
   CHANGED_TO: 变为
   SUCCEED: 成功
   FAILURE: 失败
+  CATEGORY: 类别
+  ATTACHMENTS: 附件

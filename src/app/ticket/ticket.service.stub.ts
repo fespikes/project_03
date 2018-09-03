@@ -23,4 +23,11 @@ export class TicketServiceStub {
     return of({});
   }
 
+  getTicketsServiceTypes(): Observable<any> {
+    return of([]);
+  }
+
+  getAttachment(ticketId, name) {
+    return of({});
+  }
 }

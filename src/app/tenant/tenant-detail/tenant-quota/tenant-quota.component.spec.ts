@@ -8,6 +8,7 @@ import {
   ResponseOptions,
 } from '@angular/http';
 import { OverlayModule } from '@angular/cdk/overlay';
+import { HttpClientModule, HttpClient } from '@angular/common/http';
 
 
 import { TuiMessageService } from 'tdc-ui';
@@ -30,6 +31,7 @@ describe('TenantQuotaComponent', () => {
         TranslatePipeStub,
       ],
       providers: [
+        HttpClient,
         TenantService,
         TecApiService,
         MockBackend,
@@ -46,6 +48,7 @@ describe('TenantQuotaComponent', () => {
         TuiMessageService,
       ],
       imports: [
+        HttpClientModule,
         OverlayModule,
       ],
     })

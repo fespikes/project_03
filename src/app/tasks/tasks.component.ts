@@ -34,7 +34,7 @@ export class TasksComponent implements OnInit {
   ngOnInit() {
     const options = [{
       status: '',
-      statusAlias: this.translateService.translateKey('TASKS.ALL'),  // TODO: i18n
+      statusAlias: this.translateService.translateKey('TASKS.ALL'),
     }];
     this.service.getStatus().subscribe(res => {
       res.forEach(item => {
