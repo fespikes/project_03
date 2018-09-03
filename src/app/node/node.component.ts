@@ -5,7 +5,7 @@ import { TecApiService } from 'app/shared';
 import { NodeService } from './node.service';
 import { NodeFilter } from './node.model';
 
-const FileSaver = require('../tenant/tenant-list/FileSaver');
+const FileSaver = require('app/shared/FileSaver');
 
 @Component({
   selector: 'tec-node',

@@ -5,8 +5,11 @@
 <div class="tui-layout-vertical" [tuiLoading]="loading" tccLoadingHeight="500px">
   <div class="tui-layout-main-container">
     <div class="tui-layout-main-title">
+      <!-- tuiTooltip="{{('TICKET.TICKET_DETAILS' | translate) + ' - ' + ticket.id + '   ' + ticket.serviceTypeAlias}}" -->
       <div class="left">
-        {{('TICKET.TICKET_DETAILS' | translate) + ' - ' + ticket.id}}
+        <span class="title-span">
+            {{('TICKET.TICKET_DETAILS' | translate) + ' - ' + ticket.id + '   ' + ticket.serviceTypeAlias}}
+        </span>
         <svg [class.resolved]="ticket.status !== statuses['unresolved']" class="icon-circle" tuiIcon="circle"></svg>
         <span class="status">{{ticket.statusAlias}}</span>
       </div>
@@ -41,15 +44,7 @@
               <div class="label">{{'TICKET.PRIORITY' | translate}}</div>
             </div>
           </div>
-          <tui-property icon="clock" label="{{'TICKET.TIME_SCOPE' | translate}}" [value]="(ticket.createdTime | date:'y/M/d') + ' - ' + (ticket.modifiedTime | date:'y/M/d')"></tui-property>
-        </div>
-
-        <div class="ticket-property">
-          <tui-property icon="user-slash
-  " label="{{'TICKET.CREATOR' | translate}}" [value]="ticket.submitter"></tui-property>
-          <!-- <tui-property icon="user-slash
-            " label="{{'TICKET.TENANT' | translate}}" [value]="ticket.submitter"></tui-property> -->
-
+          <tui-property icon="user-slash" label="{{'TICKET.CREATOR' | translate}}" [value]="ticket.submitter"></tui-property>
           <div class="tui-property">
             <img class="icon-img" tecImgSrc="talent.svg" tecImgPrefix="/assets/svg" />
             <div>
@@ -57,13 +52,33 @@
               <div class="label">{{'TICKET.TENANT' | translate}}</div>
             </div>
           </div>
-
+        </div>
+        <div class="ticket-property">
+          <div class="tui-property">
+            <img class="icon-img" tecImgSrc="serviceType.svg" tecImgPrefix="/assets/svg" />
+            <div>
+              <div class="value">{{ticket.serviceTypeAlias}}</div>
+              <div class="label">{{'TICKET.CATEGORY' | translate}}</div>
+            </div>
+          </div>
+          <tui-property class="flex2" icon="clock" label="{{'TICKET.TIME_SCOPE' | translate}}" [value]="(ticket.createdTime | date:'y/M/d') + ' - ' + (ticket.modifiedTime | date:'y/M/d')"></tui-property>
         </div>
       </div>
     </div>
 
+    <!--S: 申请资源-->
+    <div *ngIf="!!appliedResource" class="application ticket-parts">
+      <h4 class="title">{{'TICKET.APPLIED_RESOURCE' | translate}}</h4>
+      <dl class="resource-dl">
+        <dd *ngFor="let item of appliedResource">
+          <span>{{item.displayName || ''}}: </span>
+          <span>{{' ' + (item.value || '') + (item.displayUnit || '')}}</span>
+        </dd>
+      </dl>
+    </div>
+
     <!--S: 申请数据-->
-    <div class="application ticket-parts">
+    <div *ngIf="!!applyInfos" class="application ticket-parts">
       <h4 class="title">{{'TICKET.APPLIED_DATA' | translate}}</h4>
       <tui-table [tuiTableFlex]="[1]" [loading]="loading">
         <ng-container *ngFor="let applyInfo of applyInfos">
@@ -94,6 +109,29 @@
       </tui-table>
     </div>
 
+    <!--S: attachments-->
+    <div *ngIf="!!appliedResource" class="application ticket-parts">
+      <h4 class="title">{{'TICKET.ATTACHMENT' | translate}}</h4>
+      <div class="attachments">
+        <span *ngFor="let item of attachments">
+          <h4>{{item}}</h4>
+          <svg
+          class="download"
+          tuiIcon="download"
+          (click)="downloadAttachment(item)"
+          ></svg>
+        </span>
+        <!-- <span>
+          <h4>wr3fe 43  43</h4>
+          <svg
+            class="download"
+            tuiIcon="download"
+            (click)="downloadAttachment(sss)"
+          ></svg>
+        </span> -->
+      </div>
+    </div>
+
     <div *ngIf="ticketChanges && (ticketChanges.length>0)" class="operation-record ticket-parts">
       <h4 class="title">{{'TICKET.OPERATION_RECORD' | translate}}</h4>
       <ul class="record-ul">
@@ -112,10 +150,6 @@
           <span>{{'TICKET.CHANGED_TO' | translate}}</span>
           <span *ngIf="!!item.newValue">{{item.newValue}}</span>
         </li>
-        <!--
-        <li>1.2018/4/27  admin 将 状态 从 未处理 变为 已同意</li>
-        <li>2.2018/4/27  admin 将 状态 从 未处理 变为 已同意</li>
-        -->
       </ul>
     </div>
 

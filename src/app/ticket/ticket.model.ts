@@ -16,6 +16,7 @@ export class TicketFilter {
   keywords?: string[];
   sortedBy?: any;
   order?: any;
+  types?: any;
 }
 
 
@@ -56,6 +57,7 @@ export class Ticket {
   statusAlias?: string;
   submitter?: string;
   title?: string;
+  serviceTypeAlias?: string;
 
   payload?: any = {
     applyInfo: new ApplyInfo(),

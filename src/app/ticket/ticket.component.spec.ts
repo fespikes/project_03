@@ -4,13 +4,13 @@ import { provideRoutes, Routes } from '@angular/router';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { MockBackend } from '@angular/http/testing';
 import {
-  Http,
   ConnectionBackend,
   BaseRequestOptions,
   Response,
   ResponseOptions,
 } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
+import { HttpClientModule, HttpClient } from '@angular/common/http';
 
 import {
   advance, createRoot,
@@ -53,6 +53,7 @@ describe('TicketComponent', () => {
         DefaultPipeStub,
       ],
       providers: [
+        HttpClient,
         {
           provide: TicketService,
           useFactory: (api: TecApiService) => {
@@ -63,13 +64,6 @@ describe('TicketComponent', () => {
         TecApiService,
         MockBackend,
         BaseRequestOptions,
-        { provide: Http,
-          useFactory: (backend: ConnectionBackend,
-                       defaultOptions: BaseRequestOptions) => {
-            return new Http(backend, defaultOptions);
-          },
-          deps: [MockBackend, BaseRequestOptions],
-        },
         {
           provide: TranslateService,
           useValue: {

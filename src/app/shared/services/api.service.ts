@@ -1,11 +1,12 @@
 import * as path from 'path-browserify';
 import { Injectable } from '@angular/core';
 import { environment } from '../../../environments/environment';
-import { Headers, Http, Response, URLSearchParams, ResponseContentType } from '@angular/http';
-import { Observable } from 'rxjs/Observable';
+import { HttpClient, HttpParams, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
+import { Observable } from 'rxjs';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/observable/throw';
+import { catchError } from 'rxjs/operators';
 
 import { TuiMessageService  } from 'tdc-ui';
 import { PartialCollection } from '../models';
@@ -16,20 +17,118 @@ export class ApiConfig {
 
 @Injectable()
 export class TecApiService {
+  private get headers(): HttpHeaders {
+    return new HttpHeaders({
+      'Accept': 'application/json, text/plain, */*',
+      'Content-Type': 'application/json;charset=UTF-8',
+    });
+  }
+  private get httpOptions(): any {
+    return {
+      headers: this.headers,
+    };
+  }
   constructor(
-    private http: Http,
+    private http: HttpClient,
     private message: TuiMessageService,
   ) {
     this.formatErrors = this.formatErrors.bind(this);
   }
 
-  private get headers(): Headers {
-    return new Headers({
-      'Accept': 'application/json, text/plain, */*',
-      'Content-Type': 'application/json;charset=UTF-8',
-    });
+  // no abstract url path, for logout only
+  getInRoot(url: string, params: Object = {}, config?: ApiConfig): Observable<any> {
+    const queryParams = this.setQueryParams(params, true);
+    return this.http.get(url, queryParams)
+      .pipe(
+        catchError(this.formatErrors),
+      );
   }
 
+  // normal get ,for response format(depends on project apis)
+  get(url: string, params: Object = {}, config?: ApiConfig): Observable<any> {
+    const queryParams = this.setQueryParams(params);
+    return this.http.get(this.makeUrl(url), queryParams)
+      .pipe(
+        catchError(this.formatErrors),
+      ).map(res => this.dataAdjustment(res));
+  }
+
+  getUnformat(url: string, params: Object = {}, config?: ApiConfig): Observable<any> {
+    const queryParams = this.setQueryParams(params);
+    return this.http.get(this.makeUrl(url), queryParams)
+      .pipe(
+        catchError(this.formatErrors),
+      );
+  }
+
+  getAll(url: string, params: Object = {}, config?: ApiConfig): Observable<PartialCollection> {
+    params['size'] = Math.pow(2, 31) - 1;
+    params['page'] = 1;
+    return this.get(url, this.setQueryParams(params, true));
+  }
+
+  getFile(thePath: string, params: Object = {}): Observable<any> {
+
+    return this.http.get(
+        this.makeUrl(thePath),
+        { headers: this.headers,
+          params: this.setQueryParams(params).params,
+          responseType: 'arraybuffer',
+          observe: 'response',
+        },
+      )
+        .pipe(catchError(this.formatErrors));
+  }
+
+  put(url: string, body: Object = {}): Observable<any> {
+    return this.http.put(
+      this.makeUrl(url),
+      JSON.stringify(body),
+      this.httpOptions,
+    )
+    .pipe(catchError(this.formatErrors));
+  }
+
+  post(url: string, body: Object = {}, config?: ApiConfig): Observable<any> {
+    return this.http.post(
+      this.makeUrl(url),
+      JSON.stringify(body),
+      this.httpOptions,
+    )
+    .pipe(catchError(this.formatErrors));
+  }
+
+  delete(url): Observable<any> {
+    return this.http.delete(
+      this.makeUrl(url),
+      this.httpOptions,
+    )
+    .pipe(catchError(this.formatErrors));
+  }
+
+  // for object only
+  setQueryParams(p, all?: boolean) {
+    const obj: any = {
+      params: new HttpParams(),
+      headers: this.headers,
+    };
+    if (p) {
+      Object.keys(p).map((key) => {
+        if (!!p[key]) {
+          const element = p[key];
+          obj.params = obj.params.set(key, element);
+        }
+      });
+    }
+    if (!!all) {
+      obj.observe = 'response';
+    }
+    return obj;
+  }
+
+  dataAdjustment(res) {
+    return res.data;
+  }
   private formatErrors(error: any) {
     let data;
     try {
@@ -37,80 +136,15 @@ export class TecApiService {
     } catch (err) {
       data = { error: 'fail to parse' };
     }
-
     this.message.error(data.message);
     return Observable.throw(data);
   }
-
-  private formatResponse(res: Response, config = new ApiConfig()) {
-    const json = res.json();
-    if (config.fullResponse) {
-      return json;
-    } else {
-      return json.data;
-    }
-  }
-
   makeUrl(url) {
-    return path.join(environment.apiUrl, url);
+    return this.join(environment.apiUrl, url);
   }
-
-  getInRoot(url: string, params: Object = {}, config?: ApiConfig): Observable<any> {
-    return this.http.get(url, { headers: this.headers, search: params })
-      .catch(this.formatErrors)
-      .map((res: Response) => this.formatResponse(res, config));
-  }
-
-  get(url: string, params: Object = {}, config?: ApiConfig): Observable<any> {
-    return this.http.get(this.makeUrl(url), { headers: this.headers, search: params })
-      .catch(this.formatErrors)
-      .map((res: Response) => this.formatResponse(res, config));
-  }
-
-  getAll(url: string, params: Object = {}, config?: ApiConfig): Observable<PartialCollection> {
-    params['size'] = Math.pow(2, 31) - 1;
-    params['page'] = 1;
-    return this.get(url, params, config);
-  }
-
-  getFile(url: string, params = {}, config?: ApiConfig): Observable<any> {
-    return this.http.get(
-      this.makeUrl(url),
-      {
-        headers: this.headers,
-        search: params,
-        responseType: ResponseContentType.Blob,
-      })
-      .map((res) => res.blob())
-      .catch(this.formatErrors);
-  }
-
-  put(url: string, body: Object = {}): Observable<any> {
-    return this.http.put(
-      this.makeUrl(url),
-      JSON.stringify(body),
-      { headers: this.headers },
-    )
-      .catch(this.formatErrors)
-      .map((res: Response) => this.formatResponse(res));
-  }
-
-  post(url: string, body: Object = {}, config?: ApiConfig): Observable<any> {
-    return this.http.post(
-      this.makeUrl(url),
-      JSON.stringify(body),
-      { headers: this.headers },
-    )
-      .catch(this.formatErrors)
-      .map((res: Response) => this.formatResponse(res, config));
-  }
-
-  delete(url): Observable<any> {
-    return this.http.delete(
-      this.makeUrl(url),
-      { headers: this.headers },
-    )
-      .catch(this.formatErrors)
-      .map((res: Response) => this.formatResponse(res));
+  join(...parts) {
+    const separator = '/';
+    const replace   = new RegExp(separator + '{1,}', 'g');
+    return parts.join(separator).replace(replace, separator);
   }
 }

@@ -16,8 +16,7 @@ import { TicketService } from '../ticket.service';
 import { Ticket, Statuses } from '../ticket.model';
 import { ConfirmComponent } from '../confirm/confirm.component';
 
-// TODO: remove
-import { ApplyInfo } from '../ticket.model';
+const FileSaver = require('app/shared/FileSaver');
 
 @Component({
   selector: 'tec-ticket-details',
@@ -37,6 +36,8 @@ export class TicketDetailsComponent implements OnInit {
   statuses = Statuses;
 
   applyInfos: any[];
+  appliedResource: any[];
+  attachments: any[];
 
   ticketChanges: any[];
 
@@ -105,9 +106,14 @@ export class TicketDetailsComponent implements OnInit {
       try {
         const applyInfos = res.payload.applyInfos;
         const ticketChanges = res.ticketChanges;
-        this.getApplyData(applyInfos);
+        if (applyInfos) {
+          this.getApplyData(applyInfos);
+        } else {
+          this.getAppliedResource(res.payload);
+        }
         this.getOperationRecord(ticketChanges);
         this.ticket = res;
+        this.attachments = res.attachments;
         this.loading = false;
       } catch (e) {
         console.log(e.message);
@@ -146,8 +152,12 @@ export class TicketDetailsComponent implements OnInit {
        */
     });
     this.applyInfos = applyInfos;
+  }
 
-    console.log(applyInfos);
+  getAppliedResource(payload) {
+    console.log(payload);
+    if (!payload) { return false; }
+    this.appliedResource = payload;
   }
 
   toggleSubList(item) {
@@ -183,10 +193,6 @@ export class TicketDetailsComponent implements OnInit {
     return submenuItems;
   }
 
-  // onSubmit(value: {[s: string]: string}) {
-  //   this.popup(value);
-  // }
-
   onSubmit(val: any, size = 'md') {
     const fields: any = {...val};
     let title: string;
@@ -209,6 +215,21 @@ export class TicketDetailsComponent implements OnInit {
       this.getRouterParams();
       this.getMenuData();
     });
+  }
+
+  downloadAttachment(name) {
+    this.service.getAttachment(this.ticket.id, name)
+      .subscribe((data) => {
+        const link = document.createElement('a');
+        document.body.appendChild(link);
+        link.setAttribute('type', 'hidden');
+
+        const blob = new Blob([data.body], { type: data.headers.get('Content-Type') });
+        const url = window.URL.createObjectURL(blob);
+        link.download = name;
+        link.href = url;
+        link.click();
+      });
   }
 
 }

@@ -9,6 +9,7 @@ import {
 } from '@angular/http';
 import { MockBackend } from '@angular/http/testing';
 import { OverlayModule } from '@angular/cdk/overlay';
+import { HttpClientModule, HttpClient } from '@angular/common/http';
 
 import { TuiModalService, TuiMessageService } from 'tdc-ui';
 import { MockModule } from '../../../mock';
@@ -25,7 +26,7 @@ describe('LayoutHeadRightComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       schemas: [NO_ERRORS_SCHEMA],
-      imports: [MockModule, OverlayModule],
+      imports: [MockModule, OverlayModule, HttpClientModule],
       declarations: [ LayoutHeadRightComponent ],
       providers: [
         LayoutService,
@@ -35,19 +36,12 @@ describe('LayoutHeadRightComponent', () => {
         BaseRequestOptions,
         MockBackend,
         {
-          provide: Http,
-          useFactory: (backend: ConnectionBackend,
-                       defaultOptions: BaseRequestOptions) => {
-            return new Http(backend, defaultOptions);
-          },
-          deps: [MockBackend, BaseRequestOptions],
-        },
-        {
           provide: TranslateService,
           useValue: {
             use() { },
           },
         },
+        HttpClient,
       ],
     })
     .compileComponents();

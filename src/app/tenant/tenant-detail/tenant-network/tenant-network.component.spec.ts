@@ -2,6 +2,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { MockBackend } from '@angular/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
+import { HttpClientModule, HttpClient } from '@angular/common/http';
 
 import {
   Http,
@@ -28,6 +29,7 @@ describe('TenantNetworkComponent', () => {
       imports: [
         RouterTestingModule,
         OverlayModule,
+        HttpClientModule,
       ],
       declarations: [
         TenantNetworkComponent,
@@ -38,13 +40,7 @@ describe('TenantNetworkComponent', () => {
         BaseRequestOptions,
         TecApiService,
         TenantService,
-        { provide: Http,
-          useFactory: (backend: ConnectionBackend,
-                       defaultOptions: BaseRequestOptions) => {
-            return new Http(backend, defaultOptions);
-          },
-          deps: [MockBackend, BaseRequestOptions],
-        },
+        HttpClient,
         TuiMessageService,
       ],
     })

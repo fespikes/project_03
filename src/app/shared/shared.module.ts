@@ -3,6 +3,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { I18nModule } from '../i18n';
 import { TuiModule } from 'tdc-ui';
+import { HttpClientModule } from '@angular/common/http';
 
 import {
   ChartWrapperComponent,
@@ -31,6 +32,7 @@ import {
     I18nModule,
     ReactiveFormsModule,
     TuiModule,
+    HttpClientModule,
   ],
   declarations: [
     ChartWrapperComponent,
@@ -66,6 +68,7 @@ import {
     ServiceTagComponent,
     TuiModule,
     YamlTreeComponent,
+    HttpClientModule,
   ],
   entryComponents: [
     ModalPodDetailComponent,

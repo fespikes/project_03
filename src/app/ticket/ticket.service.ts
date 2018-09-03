@@ -23,4 +23,14 @@ export class TicketService {
       {fullResponse: true});
   }
 
+  getTicketsServiceTypes(): Observable<any> {
+    return this.api.getUnformat(`tickets/serviceTypes`, {}, {fullResponse: true});
+  }
+
+  getAttachment(ticketId, name) {
+    return this.api.getFile(`tickets/${ticketId}/downloadAttachment`, {
+      fileName: name,
+    });
+  }
+
 }

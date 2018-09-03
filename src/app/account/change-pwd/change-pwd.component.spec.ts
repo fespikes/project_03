@@ -9,7 +9,7 @@ import {
   ResponseOptions,
 } from '@angular/http';
 import { Overlay } from '@angular/cdk/overlay';
-import { HttpModule } from '@angular/http';
+import { HttpClientModule } from '@angular/common/http';
 import { By } from '@angular/platform-browser';
 import { OverlayModule } from '@angular/cdk/overlay';
 
@@ -41,7 +41,7 @@ describe('ChangePwdComponent', () => {
 
     TestBed.configureTestingModule({
       imports: [
-        HttpModule,
+        HttpClientModule,
         FormsModule,
         ReactiveFormsModule,
         OverlayModule,
