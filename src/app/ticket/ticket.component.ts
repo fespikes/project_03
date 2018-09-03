@@ -23,7 +23,6 @@ export class TicketComponent implements OnInit {
   statuses = Statuses;
   sortMode: 'single';  // 'multiple'
   options: any;
-  type: string; // any = {};
 
   constructor(
     private route: ActivatedRoute,
@@ -44,7 +43,7 @@ export class TicketComponent implements OnInit {
           options.push(item);
         });
         this.options = options;
-        this.type = this.options[0]['typeAlias'];
+        this.filter.types = this.options[0]['typeAlias'];
       });
 
     this.fetchData();
