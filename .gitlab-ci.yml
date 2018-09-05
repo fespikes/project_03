@@ -43,4 +43,4 @@ postcommit:
     paths:
       - dist
   only:
-    - master
+    - tdc-1.1
