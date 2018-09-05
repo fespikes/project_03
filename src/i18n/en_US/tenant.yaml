@@ -3,6 +3,7 @@ TENANT:
   FAILURE_CAUSE: Failure Cause
   EXECUTED_FAILURE: executed failure
   CLOSE: Close
+  PWD_PLACEHOLDER: Must content 6-15 letters and digits
 
   TENANT_ADMIN:
     NAME: Tenant Admin

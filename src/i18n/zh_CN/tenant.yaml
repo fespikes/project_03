@@ -3,6 +3,7 @@ TENANT:
   FAILURE_CAUSE: 租户故障
   EXECUTED_FAILURE: 执行动作失败
   CLOSE: 关闭
+  PWD_PLACEHOLDER: 新密码必须由6-15位字母加数字组成
 
   TENANT_ADMIN:
     NAME: 租户管理员
