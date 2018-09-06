@@ -44,6 +44,9 @@
         *ngIf="myForm.controls['password'].hasError('required') && myForm.controls['password'].touched"
         class="message"
       >{{'TENANT.TENANT_ADMIN.REQUIRED' | translate}}</div>
+      <div
+        *ngIf="myForm.controls['password'].hasError('pattern') && myForm.controls['password'].touched"
+        class="message">{{'TENANT.PWD_PLACEHOLDER' | translate}}</div>
     </div>
 
     <div
