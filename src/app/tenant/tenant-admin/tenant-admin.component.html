@@ -20,10 +20,11 @@
 </div>
 
 <div class="container-content">
-  <tui-table [tuiTableFlex]="[1,2,1.5,1,1,1]" [loading]="loading">
+  <tui-table [tuiTableFlex]="[1,2,1,1.5,1,1,1]" [loading]="loading">
     <tui-table-head>
       <div>{{'TENANT.TENANT_ADMIN.USER_NAME' | translate}}</div>
       <div>{{'TENANT.TENANT_ADMIN.EMAIL' | translate}}</div>
+      <div>{{'手机' | translate}}</div>
       <div>{{'TENANT.TENANT_ADMIN.MAX_TENANT_NUMBER' | translate}}</div>
       <div>{{'TENANT.TENANT_ADMIN.FULL_NAME' | translate}}</div>
       <div>{{'TENANT.TENANT_ADMIN.COMPANY' | translate}}</div>
@@ -32,6 +33,7 @@
     <tui-table-row *ngFor="let item of TenantAdmins; let i=index;">
       <div class="text-ellipsis">{{item.username}}</div>
       <div class="text-ellipsis">{{item.userEmail}}</div>
+      <div class="text-ellipsis">{{item.userPhone}}</div>
       <div>
         <ng-container *ngIf="!quantityEditing || editingIndex!=i">
           <span>{{item.maxTenantQuantity}}</span>

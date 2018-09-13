@@ -2,13 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import {
   FormBuilder,
   FormGroup,
-  Validators,
   FormControl,
 } from '@angular/forms';
 
 import { TuiModalRef, TuiMessageService  } from 'tdc-ui';
-import { patterns } from '../../../shared';
 import { TenantService } from '../../tenant.service';
+import { addingTypes, TenantInfo } from '../../tenant-model';
 
 @Component({
   selector: 'tec-add',
@@ -17,41 +16,42 @@ import { TenantService } from '../../tenant.service';
 })
 export class AddComponent implements OnInit {
   myForm: FormGroup;
+  addType = 'email';
+  addingTypes = addingTypes;
 
   constructor(
-    fb: FormBuilder,
+    private fb: FormBuilder,
     private modal: TuiModalRef,
     private service: TenantService,
     private message: TuiMessageService,
-  ) {
-    this.myForm = fb.group({
-      'username': ['', Validators.required],
-      'password': ['', Validators.compose([
-          Validators.required,
-          Validators.pattern(patterns.password),
-        ])],
-      'userEmail': ['', Validators.compose([
-          Validators.required,
-          Validators.email,
-        ])],
-      'fullName': ['', Validators.required],
-      'maxTenantQuantity': '',
-      'company': '',
-      'department': '',
-    });
-  }
+  ) {}
 
   ngOnInit() {
+    this.getFormGroup();
+  }
+
+  getFormGroup() {
+    this.myForm = this.fb.group(TenantInfo.getAddingFormGroup(this.addType));
   }
 
   onSubmit(value: {[s: string]: string}) {
     const val: any = {...value};
 
     this.service.addTenantAdmin(val).subscribe(res => {
+      this.message.success(res.message);
       this.modal.close('closed');
     }, err => {
       console.log('error response');
     });
+  }
+
+  typeChange(type) {
+    if (this.addType === type) {
+      return;
+    }
+    this.addType = type === this.addingTypes['phone'] ?
+      this.addingTypes['phone'] : this.addingTypes['email'];
+    this.getFormGroup();
   }
 
   closeSelf() {

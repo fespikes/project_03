@@ -164,7 +164,7 @@ describe('ChangePwdComponent', () => {
         f.detectChanges();
 
         msgs = el.querySelectorAll('.message');
-        expect(msgs.length).toEqual(0);
+        expect(msgs.length).toEqual(1);
       }));
     });
 

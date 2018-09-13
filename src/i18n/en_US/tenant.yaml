@@ -4,6 +4,7 @@ TENANT:
   EXECUTED_FAILURE: executed failure
   CLOSE: Close
   PWD_PLACEHOLDER: Must have 8-20 characters, only letters number and symbol
+  FORMAT_ERROR: Formatting error
 
   TENANT_ADMIN:
     NAME: Tenant Admin
