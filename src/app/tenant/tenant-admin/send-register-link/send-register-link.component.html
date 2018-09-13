@@ -5,7 +5,43 @@
     (ngSubmit)="onSubmit(myForm.value)"
     class="form-specific"
   >
+
+  <div
+    [class.error]="!myForm.get('type').valid && myForm.get('type').touched"
+    class="radio-wrapper"
+  >
+    <div class="field-wrapper">
+      <label for="passwordId">{{'TENANT.TENANT_ADMIN.REG_TYPE' | translate}}</label>
+      <span>
+        <input class="radio true"
+          name="type"
+          type="radio" id="yes"
+          value="email"
+          [formControl]="myForm.controls['type']"
+          (click)="typeChange(registerTypes['email'])"
+        />
+        <label for="yes">{{'TENANT.TENANT_ADMIN.EMAIL' | translate}}</label>
+        <input class="radio false"
+          name="type"
+          type="radio"
+          id="no"
+          value="phone"
+          [formControl]="myForm.controls['type']"
+          (click)="typeChange(registerTypes['phone'])"
+          />
+          <!-- [(ngModel)]="addType" -->
+        <label for="no">{{'TENANT.TENANT_ADMIN.PHONE' | translate}}</label>
+      </span>
+    </div>
+
     <div
+      *ngIf="myForm.controls['type'].hasError('required') && myForm.controls['type'].touched"
+      class="message"
+    >{{'TENANT.TENANT_ADMIN.REQUIRED' | translate}}</div>
+  </div>
+
+    <div
+      *ngIf="registerType === registerTypes['email']"
       [class.error]="!myForm.get('userEmail').valid && myForm.get('userEmail').touched"
     >
       <div class="field-box">
@@ -23,6 +59,34 @@
         *ngIf="myForm.controls['userEmail'].hasError('required') && myForm.controls['userEmail'].touched"
         class="message"
       >{{'TENANT.TENANT_ADMIN.REQUIRED' | translate}}</div>
+      <div
+        *ngIf="myForm.controls['userEmail'].hasError('pattern') && myForm.controls['userEmail'].touched"
+        class="message"
+      >{{'TENANT.FORMAT_ERROR' | translate}}</div>
+    </div>
+    <div
+      *ngIf="registerType===registerTypes['phone']"
+      [class.error]="!myForm.get('userPhone').valid && myForm.get('userPhone').touched"
+    >
+      <div class="field-box">
+        <label for="userPhoneId"><span>*</span>{{'手机号' | translate}}</label>
+        <input
+          class="field"
+          type="email"
+          id="userPhoneId"
+          autocomplete="off"
+          [formControl]="myForm.controls['userPhone']"
+         />
+      </div>
+
+      <div
+        *ngIf="myForm.controls['userPhone'].hasError('required') && myForm.controls['userPhone'].touched"
+        class="message"
+      >{{'TENANT.TENANT_ADMIN.REQUIRED' | translate}}</div>
+      <div
+        *ngIf="myForm.controls['userPhone'].hasError('pattern') && myForm.controls['userPhone'].touched"
+        class="message"
+      >{{'TENANT.FORMAT_ERROR' | translate}}</div>
     </div>
 
     <div>

@@ -1,5 +1,25 @@
 import { Pagination } from 'tdc-ui';
+import {
+  Validators,
+} from '@angular/forms';
+import { patterns } from '../shared';
 
+export enum addingTypes {
+  email = 'email',
+  phone = 'phone',
+}
+const emailFields = {
+  'userEmail': ['', Validators.compose([
+    Validators.required,
+    Validators.pattern(patterns.email),
+  ])],
+};
+const phoneFields = {
+  'userPhone': ['', Validators.compose([
+    Validators.required,
+    Validators.pattern(patterns.phone),
+  ])],
+};
 export class TenantInfo {
   name = '';
   description = '';
@@ -10,6 +30,35 @@ export class TenantInfo {
   uid = '';
   adminEmail?: string;
   failure?: string;
+  static getAddingFormGroup(type) {
+    const normal = {
+      'username': ['', Validators.required],
+      'password': ['', Validators.compose([
+        Validators.required,
+        Validators.pattern(patterns.password),
+      ])],
+      'type': [ type, Validators.required],
+      'fullName': ['', Validators.required],
+      'maxTenantQuantity': '',
+      'company': '',
+      'department': '',
+    };
+    return {
+      ...normal,
+      ...(type === addingTypes['email'] ? emailFields : phoneFields),
+    };
+  }
+
+  static getRegisterFormGroup(type) {
+    const normal = {
+      'maxTenantQuantity': '',
+      'type': [ type, Validators.required],
+    };
+    return {
+      ...normal,
+      ...(type === addingTypes['email'] ? emailFields : phoneFields),
+    };
+  }
 }
 
 export class TenantFilter {
@@ -135,6 +184,8 @@ export class TenantAdmin {
   username?: string;
   password?: string;
   userEmail?: string;
+  type?: string; // 添加用户方式类型，email or phone ,
+  userPhone?: string;
   maxTenantQuantity?: string;
   fullName?: string;
   company?: string;

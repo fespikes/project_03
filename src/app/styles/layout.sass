@@ -27,6 +27,7 @@ form.form-specific
       position: relative
       top: 4px
       right: 5px
+      color: red
 
   .field
     flex-basis: 300px
@@ -36,6 +37,20 @@ form.form-specific
 
     .field-box
       justify-content: center
+    .field-wrapper
+      display: flex
+      flex-direction: row
+      padding-bottom: 30px
+      label
+        height: 32px
+        line-height: 32px
+        padding-right: 20px
+        flex-basis: 199px
+        text-align: right
+      &>span
+        justify-content: center
+        .radio
+          top: 3px
 
     .radio
       position: relative
