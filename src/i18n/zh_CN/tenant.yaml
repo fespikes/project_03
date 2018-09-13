@@ -22,7 +22,7 @@ TENANT:
     REQUIRED: 此字段为必填
     LIMITS: 默认无数量上限
     REG_TYPE: 注册方式
-    NOTIFY_TYPE: 注册方式
+    NOTIFY_TYPE: 通知方式
     PHONE: 手机
 
   OVERVIEW:
