@@ -45,3 +45,4 @@ postcommit:
   only:
     - master
     - rockDev
+    - oem/gzgdj
