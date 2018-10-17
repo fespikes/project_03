@@ -44,3 +44,4 @@ postcommit:
       - dist
   only:
     - master
+    - rockDev

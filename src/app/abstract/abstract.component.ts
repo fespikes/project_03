@@ -149,7 +149,6 @@ export class AbstractComponent implements OnInit, OnDestroy {
       },
       wrapperName: 'tenantGrowTrendWrapper',
     };
-
     this.nodeLoadTrendParam = {  // 4.
       chartType: chartTypes.line,
       fetchData: this.abstractService.getNodesLoadTrend.bind(this.abstractService),
