@@ -28,6 +28,11 @@ const commonRes = {
 };
 
 export default class TenantServiceStub {
+
+  features = {
+    user: {}
+  };
+
   fetchAllTenants(filter = {}): Observable<TenantInfo[]> {
     return of([] as TenantInfo[]);
   }

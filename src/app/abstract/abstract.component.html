@@ -218,29 +218,6 @@
           #productsInstancesTrendWrapper
         ></tec-chart-wrapper>
       </div>
-      <div class="tenant-consumption-ranking radius-shadow flex-colunn">
-        <h4>{{'ABSTRACT.TENANT_CONSUMPTION_TOP7' | translate}}</h4>
-        <tui-select
-          [ngClass]="{ select: true }"
-          placeholder="tui select example"
-          [ngModel]="tenantConsumptionRankingOption"
-          (ngModelChange)="doModelChange(
-            $event, 'tenantConsumptionRankingOption', tenantConsumptionRankingWrapper)"
-          #tenantConsumptionRankingSelect
-        >
-          <tui-select-option
-            *ngFor="let option of monthlyOptions"
-            [value]="option"
-            [label]="option.label">
-            {{option.label | tuiDefault }}
-          </tui-select-option>
-        </tui-select>
-        <tec-chart-wrapper
-          [data]="tenantConsumptionRankingParam"
-          #tenantConsumptionRankingWrapper
-        ></tec-chart-wrapper>
-        <!-- <div #tenantConsumptionRankingHolder class="h318px"></div> -->
-      </div>
     </div>
 
   </div>

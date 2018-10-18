@@ -4,8 +4,7 @@ LAYOUT:
   TENANT: Tenant
   NODE: Node
   SYSTEM: System Service
-  TASKS: tasks
-  TICKETS: Tickets
+  APPROVAL: Approval flow
   ORGANIZATION: Organization
   ADMINISTRATOR_LIST: administrators
   CHANGE_PWD: change password

@@ -1,0 +1,103 @@
+<div class="tui-layout-main-container wrapper">
+  <div
+    class="box"
+    *ngFor="let item of items"
+  >
+    <h3>{{item.typeAlias}}</h3>
+    <button
+      class="edit"
+      (click)="edit(item)"
+    >
+      <svg tuiIcon="pencil" class="icon"></svg>
+      编辑审批人
+    </button>
+    <ul>
+      <li>
+        <span class="down">申请人</span>
+      </li>
+
+      <ng-container *ngFor="let assignee of item.assignees; let idx=index;">
+        <li></li>
+        <li>
+          <span class="up">{{assignee}}</span>
+          <span class="down">{{idx===0? '一' : idx===1? '二' : idx===2 ? '三': idx===3 ? '四': idx===4 ? '五' : '六'}}级审批人</span>
+        </li>
+      </ng-container>
+
+      <li></li>
+      <li>
+        <span class="down">完成</span>
+      </li>
+    </ul>
+  </div>
+
+  <!-- <div class="box">
+    <h3>项目申请审批流程</h3>
+    <button
+      class="edit"
+      (click)="edit('project')"
+    >
+      <svg tuiIcon="pencil" class="icon"></svg>
+      编辑审批人
+    </button>
+    <ul>
+      <li>
+        <span class="down">申请人</span>
+      </li>
+      <li></li>
+      <li>
+        <span class="up">张小龙</span>
+        <span class="down">一级审批人</span>
+      </li>
+      <li></li>
+      <li>
+        <span class="up">王萌萌</span>
+        <span class="down">二级审批人</span>
+      </li>
+      <li></li>
+      <li>
+        <span class="up">赵丽丽</span>
+        <span class="down">三级审批人</span>
+      </li>
+      <li></li>
+      <li>
+        <span class="down">完成</span>
+      </li>
+    </ul>
+  </div>
+
+  <div class="box">
+    <h3>资源配置申请审批流程</h3>
+    <button
+      class="edit"
+      (click)="edit('resource')"
+    >
+      <svg tuiIcon="pencil" class="icon"></svg>
+      编辑审批人
+    </button>
+    <ul>
+      <li>
+        <span class="down">申请人</span>
+      </li>
+      <li></li>
+      <li>
+        <span class="up">张小龙</span>
+        <span class="down">一级审批人</span>
+      </li>
+      <li></li>
+      <li>
+        <span class="up">王萌萌</span>
+        <span class="down">二级审批人</span>
+      </li>
+      <li></li>
+      <li>
+        <span class="up">赵丽丽</span>
+        <span class="down">三级审批人</span>
+      </li>
+      <li></li>
+      <li>
+        <span class="down">完成</span>
+      </li>
+    </ul>
+  </div> -->
+</div>

@@ -1,0 +1,14 @@
+<div class="tui-layout-vertical">
+
+  <div class="tui-layout-main-container flex-auto">
+    <tui-tab
+      *ngIf="!loading"
+      [(selectedIndex)]="selectedIndex"
+      (selectedIndexChange)="tabIndexChange($event)"
+    >
+      <tec-pending *tuiTabPane="'APPROVAL.PENDING' | translate"></tec-pending>
+      <tec-flow *tuiTabPane="'APPROVAL.FLOW' | translate"></tec-flow>
+    </tui-tab>
+
+  </div>
+</div>

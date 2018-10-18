@@ -11,6 +11,8 @@ import { TranslatePipeStub, TranslateServiceMock } from 'app/mock';
 import { TranslateService } from 'app/i18n';
 import { Subject } from 'rxjs';
 
+import TenantServiceStub from '../tenant.service.stub';
+
 class RouterStub {
   events = new Subject();
 }
@@ -18,8 +20,13 @@ class RouterStub {
 class TuiModalServiceStub {
   apiError() { }
 }
-
+/*
 class TenantServiceStub {
+
+  features: {
+    user: {}
+  };
+
   fetchAllTenants() {
     return Observable.of([{
       uid: 123,
@@ -36,7 +43,7 @@ class TenantServiceStub {
       name: 'tenant',
     });
   }
-}
+} */
 
 describe('TenantDetailComponent', () => {
   let component: TenantDetailComponent;

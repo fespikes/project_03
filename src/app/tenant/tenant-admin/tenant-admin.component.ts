@@ -24,6 +24,8 @@ export class TenantAdminComponent implements OnInit {
   quantityEditing = false;
   editingIndex: number;
 
+  featureUser: any = {};
+
   constructor(
     private tenantService: TenantService,
     private modalService: TuiModalService,
@@ -45,6 +47,7 @@ export class TenantAdminComponent implements OnInit {
         this.pagination = result.pagination;
         this.loading = false;
       });
+    this.featureUser = this.tenantService.features.user;
   }
 
   filterChange() {

@@ -18,6 +18,7 @@ export class AdministratorsComponent implements OnInit {
   pagination = new Pagination();
   tableData: any;
   loading = true;
+  featureUser: any = {};
 
   constructor(
     private modalService: TuiModalService,
@@ -51,6 +52,7 @@ export class AdministratorsComponent implements OnInit {
 
   ngOnInit() {
     this.fetchTableData();
+    this.featureUser = this.service.features.user;
   }
 
   removeCurrent(id: number) {

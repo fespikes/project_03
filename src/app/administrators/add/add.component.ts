@@ -18,37 +18,54 @@ import { AdministratorsService } from '../administrators.service';
 })
 export class AddComponent implements OnInit {
   myForm: FormGroup;
+  featureUser: any;
 
   constructor(
-    fb: FormBuilder,
+    private fb: FormBuilder,
     private modal: TuiModalRef,
-    private administratorsService: AdministratorsService,
+    private service: AdministratorsService,
   ) {
-    this.myForm = fb.group({
+  }
+
+  ngOnInit() {
+    this.featureUser = this.service.features.user;
+    const group = {
       'username': ['', Validators.required],
       'password': ['', Validators.compose([
           Validators.required,
           Validators.pattern(patterns.password),
         ])],
       'fullName': ['', Validators.required],
-      'email': [
+      'deletable': ['true', Validators.required],
+    };
+
+    if (this.featureUser.emailEnabled) {
+      group['email'] =  [
         '',
         Validators.compose([
           Validators.required,
           Validators.pattern(patterns.email),
-        ]),
-      ],
-      'deletable': ['true', Validators.required],
-    });
-  }
+        ])
+      ];
+    }
+    if (this.featureUser.phoneEnabled) {
+      group['phone'] =  [
+        '',
+        Validators.compose([
+          Validators.required,
+          Validators.pattern(patterns.phone),
+        ])
+      ];
+    }
+    this.myForm = this.fb.group(group);
 
-  ngOnInit() {}
+  }
 
   onSubmit(value: {[s: string]: string}) {
     const val: any = {...value};
     val.deletable = (value.deletable.indexOf('true') > -1 ? true : false);
 
-    this.administratorsService.addAdministrator(val)
+    this.service.addAdministrator(val)
       .subscribe(res => {
         this.modal.close('closed');
       });

@@ -1,0 +1,84 @@
+@import '~normalize.css'
+\:host
+  font-size: 14px
+// S: normal
+h3, ul, li, button, span
+  margin: 0
+  padding: 0
+
+$blue: #336fd3
+// E: normal
+.wrapper
+  width: 100%
+
+.box
+  padding: 20px
+  border-bottom: 1px #ddd solid
+  position: relative
+
+  h3
+    padding-bottom: 32px
+
+  .edit
+    width: 126px
+    height: 32px
+    border: 1px #d3dceb solid
+    border-radius: 4px
+    padding-left: 16px
+    position: absolute
+    top: 20px
+    right: 20px
+    background: transparent
+    cursor: pointer
+    .icon
+      position: absolute
+      left: 12px
+      top: 8px
+
+
+ul
+  display: flex
+  justify-content: flex-start
+  li:not(:empty)
+    width: 80px
+    height: 110px
+    position: relative
+    text-align: center
+
+    &:before
+      content: ''
+      width: 32px
+      height: 32px
+      border-radius: 16px
+      background: $blue
+      position: absolute
+      top: 30px
+      left: 24px
+    .up
+      display: inline-block
+      width: 100%
+      padding-bottom: 62px
+      position: absolute
+      left: 0
+
+    .down
+      display: inline-block
+      width: 100%
+      color: #a8afc0
+      position: absolute
+      top: 76px
+      left: 0
+
+  li:empty
+    width: 160px
+    height: 2px
+    background: $blue
+    margin-top: 46px
+    margin-left: -23px
+    margin-right: -25px
+
+
+
+
+
+

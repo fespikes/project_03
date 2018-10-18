@@ -1,0 +1,10 @@
+APPROVAL:
+  PENDING: 我的待办
+  FLOW: 审批流程
+  ORDER_NUMBER: 申请单号
+  APPLY_TYPE: 申请类型
+  APPLY_CONTENT: 申请内容
+  APPLIER: 申请人
+  APPLY_TIME: 申请时间
+  OPERATION: 操作
+  

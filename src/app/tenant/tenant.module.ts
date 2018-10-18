@@ -24,10 +24,7 @@ import { TenantErrorComponent } from './tenant-detail/tenant-error/tenant-error.
 import { TenantQuotaComponent } from './tenant-detail/tenant-quota/tenant-quota.component';
 import { TenantNetworkComponent } from './tenant-detail/tenant-network/tenant-network.component';
 import { TenantServiceComponent } from './tenant-detail/tenant-service/tenant-service.component';
-import { TenantBillComponent } from './tenant-detail/tenant-bill/tenant-bill.component';
 import { TenantStatusIconComponent } from './components/status-icon/status-icon.component';
-import { ModalBillClearComponent } from './tenant-detail/tenant-bill/modal-bill-clear/modal-bill-clear.component';
-import { ModalBillCorrectComponent } from './tenant-detail/tenant-bill/modal-bill-correct/modal-bill-correct.component';
 import { NetworkRulesComponent } from './tenant-detail/tenant-network/network-rules/network-rules.component';
 import { AddComponent } from './tenant-detail/tenant-network/add/add.component';
 import { ModalDeleteTenantComponent } from './components/modal/delete-tenant.component';
@@ -50,8 +47,6 @@ import { FailureCourseComponent } from './components/failure-course/failure-cour
     I18nModule,
   ],
   declarations: [
-    ModalBillClearComponent,
-    ModalBillCorrectComponent,
     ModalDeleteTenantComponent,
     TenantListComponent,
     TenantDetailComponent,
@@ -62,9 +57,6 @@ import { FailureCourseComponent } from './components/failure-course/failure-cour
     TenantQuotaComponent,
     TenantNetworkComponent,
     TenantServiceComponent,
-    TenantBillComponent,
-    ModalBillClearComponent,
-    ModalBillCorrectComponent,
     NetworkRulesComponent,
     AddComponent,
     TenantStatusIconComponent,
@@ -80,8 +72,6 @@ import { FailureCourseComponent } from './components/failure-course/failure-cour
     TenantAbstractService,
   ],
   entryComponents: [
-    ModalBillClearComponent,
-    ModalBillCorrectComponent,
     AddComponent,
     ModalDeleteTenantComponent,
     TenantAdminAddComponent,

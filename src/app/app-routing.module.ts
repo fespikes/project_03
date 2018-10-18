@@ -39,9 +39,13 @@ const routes: Routes = [
         loadChildren: './system/system.module#SystemModule',
       },
       {
-        path: 'tickets',
-        loadChildren: './ticket/ticket.module#TicketModule',
+        path: 'approval',
+        loadChildren: './approval/approval.module#ApprovalModule',
       },
+      // {
+      //   path: 'tickets',
+      //   loadChildren: './ticket/ticket.module#TicketModule',
+      // },
       {
         path: 'message',
         loadChildren: './message/message.module#MessageModule',
@@ -62,10 +66,10 @@ const routes: Routes = [
         path: 'account',
         loadChildren: './account/account.module#AccountModule',
       },
-      {
+/*       {
         path: 'tasks',
         loadChildren: './tasks/tasks.module#TasksModule',
-      },
+      }, */
       {
         path: '',
         redirectTo: 'abstract',

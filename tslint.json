@@ -137,9 +137,9 @@
     "directive-class-suffix": true,
     "invoke-injectable": true,
     "trailing-comma": [
-      true,
+      false,
       {
-        "multiline": "always",
+        "multiline": "never",
         "singleline": "never"
       }
     ]

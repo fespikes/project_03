@@ -39,6 +39,11 @@ export class TenantService {
     return networkName;
   }
 
+  public get features() {
+    const features = localStorage.getItem('eco:features');
+    return JSON.parse(features);
+  }
+
   fetchAllTenants(filter = {}): Observable<TenantInfo[]> {
     return this.api.get('tenants', filter);
   }

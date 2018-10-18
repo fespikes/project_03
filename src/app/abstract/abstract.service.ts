@@ -19,7 +19,21 @@ export class AbstractService {
   constructor(
     private api: TecApiService,
     private translateService: TranslateService,
-  ) { }
+  ) {
+    this.getFeatures();
+  }
+
+  getFeatures() {
+    // S: mock
+    // const mock = {'user': { 'emailEnabled': false, 'phoneEnabled': true}};
+    // const toggles = JSON.stringify(mock);
+    // window.localStorage.setItem('eco:features', toggles);
+    // E: mock
+     this.api.get(`features`, {flattened: false}).subscribe(res => {
+      const toggles = JSON.stringify(res);
+      window.localStorage.setItem('eco:features', toggles);
+    });
+  }
 
   // 1.云平台概览：
   getQuantitySummary(): Observable<any> {

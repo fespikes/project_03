@@ -1,0 +1,234 @@
+@import '~normalize.css'
+@import 'src/app/styles/util'
+
+\:host
+  flex-direction: column
+
+.center
+  width: 1080px
+  margin: 0 auto
+
+ul, li, ol, dl, dd, p
+  padding: 0
+  margin: 0
+  list-style: none
+
+$green: #22bc26
+$blue: #336fd3
+$red: #ff6767
+$gray: #cfcfcf
+$gray-font: #b5bbc9
+
+.cr
+  height: 40px
+  line-height: 40px
+  margin-top: -20px
+  a
+		position: relative
+		cursor: pointer
+		padding-left: 20px
+  a:before
+    content: ''
+    display: inline-block
+    width: 8px 
+    height: 8px
+    border-left: 1px #3f77d5 solid
+    border-top: 1px #3f77d5 solid
+    transform: rotate(-45deg)
+    position: absolute
+    left: 4px
+    top: 15px
+
+.title
+  padding: 16px
+  margin: 0
+  color: $blue
+
+.wrapper
+  font-size: 14px
+  @extends .center
+
+  .properties
+    padding: 20px 0 32px
+    display: flex
+    justify-content: space-between
+    .tui-property
+      @include flex-align(center, flex-start)
+
+      svg, .icon-img
+        width: 24px
+        height: 24px
+        margin-right: 0.5rem
+        fill: $color-icon
+
+      .value
+        min-height: 1rem
+        font-size: $font-md
+
+      .label
+        line-height: 1.25rem
+        font-size: $font-sm
+        color: $text-mute
+
+  // S: common
+  h3, h4
+    margin: 0
+  h3
+    padding-bottom: 22px
+    font-size: 16px
+    color: $blue
+  h4
+    margin-bottom: 18px
+    padding-left: 10px
+    margin-left: -10px
+    height: 14px
+    font-size: 14px
+    position: relative
+    &:before
+      content: ''
+      display: inline-block
+      width: 0
+      height: 14px
+      border-left: 2px $blue solid
+      position: absolute
+      left: 0
+      
+  // E: common
+
+  ol
+    padding-left: 10px
+    &>li
+      padding-bottom: 30px
+  .apply-status
+    dl
+      display: flex
+      justify-content: flex-start
+      dd:not(:empty)
+        width: 80px
+        height: 70px
+        line-height: 120px
+        position: relative
+        text-align: center
+        .singnal
+          width: 32px
+          height: 32px
+          border-radius: 16px
+          position: absolute
+          left: 24px
+          top: 0
+        &.green
+          color: $green
+          .singnal
+            border: 6px $green solid
+            background: $green
+        &.blue
+          color: $blue
+          .singnal
+            border: 6px $blue solid
+            background: $blue
+        &.gray
+          color: $gray
+          &:before
+            content: ''
+            display: inline-block
+            width: 32px
+            height: 32px
+            border-radius: 16px
+            background: $gray
+            position: absolute
+            left: 24px
+            top: 0
+      dd:empty
+        display: inline-block
+        width: 180px
+        height: 2px
+        border-radius: 3px
+        margin-top: 16px
+        margin-left: -24px
+        margin-right: -25px
+        &.blue
+          background: $blue
+        &.green
+          background: $green
+        &.gray
+          background: $gray
+
+  .apply-content
+  .apply-description
+    P
+      line-height: 24px
+
+  .platform-resource
+
+    .box
+      display: flex
+      justify-content: space-between
+
+    .column
+      width: 250px
+
+      p
+        height: 14px
+        font-weight: 600
+      
+      .progress
+        height: 36px
+        padding-top: 15px
+        padding-bottom: 15px
+        display: flex
+
+        span
+          display: inline-block
+          height: 6px
+          border-radius: 3px
+          &.finished
+            z-index: 5
+          &.still
+            margin-left: -3px
+            background: $gray
+            z-index: 3
+
+        .left
+          background: #4a8cf9
+        .middle
+          background: #42c0df
+        .right
+          background: #9784eb
+
+      .amount
+        display: flex
+        justify-content: space-between
+        color: $gray-font
+
+  .comments
+
+    textarea
+      width: 100%
+      height: 94px
+      padding: 10px
+    .buttons
+      display: flex
+      justify-content: center
+      padding-top: 60px
+      padding-bottom: 90px
+
+      button
+        width: 110px
+        height: 32px
+        border: 0
+        border-radius: 4px
+        color: #fff
+        &:disabled
+          background: $gray
+      .accept
+        background: $blue
+        margin-right: 10px
+      .reject
+        background: $red
+        margin-left: 10px
+
+
+
+
+
+

@@ -22,6 +22,7 @@ import { SendRegisterLinkComponent } from './send-register-link.component';
 import { TranslatePipeStub, DefaultPipeStub } from 'app/mock';
 
 describe('SendRegisterLinkComponent', () => {
+  let originalTime: any;
   let component: SendRegisterLinkComponent;
   let fixture: ComponentFixture<SendRegisterLinkComponent>;
 
@@ -74,10 +75,16 @@ describe('SendRegisterLinkComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(SendRegisterLinkComponent);
     component = fixture.componentInstance;
+    originalTime = jasmine.DEFAULT_TIMEOUT_INTERVAL;
+    jasmine.DEFAULT_TIMEOUT_INTERVAL = 30000;
     fixture.detectChanges();
   });
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  afterEach(() => {
+    jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTime;
   });
 });

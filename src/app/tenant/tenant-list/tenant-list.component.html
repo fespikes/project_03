@@ -16,7 +16,7 @@
 </div>
 
 <div class="container-content">
-  <tui-table [tuiTableFlex]="[2,2,1,1,2,1,1,1,1.5,1]" [loading]="loading">
+  <tui-table [tuiTableFlex]="[2,2,1,1,2,1.5,1.5,1]" [loading]="loading">
     <tui-table-head>
       <div>{{'TENANT.OVERVIEW.NAME' | translate}}</div>
       <div>{{'TENANT.OVERVIEW.DESC' | translate}}</div>
@@ -24,8 +24,6 @@
       <div>{{'TENANT.OVERVIEW.USER' | translate}}</div>
       <div>{{'TENANT.OVERVIEW.ADMIN' | translate}}</div>
       <div>{{'TENANT.OVERVIEW.CREATE_TIME' | translate}}</div>
-      <div>{{'TENANT.OVERVIEW.BILL' | translate}}</div>
-      <div>{{'TENANT.OVERVIEW.CONSUMPTION' | translate}}</div>
       <div>{{'TENANT.OVERVIEW.STATUS' | translate}}</div>
       <div>{{'TENANT.OVERVIEW.OPERATION' | translate}}</div>
     </tui-table-head>
@@ -38,8 +36,6 @@
       <div>{{tenant.userCount}}</div>
       <div class="text-ellipsis">{{tenant.tenantInfo.admin}}</div>
       <div class="text-ellipsis">{{tenant.tenantInfo.createTime | date:'y/M/d'}}</div>
-      <div class="text-ellipsis">{{tenant.totalAmount | tuiDefault}}</div>
-      <div class="text-ellipsis">{{tenant.unpaidAmount | tuiDefault}}</div>
       <div class="status-td">
         <tec-tenant-status-icon [status]="tenant.tenantInfo.status" [alias]="tenant.tenantInfo.statusAlias"></tec-tenant-status-icon>
         <span *ngIf="tenant.tenantInfo.status ===statuses.broken" tuiTooltip="{{'TENANT.OVERVIEW.MORE_TIP' | translate}}">

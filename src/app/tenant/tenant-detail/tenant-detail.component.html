@@ -32,7 +32,15 @@
       <div class="tenant-property">
         <tui-property icon="user-slash" label="{{'TENANT.DETAIL.ADMIN' | translate}}" [value]="tenant.admin"> </tui-property>
         <tui-property icon="clock" label="{{'TENANT.DETAIL.CREATE_TIME' | translate}}" [value]="tenant.createTime | date:'y/M/d HH:mm'"></tui-property>
-        <tui-property icon="mail" label="Email" [value]="tenant.adminEmail"></tui-property>
+        <tui-property
+          icon="mail" label="Email" [value]="tenant.adminEmail"
+          *ngIf="featureUser.emailEnabled">
+        ></tui-property>
+        <tui-property
+          icon="mail" label="手机号" [value]="tenant.adminPhone"
+          *ngIf="featureUser.phoneEnabled">
+        ></tui-property>
+        <!--TODO: i18n-->
       </div>
     </div>
   </div>
@@ -47,6 +55,5 @@
     -->
     <tec-tenant-quota *tuiTabPane="'TENANT.DETAIL.QUOTA' | translate"></tec-tenant-quota>
     <tec-tenant-service *tuiTabPane="'TENANT.DETAIL.SERVICE' | translate"></tec-tenant-service>
-    <tec-tenant-bill *tuiTabPane="'TENANT.DETAIL.BILL' | translate" [uid]="tenant.uid"></tec-tenant-bill>
   </tui-tab>
 </div>

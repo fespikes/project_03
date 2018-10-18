@@ -1,58 +1,6 @@
-<div class="row h200" #hostWidth>
-
-  <div class="panel platform-info flex-3">
-    <h5>{{'TENANT.ABSTRACT.PLATFORM_INFO' | translate}}</h5>
-    <tui-select
-      [ngClass]="{ select: true }"
-      placeholder="tui select example"
-      [ngModel]="platformSummaryOption"
-            (ngModelChange)="doModelChange(
-              $event, 'platformSummaryOption', platformSummaryWrapper)"
-      #platformSummarySelect
-    >
-      <tui-select-option
-        *ngFor="let option of monthlyOptions"
-        [value]="option"
-        [label]="option.label">
-        {{option.label | tuiDefault }}
-      </tui-select-option>
-    </tui-select>
-
-    <tec-chart-wrapper
-      [data]="platformSummaryParam"
-      #platformSummaryWrapper
-    >
-    </tec-chart-wrapper>
-  </div>
-
-  <div class="panel service-health flex-2">
-    <!--2. 消费概况 -->
-    <h5>{{'TENANT.ABSTRACT.CONSUMPTION_SUMMARY' | translate}}</h5>
-    <span
-      class="view-details"
-      (click)="toConsumptionDetails($event)"
-    >{{'TENANT.ABSTRACT.VIEW_DETAILS' | translate}}</span>
-
-    <ul class="consumptionSummary">
-      <li class="unpaidAmount">
-        <span class="amount">{{consumptionSummary.unpaidAmount}}</span>
-        <span class="label">{{'TENANT.ABSTRACT.UNPAID' | translate}}</span>
-      </li>
-      <li class="monthAmount">
-        <span class="amount">{{consumptionSummary.monthAmount}}</span>
-        <span class="label">{{'TENANT.ABSTRACT.MONTYLY' | translate}}</span>
-      </li>
-    </ul>
-
-    <div class="historyAmount">
-      <span class="label">{{'TENANT.ABSTRACT.HISTORICAL' | translate}}</span>
-      <span class="amount">{{consumptionSummary.historyAmount}}</span>
-    </div>
-  </div>
-</div>
 
 <div class="row h348">
-  <div class="panel instances-trend flex-2">
+  <div class="panel instances-trend flex-2" style="margin-left: 0">
     <!--3. 云产品实例变化趋势 -->
     <h5>{{'TENANT.ABSTRACT.INSTANCES_TREND' | translate}}</h5>
     <tui-select
@@ -73,30 +21,6 @@
     <tec-chart-wrapper
       [data]="instancesCountTrendParam"
       #instancesCountTrendWrapper
-    ></tec-chart-wrapper>
-  </div>
-
-  <div class="panel products-trend flex-3">
-    <!--4. 消费变化趋势 -->
-    <h5>{{'TENANT.ABSTRACT.CONSUMPTION_TREND' | translate}}</h5>
-    <tui-select
-      [ngClass]="{ select: true }"
-      placeholder="tui select example"
-      [ngModel]="consumptionsTrendOption"
-      (ngModelChange)="doModelChange(
-        $event, 'consumptionsTrendOption', consumptionsTrendWrapper)"
-      #consumptionsTrendSelect
-    >
-      <tui-select-option
-        *ngFor="let option of monthlyOptions"
-        [value]="option"
-        [label]="option.label">
-        {{option.label | tuiDefault }}
-      </tui-select-option>
-    </tui-select>
-    <tec-chart-wrapper
-      [data]="consumptionsTrendParam"
-      #consumptionsTrendWrapper
     ></tec-chart-wrapper>
   </div>
 </div>

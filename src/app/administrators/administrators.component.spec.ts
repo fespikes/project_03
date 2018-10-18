@@ -24,6 +24,10 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 
 export class AdministratorsServiceStub {
+  features = {
+    user: {}
+  };
+
   fetchAdministrators(filter?: any): Observable<any> {
     return of({
       paginations: {

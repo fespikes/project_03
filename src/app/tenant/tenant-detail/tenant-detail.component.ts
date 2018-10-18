@@ -29,6 +29,7 @@ export class TenantDetailComponent implements OnInit {
     keyword: '',
     canceled: false,
   };
+  featureUser: any = {};
 
   constructor(
     private route: ActivatedRoute,
@@ -46,6 +47,7 @@ export class TenantDetailComponent implements OnInit {
     .subscribe(() => {
       this.getRouterParams();
     });
+    this.featureUser = this.tenantService.features.user;
   }
 
   getRouterParams() {

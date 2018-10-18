@@ -8,7 +8,9 @@ ADMINISTRATORS:
   EMAIL: Email
   EMAIL_PLACEHOLDER: Please input your email
   EMAIL_TIP_REQUIRED: Email is required
+  PHONE_TIP_REQUIRED: Phone number is required
   EMAIL_TIP_PATTERN: Email is illegal
+  PHONE_TIP_PATTERN: Phone number is illegal
   FULL_NAME: Fullname
   FULL_NAME_PLACEHOLDER: Please input your fullname
   FULL_NAME_TIP_REQUIRED: Full name is required

@@ -1,0 +1,56 @@
+
+<div class="container">
+  <form
+    [formGroup]="myForm"
+    (ngSubmit)="onSubmit(myForm.value)"
+    class="form-specific"
+  >
+    <ul class="assignees">
+      <li *ngFor="let item of names; let idx=index;">
+        <span>{{idx===0? '一' : idx===1? '二' : idx===2 ? '三': idx===3 ? '四': idx===4 ? '五' : '六'}}级审批人</span>
+        <tui-select
+          [formControl]="getControl(item)"
+          class="field"
+          [ngModel]="getCurrentModel(item, idx)"
+          required
+          ngDefaultControl
+        >
+          <!-- (ngModelChange)="doModelChange($event, item, idx)" -->
+          <tui-select-option *ngFor="let option of assignees"
+            [value]="option.id"
+            [label]="option.name"
+          >
+            {{option.name | tuiDefault }}
+          </tui-select-option>
+        </tui-select>
+        <svg
+          *ngIf="idx!==0"
+          tuiIcon="trash" class="icon"
+          (click)="removeAssignee(item, idx)"
+        ></svg>
+      </li>
+    </ul>
+
+    <a
+      (click)="addAssignee($event)"
+      class="add-assignee"
+    >
+      <svg tuiIcon="create" size="md" class="icon"></svg>
+      {{'增加审批人' | translate}}
+    </a>
+
+    <div class="buttons">
+      <button
+        class="tui-btn-md tui-btn-primary tui-btn"
+        type="submit"
+        [disabled]="!myForm.valid ? 'disabled' : null"
+      >{{'确认' | translate}}</button>
+      <button
+        class="tui-btn-md tui-btn-default tui-btn"
+        type="button"
+        (click)="closeSelf()"
+      >{{'取消' | translate}}</button>
+    </div>
+  </form>
+</div>
+

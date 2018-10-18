@@ -1,0 +1,78 @@
+<div class="tui-layout-main-title flex-title">
+  <div class="left">
+<!--     <tui-select
+      placeholder=""
+      [ngModel]="filter.status"
+      (ngModelChange)="statusChange($event)"
+      class="select-status"
+    >
+      <tui-select-option
+        *ngFor="let option of statuses"
+        [value]="option.value"
+        [label]="option.label"
+      >
+        {{option.label | tuiDefault }}
+      </tui-select-option>
+    </tui-select> -->
+  </div>
+  <div class="right">
+    <tui-select
+      placeholder=""
+      [ngModel]="filter.type"
+      (ngModelChange)="typeChange($event)"
+      class="select-type"
+    >
+      <tui-select-option
+        *ngFor="let option of types"
+        [value]="option.value"
+        [label]="option.label"
+      >
+        {{option.label | tuiDefault }}
+      </tui-select-option>
+    </tui-select>
+    <tui-search
+      [(ngModel)]="filter.keyword"
+      (ngModelChange)="filterChange()"
+      placeholder="请输入申请单号查询"
+    ></tui-search>
+  </div>
+</div>
+
+<div class="container-content" [tuiLoading]="loading">
+  <tui-table [tuiTableFlex]="[2,1,4,1,1.5,1]" [loading]="loading">
+    <tui-table-head>
+      <div>{{'APPROVAL.ORDER_NUMBER' | translate}}</div>
+      <div>{{'APPROVAL.APPLY_TYPE' | translate}}</div>
+      <div>{{'APPROVAL.APPLY_CONTENT' | translate}}</div>
+      <div>{{'APPROVAL.APPLIER' | translate}}</div>
+      <div>{{'APPROVAL.APPLY_TIME' | translate}}</div>
+      <div>{{'APPROVAL.OPERATION' | translate}}</div>
+    </tui-table-head>
+    <tui-table-row *ngFor="let item of tasks">
+      <div tuiTooltip="{{item.id}}">
+        <span class="text-ellipsis order-number">
+          {{item.id}}
+        </span>
+      </div>
+      <div class="text-ellipsis">{{item.typeAlias}}</div>
+      <div>{{item.content}}</div>
+      <div tuiTooltip="{{item.requester}}">
+        <span class="text-ellipsis order-number">
+          {{item.requester}}
+        </span>
+      </div>
+      <div class="text-ellipsis">{{item.startTime | date:'y/M/d h:mm:ss a'}}</div>
+      <div class="operation-td">
+        <svg
+          tuiIcon="search-square"
+          (click)="goDetails(item)"
+          class="search-icon"
+        ></svg>
+      </div>
+    </tui-table-row>
+  </tui-table>
+</div>
+<div class="tui-layout-main-pagination-footer">
+  <tui-pagination [(pagination)]="pagination" (paginationChange)="getTasks()">
+  </tui-pagination>
+</div>

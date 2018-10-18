@@ -74,6 +74,7 @@
 
     <div
       [class.error]="!myForm.get('email').valid && myForm.get('email').touched"
+      *ngIf="featureUser.emailEnabled"
     >
       <div class="field-box">
         <label for="emailId"><span>*</span>{{'ADMINISTRATORS.EMAIL' | translate}}</label>
@@ -95,6 +96,31 @@
         *ngIf="myForm.controls['email'].hasError('pattern') && myForm.controls['email'].touched"
         class="message"
       >{{'ADMINISTRATORS.EMAIL_TIP_PATTERN' | translate}}</div>
+    </div>
+    <div
+      [class.error]="!myForm.get('phone').valid && myForm.get('phone').touched"
+      *ngIf="featureUser.phoneEnabled"
+    >
+      <div class="field-box">
+        <label for="phoneId"><span>*</span>{{'手机号' | translate}}</label>
+        <input
+          class="field"
+          type="text"
+          placeholder="{{'' | translate}}"
+          id="phoneId"
+          autocomplete="off"
+          [formControl]="myForm.controls['phone']"
+         />
+      </div>
+
+      <div
+        *ngIf="myForm.controls['phone'].hasError('required') && myForm.controls['phone'].touched"
+        class="message"
+      >{{'ADMINISTRATORS.PHONE_TIP_REQUIRED' | translate}}</div>
+      <div
+        *ngIf="myForm.controls['phone'].hasError('pattern') && myForm.controls['phone'].touched"
+        class="message"
+      >{{'ADMINISTRATORS.PHONE_TIP_PATTERN' | translate}}</div>
     </div>
 
     <div
