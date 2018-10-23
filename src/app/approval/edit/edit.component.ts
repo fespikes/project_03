@@ -8,7 +8,7 @@ import {
 import { TuiModalRef, TUI_MODAL_DATA, TuiMessageService } from 'tdc-ui';
 
 import { ApprovalService } from '../approval.service';
-// import { assignees } from './assignees.mock';
+import { assignees } from './assignees.mock';
 
 @Component({
   selector: 'tec-edit',
@@ -17,16 +17,17 @@ import { ApprovalService } from '../approval.service';
 })
 export class EditComponent implements OnInit {
   myForm: FormGroup;
-  id: string;
+  procedureId: string;
+
   assignees: any[]; // assignee options from api
-  assigneesObj: object = {};
+
   group: any;
-  names: any;
+  flowAssignees: any;
 
   resultList: any[] = [];
   resultObject: object = {};
 
-  // ifFirstFlag = false;
+  ifFirstFlag = true;
   // currentIndex: number;
 
   constructor(
@@ -39,43 +40,41 @@ export class EditComponent implements OnInit {
 
   ngOnInit() {
 
-    this.id = this.data.id;
-    this.names = this.data.assignees;
-    this.resultList.length = this.names.length;
+    this.procedureId = this.data.procedureId;
+    this.flowAssignees = this.data.assignees;
+    this.resultList.length = this.flowAssignees.length;
 
     // S:TODO: remove mock
-    // this.assignees = [...assignees];
+/*     this.assignees = [...assignees];
+    this.buildForm(); */
     // E:TODO: remove mock
-    // TODO: resolve bug of the first blank when adding
 
     this.assignees = [];
     this.buildForm();
     this.service.getAssignees()
       .subscribe(res => {
-        this.assignees = res;
+        this.assignees = [...res];
         this.buildForm();
       });
   }
 
   buildForm() {
-    this.assignees.forEach(item => {
-      this.assigneesObj[item.name] = item;
-    });
     this.group = {};
-    this.names.forEach(name => {
-      this.group[name] = ['', Validators.required];
+    this.flowAssignees.forEach(assignee => {
+      // use addignee's id as field name
+      this.group[assignee.id] = [ assignee.name, Validators.required];
     });
 
     this.myForm = this.fb.group(this.group);
   }
 
-  getControl(name) {
-    return this.myForm.controls[name];
+  getControl(assignee) {
+    return this.myForm.controls[assignee.id];
   }
 
-  getCurrentModel(name, idx) {
+  getCurrentModel(assignee, idx) {
     // must have only one
-    const only = this.assignees.filter(item => item.name === name)[0];
+    const only = this.assignees.filter(item => item.id === assignee.id)[0];
 
     // if (this.ifFirstFlag && idx > this.currentIndex  ) {
       // this.ifFirstFlag = false;
@@ -84,42 +83,30 @@ export class EditComponent implements OnInit {
 
     if (!!only) {
       this.resultList[idx] = only;
-      this.resultObject[only.name] = only;
-      return only['name'];
+      this.resultObject[only.id] = only;
+      return only;
     } else {
       return '';
     }
   }
 
-  doModelChange($event, item, idx) {
-    // 0, 1 ~ this.names.length, this.assignees.length
-/*     if (idx + 1 === this.assignees.length) {
-      this.message.info('please edit upper assignees first');
-      return;
-    } */
-
-/*     this.currentIndex = idx;
-    if (idx === 0 ) {
-      this.ifFirstFlag = true;
-    } else {
-      this.ifFirstFlag = false;
-    }
- */
+  // deprecated
+  doModelChange($event, item, idx) {console.log('fuck');
     let i;
 
     this.assignees.forEach((it, x) => {
-      if (it.name === $event) {
+      if (it.id === $event.id) {
         i = x;
       }
     });
-    this.assignees.splice(i, 1);
+    // this.assignees.splice(i, 1);
   }
 
   addAssignee($event) {
     /**
      * case1: have no options avaliable, can not add
      * case2: have options, use the avaliable first one to
-     *    add to names stack, so get availables first
+     *    add to flowAssignees stack, so get availables first
      */
     const availables = this.getAvailables();
     if (availables.length === 0) {
@@ -127,36 +114,44 @@ export class EditComponent implements OnInit {
       return;
     }
 
-    this.names.push(availables[0]['name']);
+    this.flowAssignees.push(availables[0]['name']);
     this.resultList.push(availables[0]);
     this.buildForm();
   }
 
   getAvailables() {
-    if (this.assignees.length <= this.names.length) {
+    if (this.assignees.length <= this.flowAssignees.length) {
       return [];
     }
     const availables = this.assignees.filter(item => {
-      return !this.resultObject[item.name];
+      return !this.resultObject[item.id];
     });
     return availables;
   }
 
   // no api call
   removeAssignee(name, idx) {
-    this.names.splice(idx, 1);
+    this.flowAssignees.splice(idx, 1);
     this.resultList.splice(idx, 1);
     delete this.resultObject[name];
   }
 
   onSubmit(value: {[s: string]: string}) {
     const val: any = {...value};
-    const assigneesHere = [];
-    this.names.forEach(name => {
-      assigneesHere.push(this.assigneesObj[val[name]]);
-    });
+    const assigneeIds = [];
 
-    this.service.editAssigneesRecursivly(this.id, assigneesHere)
+    for (let i = 0; i < this.flowAssignees.length; i++) {
+      const people = this.flowAssignees[i];
+      const field = val[people.id];
+      const id = field['id'];
+      if (assigneeIds.indexOf(id) > -1) {
+        this.message.error('审批人不能重复，请重新设置');
+        return;
+      }
+      assigneeIds.push(id);
+    }
+
+    this.service.editAssigneesRecursivly(this.procedureId, assigneeIds)
       .subscribe(res => {
         this.message.success(res.message);
         this.closeSelf();

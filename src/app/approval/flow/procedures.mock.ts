@@ -6,7 +6,21 @@ export const procedures = [
     'name': 'Project Apply Process',
     'description': 'Project Apply Process',
     'assignees': [
-      'eco-admin', 'eco-baby', 'eco-rock'
+      {
+        id: 'eco-admin-id',
+        name: 'eco-admin',
+        description: 'system initial administrator'
+      },
+      {
+        id: 'eco-rock-id',
+        name: 'eco-rock',
+        description: 'system administrator rock'
+      },
+      {
+        id: 'eco-baby-id',
+        name: 'eco-baby',
+        description: 'system administrator baby'
+      }
     ]
   },
   {
@@ -16,7 +30,11 @@ export const procedures = [
     'name': 'Quota Apply Process',
     'description': 'Quota Apply Process',
     'assignees': [
-      'eco-admin'
+      {
+        id: 'eco-baby-id',
+        name: 'eco-baby',
+        description: 'system administrator baby'
+      }
     ]
   }
 ];

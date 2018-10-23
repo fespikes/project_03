@@ -7,7 +7,7 @@
     <!-- <div class="tui-layout-main-title">
     </div> -->
     <div class="container-content">
-      <h4 class="title">申请详情 - {{details.name || ''}}</h4>
+      <h4 class="title">申请详情 - {{details.id || ''}}</h4>
       <div class="wrapper center">
         <ul class="properties">
           <!-- <li *ngFor="let property of properties"> -->
@@ -16,7 +16,7 @@
             <div class="tui-property">
               <img class="icon-img" tecImgSrc="apply-type.svg" tecImgPrefix="/assets/svg" />
               <div>
-                <div class="value">{{details.type || ''}}</div>
+                <div class="value">{{details.typeAlias || ''}}</div>
                 <div class="label">申请类型</div>
                 <!--TODO-->
               </div>
@@ -108,7 +108,7 @@
                   <span class="still" [ngStyle]="{'width.px': (250 - (item.used * 250)/item.allocatable) }"></span>
                 </div>
                 <div class="amount">
-                  <span>剩余: {{item.allocatable - item.used}}</span>
+                  <span>剩余: {{item.allocatable - item.used + ' ' + item.unit}}</span>
                   <span>总量: {{item.allocatable + ' ' + item.unit}}</span>
                 </div>
               </div>

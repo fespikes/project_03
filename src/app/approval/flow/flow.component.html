@@ -19,7 +19,7 @@
       <ng-container *ngFor="let assignee of item.assignees; let idx=index;">
         <li></li>
         <li>
-          <span class="up">{{assignee}}</span>
+          <span class="up">{{assignee.name}}</span>
           <span class="down">{{idx===0? '一' : idx===1? '二' : idx===2 ? '三': idx===3 ? '四': idx===4 ? '五' : '六'}}级审批人</span>
         </li>
       </ng-container>

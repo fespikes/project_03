@@ -5,7 +5,7 @@ import { ApprovalService } from '../approval.service';
 import { EditComponent } from '../edit/edit.component';
 import { applyType } from '../approval.model';
 
-// import { procedures } from './procedures.mock';
+import { procedures } from './procedures.mock';
 
 @Component({
   selector: 'tec-flow',
@@ -28,10 +28,10 @@ export class FlowComponent implements OnInit {
 
   fetchData() {
     // this.items = procedures;
-     this.service.getProcedures()
-    .subscribe(res => {
-      this.items = res;
-    });
+    this.service.getProcedures()
+      .subscribe(res => {
+        this.items = res;
+      });
   }
 
   edit(item, size = 'md') {
@@ -51,7 +51,7 @@ export class FlowComponent implements OnInit {
       size,
       data: {
         assignees: item.assignees,
-        id: item.id
+        procedureId: item.id
       },
     })
     .subscribe((word: string) => {

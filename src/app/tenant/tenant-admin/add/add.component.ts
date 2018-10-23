@@ -16,8 +16,9 @@ import { addingTypes, TenantInfo } from '../../tenant-model';
 })
 export class AddComponent implements OnInit {
   myForm: FormGroup;
-  addType = 'email';
+  addType: any = addingTypes['email'];
   addingTypes = addingTypes;
+  featureUser: any = {};
 
   constructor(
     private fb: FormBuilder,
@@ -27,6 +28,10 @@ export class AddComponent implements OnInit {
   ) {}
 
   ngOnInit() {
+    this.featureUser = this.service.features.user;
+    if (this.featureUser.emailEnabled === false && this.featureUser.phoneEnabled === true) {
+      this.addType = this.addingTypes['phone'];
+    }
     this.getFormGroup();
   }
 

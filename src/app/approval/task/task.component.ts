@@ -60,12 +60,15 @@ export class TaskComponent implements OnInit {
   }
 
   onSubmit(actionType) {
+    this.isDisabled = true;
     this.service.taskAdjustment(this.id, {
       action: actionType,
       requestDescription: this.comments.nativeElement.value
     }).subscribe(res => {
+      this.isDisabled = false;
       this.message.success(res.message);
     }, err => {
+      this.isDisabled = false;
       this.message.error(err.error);
     });
   }

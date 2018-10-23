@@ -19,6 +19,7 @@ export class SendRegisterLinkComponent implements OnInit {
   myForm: FormGroup;
   registerTypes = addingTypes;
   registerType = addingTypes['email'];
+  featureUser: any = {};
 
   constructor(
     private fb: FormBuilder,
@@ -29,7 +30,12 @@ export class SendRegisterLinkComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.featureUser = this.service.features.user;
+    if (this.featureUser.emailEnabled === false && this.featureUser.phoneEnabled === true) {
+      this.registerType = addingTypes['phone'];
+    }
     this.getFormGroup();
+    this.featureUser = this.service.features.user;
   }
 
   onSubmit(value: {[s: string]: string}) {

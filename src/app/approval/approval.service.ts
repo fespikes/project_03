@@ -36,7 +36,7 @@ export class ApprovalService {
   }
 
   editAssigneesRecursivly(id, assignees): Observable<any> {
-    return this.api.put(`procedures/${id}/assignees`, {assignees: assignees});
+    return this.api.put(`procedures/${id}/assignees`, [...assignees]);
   }
 
 

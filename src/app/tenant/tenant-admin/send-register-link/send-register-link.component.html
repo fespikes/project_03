@@ -19,8 +19,11 @@
           value="email"
           [formControl]="myForm.controls['type']"
           (click)="typeChange(registerTypes['email'])"
+          *ngIf="!!featureUser.emailEnabled"
         />
-        <label for="yes">{{'TENANT.TENANT_ADMIN.EMAIL' | translate}}</label>
+        <label
+          *ngIf="!!featureUser.emailEnabled"
+          for="yes">{{'TENANT.TENANT_ADMIN.EMAIL' | translate}}</label>
         <input class="radio false"
           name="type"
           type="radio"
@@ -28,9 +31,13 @@
           value="phone"
           [formControl]="myForm.controls['type']"
           (click)="typeChange(registerTypes['phone'])"
-          />
+          *ngIf="!!featureUser.phoneEnabled"
+        />
           <!-- [(ngModel)]="addType" -->
-        <label for="no">{{'TENANT.TENANT_ADMIN.PHONE' | translate}}</label>
+        <label
+          for="no"
+          *ngIf="!!featureUser.phoneEnabled"
+        >{{'TENANT.TENANT_ADMIN.PHONE' | translate}}</label>
       </span>
     </div>
 

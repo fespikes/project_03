@@ -6,7 +6,7 @@ import {
   FormControl,
 } from '@angular/forms';
 
-import { TuiModalRef } from 'tdc-ui';
+import { TuiModalRef, TuiMessageService } from 'tdc-ui';
 
 import { patterns } from '../../shared';
 import { AdministratorsService } from '../administrators.service';
@@ -24,6 +24,7 @@ export class AddComponent implements OnInit {
     private fb: FormBuilder,
     private modal: TuiModalRef,
     private service: AdministratorsService,
+    private message: TuiMessageService
   ) {
   }
 
@@ -67,7 +68,10 @@ export class AddComponent implements OnInit {
 
     this.service.addAdministrator(val)
       .subscribe(res => {
+        this.message.success(res.message);
         this.modal.close('closed');
+      }, err => {
+        this.message.error(err.message);
       });
   }
 

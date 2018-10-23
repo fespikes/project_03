@@ -18,18 +18,26 @@
             value="email"
             [formControl]="myForm.controls['type']"
             (click)="typeChange(addingTypes['email'])"
-          />
-          <label for="yes">{{'TENANT.TENANT_ADMIN.EMAIL' | translate}}</label>
-          <input class="radio false"
-            name="type"
-            type="radio"
-            id="no"
-            value="phone"
-            [formControl]="myForm.controls['type']"
-            (click)="typeChange(addingTypes['phone'])"
+            *ngIf="!!featureUser.emailEnabled"
             />
-            <!-- [(ngModel)]="addType" -->
-          <label for="no">{{'TENANT.TENANT_ADMIN.PHONE' | translate}}</label>
+            <label
+              for="yes"
+              *ngIf="!!featureUser.emailEnabled"
+            >{{'TENANT.TENANT_ADMIN.EMAIL' | translate}}</label>
+            <input class="radio false"
+              name="type"
+              type="radio"
+              id="no"
+              value="phone"
+              [formControl]="myForm.controls['type']"
+              (click)="typeChange(addingTypes['phone'])"
+              *ngIf="!!featureUser.phoneEnabled"
+            />
+              <!-- [(ngModel)]="addType" -->
+            <label
+              for="no"
+              *ngIf="!!featureUser.phoneEnabled"
+          >{{'TENANT.TENANT_ADMIN.PHONE' | translate}}</label>
         </span>
       </div>
 
@@ -108,7 +116,7 @@
       >{{'TENANT.FORMAT_ERROR' | translate}}</div>
     </div>
     <div
-      *ngIf="addType!=='email'"
+      *ngIf="addType==='phone'"
       [class.error]="!myForm.get('userPhone').valid && myForm.get('userPhone').touched"
     >
       <div class="field-box">

@@ -6,7 +6,7 @@
     class="form-specific"
   >
     <ul class="assignees">
-      <li *ngFor="let item of names; let idx=index;">
+      <li *ngFor="let item of flowAssignees; let idx=index;">
         <span>{{idx===0? '一' : idx===1? '二' : idx===2 ? '三': idx===3 ? '四': idx===4 ? '五' : '六'}}级审批人</span>
         <tui-select
           [formControl]="getControl(item)"
@@ -17,7 +17,7 @@
         >
           <!-- (ngModelChange)="doModelChange($event, item, idx)" -->
           <tui-select-option *ngFor="let option of assignees"
-            [value]="option.id"
+            [value]="option"
             [label]="option.name"
           >
             {{option.name | tuiDefault }}

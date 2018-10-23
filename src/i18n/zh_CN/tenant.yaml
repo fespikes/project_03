@@ -70,8 +70,8 @@ TENANT:
   ABSTRACT:
     PLATFORM_INFO: 平台概览
     CONSUMPTION_SUMMARY: 消费概况
-    INSTANCES_TREND: 云产品实例变化趋势
-    PRODUCTS_TREND: 云产品实例数量
+    INSTANCES_TREND: 应用实例变化趋势
+    PRODUCTS_TREND: 应用实例数量
     CONSUMPTION_TREND: 消费变化趋势
     CPU_TREND: CPU负载率
     MEMORY_TREND: 内存使用量
