@@ -15,7 +15,6 @@
           required
           ngDefaultControl
         >
-          <!-- (ngModelChange)="doModelChange($event, item, idx)" -->
           <tui-select-option *ngFor="let option of assignees"
             [value]="option"
             [label]="option.name"

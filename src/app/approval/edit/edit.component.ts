@@ -24,11 +24,9 @@ export class EditComponent implements OnInit {
   group: any;
   flowAssignees: any;
 
-  resultList: any[] = [];
   resultObject: object = {};
 
   ifFirstFlag = true;
-  // currentIndex: number;
 
   constructor(
     private message: TuiMessageService,
@@ -39,10 +37,8 @@ export class EditComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-
     this.procedureId = this.data.procedureId;
     this.flowAssignees = this.data.assignees;
-    this.resultList.length = this.flowAssignees.length;
 
     // S:TODO: remove mock
 /*     this.assignees = [...assignees];
@@ -62,7 +58,7 @@ export class EditComponent implements OnInit {
     this.group = {};
     this.flowAssignees.forEach(assignee => {
       // use addignee's id as field name
-      this.group[assignee.id] = [ assignee.name, Validators.required];
+      this.group[assignee.id] = [ assignee, Validators.required];
     });
 
     this.myForm = this.fb.group(this.group);
@@ -72,17 +68,11 @@ export class EditComponent implements OnInit {
     return this.myForm.controls[assignee.id];
   }
 
+  // store it to object and ready for get availables;
   getCurrentModel(assignee, idx) {
     // must have only one
     const only = this.assignees.filter(item => item.id === assignee.id)[0];
-
-    // if (this.ifFirstFlag && idx > this.currentIndex  ) {
-      // this.ifFirstFlag = false;
-    //   return '';
-    // }
-
     if (!!only) {
-      this.resultList[idx] = only;
       this.resultObject[only.id] = only;
       return only;
     } else {
@@ -90,60 +80,48 @@ export class EditComponent implements OnInit {
     }
   }
 
-  // deprecated
-  doModelChange($event, item, idx) {console.log('fuck');
-    let i;
-
-    this.assignees.forEach((it, x) => {
-      if (it.id === $event.id) {
-        i = x;
-      }
-    });
-    // this.assignees.splice(i, 1);
-  }
-
+  /**
+   * case1: have no options avaliable, can not add
+   * case2: have options, use the avaliable first one to
+   *    add to flowAssignees stack, so get availables first
+   */
   addAssignee($event) {
-    /**
-     * case1: have no options avaliable, can not add
-     * case2: have options, use the avaliable first one to
-     *    add to flowAssignees stack, so get availables first
-     */
-    const availables = this.getAvailables();
-    if (availables.length === 0) {
+    const available = this.getFirstAvailable();
+    if (available.length === 0) {
       this.message.info('审批人数量已经达到上限请先新增管理员');
       return;
     }
 
-    this.flowAssignees.push(availables[0]['name']);
-    this.resultList.push(availables[0]);
+    this.flowAssignees.push(available);
     this.buildForm();
   }
 
-  getAvailables() {
+  getFirstAvailable() {
     if (this.assignees.length <= this.flowAssignees.length) {
       return [];
     }
     const availables = this.assignees.filter(item => {
       return !this.resultObject[item.id];
     });
-    return availables;
+    return availables[0];
   }
 
   // no api call
   removeAssignee(name, idx) {
     this.flowAssignees.splice(idx, 1);
-    this.resultList.splice(idx, 1);
     delete this.resultObject[name];
+    this.buildForm();
   }
 
   onSubmit(value: {[s: string]: string}) {
     const val: any = {...value};
     const assigneeIds = [];
+    let rightOrderId, currentField, id;
 
     for (let i = 0; i < this.flowAssignees.length; i++) {
-      const people = this.flowAssignees[i];
-      const field = val[people.id];
-      const id = field['id'];
+      rightOrderId = this.flowAssignees[i]['id'];
+      currentField = val[rightOrderId];
+      id = currentField['id'];
       if (assigneeIds.indexOf(id) > -1) {
         this.message.error('审批人不能重复，请重新设置');
         return;
