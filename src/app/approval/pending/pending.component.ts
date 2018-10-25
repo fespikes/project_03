@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { Pagination, TuiModalService } from 'tdc-ui';
+import { Pagination, TuiMessageService } from 'tdc-ui';
 
 import { ApprovalService } from '../approval.service';
 import { TasksFilter } from '../approval.model';
@@ -30,7 +30,8 @@ export class PendingComponent implements OnInit {
   constructor(
     private service: ApprovalService,
     private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private message: TuiMessageService
   ) { }
 
   ngOnInit() {
@@ -49,6 +50,8 @@ export class PendingComponent implements OnInit {
           size: 10
         };
         this.loading = false;
+      }, err => {
+        this.message.error(err.message);
       });
   }
 /*   statusChange($event) {

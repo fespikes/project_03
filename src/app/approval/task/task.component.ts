@@ -28,6 +28,7 @@ export class TaskComponent implements OnInit {
   constructor(
     private service: ApprovalService,
     private route: ActivatedRoute,
+    private router: Router,
     private message: TuiMessageService
   ) { }
 
@@ -42,7 +43,7 @@ export class TaskComponent implements OnInit {
         this.details = {...res};
         this.executions = this.details.executions;
         this.last = this.executions[this.executions.length - 1];
-        this.order = this.last['order'];    // TODO: to be confirmed, the last on is pending
+        this.order = this.last['order'];    // confirmed, the last on is pending
         this.loading = false;
       });
   }
@@ -60,6 +61,7 @@ export class TaskComponent implements OnInit {
   }
 
   onSubmit(actionType) {
+    this.loading = true;
     this.isDisabled = true;
     this.service.taskAdjustment(this.id, {
       action: actionType,
@@ -67,8 +69,12 @@ export class TaskComponent implements OnInit {
     }).subscribe(res => {
       this.isDisabled = false;
       this.message.success(res.message);
+      setTimeout(_ => {
+        this.router.navigate([`/approval`] );
+      }, 3000);
     }, err => {
-      this.isDisabled = false;
+      this.isDisabled = true;
+      this.loading = false;
       this.message.error(err.error);
     });
   }
