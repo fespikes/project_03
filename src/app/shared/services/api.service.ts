@@ -127,7 +127,7 @@ export class TecApiService {
   }
   private formatErrors(error: any) {
     // const message = error.error instanceof ErrorEvent ?
-    const message = error.error ?
+    const message = error.error.message ?
       error.error.message : `server returned code ${error.status} with body "${error.error}"`;
 
     this.message.error(message);
