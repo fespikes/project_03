@@ -2,18 +2,14 @@ import * as path from 'path-browserify';
 import { Injectable } from '@angular/core';
 import { environment } from '../../../environments/environment';
 import { HttpClient, HttpParams, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, throwError } from 'rxjs';
 import 'rxjs/add/operator/map';
-import 'rxjs/add/operator/catch';
-import 'rxjs/add/observable/throw';
+// import 'rxjs/add/operator/catch';
+// import 'rxjs/add/observable/throw';
 import { catchError } from 'rxjs/operators';
 
 import { TuiMessageService  } from 'tdc-ui';
 import { PartialCollection } from '../models';
-
-export class ApiConfig {
-  fullResponse = false;
-}
 
 @Injectable()
 export class TecApiService {
@@ -36,7 +32,7 @@ export class TecApiService {
   }
 
   // no abstract url path, for logout only
-  getInRoot(url: string, params: Object = {}, config?: ApiConfig): Observable<any> {
+  getInRoot(url: string, params: Object = {}): Observable<any> {
     const queryParams = this.setQueryParams(params, true);
     return this.http.get(url, queryParams)
       .pipe(
@@ -45,7 +41,7 @@ export class TecApiService {
   }
 
   // normal get ,for response format(depends on project apis)
-  get(url: string, params: Object = {}, config?: ApiConfig): Observable<any> {
+  get(url: string, params: Object = {}): Observable<any> {
     const queryParams = this.setQueryParams(params);
     return this.http.get(this.makeUrl(url), queryParams)
       .pipe(
@@ -53,7 +49,7 @@ export class TecApiService {
       ).map(res => this.dataAdjustment(res));
   }
 
-  getUnformat(url: string, params: Object = {}, config?: ApiConfig): Observable<any> {
+  getUnformat(url: string, params: Object = {}): Observable<any> {
     const queryParams = this.setQueryParams(params);
     return this.http.get(this.makeUrl(url), queryParams)
       .pipe(
@@ -61,7 +57,7 @@ export class TecApiService {
       );
   }
 
-  getAll(url: string, params: Object = {}, config?: ApiConfig): Observable<PartialCollection> {
+  getAll(url: string, params: Object = {}): Observable<PartialCollection> {
     params['size'] = Math.pow(2, 31) - 1;
     params['page'] = 1;
     return this.get(url, this.setQueryParams(params, true));
@@ -89,7 +85,7 @@ export class TecApiService {
     .pipe(catchError(this.formatErrors));
   }
 
-  post(url: string, body: Object = {}, config?: ApiConfig): Observable<any> {
+  post(url: string, body: Object = {}): Observable<any> {
     return this.http.post(
       this.makeUrl(url),
       JSON.stringify(body),
@@ -130,14 +126,12 @@ export class TecApiService {
     return res.data;
   }
   private formatErrors(error: any) {
-    let data;
-    try {
-      data = error.json();
-    } catch (err) {
-      data = { error: 'fail to parse' };
-    }
-    this.message.error(data.message);
-    return Observable.throw(data);
+    // const message = error.error instanceof ErrorEvent ?
+    const message = error.error ?
+      error.error.message : `server returned code ${error.status} with body "${error.error}"`;
+
+    this.message.error(message);
+    return throwError(error);
   }
   makeUrl(url) {
     return this.join(environment.apiUrl, url);
