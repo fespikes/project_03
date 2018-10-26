@@ -14,17 +14,17 @@ export class TicketService {
   }
 
   getTheTicket(ticketId: string): Observable<Ticket> {
-    return this.api.get(`tickets/${ticketId}`, {}, {fullResponse: false});
+    return this.api.get(`tickets/${ticketId}`, {}); // , {fullResponse: false}
   }
 
   updateTheTicket(param: any): Observable<any> {
     return this.api.post(`tickets/${param.ticketId}/operation`,
-      {...param.followUpEntity},
-      {fullResponse: true});
-  }
+      {...param.followUpEntity} );
+    }
+    // {fullResponse: true});
 
   getTicketsServiceTypes(): Observable<any> {
-    return this.api.getUnformat(`tickets/serviceTypes`, {}, {fullResponse: true});
+    return this.api.getUnformat(`tickets/serviceTypes`, {}); // , {fullResponse: true}
   }
 
   getAttachment(ticketId, name) {
