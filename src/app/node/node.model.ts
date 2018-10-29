@@ -4,7 +4,7 @@ export class NodeFilter {
   size?: number;
   coreNum?: number;
   status?: string; // options: brokenCount healthyCount riskyCount
-  newJoined?: any;
+  newJoined?: boolean;
   freeCount?: number;
   keyword?: string;
 }

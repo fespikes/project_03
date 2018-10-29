@@ -8,9 +8,10 @@ import { I18nModule } from '../i18n';
 
 import { NodeRoutingModule } from './node-routing.module';
 import { NodeComponent } from './node.component';
-import { NodeAsideComponent } from './node-aside/node-aside.component';
+// import { NodeAsideComponent } from './node-aside/node-aside.component';
 
 import { NodeService } from './node.service';
+import { EditTagsComponent } from './edit-tags/edit-tags.component';
 
 @NgModule({
   imports: [
@@ -22,11 +23,15 @@ import { NodeService } from './node.service';
   ],
   declarations: [
     NodeComponent,
-    NodeAsideComponent,
+    EditTagsComponent,
+    // NodeAsideComponent,
   ],
   providers: [
     NodeService,
     TuiModalService,
+  ],
+  entryComponents: [
+    EditTagsComponent,
   ],
 })
 export class NodeModule { }

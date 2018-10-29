@@ -1,0 +1,56 @@
+\:host
+  font-size: 14px
+
+ul
+  height: 200px
+  border-top: 1px #f6f8fb solid
+  border-bottom: 1px #f6f8fb solid
+  overflow: auto
+
+  li
+    display: block
+    line-height: 40px
+    height: 40px
+    padding: 0 20px 0 25px
+    font-size: 14px
+
+    .tui-icon
+      float: right
+      margin-top: 12px
+.edit-form
+  height: 70px
+  display: flex
+  justify-content: space-evenly
+  align-items: 
+
+  .field-box
+    height: 32px
+    line-height: 32px
+    padding: 15px 5px 0
+    &.center
+      padding: 15px 0 0
+
+    .field
+      width: 170px
+      height: 32px
+      padding: 0 10px
+      border: 1px #d3dcea solid
+      border-radius: 4px
+      &:focus
+        outline: none
+
+    .submit
+      width 76px
+      height: 30px  
+      padding: 0 10px
+      border: 0
+      margin: 0
+      text-align: center
+      background: #336fd3
+      &:disabled
+        background: #e0e4ea
+  .error
+    .field
+      border-color: red
+    .message
+      color: red

@@ -29,7 +29,6 @@ import {
     I18nModule,
     CommonModule,
     FormsModule,
-    I18nModule,
     ReactiveFormsModule,
     TuiModule,
     HttpClientModule,

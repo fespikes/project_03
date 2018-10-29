@@ -1,0 +1,88 @@
+<div>
+  <ul>
+    <li *ngFor="let item of tags; let idx=index;">
+      <span>{{item}}</span>
+      <svg tuiIcon="trash" (click)="deleteTag(idx)"></svg>
+    </li>
+    <!-- <li>
+      <span>Key1</span>=<span>value1</span>
+      <svg tuiIcon="trash" (click)="deleteTag(tag=1)"></svg>
+    </li>
+    <li>
+      <span>Key2</span>=<span>value2</span>
+      <svg tuiIcon="trash" (click)="deleteTag(tag=1)"></svg>
+    </li>
+    <li>
+      <span>Key3</span>=<span>value3</span>
+      <svg tuiIcon="trash" (click)="deleteTag(tag=1)"></svg>
+    </li>
+    <li>
+      <span>Key4</span>=<span>value4</span>
+      <svg tuiIcon="trash" (click)="deleteTag(tag=1)"></svg>
+    </li>
+    <li>
+      <span>Key5</span>=<span>value5</span>
+      <svg tuiIcon="trash" (click)="deleteTag(tag=1)"></svg>
+    </li>
+    <li>
+      <span>Key6</span>=<span>value6</span>
+      <svg tuiIcon="trash" (click)="deleteTag(tag=1)"></svg>
+    </li> -->
+  </ul>
+<!--   <div class="">
+    <input class="key-input" />
+    =
+    <input class="val-input" />
+    <input
+      type="button"
+      class="add-btn"
+    />
+  </div> -->
+  <form
+    [formGroup]="myForm"
+    (ngSubmit)="onSubmit(myForm.value)"
+    class="edit-form"
+  >
+    <div
+      class="field-box"
+      [class.error]="!myForm.get('key').valid && myForm.get('key').touched"
+    >
+      <input
+        class="field"
+        placeholder="{{'输入key' | translate}}"
+        id="keyId"
+        autocomplete="off"
+        [formControl]="myForm.controls['key']"
+      />
+      <div
+        *ngIf="myForm.controls['key'].hasError('required') && myForm.controls['key'].touched"
+        class="message"
+      >{{'必填项' | translate}}</div>
+    </div>
+    <div class="field-box center">=</div>
+    <div
+      class="field-box"
+      [class.error]="!myForm.get('value').valid && myForm.get('value').touched"
+    >
+      <input
+        class="field"
+        placeholder="{{'输入value' | translate}}"
+        id="valueId"
+        autocomplete="off"
+        [formControl]="myForm.controls['value']"
+      />
+      <div
+        *ngIf="myForm.controls['value'].hasError('required') && myForm.controls['value'].touched"
+        class="message"
+      >{{'必填项' | translate}}</div>
+    </div>
+    <div class="field-box">
+      <button
+        class="submit"
+        [disabled]="!myForm.valid ? 'disabled' : null"
+        tuiBtn="primary"
+        type="submit"
+      >添加标签</button>
+    </div>
+  </form>
+</div>
