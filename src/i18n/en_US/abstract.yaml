@@ -1,6 +1,6 @@
 ABSTRACT:
   NAME: Abstract
-  QUANTITY_SUMMARY: cloud platform summary
+  QUANTITY_SUMMARY: Platform summary
   NODES_AMOUNT: nodes amount
   TENANT_AMOUNT: tenant amount
   PRODUCT_TYPE: cloud product types

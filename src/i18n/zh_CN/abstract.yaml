@@ -1,6 +1,6 @@
 ABSTRACT:
   NAME: 概要信息
-  QUANTITY_SUMMARY: 云平台概览
+  QUANTITY_SUMMARY: 平台概览
   NODES_AMOUNT: 主机总数
   TENANT_AMOUNT: 租户总数
   PRODUCT_TYPE: 应用类型

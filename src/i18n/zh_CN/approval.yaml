@@ -1,5 +1,6 @@
 APPROVAL:
   PENDING: 我的待办
+  APPROVAL_HISTORY: 历史审批
   FLOW: 审批流程
   ORDER_NUMBER: 申请单号
   APPLY_TYPE: 申请类型
@@ -7,4 +8,3 @@ APPROVAL:
   APPLIER: 申请人
   APPLY_TIME: 申请时间
   OPERATION: 操作
-  

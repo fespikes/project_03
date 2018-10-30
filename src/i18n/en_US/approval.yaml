@@ -1,10 +1,10 @@
 APPROVAL:
-  FLOW: Approval Flow
   PENDING: Pending Tasks
+  APPROVAL_HISTORY: Approval History
+  FLOW: Approval Flow
   ORDER_NUMBER: Order Number
   APPLY_TYPE: Apply Type
   APPLY_CONTENT: Apply Details
   APPLIER: Applier
   APPLY_TIME: Apply Time
   OPERATION: Operation
-  

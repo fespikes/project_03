@@ -20,6 +20,7 @@ import { FlowComponent } from './flow/flow.component';
 import { ApprovalService } from './approval.service';
 import { TaskComponent } from './task/task.component';
 import { EditComponent } from './edit/edit.component';
+import { HistoryComponent } from './history/history.component';
 
 @NgModule({
   imports: [
@@ -38,7 +39,8 @@ import { EditComponent } from './edit/edit.component';
     PendingComponent,
     FlowComponent,
     TaskComponent,
-    EditComponent
+    EditComponent,
+    HistoryComponent
   ],
   entryComponents: [
     EditComponent
