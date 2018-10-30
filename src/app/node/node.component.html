@@ -13,32 +13,34 @@
           </tui-checkbox>
 
           <tui-select
-            [(ngModel)]="filter.tag"
+            [(ngModel)]="filter.status"
             (ngModelChange)="filterChange()"
             placeholder="{{'全部状态' | translate}}"
             style="margin-right: 30px; width: 132px;"
+            allowClear
           >
             <tui-select-option
-              *ngFor="let label of labels"
-              [value]="label.value"
-              [label]="label.label"
+              *ngFor="let item of statusOptions"
+              [value]="item.status"
+              [label]="item.statusAlias"
             >
-              {{label.label | tuiDefault | translate}}
+              {{item.statusAlias | tuiDefault | translate}}
             </tui-select-option>
           </tui-select>
 
           <tui-select
-            [(ngModel)]="filter.tag"
+            [(ngModel)]="filter.coreNum"
             (ngModelChange)="filterChange()"
             placeholder="{{'选择内核' | translate}}"
             style="margin-right: 30px; width: 132px;"
+            allowClear
           >
             <tui-select-option
-              *ngFor="let label of labels"
-              [value]="label.value"
-              [label]="label.label"
+              *ngFor="let item of coreOptions"
+              [value]="item"
+              [label]="item"
             >
-              {{label.label | tuiDefault | translate}}
+              {{item | tuiDefault | translate}}
             </tui-select-option>
           </tui-select>
 

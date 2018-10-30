@@ -21,14 +21,14 @@ export class NodeComponent implements OnInit {
 
   loading = true;
 
+  newAddedThisMonth: number;
   tableData: any = [];
   units: any = {};
+  coreOptions: any[] = [];
+  statusOptions: any[] = [];
 
   filter = new NodeFilter();
-
   pagination = new Pagination();
-
-  data: Observable<any>;
 
   constructor(
     private nodeService: NodeService,
@@ -50,22 +50,17 @@ export class NodeComponent implements OnInit {
     this.loading = true;
     this.filter.page = this.pagination.page;
     this.filter.size = this.pagination.size;
-    let first: any;
     this.nodeService.fetchNodeList(this.filter).subscribe(response => {
-      first = response.data[0];
+      const resOptions = response.options;
+      this.newAddedThisMonth = resOptions.addedCount;
+      this.units = resOptions.unit;
+      this.coreOptions = resOptions.coreOptions;
+      this.statusOptions = resOptions.statusOptions;
       this.tableData = response.data;
       this.pagination = response.pagination;
       this.loading = false;
 
-      // TODO: remove it after api ready
-      if (first) {
-        this.units = {
-          cpu: first.resources['cpu'].unit,
-          memory: first.resources['memory'].unit,
-          storage: first.resources['storage'].unit,
-        };
-      } else {
-        // mock
+      if (!resOptions.unit) { // mock
         this.units = {
           cpu: 'core',
           memory: 'Gi',

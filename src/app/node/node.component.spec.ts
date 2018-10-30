@@ -2,6 +2,8 @@ import { async, fakeAsync, ComponentFixture, TestBed, tick } from '@angular/core
 import { By } from '@angular/platform-browser';
 import { DebugElement, NO_ERRORS_SCHEMA } from '@angular/core';
 
+import { TuiModalService } from 'tdc-ui';
+
 import { NodeComponent } from './node.component';
 import { NodeAsideComponent } from './node-aside/node-aside.component';
 import { NodeService } from './node.service';
@@ -27,15 +29,19 @@ describe('NodeComponent', () => {
         DefaultPipeStub,
       ],
 
-      providers: [{
-        provide: NodeService,
-        useClass: NodeServiceStub,
-      }, {
-        provide: TecApiService,
-        getFile() {
-          return Observable.of();
+      providers: [
+        {
+          provide: NodeService,
+          useClass: NodeServiceStub,
         },
-      }],
+        {
+          provide: TecApiService,
+          getFile() {
+            return Observable.of();
+          },
+        },
+        TuiModalService
+      ],
     })
     .compileComponents();
   }));

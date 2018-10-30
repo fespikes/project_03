@@ -46,6 +46,7 @@
     <div
       class="field-box"
       [class.error]="!myForm.get('key').valid && myForm.get('key').touched"
+      [class.error]="myForm.get('key').hasError('exis')"
     >
       <input
         class="field"
@@ -53,11 +54,16 @@
         id="keyId"
         autocomplete="off"
         [formControl]="myForm.controls['key']"
+        (mouseout)="keyMouseout($event)"
       />
       <div
         *ngIf="myForm.controls['key'].hasError('required') && myForm.controls['key'].touched"
         class="message"
       >{{'必填项' | translate}}</div>
+      <div
+        *ngIf="myForm.controls['key'].hasError('exis')"
+        class="message"
+      >{{'key已经存在，请重新输入' | translate}}</div>
     </div>
     <div class="field-box center">=</div>
     <div

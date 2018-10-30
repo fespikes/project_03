@@ -1,4 +1,4 @@
-import { Component, OnInit, Inject } from '@angular/core';
+import { Component, OnInit, Inject, ElementRef } from '@angular/core';
 import {
   FormBuilder,
   FormGroup,
@@ -24,6 +24,7 @@ export class EditTagsComponent implements OnInit {
   name: string;
 
   constructor(
+    private ele: ElementRef,
     fb: FormBuilder,
     @Inject(TUI_MODAL_DATA) private data: any,
     private modal: TuiModalRef,
@@ -88,5 +89,20 @@ export class EditTagsComponent implements OnInit {
 /*   onSubmit(key: HTMLInputElement, val: HTMLInputElement) {
     console.log(key.value, val.value);
   } */
+
+  keyMouseout($event: MouseEvent) {
+    const target: any = $event.target;
+    // const val = this.ele.nativeElement.querySelector('#valueId');
+    const key = this.myForm.get('key');
+
+    if (this.keys.indexOf(target.value) >= 0 ) {
+      // this.message.error('key已经存在，请重新输入');
+      // target.value = '';
+      requestAnimationFrame(argu => {
+        key.setValue('');
+        key.setErrors({exis: true});
+      });
+    }
+  }
 
 }
