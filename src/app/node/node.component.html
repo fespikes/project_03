@@ -49,6 +49,7 @@
             [(ngModel)]="this.filter.keyword"
             (ngModelChange)="fetchTableData()"
           ></tui-search>
+          <!--TODO: i18n-->
           <button tuiBtn="primary" (click)="export()">
             <svg tuiIcon="export" color="white"></svg>
             <span>{{'NODE.EXPORT' | translate}}</span>
@@ -56,7 +57,7 @@
         </span>
       </div>
 
-      <tui-table class="tui-table" [tuiTableFlex]="[4,1,1.5,1.5,1.5,0.8,1.5,2,1]" [loading]="loading">
+      <tui-table class="tui-table" [tuiTableFlex]="[4,0.8,1.5,1.7,1.5,0.8,1.5,2,1]" [loading]="loading">
 
         <tui-table-head>
           <div>{{'NODE.NAME' | translate}}</div>
@@ -70,7 +71,7 @@
           <div>{{'操作' | translate}}</div><!--TODO: i18n-->
         </tui-table-head>
 
-        <tui-table-row *ngFor="let instance of tableData">
+        <tui-table-row *ngFor="let instance of tableData; let idx=index;">
           <div>
             <p
               class="name"
@@ -90,9 +91,9 @@
             </p>
           </div>
           <div class="text-ellipsis">{{instance.statusAlias}}</div>
-          <div>{{parseFloat(instance, 'memory')}}</div>
-          <div>{{parseFloat(instance, 'storage')}}</div>
-          <div>{{parseFloat(instance, 'cpu')}}</div>
+          <div class="text-ellipsis">{{parseFloat(instance, 'memory')}}</div>
+          <div class="text-ellipsis">{{parseFloat(instance, 'storage')}}</div>
+          <div class="text-ellipsis">{{parseFloat(instance, 'cpu')}}</div>
           <div>{{instance.microServicesCount}}</div>
           <div>{{instance.ip}}</div>
           <div>{{instance.joinTime | date: 'yyyy/MM/dd h:mm a'}}</div>
@@ -108,7 +109,18 @@
             </span>
 
             <span tuiTooltip="{{'查看磁盘信息' | translate}}">
-              <svg tuiIcon="trash" (click)="openEditModel(instance)"></svg>
+              <img
+                class="icon-img"
+                tecImgSrc="look-into-storage.svg"
+                tecImgPrefix="/assets/svg"
+                (click)="toStorageDetails(instance, idx)"
+              />
+              <!-- <img
+                class="icon-img"
+                tecImgSrc="storage.svg"
+                tecImgPrefix="/assets/svg"
+                (click)="openEditModel(instance)"
+              /> -->
             </span>
           </div>
         </tui-table-row>

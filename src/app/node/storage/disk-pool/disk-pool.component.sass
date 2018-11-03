@@ -1,0 +1,201 @@
+@import '../common'
+\:host /deep/
+  .chart-holder
+    justify-content: flex-start
+  .legend
+    left: 120px
+    font-size: 12px
+    fill: #707070
+
+\:host
+  font-size: 14px
+
+.disk
+  margin-top: -16px
+  display: table
+  width: 100%
+
+.disk-list
+  width: 210px
+  margin-left: 20px
+  float: left
+  display: table-cell
+  li
+    width: 100%
+    height: 60px
+    border-right: 3px transparent solid
+    padding: 0
+    padding-right: 16px
+    margin: 0
+    cursor: pointer
+    &.current
+      border-right: 3px $blue solid
+      h4
+        color: $blue
+
+    h4
+      padding: 14px 0 10px
+      font-size: 14px
+      font-weight: 600
+
+    p
+      width: 100%
+      overflow: hidden
+      white-space: nowrap
+      text-overflow: ellipsis
+      font-size: 11px
+      color: $font-color
+
+.disk-pool
+  height: calc(100vh - 205px)
+  margin-left: 230px
+  padding-left: 25px
+  border-left: 1px #ddd solid
+
+  h3
+    padding: 14px 0
+    color: $blue
+    font-size: 14px
+
+  h3.border-left
+    padding: 17px 0 12px
+    font-size: 14px
+    color: #000
+    
+    &:before
+      content: ''
+      display: inline-block
+      width: 3px
+      height: 16px
+      border-left: 3px $blue solid
+      margin-right: 10px
+      margin-bottom: -3px
+
+  .volume-search
+    float: right
+    margin-top: -4px
+
+    input
+      width: 180px
+      height: 32px
+      border: 1px #d3dcea solid
+      border-radius: 4px
+      float: right
+
+
+  .donuts
+    display: flex
+    justify-content: space-evenly
+
+    width: 100%
+    height: 112px
+    li
+      padding-left: 5px
+      display: flex
+      flex-basis: 50%
+      position: relative
+      h4
+        padding: 36px 0 8px
+      h5
+        position: absolute
+        left: 122px
+        top: 18px
+        font-size: 14px
+      p
+        line-height: 22px
+        color: $font-gray
+
+    .donut
+      float: left
+      width: 130px
+      height: 130px
+      border: 1px red solid
+      margin-right: 5px
+      // donut width = height = 100px
+
+
+  .lists
+    display: flex
+    padding-right: 20px
+
+    .flex-5
+      flex: 5
+    .flex-3
+      flex: 3
+
+    dl
+      max-height: calc(100vh - 430px)
+      border: 1px #ddd solid
+      border-radius: 5px
+      margin-top: 10px
+      overflow: auto
+
+      li
+        display: flex
+        height: 60px
+        border-bottom: 1px #f1f3f6 solid
+        
+        .icon
+          flex-basis: 48px
+          padding: 12px
+          .icon-img
+            width: 24px
+            height: 24px
+
+        .volume
+          flex: 1
+          flex-basis: 236px
+
+          span
+            display: inline-block
+            width: 200px
+          h4
+            padding: 12px 0 5px
+            font-weight: 300
+          p
+            color: #acb3c2
+
+        .pencentage
+          flex-basis: 160px
+          position: relative
+          right: 16px
+          p
+            padding: 18px 0 5px
+            font-size: 12px
+          .used
+            position: absolute
+            top: 38px
+            width: 50%
+            border-bottom: 2px #75acf4 solid
+          .whole
+            position: absolute
+            top: 38px
+            width: 160px
+            border-bottom: 2px #edf2ff solid
+
+    ul
+      max-height: calc(100vh - 430px)
+      border: 1px #ddd solid
+      border-radius: 5px
+      margin-top: 10px
+      overflow: auto
+      li
+        display: flex
+        height: 45px
+        line-height: 45px
+        border-bottom: 1px #f1f3f6 solid
+        position: relative
+        .icon
+          flex-basis: 40px
+          .icon-img
+            width: 16px
+            height: 16px
+            position: absolute
+            left: 12px
+            top: 12px
+        .volume
+          flex: 1
+        .used
+          flex-basis: 70px
+          position: relative
+          right: 20px

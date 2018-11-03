@@ -1,4 +1,5 @@
 import { Component, OnInit, HostBinding } from '@angular/core';
+import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { Observable } from 'rxjs';
 import { Pagination, TuiModalService, TuiMessageService } from 'tdc-ui';
 
@@ -36,6 +37,7 @@ export class NodeComponent implements OnInit {
     private modalService: TuiModalService,
     private message: TuiMessageService,
     private translateService: TranslateService,
+    private router: Router
   ) { }
 
   ngOnInit() {
@@ -127,6 +129,14 @@ export class NodeComponent implements OnInit {
     })
     .subscribe((word: string) => {
       this.fetchTableData();
+    });
+  }
+
+  toStorageDetails(node, idx) {
+    this.router.navigate([`/node/storage/${node.name}`], {
+      queryParams: {
+        idx: 0,
+      }
     });
   }
 

@@ -1,0 +1,136 @@
+<!-- [loading]="loading" -->
+<!--TODO: the whole page i18n-->
+<div class="disk">
+  <ul
+    *ngIf="!pool || pool.length===0"
+    class="disk-list"
+  >
+    <li
+      style="line-height: 100px; text-align: center"
+    >--- “磁盘池”未分配 ---</li>
+  </ul>
+
+  <ul
+    *ngIf="pool && pool.length>0"
+    class="disk-list"
+  >
+    <li
+      *ngFor="let item of pool; let idx=index;"
+      [class.current]="item.name === storeDetails.name"
+      (click)="selectedDisk(idx, item, $event)"
+    >
+      <h4>{{item.name}}</h4>
+      <p>
+        已使用 {{item.usage['used']+' '+item.usage['unit']}}, {{(100*item.usage['used'] / item.usage['total']).toFixed(2) + '%'}} 
+      </p>
+    </li>
+  </ul>
+
+  <div
+    class="disk-pool"
+    *ngIf="!pool || (pool.length===0)"
+  >---  ---</div>
+
+  <div
+    class="disk-pool"
+    *ngIf="storeDetailsBak['volumes'].length>=0"
+  >
+    <h3>磁盘池 {{storeDetails.name}}</h3>
+    <ol class="donuts">
+      <li  class="chart-holder">
+        <h5>数据</h5>
+        <div #dataUsageDonutHolder></div>
+      </li>
+      <li class="chart-holder">
+        <h5>元数据</h5>
+        <div #metaUsageDonutHolder></div>
+      </li>
+    </ol>
+
+    <div class="lists">
+      <div class="wrapper-bottom flex-5">
+        <h3 class="border-left">包含存储卷 ({{storeDetails.volumes.length}}）
+          <tui-search
+            class="volume-search"
+            placeholder="存储卷名称、Pod"
+            (input)="searchKeywords($event)"
+          ></tui-search>
+          <!--TODO: -->
+            <!-- [(ngModel)]="filter.keyword" -->
+        </h3>
+        <dl *ngIf="storeDetails.volumes.length===0">
+          <li>-- 无volumes --</li>
+        </dl>
+        <dl *ngIf="storeDetails.volumes.length>0">
+          <li
+            *ngFor="let item of storeDetails.volumes"
+          >
+            <span class="icon">
+              <img
+                class="icon-img"
+                tecImgSrc="storage.svg"
+                tecImgPrefix="/assets/svg"
+              />
+            </span>
+            <span class="volume">
+              <h4 
+                *ngIf="item.name.length > 26"
+                tuiTooltip="{{item.name}}"
+              >
+                <span class="text-ellipsis">{{item.name}}</span>
+              </h4>
+              <h4 *ngIf="item.name.length <= 26">
+                <span>{{item.name}}</span>
+              </h4>
+              <p
+                *ngIf="item.pod.length > 26"
+                tuiTooltip="{{item.pod}}"
+              >
+                <span class="text-ellipsis">{{item.pod}}</span>
+              </p>
+              <p *ngIf="item.pod.length <= 26">
+                <span>{{item.pod}}</span>
+              </p>
+              <!-- <p 
+                *ngIf="!item.pod"
+              >{{item.mounted?'已挂载': 未挂载'}}</p> -->
+              <!--TODO: check -->
+            </span>
+            <span class="pencentage">
+              <p>使用 {{item.usage['used'] + item.usage['unit']}} / {{item.usage['total'] + item.usage['unit']}}</p>
+              <div
+                class="whole"
+              ></div>
+              <div
+                class="used"
+                [ngStyle]="{width: (item.usage['used'] * 160)/item.usage['total'] + 'px'}"
+              ></div>
+            </span>
+          </li>
+        </dl>
+      </div>
+  
+      <div class="wrapper-bottom flex-3" style="margin-left: 25px">
+        <h3 class="border-left ">包含本地磁盘 (24)</h3>
+        <ul>
+          <li>
+            <span class="icon">
+              <img
+                class="icon-img"
+                tecImgSrc="disk.svg"
+                tecImgPrefix="/assets/svg"
+              />
+            </span>
+            <span class="volume">Disk 230</span>
+            <span class="used">202.29 Gi</span>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="loading" class="temp-loading">
+  <svg tuiIcon="loading" size="lg" class="tui-rotate"></svg>
+</div>
+  
