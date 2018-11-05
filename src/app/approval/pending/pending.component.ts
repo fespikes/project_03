@@ -35,9 +35,8 @@ export class PendingComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.getTasks();
-    // this.filter.status = this.statuses[0]['value'];
     this.filter.type = this.types[0]['value'];
+    this.getTasks();
   }
 
   getTasks() {
@@ -54,10 +53,6 @@ export class PendingComponent implements OnInit {
         this.message.error(err.message);
       });
   }
-/*   statusChange($event) {
-    this.filter.status = $event;
-    this.filterChange();
-  } */
 
   typeChange($event) {
     this.filter.type = $event;

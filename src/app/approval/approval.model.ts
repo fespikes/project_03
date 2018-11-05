@@ -2,10 +2,12 @@
 export class BPMSTaskDetail {
   id?: string; // 申请单号
   type?: string; // 申请类型 = ['QUOTA_APPLY', 'PROJECT_APPLY']
+  typeAlias?: string; // 申请类型显示名称
   content?: object; // 申请内容 ,
   requester?: string; // 申请人 ,
   resources?: SysResource[];
-  stage?: string; // 申请的总体状态(eco只会出现PENDING_APPROVAL) = ['PENDING_APPROVAL', 'DEPLOYING', 'COMPLETED', 'REJECTED', 'CANCELLED'],
+  status?: string; // 申请状态 ['PENDING', 'REJECTED', 'APPROVAL']
+  statusAlias?: string; // 申请状态显示
   startTime?: string; // 申请时间
 
   assignee?: string; // 审批人
@@ -38,5 +40,8 @@ export class SysResource {
 export class TasksFilter {
   keyword?: string;
   type?: string;
-
+  option?: string;  // ACTIVE(default)/ HISTORY
+  page?: number;
+  size?: number;
+  status?: string;
 }

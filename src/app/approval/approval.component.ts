@@ -1,4 +1,7 @@
 import { Component, OnInit, HostBinding } from '@angular/core';
+import { ActivatedRoute, ParamMap } from '@angular/router';
+import { switchMap } from 'rxjs/operators';
+import { Observable } from 'rxjs/Observable';
 
 @Component({
   selector: 'tec-approval',
@@ -10,9 +13,14 @@ export class ApprovalComponent implements OnInit {
   selectedIndex = 0;
   loading: false;
 
-  constructor() { }
+  constructor(
+    private route: ActivatedRoute,
+  ) { }
 
   ngOnInit() {
+    const paramMap = this.route.snapshot.paramMap;
+    const idx = +paramMap.get('idx');
+    this.selectedIndex = idx || 0;
   }
 
   tabIndexChange(index: number) {

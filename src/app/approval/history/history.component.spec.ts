@@ -1,5 +1,11 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { RouterTestingModule } from '@angular/router/testing';
+import { Observable } from 'rxjs/Observable';
+import { TranslateService } from '../../i18n';
+import { SharedModule, TecApiService } from '../../shared';
+import { TranslatePipeStub, DefaultPipeStub } from 'app/mock';
 
+import { ApprovalService } from '../approval.service';
 import { HistoryComponent } from './history.component';
 
 describe('HistoryComponent', () => {
@@ -8,7 +14,25 @@ describe('HistoryComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ HistoryComponent ]
+      imports: [
+        SharedModule,
+        RouterTestingModule
+      ],
+      declarations: [
+        HistoryComponent,
+        DefaultPipeStub,
+        TranslatePipeStub
+      ],
+      providers: [
+        ApprovalService,
+        TecApiService,
+        {
+          provide: TranslateService,
+          useValue: {
+            use() { },
+          },
+        },
+      ]
     })
     .compileComponents();
   }));

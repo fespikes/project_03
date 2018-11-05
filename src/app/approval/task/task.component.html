@@ -151,7 +151,10 @@
               </div>
             </div> -->
           </li>
-          <li class="comments">
+          <li
+            class="comments"
+            *ngIf="fromPath!=='history'"
+          >
             <h4>审批意见</h4>
             <textarea
               #comments

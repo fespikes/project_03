@@ -18,6 +18,7 @@ export class TaskComponent implements OnInit {
   @HostBinding('class.tui-layout-body') hostClass = true;
   @ViewChild('comments') comments: ElementRef;
   id: string;
+  fromPath: string;
   executions: any[] = [];
   last: any;
   order: number; // the order of the last execution
@@ -34,7 +35,9 @@ export class TaskComponent implements OnInit {
 
   ngOnInit() {
     this.loading = true;
-    const id = this.route.snapshot.paramMap.get('id');
+    const paramMap = this.route.snapshot.paramMap;
+    const id = paramMap.get('id');
+    this.fromPath = paramMap.get('fromPath');
     this.id = id;
     // this.details = data;
 
@@ -49,7 +52,11 @@ export class TaskComponent implements OnInit {
   }
 
   goBack($event) {
-    window.history.back();
+    if (this.fromPath) {
+      this.router.navigate(['/approval', {idx: 1}]);
+    } else {
+      this.router.navigate(['/approval']);
+    }
   }
 
   textareaChanged($event) {
