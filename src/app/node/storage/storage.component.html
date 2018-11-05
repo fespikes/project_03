@@ -1,0 +1,23 @@
+
+<tui-submenu [backUrl]="backUrl">
+  <tui-submenu-list
+    menuTitle="{{'主机总计：' | translate}}: {{total}}"
+    [items]='submenuItems'
+  ></tui-submenu-list>
+</tui-submenu>
+
+<div class="tui-layout-vertical" [tuiLoading]="loading" tccLoadingHeight="600px">
+  <div class="tui-layout-main-container">
+    <div class="tui-layout-main-title">
+      {{nodeName}} 磁盘信息
+    </div>
+
+    <tui-tab
+      [(selectedIndex)]="selectedTabIndex"
+      >
+      <!-- (selectedIndexChange)="selectedIndexChange($event)" -->
+      <tec-disk-pool *tuiTabPane="'磁盘池' | translate"></tec-disk-pool>
+      <tec-local-disk *tuiTabPane="'本地磁盘' | translate"></tec-local-disk>
+    </tui-tab>
+  </div>
+</div>

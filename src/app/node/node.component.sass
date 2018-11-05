@@ -2,7 +2,12 @@
 
 \:host
   height: calc(100vh - 60px)
-  
+
+// S:common
+.icon-img
+  width: 16px
+  height: 16px
+// E:common
 .tui-layout-body
   width: 100%
 
@@ -24,9 +29,16 @@
     padding-right: 20px
     height: 52px
     line-height: 52px
+    font-size: 14px
+
+    .message
+      font-size: 14px
+    .added
+      margin-left: 5px
+      margin-right: 30px
+      
 
     button
-      margin-right: 30px
       overflow: hidden
       display: inline-flex
       align-items: center
@@ -36,6 +48,7 @@
         margin-right: 2px
 
     .tui-search
+      margin-right: 30px
       vertical-align: middle
 
 .tui-table
@@ -43,3 +56,19 @@
   overflow: auto
   flex: 1
   font-size: 13px
+
+  .tui-table-row
+    &>div
+      line-height: 52px
+
+    .text-ellipsis
+      p.names
+      .system-service-tag
+        margin: 0
+        padding: 0
+
+    .operation-td
+
+      span:last-child
+        position: relative
+        left: 20px

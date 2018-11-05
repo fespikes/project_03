@@ -1,7 +1,45 @@
-<div
-  class="service-tag-item"
-  *ngFor="let tag of showTags"
-  [ngStyle]="{'width.px': tag.width, 'min-width.px': tag.width}"
->
-  {{tag.name}}
-</div>
+<ng-container *ngIf="!ifExpend">
+  <div
+    class="service-tag-item"
+    *ngFor="let tag of showTags"
+    [ngStyle]="{'width.px': tag.width, 'min-width.px': tag.width}"
+    >
+    {{tag.name}}
+  </div>
+</ng-container>
+
+<ng-container *ngIf="!!ifExpend">
+  <div
+    class="service-tag-item"
+    *ngFor="let tag of showTags"
+    [ngStyle]="{'width.px': tag.width}"
+    tuiTooltip="{{tag.name}}"
+  >
+    <span
+      class="service-tag-span"
+    >{{tag.name}}</span>
+  </div>
+
+  <div
+    *ngIf="!!expendingFlag"
+    class="service-tag-item"
+    (click)="switchExpended($event)"
+  >{{expended ? '收起' : '展开'}}
+    <svg 
+    *ngIf="!expended"
+    tuiIcon="caret-down"
+    class="svg-position"
+    ></svg>
+    <svg
+    *ngIf="!!expended"
+    tuiIcon="caret-up"
+    class="svg-position"
+    ></svg>
+  </div>
+<!--   <svg
+    class="pencil svg-position"
+    (click)="edit($event)" 
+    tuiIcon="pencil" 
+    style="margin-left: 12px"
+  ></svg> -->
+</ng-container>

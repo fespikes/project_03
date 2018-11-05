@@ -1,0 +1,33 @@
+<div class="bar">
+  <span class="amount">
+    总计：{{disks.length}}
+  </span>
+  <tui-search
+    class="disk-search"
+    placeholder="磁盘名称、分区、磁盘池名称"
+    [(ngModel)]="keyword"
+    (ngModelChange)="fetchDisks()"
+  ></tui-search>
+</div>
+
+<ul class="disks">
+  <li *ngFor="let item of disks">
+    <span class="svg-box">
+      <img
+        class="icon-img"
+        tecImgSrc="disk.svg"
+        tecImgPrefix="/assets/svg"
+      />
+    </span>
+    <span class="detail">
+      <h4>{{item.name}}</h4>
+      <p>磁盘分区: {{item.parts[0] || '---'}}</p>
+    </span>
+    <span class="last">{{item.size}}</span>
+  </li>
+</ul>
+
+<div *ngIf="loading" class="temp-loading">
+  <svg tuiIcon="loading" size="lg" class="tui-rotate"></svg>
+</div>
+  

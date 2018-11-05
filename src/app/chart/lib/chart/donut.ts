@@ -213,7 +213,8 @@ export class DonutChart implements ChartBase {
       .attr('dy', 8)
       .text(function(d) {
         const dt = (part ? part.data : d.parts[0]) / d.sum;
-        return dt.toString() === 'NaN' ? 0 : f(dt);
+        const result = f(dt);
+        return dt.toString() === 'NaN' ? 0 : result;
       }).style('font-size', 20)
       .style('fill', this.palette[0]);
   }

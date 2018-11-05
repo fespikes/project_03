@@ -1,9 +1,13 @@
 import { Component, OnInit, HostBinding } from '@angular/core';
-import { Pagination } from 'tdc-ui';
+import { Router, ActivatedRoute, ParamMap } from '@angular/router';
+import { Observable } from 'rxjs';
+import { Pagination, TuiModalService, TuiMessageService } from 'tdc-ui';
 
+import { TranslateService } from 'app/i18n';
 import { TecApiService } from 'app/shared';
 import { NodeService } from './node.service';
 import { NodeFilter } from './node.model';
+import { EditTagsComponent } from './edit-tags/edit-tags.component';
 
 const FileSaver = require('app/shared/FileSaver');
 
@@ -18,21 +22,30 @@ export class NodeComponent implements OnInit {
 
   loading = true;
 
-  tableData: any;
+  newAddedThisMonth: number;
+  tableData: any = [];
+  units: any = {};
+  coreOptions: any[] = [];
+  statusOptions: any[] = [];
 
   filter = new NodeFilter();
-
   pagination = new Pagination();
-
-  debounced: any;
 
   constructor(
     private nodeService: NodeService,
     private api: TecApiService,
+    private modalService: TuiModalService,
+    private message: TuiMessageService,
+    private translateService: TranslateService,
+    private router: Router
   ) { }
 
   ngOnInit() {
     this.fetchTableData();
+    this.nodeService.nodeDetailsObservable
+      .subscribe(argu => {
+        this.fetchTableData();
+      });
   }
 
   fetchTableData() {
@@ -40,9 +53,34 @@ export class NodeComponent implements OnInit {
     this.filter.page = this.pagination.page;
     this.filter.size = this.pagination.size;
     this.nodeService.fetchNodeList(this.filter).subscribe(response => {
+      const resOptions = response.options;
+      this.newAddedThisMonth = resOptions.addedCount;
+      this.units = resOptions.unit;
+      this.coreOptions = resOptions.coreOptions;
+      this.statusOptions = resOptions.statusOptions;
       this.tableData = response.data;
       this.pagination = response.pagination;
       this.loading = false;
+
+      if (!resOptions.unit) { // mock
+        this.units = {
+          cpu: 'core',
+          memory: 'Gi',
+          storage: 'Gi',
+        };
+      }
+
+      this.tableData.map((item, idx) => {
+        const keys = [];
+        const labelsStrgings = [];
+        item.labels.map((cur, ids) => {
+          labelsStrgings.push(cur.key + '=' + cur.value);
+          keys.push(cur.key);
+        });
+
+        item.labelsStrgings = labelsStrgings;
+        item.keys = keys;
+      });
     });
   }
 
@@ -53,13 +91,20 @@ export class NodeComponent implements OnInit {
     const sub = resources[key];
     if (!sub) { return ''; }
 
-    let usage = sub['usage'];
-    const unit = sub['unit'];
-    let usagePercent = sub['usagePercent'];
+    const usage = sub['usage'];
+    const limit = sub['limit'];
+    // const unit = sub['unit'];
+    // let usagePercent = sub['usagePercent'];
 
-    usage = (usage && unit) ? (usage + unit) : '';
-    usagePercent = usagePercent ? (usagePercent + '%') : '';
-    return usage + ' ' + usagePercent;
+    // usage = (usage && unit) ? (usage + unit) : '';
+    // usagePercent = usagePercent ? (usagePercent + '%') : '';
+    // return usage + ' ' + usagePercent;
+    return usage && limit ? (usage + ' /' + limit) : '-- / --';
+  }
+
+  filterChange() {
+    console.log('fuck', this.filter.newJoined);
+    this.fetchTableData();
   }
 
   export() {
@@ -67,6 +112,31 @@ export class NodeComponent implements OnInit {
     .subscribe((data) => {
       const fileBlob = new Blob([data], {type: 'application/vnd.ms-excel'});
       FileSaver.saveAs(fileBlob, 'nodes.xls');
+    });
+  }
+
+  openEditModel(node, $event: MouseEvent, size = 'md') {
+    const name = node.name;
+    return this.modalService.open(EditTagsComponent, {
+      // TODO: i18n
+      title: this.translateService.translateKey('编辑标签 - ') + name,
+      size,
+      data: {
+        tags: node.labelsStrgings,
+        keys: node.keys,
+        name: name
+      }
+    })
+    .subscribe((word: string) => {
+      this.fetchTableData();
+    });
+  }
+
+  toStorageDetails(node, idx) {
+    this.router.navigate([`/node/storage/${node.name}`], {
+      queryParams: {
+        idx: 0,
+      }
     });
   }
 

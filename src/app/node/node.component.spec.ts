@@ -1,9 +1,15 @@
 import { async, fakeAsync, ComponentFixture, TestBed, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { DebugElement, NO_ERRORS_SCHEMA } from '@angular/core';
+import { RouterTestingModule } from '@angular/router/testing';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { HttpModule } from '@angular/http';
+import { ActivatedRoute, Router } from '@angular/router';
 
+import { TranslateService } from '../i18n';
+import { TuiModalService } from 'tdc-ui';
+import { SharedModule } from '../shared';
 import { NodeComponent } from './node.component';
-import { NodeAsideComponent } from './node-aside/node-aside.component';
 import { NodeService } from './node.service';
 
 import { Observable } from 'rxjs/Observable';
@@ -19,23 +25,47 @@ describe('NodeComponent', () => {
 
     TestBed.configureTestingModule({
       schemas: [NO_ERRORS_SCHEMA],
-
+      imports: [
+        HttpModule,
+        SharedModule,
+        FormsModule,
+        ReactiveFormsModule,
+        RouterTestingModule,
+      ],
       declarations: [
         NodeComponent,
-        NodeAsideComponent,
         TranslatePipeStub,
         DefaultPipeStub,
       ],
 
-      providers: [{
-        provide: NodeService,
-        useClass: NodeServiceStub,
-      }, {
-        provide: TecApiService,
-        getFile() {
-          return Observable.of();
+      providers: [
+        {
+          provide: ActivatedRoute,
+          useValue: {
+            params: Observable.of({}),
+          },
         },
-      }],
+        {
+          provide: NodeService,
+          useFactory: (api: TecApiService) => {
+            return new NodeServiceStub(api);
+          },
+          deps: [TecApiService]
+        },
+        {
+          provide: TecApiService,
+          getFile() {
+            return Observable.of();
+          },
+        },
+        {
+          provide: TranslateService,
+          useValue: {
+            use() { },
+          },
+        },
+        TuiModalService
+      ],
     })
     .compileComponents();
   }));

@@ -1,0 +1,83 @@
+@import '../common'
+
+\:host
+  display: flex
+  flex-direction: column
+  padding: 0 20px
+  position: relative
+  .loading
+    @include flex-xy-center
+    height: 100%
+
+.bar
+  flex-basis: 42px
+  line-height: 30px
+  .amount
+    color: $blue
+    font-weight: 600
+
+  .disk-search
+    width: 300px
+    float: right
+
+.disks
+  padding-bottom: 12px
+  flex: 1
+  display: flex
+  flex-wrap: wrap
+  justify-content: space-between
+  overflow: auto
+
+  li
+    flex: 1
+    display: flex
+    height: 70px
+    min-width: 32%
+    max-width: 32%
+    border: 1px #e3e6ed solid
+    border-radius: 4px
+    margin-bottom: 20px
+
+    .svg-box
+      flex-basis: 56px
+      padding: 22px 18px
+      .icon-img
+        width: 20px
+        height: 20px
+
+    .detail
+      flex: 1
+      h4
+        padding: 19px 0 7px
+      p
+        font-size: 12px
+        color: #b8becb
+    .last
+      flex-basis: 60px
+      padding: 20px 0 0
+      margin-right: 20px
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

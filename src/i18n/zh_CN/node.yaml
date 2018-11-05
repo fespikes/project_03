@@ -4,9 +4,9 @@ NODE:
   TOTALNODES: '主机总计：'
   EXPORT: 导出
   STATUS: 状态
-  MEMORYUSED: 内存使用量
-  STORAGEUSED: 硬盘使用量
-  CPUUSED: CPU使用量
+  MEMORYUSED: 使用内存
+  STORAGEUSED: 使用硬盘
+  CPUUSED: 使用CPU
   MICROSERVICE: 微服务
   IP: IP
   JOINTIME: 加入集群时间

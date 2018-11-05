@@ -1,8 +1,4 @@
 <div class="tui-layout-body">
-  <tec-node-aside
-    [(filter)] = "this.filter"
-    (filterChange)="fetchTableData()"
-  ></tec-node-aside>
 
   <div class="tui-layout-vertical">
     <div class="tui-layout-main-container" style="min-height:100%">
@@ -11,40 +7,122 @@
         <span class="tui-layout-main-title">{{'NODE.TOTALNODES' | translate}}{{pagination.total}}</span>
 
         <span class="right">
+          <tui-checkbox [(ngModel)]="filter.newJoined" (ngModelChange)="fetchTableData()">
+            <span class="message">{{'本月新增主机' | translate}}</span>
+            <span class="added">(3)</span>
+          </tui-checkbox>
+
+          <tui-select
+            [(ngModel)]="filter.status"
+            (ngModelChange)="filterChange()"
+            placeholder="{{'全部状态' | translate}}"
+            style="margin-right: 30px; width: 132px;"
+            allowClear
+          >
+            <tui-select-option
+              *ngFor="let item of statusOptions"
+              [value]="item.status"
+              [label]="item.statusAlias"
+            >
+              {{item.statusAlias | tuiDefault | translate}}
+            </tui-select-option>
+          </tui-select>
+
+          <tui-select
+            [(ngModel)]="filter.coreNum"
+            (ngModelChange)="filterChange()"
+            placeholder="{{'选择内核' | translate}}"
+            style="margin-right: 30px; width: 132px;"
+            allowClear
+          >
+            <tui-select-option
+              *ngFor="let item of coreOptions"
+              [value]="item"
+              [label]="item"
+            >
+              {{item | tuiDefault | translate}}
+            </tui-select-option>
+          </tui-select>
+
+          <tui-search
+            placeholder="主机名称、IP、标签"
+            [(ngModel)]="this.filter.keyword"
+            (ngModelChange)="fetchTableData()"
+          ></tui-search>
+          <!--TODO: i18n-->
           <button tuiBtn="primary" (click)="export()">
             <svg tuiIcon="export" color="white"></svg>
             <span>{{'NODE.EXPORT' | translate}}</span>
           </button>
-
-          <tui-search
-            [(ngModel)]="this.filter.keyword"
-            (ngModelChange)="fetchTableData()"
-          ></tui-search>
         </span>
       </div>
 
-      <tui-table class="tui-table" [tuiTableFlex]="[2,1.5,2,2,2,1,2,3]" [loading]="loading">
+      <tui-table class="tui-table" [tuiTableFlex]="[4,0.8,1.5,1.7,1.5,0.8,1.5,2,1]" [loading]="loading">
 
         <tui-table-head>
           <div>{{'NODE.NAME' | translate}}</div>
           <div>{{'NODE.STATUS' | translate}}</div>
-          <div>{{'NODE.MEMORYUSED' | translate}}</div>
-          <div>{{'NODE.STORAGEUSED' | translate}}</div>
-          <div>{{'NODE.CPUUSED' | translate}}</div>
+          <div>{{'NODE.MEMORYUSED' | translate}}({{units.memory}})</div>
+          <div>{{'NODE.STORAGEUSED' | translate}}({{units.storage}})</div>
+          <div>{{'NODE.CPUUSED' | translate}}({{units.cpu}})</div>
           <div>{{'NODE.MICROSERVICE' | translate}}</div>
           <div>{{'NODE.IP' | translate}}</div>
           <div>{{'NODE.JOINTIME' | translate}}</div>
+          <div>{{'操作' | translate}}</div><!--TODO: i18n-->
         </tui-table-head>
 
-        <tui-table-row *ngFor="let instance of tableData">
-          <div class="text-ellipsis">{{instance.name}}</div>
+        <tui-table-row *ngFor="let instance of tableData; let idx=index;">
+          <div>
+            <p
+              class="name"
+              style="line-height: 24px; height: 24px; padding:0; margin:0; font-weight:600"
+            >
+              {{instance.name}}
+            </p>
+            <p
+              class="system-service-tag"
+              style="display: flex; line-height:18px; padding: 0; margin: 0; position: relative;top: 5px"
+            >
+              <tec-system-service-tag
+                [tags]="instance.labelsStrgings"
+                [ifExpend]="true"
+              ></tec-system-service-tag>
+                <!-- (openEditModel)="openEditModel(instance.name)" -->
+            </p>
+          </div>
           <div class="text-ellipsis">{{instance.statusAlias}}</div>
-          <div>{{parseFloat(instance, 'memory')}}</div>
-          <div>{{parseFloat(instance, 'storage')}}</div>
-          <div>{{parseFloat(instance, 'cpu')}}</div>
+          <div class="text-ellipsis">{{parseFloat(instance, 'memory')}}</div>
+          <div class="text-ellipsis">{{parseFloat(instance, 'storage')}}</div>
+          <div class="text-ellipsis">{{parseFloat(instance, 'cpu')}}</div>
           <div>{{instance.microServicesCount}}</div>
           <div>{{instance.ip}}</div>
           <div>{{instance.joinTime | date: 'yyyy/MM/dd h:mm a'}}</div>
+          <div class="operation-td">
+            <span
+              tuiTooltip="{{'编辑磁盘' | translate}}"
+            >
+              <svg
+                class="pencil svg-position"
+                (click)="openEditModel(instance, $event)"
+                tuiIcon="pencil"
+              ></svg>
+            </span>
+
+            <span tuiTooltip="{{'查看磁盘信息' | translate}}">
+              <img
+                class="icon-img"
+                tecImgSrc="look-into-storage.svg"
+                tecImgPrefix="/assets/svg"
+                (click)="toStorageDetails(instance, idx)"
+              />
+              <!-- <img
+                class="icon-img"
+                tecImgSrc="storage.svg"
+                tecImgPrefix="/assets/svg"
+                (click)="openEditModel(instance)"
+              /> -->
+            </span>
+          </div>
         </tui-table-row>
 
       </tui-table>
