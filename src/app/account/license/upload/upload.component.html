@@ -1,0 +1,77 @@
+
+<h3>请按产品选择相应的许可证文件</h3>
+<ul>
+  <li>
+    <div>
+      <label for="tdh-file">TDH许可证</label>
+      <span
+        *ngIf="tdhFile.nameAlias"
+        tuiTooltip="{{tdhFile.nameAlias}}"
+      >
+        <span
+          tecFileUpload
+          (fileChanged)="handleFileChange($event, 'TDH', 'tdhFile')"
+          class="file-name text-ellipsis"
+        >{{tdhFile.nameAlias}}</span>
+      </span>
+      <span
+        *ngIf="!tdhFile.nameAlias"
+        tecFileUpload
+        (fileChanged)="handleFileChange($event, 'TDH', 'tdhFile')"
+        class="file-name text-ellipsis"
+      >{{tdhFile.nameAlias? tdhFile.nameAlias: '选择文件...'}}</span>
+      <span
+        *ngIf="tdhFile.name"
+        class="clear"
+        (click)="clearField('tdhFile')"
+      >取消</span>
+    </div>
+    <div
+      class="err"
+      *ngIf="tdhFile.error"
+    >{{tdhFile.error}}</div>
+  </li>
+  <li>
+    <div>
+      <label for="tos-file">TOS许可证</label>
+      <span
+        *ngIf="tosFile.nameAlias"  
+        tuiTooltip="{{tosFile.nameAlias}}"
+      >
+        <span
+          tecFileUpload
+          (fileChanged)="handleFileChange($event, 'TOS', 'tosFile')"
+          class="file-name text-ellipsis"
+        >{{tosFile.nameAlias}}</span>
+      </span>
+      <span
+        *ngIf="!tosFile.nameAlias"  
+        tecFileUpload
+        (fileChanged)="handleFileChange($event, 'TOS', 'tosFile')"
+        class="file-name text-ellipsis"
+      >{{'选择文件...'}}</span>
+      <span
+        *ngIf="tosFile.name"
+        class="clear"
+        (click)="clearField('tosFile')"
+      >取消</span>
+    </div>
+    <div
+      class="err"
+      *ngIf="tosFile.error"
+    >{{tosFile.error}}</div>
+  </li>
+  <li class="buttons">
+    <button
+      class="tui-btn-md tui-btn-primary tui-btn"
+      type="submit"
+      [disabled]="isDisabled"
+      (click)="onSubmit()"
+    >{{'确定'}}</button>
+    <button
+      class="tui-btn-md tui-btn-default tui-btn"
+      type="reset"
+      (click)="powerOff()"
+    >{{'取消'}}</button>
+  </li>
+</ul>

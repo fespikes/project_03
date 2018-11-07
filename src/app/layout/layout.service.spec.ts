@@ -14,7 +14,7 @@ import * as path from 'path';
 
 import { TuiMessageService } from 'tdc-ui';
 import { LayoutService } from './layout.service';
-import { TecApiService } from '../shared';
+import { TecApiService, MetaDateService } from '../shared';
 
 describe('LayoutService', () => {
   beforeEach(() => {
@@ -29,6 +29,7 @@ describe('LayoutService', () => {
         BaseRequestOptions,
         MockBackend,
         TuiMessageService,
+        MetaDateService
       ],
     });
   });

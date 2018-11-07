@@ -16,7 +16,7 @@ import { MockModule } from '../../../mock';
 import { I18nLangService, TranslateService } from '../../../i18n';
 import { LayoutHeadRightComponent } from './layout-head-right.component';
 
-import { TecApiService } from '../../../shared';
+import { TecApiService, MetaDateService } from '../../../shared';
 import { LayoutService } from '../../layout.service';
 
 describe('LayoutHeadRightComponent', () => {
@@ -42,6 +42,7 @@ describe('LayoutHeadRightComponent', () => {
           },
         },
         HttpClient,
+        MetaDateService
       ],
     })
     .compileComponents();

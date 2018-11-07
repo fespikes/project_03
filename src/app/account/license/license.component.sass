@@ -1,0 +1,106 @@
+
+h2, h3, h4, ul, li, dl, dd, dt
+  padding: 0
+  margin: 0
+
+\:host
+  width: 100%
+  height: calc(100vh - 60px)
+
+.container
+  display: flex
+  flex: 1
+  flex-direction: column
+
+.upload
+  float: right
+
+h2
+  height: 64px
+  padding: 24px
+
+.main
+  flex: 1
+  padding: 0 20px
+  font-size: 14px
+
+  h3
+    padding: 14px
+    padding-left: 15px
+    font-size: 14px
+    position: relative
+    &:before
+      content: ''
+      display: inline-block
+      height: 16px
+      border-left: 3px #3772d0 solid
+      position: absolute
+      left: 0
+  
+  .essential
+    ul
+      overflow: auto
+      li
+        display: inline-block
+        line-height: 44px
+        width: 50%
+        height: 44px
+        float: left
+        &>span
+          display: inline-block
+          float: left
+
+    .key
+      padding-right: 30px
+      width: 130px
+      text-align: right
+    .val
+
+    .edition
+      padding: 4px
+      border: 1px transparent solid
+      color: #fff
+      text-decoration: none
+      &.evaluation
+        background: #2fc2d5
+      &.commercial
+        background: #4671d1
+
+    .expire
+      margin-left: 15px
+      color: #a8afbf
+
+.details
+  display: flex
+  flex-wrap: wrap
+  justify-content: space-between
+  padding: 0 27px 30px
+  overflow: auto
+
+  dl
+    flex-basis: 50%
+    min-width: 50%
+    max-width: 50%
+    border-bottom: 0
+    margin-left: -27px
+    &+dl
+      margin-right: -27px
+    &.box
+      height: calc(100vh - 425px)
+      overflow: auto
+    dt, dd
+      display: flex
+      padding: 14px 25px
+      border: 1px #e7edf1 solid
+      border-top: 0
+      span
+        flex-basis: 49%
+    dt
+      border-top: 1px #e7edf1 solid
+      background: #f7f8fc
+      color: #afb5c4
+
+
+
+
+  

@@ -1,11 +1,14 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-import { TecApiService } from '../shared';
+import { TecApiService, MetaDateService } from '../shared';
 
 @Injectable()
 export class LayoutService {
 
-  constructor(private api: TecApiService) { }
+  constructor(
+    private api: TecApiService,
+    public metaDataService: MetaDateService
+  ) { }
 
   getProfile(): Observable<any> {
     return this.api.get(`admins/current`);

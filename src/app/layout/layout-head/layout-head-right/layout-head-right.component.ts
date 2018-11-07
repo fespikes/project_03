@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { Observable } from 'rxjs/Observable';
+import 'rxjs/add/observable/forkJoin';
 
 import { LayoutService } from '../../layout.service';
 
@@ -25,19 +27,32 @@ export class LayoutHeadRightComponent implements OnInit {
   entrancesTemp: any = entrancesTemp;
 
   entrances: any;
+  license: any = {};
+  licenseEnum = {
+    evaluation: 'EVALUATION',
+    commercial: 'COMMERCIAL'
+  };
 
   constructor(
     private layoutService: LayoutService,
   ) { }
 
   ngOnInit() {
-    this.layoutService.getProfile().subscribe(res => {
-      this.profile = res || this.profile;
-    });
+    const observables = [
+      this.layoutService.getProfile(),
+      this.layoutService.getEntrances(),
+    ];
+    Observable.forkJoin(observables)
+      .subscribe(([profile, entrances]) => {
+        this.profile = profile || this.profile;
+        this.entrances = entrances || this.entrances;
+      });
 
-    this.layoutService.getEntrances().subscribe(res => {
-      this.entrances = res || this.entrances;
-    });
+    this.layoutService.metaDataService.fetMetaData(this.callback.bind(this));
+  }
+
+  callback(res) {
+    this.license = res.license;
   }
 
   quit($event) {

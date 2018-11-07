@@ -44,7 +44,7 @@ import {
     ModalYamlDetailComponent,
     OverflowContainerComponent,
     ServiceTagComponent,
-    YamlTreeComponent,
+    YamlTreeComponent
   ],
   providers: [
     SystemService,

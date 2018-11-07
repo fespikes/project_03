@@ -13,6 +13,7 @@ export class NodeServiceStub {
   }
   fetchNodeList() {
     return Observable.of({
+      options: {},
       pagination: {},
     });
   }
