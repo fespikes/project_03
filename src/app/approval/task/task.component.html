@@ -1,3 +1,4 @@
+<!--TODO: i18n-->
 <div class="tui-layout-vertical">
   <div class="cr">
     <!-- <a routerLink="./">返回</a> -->
@@ -83,6 +84,10 @@
           <li class="apply-content">
             <h4>申请内容</h4>
             <p>{{details.content}}</p>
+          </li>
+          <li class="apply-content">  <!--new added this: 项目描述 -->
+            <h4>项目描述</h4>
+            <p>{{details.projectDescription || ''}}</p>
           </li>
           <li
             class="apply-description"

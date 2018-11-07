@@ -2,6 +2,7 @@ import { Component, OnInit, HostBinding } from '@angular/core';
 import { TuiModalService, TuiModalRef, TUI_MODAL_DATA, Pagination } from 'tdc-ui';
 import { TranslateService } from '../../i18n';
 import { ApprovalService } from '../approval.service';
+import { TecUtilService } from '../../shared';
 import { EditComponent } from '../edit/edit.component';
 import { applyType } from '../approval.model';
 
@@ -15,15 +16,19 @@ import { procedures } from './procedures.mock';
 export class FlowComponent implements OnInit {
   @HostBinding('class.tui-layout-body') hostClass = true;
   items: any[];
+  isAdmin = false;
 
   constructor(
     private modalService: TuiModalService,
     private service: ApprovalService,
-    private translateService: TranslateService
+    private translateService: TranslateService,
+    private utilService: TecUtilService
   ) { }
 
   ngOnInit() {
+    const profile = window.localStorage.getItem('eco:profile');
     this.fetchData();
+    this.isAdmin = this.utilService.checkIsAdmin();
   }
 
   fetchData() {

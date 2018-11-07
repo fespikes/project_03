@@ -9,6 +9,7 @@ import {
   Service,
   ServiceFilter,
   ServiceList,
+  TecUtilService
 } from 'app/shared';
 
 import { SystemModuleService } from './system.service';
@@ -20,6 +21,7 @@ import { SystemModuleService } from './system.service';
 })
 export class SystemComponent implements OnInit {
   @HostBinding('class.tui-layout-body') hostClass = true;
+  isAdmin = false;
 
   loading;
   labels = [];
@@ -33,11 +35,13 @@ export class SystemComponent implements OnInit {
     private systemModal: SystemModalService,
     private translate: TranslateService,
     private tuiModal: TuiModalService,
+    private utilService: TecUtilService
   ) { }
 
   ngOnInit() {
     this.getServiceLabels().subscribe();
     this.getServiceList().subscribe();
+    this.isAdmin = !this.utilService.checkIsAdmin();
   }
 
   getServiceList() {

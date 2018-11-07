@@ -10,13 +10,15 @@ import {
 import { OverlayModule } from '@angular/cdk/overlay';
 import { HttpClientModule, HttpClient } from '@angular/common/http';
 
-
+import { TecUtilService } from '../../../shared';
 import { TuiMessageService } from 'tdc-ui';
 import { MockBackend } from '@angular/http/testing';
 import { TenantQuotaComponent } from './tenant-quota.component';
 import { TranslatePipeStub, DefaultPipeStub } from 'app/mock';
 import { TenantService } from '../../tenant.service';
 import { TecApiService } from '../../../shared';
+import { TranslateServiceMock, TecUtilServiceMock } from 'app/mock';
+import { TranslateService } from 'app/i18n';
 
 describe('TenantQuotaComponent', () => {
   let component: TenantQuotaComponent;
@@ -36,6 +38,10 @@ describe('TenantQuotaComponent', () => {
         TecApiService,
         MockBackend,
         BaseRequestOptions,
+        {
+          provide: TranslateService,
+          useClass: TranslateServiceMock,
+        },
         { provide: Http,
           useFactory: (
             backend: ConnectionBackend,
@@ -46,6 +52,10 @@ describe('TenantQuotaComponent', () => {
           deps: [MockBackend, BaseRequestOptions],
         },
         TuiMessageService,
+        {
+          provide: TecUtilService,
+          useClass: TecUtilServiceMock
+        }
       ],
       imports: [
         HttpClientModule,

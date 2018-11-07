@@ -62,4 +62,12 @@ export class TecUtilService {
   checkSucceed(res) {
     return res.resultCode === '000000' ? true : false;
   }
+
+  // from:/abcrock/tdc-eco-frontend/src/app/layout/layout-head/layout-head-right/layout-head-right.component.ts
+  checkIsAdmin() {
+    let isAdmin = false;
+    const profile = window.localStorage.getItem('eco:profile');
+    isAdmin = (JSON.parse(profile).isSuper ? true : false );
+    return isAdmin;
+  }
 }

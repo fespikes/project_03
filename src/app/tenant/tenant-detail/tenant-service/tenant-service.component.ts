@@ -4,15 +4,12 @@ import { ActivatedRoute, NavigationEnd } from '@angular/router';
 import { Pagination, TuiModalService } from 'tdc-ui';
 import { TranslateService } from 'app/i18n';
 import { TenantService } from '../../tenant.service';
-
 import {
-  ModalYamlDetailComponent,
-  ModalImageDetailComponent,
-  ModalPodDetailComponent,
   Service,
   ServiceFilter,
   SystemService,
   SystemModalService,
+  TecUtilService
 } from 'app/shared';
 
 
@@ -24,6 +21,7 @@ import {
 export class TenantServiceComponent implements OnInit {
 
   loading;
+  isAdmin = false;
   services: Service[];
   labels = [];
   uid: number;
@@ -37,11 +35,11 @@ export class TenantServiceComponent implements OnInit {
     private tuiModalService: TuiModalService,
     private tenantService: TenantService,
     private translate: TranslateService,
-  ) {
-
-  }
+    private utilService: TecUtilService
+  ) {}
 
   ngOnInit() {
+    this.isAdmin = this.utilService.checkIsAdmin();
     this.route.params
     .subscribe((params) => {
       this.uid = params['uid'];

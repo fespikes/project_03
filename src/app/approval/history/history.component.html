@@ -4,7 +4,7 @@
   <div class="right">
     <tui-select
       placeholder=""
-      [ngModel]="filter.status"
+      [(ngModel)]="filter.status"
       (ngModelChange)="getTasks()"
       class="select-status"
     >
@@ -18,7 +18,7 @@
     </tui-select>
     <tui-select
       placeholder=""
-      [ngModel]="filter.type"
+      [(ngModel)]="filter.type"
       (ngModelChange)="getTasks()"
       class="select-type"
       style="margin-left: 20px; margin-right: 20px"

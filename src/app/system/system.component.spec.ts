@@ -4,11 +4,11 @@ import { Observable } from 'rxjs/Observable';
 
 import {  MockModule } from 'app/mock';
 import { SystemComponent } from './system.component';
-import { SystemService, SystemModalService } from 'app/shared';
+import { SystemService, SystemModalService, TecUtilService } from 'app/shared';
 import { SystemModuleService } from './system.service';
 import { TranslateService } from 'app/i18n';
 import { TuiModalService } from 'tdc-ui';
-import { TranslateServiceMock } from 'app/mock';
+import { TranslateServiceMock, TecUtilServiceMock } from 'app/mock';
 
 
 class SystemServiceStub {
@@ -49,6 +49,10 @@ describe('SystemComponent', () => {
         SystemComponent,
       ],
       providers: [
+        {
+          provide: TecUtilService,
+          useClass: TecUtilServiceMock
+        },
         {
           provide: SystemModalService,
           useClass: ModalServiceStub,

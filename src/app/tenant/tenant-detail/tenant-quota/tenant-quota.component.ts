@@ -6,6 +6,7 @@ import {
 import { TenantService } from '../../tenant.service';
 import { Quota } from '../../tenant-model';
 import { editTypes } from '../../../shared';
+import { TecUtilService } from '../../../shared';
 
 @Component({
   selector: 'tec-tenant-quota',
@@ -14,6 +15,7 @@ import { editTypes } from '../../../shared';
 })
 export class TenantQuotaComponent implements OnInit {
   @HostBinding('class.layout') hostClass = true;
+  isAdmin = false;
 
   loading;
   editing = false;
@@ -23,10 +25,12 @@ export class TenantQuotaComponent implements OnInit {
 
   constructor(
     private tenantService: TenantService,
+    private utilService: TecUtilService
   ) {}
 
   ngOnInit() {
     this.fetchQuotas();
+    this.isAdmin = this.utilService.checkIsAdmin();
   }
 
   fetchQuotas() {

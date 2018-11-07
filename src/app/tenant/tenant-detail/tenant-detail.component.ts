@@ -1,15 +1,17 @@
 import { Component, OnInit, HostBinding } from '@angular/core';
 import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
 import { filter } from 'rxjs/operators';
+import { Observable } from 'rxjs/Observable';
+import 'rxjs/add/observable/combineLatest';
 import { TuiModalService } from 'tdc-ui';
+
+import { TecUtilService } from '../../shared';
 
 import { TenantInfo, statuses } from '../tenant-model';
 import { TenantService } from '../tenant.service';
 import { TranslateService } from 'app/i18n';
 import { FailureCourseComponent } from '../components/failure-course/failure-course.component';
 import { ModalDeleteTenantComponent } from '../components/modal/delete-tenant.component';
-import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/observable/combineLatest';
 
 @Component({
   templateUrl: './tenant-detail.component.html',
@@ -17,6 +19,7 @@ import 'rxjs/add/observable/combineLatest';
 })
 export class TenantDetailComponent implements OnInit {
   @HostBinding('class.tui-layout-body') hostClass = true;
+  isAdmin = false;
   submenuItems = [];
   tenant: any = new TenantInfo();
   statuses = statuses;
@@ -37,6 +40,7 @@ export class TenantDetailComponent implements OnInit {
     private modal: TuiModalService,
     private tenantService: TenantService,
     private translateService: TranslateService,
+    private utilService: TecUtilService
   ) { }
 
   ngOnInit() {
@@ -48,6 +52,7 @@ export class TenantDetailComponent implements OnInit {
       this.getRouterParams();
     });
     this.featureUser = this.tenantService.features.user;
+    this.isAdmin = this.utilService.checkIsAdmin();
   }
 
   getRouterParams() {

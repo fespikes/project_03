@@ -5,6 +5,7 @@
   >
     <h3>{{item.typeAlias}}</h3>
     <button
+      *ngIf="isAdmin"
       class="edit"
       (click)="edit(item)"
     >

@@ -33,6 +33,7 @@ export class LayoutHeadRightComponent implements OnInit {
   ngOnInit() {
     this.layoutService.getProfile().subscribe(res => {
       this.profile = res || this.profile;
+      window.localStorage.setItem('eco:profile', JSON.stringify(res));
     });
 
     this.layoutService.getEntrances().subscribe(res => {

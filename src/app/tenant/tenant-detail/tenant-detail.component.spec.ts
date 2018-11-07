@@ -4,10 +4,11 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { Observable } from 'rxjs/Observable';
 import { TabPaneDirective, TuiModalService } from 'tdc-ui';
+import { TecUtilService } from '../../shared';
 
 import { TenantDetailComponent } from './tenant-detail.component';
 import { TenantService } from '../tenant.service';
-import { TranslatePipeStub, TranslateServiceMock } from 'app/mock';
+import { TranslatePipeStub, TranslateServiceMock, TecUtilServiceMock } from 'app/mock';
 import { TranslateService } from 'app/i18n';
 import { Subject } from 'rxjs';
 
@@ -20,6 +21,7 @@ class RouterStub {
 class TuiModalServiceStub {
   apiError() { }
 }
+
 /*
 class TenantServiceStub {
 
@@ -61,6 +63,10 @@ describe('TenantDetailComponent', () => {
         TranslatePipeStub,
       ],
       providers: [
+        {
+          provide: TecUtilService,
+          useClass: TecUtilServiceMock
+        },
         {
           provide: ActivatedRoute,
           useValue: {

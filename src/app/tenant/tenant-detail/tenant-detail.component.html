@@ -17,7 +17,10 @@
           <svg class="view-more" tuiIcon="more" (click)="viewFailureCourse(tenant)"></svg>
         </span>
       </div>
-      <div class="right">
+      <div
+        class="right"
+        *ngIf="isAdmin"
+      >
         <button *ngIf="!(tenant.status === 'CANCELED')" tuiBtn="primary" (click)="deleteTenant(tenant)">
           <svg tuiIcon="trash"></svg>
           <span>{{'TENANT.DETAIL.DELETE_TENANT' | translate}}</span>

@@ -35,7 +35,13 @@
           <div>{{'SYSTEM.INSTANCE.VERSION' | translate}}</div>
           <div>{{'SYSTEM.INSTANCE.START_TIME' | translate}}</div>
           <div>{{'SYSTEM.INSTANCE.TAG' | translate}}</div>
-          <div>{{'SYSTEM.OPERATION' | translate}}</div>
+          <div>
+            <ng-container
+              *ngIf="isAdmin"
+            >
+              {{'SYSTEM.OPERATION' | translate}}
+            </ng-container>
+          </div>
         </tui-table-head>
         <ng-container *ngFor="let service of services">
           <tui-table-row>
@@ -60,12 +66,18 @@
               </tui-popover>
             </div>
             <div class="operation-td">
-              <span tuiTooltip="{{getTooltipText(service)}}">
+              <span
+                *ngIf="isAdmin"
+                tuiTooltip="{{getTooltipText(service)}}"
+              >
                 <svg *ngIf="service.status === 'RUNNING'" tuiIcon="media-pause-circle" (click)="stopService(service)"></svg>
                 <svg *ngIf="service.status === 'TERMINATED'" tuiIcon="media-play-circle" (click)="startService(service)"></svg>
                 <svg *ngIf="service.status !== 'RUNNING' && service.status !== 'TERMINATED'" tuiIcon="loading"></svg>
               </span>
-              <span tuiTooltip="{{'SYSTEM.TOOLTIP.VIEW_YAML' | translate}}">
+              <span
+                *ngIf="isAdmin"
+                tuiTooltip="{{'SYSTEM.TOOLTIP.VIEW_YAML' | translate}}"
+              >
                 <svg tuiIcon="yaml" (click)="viewYaml(service)"></svg>
               </span>
             </div>
