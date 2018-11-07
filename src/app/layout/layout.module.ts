@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { I18nModule } from '../i18n';
-import { SharedModule } from '../shared';
+import { SharedModule, MetaDateService } from '../shared';
 
 import { LayoutComponent } from './layout.component';
 import { LayoutHeadComponent } from './layout-head/layout-head.component';
@@ -27,6 +27,7 @@ import { LayoutService } from './layout.service';
   ],
   providers: [
     LayoutService,
+    MetaDateService
   ],
 })
 export class LayoutModule { }

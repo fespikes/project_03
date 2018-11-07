@@ -9,6 +9,9 @@ import { AccounRoutingModule } from './accoun-routing.module';
 import { AccountComponent } from './account.component';
 import { ChangePwdComponent } from './change-pwd/change-pwd.component';
 import { AccountService } from './account.service';
+import { LicenseComponent } from './license/license.component';
+import { UploadComponent } from './license/upload/upload.component';
+import { FileUploadDirective } from '../shared';
 
 @NgModule({
   imports: [
@@ -20,11 +23,17 @@ import { AccountService } from './account.service';
   declarations: [
     AccountComponent,
     ChangePwdComponent,
+    LicenseComponent,
+    UploadComponent,
+    FileUploadDirective
   ],
   providers: [
     TuiModalRef,
     AccountService,
     TranslateService,
   ],
+  entryComponents: [
+    UploadComponent
+  ]
 })
 export class AccountModule { }

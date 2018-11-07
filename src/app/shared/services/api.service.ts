@@ -1,6 +1,6 @@
 import * as path from 'path-browserify';
 import { Injectable } from '@angular/core';
-import { environment } from '../../../environments/environment';
+import { environment } from 'environments/environment';
 import { HttpClient, HttpParams, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import 'rxjs/add/operator/map';
@@ -98,6 +98,26 @@ export class TecApiService {
     return this.http.delete(
       this.makeUrl(url),
       this.httpOptions,
+    )
+    .pipe(catchError(this.formatErrors));
+  }
+
+  uploadSingle(url: string, formData: FormData, observe = true): Observable<any> {
+    const httpOptions: any = {
+      headers: new HttpHeaders({
+        /**
+         * add it will cause exception:
+         *  org.apache.tomcat.util.http.fileupload.FileUploadException: the request was rejected because no multipart boundary was found
+         *  'Content-Type': 'multipart/form-data',
+         * see: https://stackoverflow.com/questions/36005436/the-request-was-rejected-because-no-multipart-boundary-was-found-in-springboot
+         */
+        'Accept': 'application/json'
+      })
+    };
+    return this.http.post(
+      this.makeUrl(url),
+      formData,
+      httpOptions
     )
     .pipe(catchError(this.formatErrors));
   }

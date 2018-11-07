@@ -1,0 +1,58 @@
+<!--TODO: i18n-->
+<div class="tui-layout-vertical">
+  <div class="tui-layout-main-container container" style="">
+    <h2 class="tui-layout-main-title">
+      {{'许可证信息'}}
+      <button class="upload" tuiBtn="primary" (click)="upload()">
+        {{'上传许可证'}}
+      </button>
+    </h2>
+
+    <div class="main-content main">
+      <h3>基本信息</h3>
+      <div class="essential">
+        <ul>
+          <li>
+            <span class="key">当前许可证</span>
+            <span class="val">
+              <span
+                class="edition"
+                [class.evaluation]="license?.type==='EVALUATION'"
+                [class.commercial]="license?.type==='COMMERCIAL'"
+              >{{license.typeAlias}}</span>
+              <span class="expire">{{license.expireTime | date: 'yyyy/MM/dd h:mm a'}} 到期</span>
+            </span>
+          </li>
+          <li>
+            <span class="key">服务支持</span>
+            <span class="val">{{license.supportPeriod}}个月<span class="expire">{{license.supportExpireTime | date: 'yyyy/MM/dd h:mm a'}} 到期</span></span>
+          </li>
+          <li>
+            <span class="key">许可证版本</span>
+            <span>{{license.edition}}</span>
+          </li>
+          <li>
+            <span class="key">MAC地址</span>
+            <span>{{license.macAddress}}</span>
+          </li>
+        </ul>
+      </div>
+
+      <h3>组件详情</h3>
+      <div class="details">
+        <dl>
+          <dt><span>组件</span><span>配额</span></dt>
+        </dl>
+        <dl>
+          <dt><span>组件</span><span>配额</span></dt>
+        </dl>
+        <dl class="box">
+          <dd *ngFor="let item of componentsLeft"><span>{{item.name}}</span><span>{{stringify(item.resources)}}</span></dd>
+        </dl>
+        <dl class="box">
+          <dd *ngFor="let item of componentsRight"><span>{{item.name}}</span><span>{{stringify(item.resources)}}</span></dd>
+        </dl>
+      </div>
+    </div>
+  </div>
+</div>
