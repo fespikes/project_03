@@ -43,7 +43,7 @@ export class TenantBillComponent implements OnInit {
         this.bills = result.data;
         this.pagination = result.pagination;
         this.loading = false;
-      }, this.modal.apiError);
+      });
   }
 
   openClearBillModal(bill) {
