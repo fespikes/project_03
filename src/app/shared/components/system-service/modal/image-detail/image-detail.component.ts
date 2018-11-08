@@ -46,8 +46,6 @@ export class ModalImageDetailComponent implements OnInit {
     this.system.updateServiceImage(this.image, this.uid)
     .subscribe(() => {
       this.modalRef.close();
-    }, (error) => {
-      this.modalService.apiError(error);
     });
   }
 

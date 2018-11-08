@@ -77,8 +77,6 @@ export class TenantServiceComponent implements OnInit {
     this.systemService.startService(service.name, this.uid)
     .subscribe(() => {
       this.getTenantServices();
-    }, (error) => {
-      this.tuiModalService.apiError(error);
     });
   }
 
@@ -86,8 +84,6 @@ export class TenantServiceComponent implements OnInit {
     this.systemService.stopService(service.name, this.uid)
     .subscribe(() => {
       this.getTenantServices();
-    }, (error) => {
-      this.tuiModalService.apiError(error);
     });
   }
 

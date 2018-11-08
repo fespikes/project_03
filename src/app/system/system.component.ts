@@ -76,8 +76,6 @@ export class SystemComponent implements OnInit {
     this.systemService.startService(service.name)
     .subscribe(() => {
       this.getServiceList().subscribe();
-    }, (error) => {
-      this.tuiModal.apiError(error);
     });
   }
 
@@ -85,8 +83,6 @@ export class SystemComponent implements OnInit {
     this.systemService.stopService(service.name)
     .subscribe(() => {
       this.getServiceList().subscribe();
-    }, (error) => {
-      this.tuiModal.apiError(error);
     });
   }
 

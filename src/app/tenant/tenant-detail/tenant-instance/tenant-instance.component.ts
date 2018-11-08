@@ -55,7 +55,7 @@ export class TenantInstanceComponent implements OnInit {
         this.instances = result.data;
         this.pagination = result.pagination;
         this.loading = false;
-      }, this.modal.apiError);
+      });
   }
 
 }
