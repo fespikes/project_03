@@ -26,7 +26,7 @@ export class ModalBillClearComponent {
     this.tenantService.clearBill(this.bill.id)
       .subscribe(() => {
         this.modal.close(true);
-      }, this.modalService.apiError);
+      });
   }
 
   close() {

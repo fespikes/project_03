@@ -41,7 +41,6 @@ export class ModalDeleteTenantComponent implements OnInit {
       this.modalRef.close(true);
     }, (error) => {
       this.disabled = false;
-      this.modalService.apiError(error);
     });
   }
 
