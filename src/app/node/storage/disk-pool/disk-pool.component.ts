@@ -44,17 +44,17 @@ export class DiskPoolComponent implements OnInit, OnDestroy {
   ) {}
 
   refresh() {
-    this.pool = null;
+    // this.pool = null;
     this.storeDetails = {
       dataUsage: {},
       metaUsage: {},
-      volumes: []
+      volumes: [],
+      disks: []
     };
     this.storeDetailsBak = this.storeDetails;
   }
 
   ngOnInit() {
-    this.loading = true;
     this.getRouterParams();
     this.routerSubscriber = this.router.events.pipe(
       filter(event => event instanceof NavigationEnd),
@@ -74,6 +74,7 @@ export class DiskPoolComponent implements OnInit, OnDestroy {
 
     Observable.combineLatest(promises)
     .subscribe(([pathParams, queryParams]) => {
+      this.loading = true;
       this.nodeName = pathParams['name'];
       // story = poolName of BE, can from two ways: 1.select ; 2.default the first
       // deprecated
@@ -100,12 +101,10 @@ export class DiskPoolComponent implements OnInit, OnDestroy {
           }
         });
     }
-    if (this.store) {
-      this.getDetailStore();
-    }
+
   }
 
-  selectedDisk(idx, currentStore, $event: MouseEvent) {
+  selectedDisk(idx, currentStore, $event: MouseEvent) {console.log('selectedDisk');
     const target: any = $event.target;
     let current: any;
     if (!this.ele.nativeElement) {
@@ -133,8 +132,7 @@ export class DiskPoolComponent implements OnInit, OnDestroy {
       requestAnimationFrame(argu => {
         try {
           this.showDonuts(res);
-        } catch ( e ) {} finally {
-        }
+        } catch ( e ) {} finally { }
       });
     });
   }

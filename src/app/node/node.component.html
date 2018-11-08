@@ -9,7 +9,7 @@
         <span class="right">
           <tui-checkbox [(ngModel)]="filter.newJoined" (ngModelChange)="fetchTableData()">
             <span class="message">{{'本月新增主机' | translate}}</span>
-            <span class="added">(3)</span>
+            <span class="added">({{newAddedThisMonth}})</span>
           </tui-checkbox>
 
           <tui-select
@@ -99,7 +99,7 @@
           <div>{{instance.joinTime | date: 'yyyy/MM/dd h:mm a'}}</div>
           <div class="operation-td">
             <span
-              tuiTooltip="{{'编辑磁盘' | translate}}"
+              tuiTooltip="{{'编辑标签' | translate}}"
             >
               <svg
                 class="pencil svg-position"

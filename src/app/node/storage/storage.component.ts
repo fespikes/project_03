@@ -76,7 +76,7 @@ export class StorageComponent implements OnInit, OnDestroy {
     const arr = nodes || this.nodes;
     const submenuItems = arr.map((item) => ({
       name: item.name ,
-      url: `/node/storage/${item.name}?idx=0`,
+      url: `/node/storage/${item.name}`,
       icon: '',
     }));
 

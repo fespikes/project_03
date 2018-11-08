@@ -1,13 +1,13 @@
 <!-- [loading]="loading" -->
 <!--TODO: the whole page i18n-->
-<div class="disk">
+<div class="disk" [tuiLoading]="loading">
   <ul
     *ngIf="!pool || pool.length===0"
     class="disk-list"
   >
     <li
       style="line-height: 100px; text-align: center"
-    >--- “磁盘池”未分配 ---</li>
+    >“磁盘池”未分配</li>
   </ul>
 
   <ul
@@ -29,7 +29,7 @@
   <div
     class="disk-pool"
     *ngIf="!pool || (pool.length===0)"
-  >---  ---</div>
+  ></div>
 
   <div
     class="disk-pool"
@@ -111,9 +111,9 @@
       </div>
   
       <div class="wrapper-bottom flex-3" style="margin-left: 25px">
-        <h3 class="border-left ">包含本地磁盘 (24)</h3>
+        <h3 class="border-left ">包含本地磁盘 ({{storeDetails.disks.length}})</h3>
         <ul>
-          <li>
+          <li *ngFor="let item of storeDetails.disks">
             <span class="icon">
               <img
                 class="icon-img"
@@ -121,8 +121,8 @@
                 tecImgPrefix="/assets/svg"
               />
             </span>
-            <span class="volume">Disk 230</span>
-            <span class="used">202.29 Gi</span>
+            <span class="volume">{{item.name}}</span>
+            <span class="used">{{item.size}}</span>
           </li>
         </ul>
       </div>
