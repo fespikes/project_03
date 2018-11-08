@@ -3,6 +3,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { Observable } from 'rxjs/Observable';
 import { TranslateService } from '../../i18n';
 import { SharedModule, TecApiService } from '../../shared';
+import { TuiMessageService } from 'tdc-ui';
 
 import { TaskComponent } from './task.component';
 import { ApprovalService } from '../approval.service';
@@ -21,6 +22,7 @@ describe('TaskComponent', () => {
         TaskComponent
       ],
       providers: [
+        TuiMessageService,
         ApprovalService,
         TecApiService,
         {

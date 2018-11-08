@@ -1,5 +1,5 @@
 <!--TODO: i18n-->
-<div class="tui-layout-vertical">
+<div class="tui-layout-vertical" *ngIf="fromPath!=='history'">
   <div class="cr">
     <!-- <a routerLink="./">返回</a> -->
     <a (click)="goBack($event)">返回上一级</a>
@@ -158,7 +158,6 @@
           </li>
           <li
             class="comments"
-            *ngIf="fromPath!=='history'"
           >
             <h4>审批意见</h4>
             <textarea
@@ -176,6 +175,140 @@
                 (click)="onSubmit('REJECT')"
                 [disabled]="isDisabled?'disabled':null"
               >拒绝</button>
+            </div>
+          </li>
+        </ol>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<div
+  class="tui-layout-vertical"
+  *ngIf="fromPath==='history'"
+>
+  <div class="cr">
+    <!-- <a routerLink="./">返回</a> -->
+    <a (click)="goBack($event)">返回上一级</a>
+  </div>
+  <div class="tui-layout-main-container" [tuiLoading]="loading">
+    <!-- <div class="tui-layout-main-title">
+    </div> -->
+    <div class="container-content">
+      <h4 class="title">申请详情 - {{details.id || ''}}</h4>
+      <div class="wrapper center">
+        <ul class="properties">
+          <!-- <li *ngFor="let property of properties"> -->
+          <li>
+            <!-- <tui-property [icon]="property.icon" [label]="property.label" [value]="property.value" [color]="property.color" [link]="property.link"></tui-property> -->
+            <div class="tui-property">
+              <img class="icon-img" tecImgSrc="apply-type.svg" tecImgPrefix="/assets/svg" />
+              <div>
+                <div class="value">{{details.typeAlias || ''}}</div>
+                <div class="label">申请类型</div>
+                <!--TODO-->
+              </div>
+            </div>
+          </li>
+          <li>
+            <!-- <tui-property icon="user" label="申请人" value="{{details.requester}}"></tui-property> -->
+            <div class="tui-property">
+              <img class="icon-img" tecImgSrc="user.svg" tecImgPrefix="/assets/svg" />
+              <div>
+                <div class="value">{{(details.requester || '')}}</div>
+                <div class="label">申请人</div>
+              </div>
+            </div>
+          </li>
+          <li>
+            <tui-property icon="clock" label="申请时间" value="{{details.startTime | date:'y/M/d h:mm:ss a'}}"></tui-property>
+          </li>
+        </ul>
+
+        <ol>
+          <li class="apply-status">
+            <h4>申请状态</h4>
+            <h3
+              [class.rejected]="last['status']==='REJECTED'"
+              [class.succeed]="last['status']==='APPROVED'"
+            >
+              {{order===1? '一' : order===2? '二' : order===3 ? '三': order===4 ? '四': order===5 ? '五' : '六'}}级{{last['status'] === 'APPROVED' ? '审批完成' : '被拒绝'}}
+            </h3>
+            <dl>
+              <dd class="green">
+                <img class="singnal" tecImgSrc="approved.svg" tecImgPrefix="/assets/svg" />
+                申请人
+              </dd>
+
+              <ng-container *ngFor="let item of executions; let i=index">
+                <dd
+                  class="line"
+                  [ngClass]="{'blue': item.status==='PENDING', 'green': item.status==='APPROVED', 'red': item.status==='REJECTED'}"
+                ></dd>
+                <dd
+                  [ngClass]="{'blue': item.status==='PENDING', 'green': item.status==='APPROVED', 'red': item.status==='REJECTED'}"
+                >
+                  <img
+                    class="singnal"
+                    tecImgSrc="{{item.status==='PENDING' ? 'applying.svg' : item.status==='APPROVED' ? 'approved.svg' : ''}}"
+                    tecImgPrefix="/assets/svg"
+                  />
+                  <svg tuiIcon="cross" class="icon" *ngIf="item['status']==='REJECTED'"></svg>
+                  {{item.order===1? '一' : item.order===2? '二' : item.order===3 ? '三': item.order===4 ? '四': item.order===5 ? '五' : '六'}}级审批人
+                </dd>
+              </ng-container>
+
+              <ng-container *ngIf="last['status'] === 'APPROVED'">
+                <dd
+                  class="line green"
+                ></dd>
+                <dd class="green">完成</dd>
+              </ng-container>
+              <ng-container *ngIf="last['status'] !== 'APPROVED'">
+                <dd
+                  class="line gray"
+                ></dd>
+                <dd class="gray">完成</dd>
+              </ng-container>
+            </dl>
+          </li>
+          <li class="apply-content">
+            <h4>申请内容</h4>
+            <p>{{details.content}}</p>
+          </li>
+          <li class="apply-content">  <!--new added this: 项目描述 -->
+            <h4>项目描述</h4>
+            <p>{{details.projectDescription || ''}}</p>
+          </li>
+          <li
+            class="apply-description"
+            *ngIf="!!details.description"
+          >
+            <h4>申请说明</h4>
+            <p>{{details.description}}</p>
+          </li>
+          <li class="platform-resource">
+            <h4>平台资源</h4>
+            <div class="box">
+              <div 
+                class="column" 
+                *ngFor="let item of details.resources; let idx = index;"
+              >
+                <p>{{item.nameAlias}}</p>
+                <div class="progress ">
+                  <span
+                    class="finished"
+                    [ngStyle]="{'width.px': (item.used * 250)/item.allocatable }"
+                    [ngClass]="{'left': idx===0, 'middle': idx===1, 'right': idx===2}"
+                  ></span>
+                  <span class="still" [ngStyle]="{'width.px': (250 - (item.used * 250)/item.allocatable) }"></span>
+                </div>
+                <div class="amount">
+                  <span>剩余: {{item.allocatable - item.used + ' ' + item.unit}}</span>
+                  <span>总量: {{item.allocatable + ' ' + item.unit}}</span>
+                </div>
+              </div>
             </div>
           </li>
         </ol>

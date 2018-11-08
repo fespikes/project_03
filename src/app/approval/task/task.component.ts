@@ -20,7 +20,7 @@ export class TaskComponent implements OnInit {
   id: string;
   fromPath: string;
   executions: any[] = [];
-  last: any;
+  last: any = {};
   order: number; // the order of the last execution
 
   details: any = new BPMSTaskDetail;

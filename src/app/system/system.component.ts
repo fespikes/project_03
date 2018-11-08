@@ -41,7 +41,7 @@ export class SystemComponent implements OnInit {
   ngOnInit() {
     this.getServiceLabels().subscribe();
     this.getServiceList().subscribe();
-    this.isAdmin = !this.utilService.checkIsAdmin();
+    this.isAdmin = this.utilService.checkIsAdmin();
   }
 
   getServiceList() {

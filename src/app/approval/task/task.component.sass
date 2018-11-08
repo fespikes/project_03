@@ -100,6 +100,10 @@ $gray-font: #b5bbc9
     &>li
       padding-bottom: 30px
   .apply-status
+    h3.rejected
+      color: red
+    h3.succeed
+      color: $green
     dl
       display: flex
       justify-content: flex-start
@@ -116,16 +120,25 @@ $gray-font: #b5bbc9
           position: absolute
           left: 24px
           top: 0
-        &.green
-          color: $green
-          .singnal
-            border: 6px $green solid
-            background: $green
         &.blue
           color: $blue
           .singnal
             border: 6px $blue solid
             background: $blue
+        &.red
+          color: red
+          .singnal
+            display: none
+          .icon
+            width: 32px
+            height: 32px
+            border-radius: 16px
+            border: 6px red solid
+            position: absolute
+            left: 24px
+            top: 0
+            fill: #fff
+            background: red
         &.gray
           color: $gray
           &:before
@@ -135,6 +148,18 @@ $gray-font: #b5bbc9
             height: 32px
             border-radius: 16px
             background: $gray
+            position: absolute
+            left: 24px
+            top: 0
+        &.green
+          color: $green
+          &:before
+            content: ''
+            display: inline-block
+            width: 32px
+            height: 32px
+            border-radius: 16px
+            background: $green
             position: absolute
             left: 24px
             top: 0
@@ -152,6 +177,8 @@ $gray-font: #b5bbc9
           background: $green
         &.gray
           background: $gray
+        &.red
+          background: red
 
   .apply-content
   .apply-description
