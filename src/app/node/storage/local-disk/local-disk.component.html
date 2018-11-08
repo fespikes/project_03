@@ -21,7 +21,7 @@
     </span>
     <span class="detail">
       <h4>{{item.name}}</h4>
-      <p>磁盘分区: {{item.parts[0] || '---'}}</p>
+      <p>{{item.pools && item.pools.length>0 ? ('磁盘池:' +  item.pools.toLocaleString()) : ('磁盘分区:' + (item.parts.toLocaleString() || ' ...') )}}</p>
     </span>
     <span class="last">{{item.size}}</span>
   </li>
