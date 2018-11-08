@@ -24,6 +24,7 @@ export class AddComponent implements OnInit {
     private modal: TuiModalRef,
     private administratorsService: AdministratorsService,
   ) {
+    const me = this;
     this.myForm = fb.group({
       'username': ['', Validators.required],
       'password': ['', Validators.compose([
@@ -36,6 +37,9 @@ export class AddComponent implements OnInit {
         Validators.compose([
           Validators.required,
           Validators.pattern(patterns.email),
+          function(control: FormControl) {
+            return me.checkEmail.bind(me)(control );
+          }
         ]),
       ],
       'deletable': ['true', Validators.required],
@@ -43,6 +47,17 @@ export class AddComponent implements OnInit {
   }
 
   ngOnInit() {}
+
+  checkEmail(control: FormControl): { [s: string]: boolean } {
+    const regexp = patterns.notAllowedEmailPattern;
+    if (regexp.test(control.value)) {
+      console.log(control.valid);
+      return {invalidCompare: true};
+    } else {
+      console.log(control.valid);
+      return {invalidCompare: false};
+    }
+  }
 
   onSubmit(value: {[s: string]: string}) {
     const val: any = {...value};
