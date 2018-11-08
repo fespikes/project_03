@@ -55,6 +55,8 @@ export class HistoryComponent implements OnInit {
 
   getTasks() {
     this.loading = true;
+    this.filter.page = this.pagination.page;
+    this.filter.size = this.pagination.size;
     this.service.getTasks(this.filter)
       .subscribe((result) => {
         this.tasks = result.data;
