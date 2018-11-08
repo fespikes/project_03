@@ -9,6 +9,7 @@ ADMINISTRATORS:
   EMAIL_PLACEHOLDER: Please input your email
   EMAIL_TIP_REQUIRED: Email is required
   EMAIL_TIP_PATTERN: Email is illegal
+  EMAIL_NOT_ALLOWED: Email is not allowed
   FULL_NAME: Fullname
   FULL_NAME_PLACEHOLDER: Please input your fullname
   FULL_NAME_TIP_REQUIRED: Full name is required
