@@ -1,5 +1,6 @@
 import { Component, OnInit, HostBinding } from '@angular/core';
 import { Pagination, TuiModalService } from 'tdc-ui';
+import { TecUtilService } from '../../shared';
 
 import { TenantFilter } from '../tenant-model';
 import { TenantService } from '../tenant.service';
@@ -19,6 +20,7 @@ const FileSaver = require('app/shared/FileSaver');
 export class TenantListComponent implements OnInit {
 
   loading;
+  isAdmin = false;
   tenantsCount = 0;
   statuses = statuses;
   filter = new TenantFilter();
@@ -32,10 +34,12 @@ export class TenantListComponent implements OnInit {
     private modalService: TuiModalService,
     private translateService: TranslateService,
     private api: TecApiService,
+    private utilService: TecUtilService
   ) { }
 
   ngOnInit() {
     this.getTenants();
+    this.isAdmin = this.utilService.checkIsAdmin();
   }
 
   getTenants() {

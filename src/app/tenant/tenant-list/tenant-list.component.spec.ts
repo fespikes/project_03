@@ -1,13 +1,14 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
+import { TecUtilService } from '../../shared';
 
 import { TenantListComponent } from './tenant-list.component';
 import { TenantService } from '../tenant.service';
 import { TecApiService } from 'app/shared';
 import { TranslateService } from 'app/i18n';
 import { TuiModalService } from 'tdc-ui';
-import { TranslatePipeStub, DefaultPipeStub, TranslateServiceMock } from 'app/mock';
+import { TranslatePipeStub, DefaultPipeStub, TranslateServiceMock, TecUtilServiceMock } from 'app/mock';
 
 class TenantServiceStub {
   fetchSummaries() {
@@ -31,6 +32,10 @@ describe('TenantListComponent', () => {
         DefaultPipeStub,
       ],
       providers: [
+        {
+          provide: TecUtilService,
+          useClass: TecUtilServiceMock
+        },
         {
           provide: TenantService,
           useClass: TenantServiceStub,
