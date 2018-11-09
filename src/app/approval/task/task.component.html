@@ -85,7 +85,10 @@
             <h4>申请内容</h4>
             <p>{{details.content}}</p>
           </li>
-          <li class="apply-content">  <!--new added this: 项目描述 -->
+          <li
+            class="apply-content"
+            *ngIf="details.projectDescription"
+          >  <!--new added this: 项目描述 -->
             <h4>项目描述</h4>
             <p>{{details.projectDescription || ''}}</p>
           </li>
