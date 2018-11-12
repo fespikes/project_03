@@ -109,7 +109,7 @@ export class TenantDetailComponent implements OnInit {
   selectedIndexChange(selectedId) {
     this.selectedTabIndex = selectedId;
     const uid = sessionStorage.getItem('eco:tenant:detail:uid');
-    this.router.navigate([`/tenant/detail/${uid}`], { queryParams: { idx: selectedId } })
+    this.router.navigate([`/tenant/detail/${uid}`], { queryParams: { idx: selectedId, canceled: this.filter.canceled } })
       .then(_ => _);
   }
 

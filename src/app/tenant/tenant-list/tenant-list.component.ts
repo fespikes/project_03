@@ -35,6 +35,7 @@ export class TenantListComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.filter.canceled = false;
     this.getTenants();
   }
 
