@@ -10,13 +10,13 @@
         <input
           [(ngModel)]="filter.isResolved"
           type="checkbox" id="show"
-          (ngModelChange)="showResolved()"
+          (ngModelChange)="filterChange()"
         />
         <label for="show">{{'TICKET.SHOW_HANDLED' | translate}}</label>
 
         <tui-select
           [(ngModel)]="filter.types"
-          (ngModelChange)="fetchData(true)"
+          (ngModelChange)="filterChange()"
           style="width: 160px;"
           class="filter"
         >
@@ -30,8 +30,8 @@
         </tui-select>
         
         <tui-search
-          [(ngModel)]="search"
-          (ngModelChange)="fetchData(true)"
+          [(ngModel)]="filter.keywords"
+          (ngModelChange)="filterChange()"
           class="search-field"
         ></tui-search>
       </span>

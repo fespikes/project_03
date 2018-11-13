@@ -43,13 +43,13 @@ export class TicketComponent implements OnInit {
           options.push(item);
         });
         this.options = options;
-        this.filter.types = this.options[0]['typeAlias'];
+        this.filter.types = this.options[0]['type'];
       });
 
     this.fetchData();
   }
 
-  showResolved() {
+  filterChange() {
     this.pagination.page = 1;
     this.fetchData();
   }
@@ -58,9 +58,6 @@ export class TicketComponent implements OnInit {
     this.loading = true;
     this.filter.page = this.pagination.page;
     this.filter.size = this.pagination.size;
-    if (!!this.search) {
-      this.filter.keywords = [this.search];
-    }
 
     if (changes && changes.sortedBy) {
       const {sortedBy, order} = changes;
