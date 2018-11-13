@@ -110,7 +110,7 @@ export class NodeComponent implements OnInit {
   export() {
     this.api.getFile('nodes/export')
     .subscribe((data) => {
-      const fileBlob = new Blob([data], {type: 'application/vnd.ms-excel'});
+      const fileBlob = new Blob([data.body], {type: 'application/vnd.ms-excel'});
       FileSaver.saveAs(fileBlob, 'nodes.xls');
     });
   }
