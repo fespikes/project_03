@@ -1,5 +1,6 @@
 <span *ngIf="editing && key===editingKey">
   <button
+    class="first"
     tuiBtn="primary"
     size="sm"
     [disabled]="invalid"
@@ -12,6 +13,7 @@
     ></svg>
   </button>
   <button
+    class="last"
     tuiBtn="default"
     size="sm"
     (click)="edit('cancel')"

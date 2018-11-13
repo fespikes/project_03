@@ -35,6 +35,7 @@ export class TenantListComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.filter.canceled = false;
     this.getTenants();
   }
 
@@ -73,7 +74,7 @@ export class TenantListComponent implements OnInit {
   export() {
     this.api.getFile('tenants/summaries/export')
     .subscribe((data) => {
-      const fileBlob = new Blob([data], {type: 'application/vnd.ms-excel'});
+      const fileBlob = new Blob([data.body], {type: 'application/vnd.ms-excel'});
       FileSaver.saveAs(fileBlob, 'tenants.xls');
     });
   }
