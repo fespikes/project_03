@@ -103,7 +103,6 @@ export class NodeComponent implements OnInit {
   }
 
   filterChange() {
-    console.log('fuck', this.filter.newJoined);
     this.fetchTableData();
   }
 

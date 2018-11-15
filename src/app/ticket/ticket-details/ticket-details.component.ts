@@ -40,6 +40,9 @@ export class TicketDetailsComponent implements OnInit {
   attachments: any[];
 
   ticketChanges: any[];
+  operators = {
+    add: 'addition' // to match backend 'addition'
+  };
 
   constructor(
     fb: FormBuilder,
