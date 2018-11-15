@@ -73,10 +73,10 @@
         <dd *ngFor="let item of appliedResource">
           <!--TODO: i18n-->
           <span>{{(item.displayName || '') + (item.operator===operators.add?'增加':'减少')}}: </span>
-          <span class="highlight">&nbsp;{{(item.value?(+item.value).toFixed(2) : '')}}</span>
+          <span class="highlight">&nbsp;{{(item.value?(+item.value).toFixed(2) : '0')}}</span>
           <span>&nbsp;{{item.displayUnit || ''}}</span>
           <span>&nbsp;&nbsp;&nbsp;&nbsp;配额总计:</span>
-          <span class="highlight">&nbsp;{{(+item.value+item.total).toFixed(2)}}</span>
+          <span class="highlight">&nbsp;{{(+item.total).toFixed(2)}}</span>
           <span>&nbsp;{{item.displayUnit || ''}}</span>
         </dd>
       </dl>
