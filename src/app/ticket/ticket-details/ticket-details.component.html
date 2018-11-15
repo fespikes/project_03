@@ -71,8 +71,13 @@
       <h4 class="title">{{'TICKET.APPLIED_RESOURCE' | translate}}</h4>
       <dl class="resource-dl">
         <dd *ngFor="let item of appliedResource">
-          <span>{{item.displayName || ''}}: </span>
-          <span>{{' ' + (item.value || '') + (item.displayUnit || '')}}</span>
+          <!--TODO: i18n-->
+          <span>{{(item.displayName || '') + (item.operator===operators.add?'增加':'减少')}}: </span>
+          <span class="highlight">&nbsp;{{(item.total?(+item.total).toFixed(2) : '')}}</span>
+          <span>&nbsp;{{item.displayUnit || ''}}</span>
+          <span>&nbsp;&nbsp;&nbsp;&nbsp;配额总计:</span>
+          <span class="highlight">&nbsp;{{(+item.value+item.total).toFixed(2)}}</span>
+          <span>&nbsp;{{item.displayUnit || ''}}</span>
         </dd>
       </dl>
     </div>
