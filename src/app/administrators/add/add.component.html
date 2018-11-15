@@ -73,7 +73,7 @@
     </div>
 
     <div
-      [class.error]="!myForm.get('email').valid && myForm.get('email').hasError('invalidCompare') && myForm.get('email').touched"
+      [class.error]="!myForm.get('email').valid && (email.dirty || myForm.get('email').touched)"
     >
       <div class="field-box">
         <label for="emailId"><span>*</span>{{'ADMINISTRATORS.EMAIL' | translate}}</label>
@@ -84,6 +84,7 @@
           id="emailId"
           autocomplete="off"
           [formControl]="myForm.controls['email']"
+          tecForbiddenEmail
          />
       </div>
 
@@ -96,7 +97,7 @@
         class="message"
       >{{'ADMINISTRATORS.EMAIL_TIP_PATTERN' | translate}}</div>
       <div
-        *ngIf="myForm.controls['email'].hasError('invalidCompare') && myForm.controls['email'].touched"
+        *ngIf="email.errors?.forbiddenEmail && myForm.controls['email'].touched"
         class="message"
       >{{'ADMINISTRATORS.EMAIL_NOT_ALLOWED' | translate}}</div>
     </div>

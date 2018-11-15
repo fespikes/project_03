@@ -10,6 +10,7 @@ import { TuiModalRef } from 'tdc-ui';
 
 import { patterns } from '../../shared';
 import { AdministratorsService } from '../administrators.service';
+import { forbiddenEmailValidator } from '../../shared';
 
 @Component({
   selector: 'tec-add',
@@ -18,6 +19,10 @@ import { AdministratorsService } from '../administrators.service';
 })
 export class AddComponent implements OnInit {
   myForm: FormGroup;
+
+  get email() {
+    return this.myForm.get('email');
+  }
 
   constructor(
     fb: FormBuilder,
@@ -37,27 +42,21 @@ export class AddComponent implements OnInit {
         Validators.compose([
           Validators.required,
           Validators.pattern(patterns.email),
-          function(control: FormControl) {
-            return me.checkEmail.bind(me)(control );
-          }
+          forbiddenEmailValidator(patterns.notAllowedEmailPattern)
         ]),
       ],
       'deletable': ['true', Validators.required],
     });
+
+    this.myForm.statusChanges.subscribe(argu => {
+      console.log(me.myForm);
+    });
+    this.myForm.valueChanges.subscribe(argu => {
+      console.log(me.myForm);
+    });
   }
 
   ngOnInit() {}
-
-  checkEmail(control: FormControl): { [s: string]: boolean } {
-    const regexp = patterns.notAllowedEmailPattern;
-    if (regexp.test(control.value)) {
-      console.log(control.valid);
-      return {invalidCompare: true};
-    } else {
-      console.log(control.valid);
-      return {invalidCompare: false};
-    }
-  }
 
   onSubmit(value: {[s: string]: string}) {
     const val: any = {...value};

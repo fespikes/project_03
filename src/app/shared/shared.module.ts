@@ -1,9 +1,13 @@
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { HttpClientModule } from '@angular/common/http';
 import { I18nModule } from '../i18n';
 import { TuiModule } from 'tdc-ui';
-import { HttpClientModule } from '@angular/common/http';
+
+import {
+  ForbiddenValidatorDirective
+} from './directives';
 
 import {
   ChartWrapperComponent,
@@ -17,7 +21,7 @@ import {
   OverflowContainerComponent,
   ServiceTagComponent,
   YamlTreeComponent,
-} from './components/';
+} from './components';
 
 import {
   SystemService,
@@ -44,7 +48,9 @@ import {
     ModalYamlDetailComponent,
     OverflowContainerComponent,
     ServiceTagComponent,
-    YamlTreeComponent
+    YamlTreeComponent,
+
+    ForbiddenValidatorDirective
   ],
   providers: [
     SystemService,
@@ -68,6 +74,8 @@ import {
     TuiModule,
     YamlTreeComponent,
     HttpClientModule,
+
+    ForbiddenValidatorDirective
   ],
   entryComponents: [
     ModalPodDetailComponent,
