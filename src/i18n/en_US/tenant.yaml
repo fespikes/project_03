@@ -37,7 +37,7 @@ TENANT:
     STATUS: Status
     CREATE_TIME: Create Time
     BILL: Bill
-    SHOW_CANCELED_TENANT: Show Canceled Tenant
+    SHOW_CANCELED_TENANT: Show Canceled Tenants
     DELETE: Delete
     OPERATION: Operation
     CONFIRM_DELETE: Confirm Delete
