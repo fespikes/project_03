@@ -8,7 +8,7 @@
     "start": "ng serve --proxy-config proxy.conf.json",
     "prebuild": "npm run i18n",
     "build": "ng build",
-    "build:prod": "ng build --prod --source-map --aot",
+    "build:prod": "ng build --prod --aot",
     "prebuild:prod": "npm run i18n",
     "icon": "node scripts/generateIconSymbol",
     "i18n": "node scripts/compileI18n",
