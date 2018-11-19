@@ -88,7 +88,7 @@ describe('NetworkRulesComponent', () => {
 
   beforeEach(() => {
     originalTime = jasmine.DEFAULT_TIMEOUT_INTERVAL;
-    jasmine.DEFAULT_TIMEOUT_INTERVAL = 50000;
+    jasmine.DEFAULT_TIMEOUT_INTERVAL = 500000;
 
     fixture = TestBed.createComponent(NetworkRulesComponent);
     component = fixture.componentInstance;

@@ -37,7 +37,7 @@ TENANT:
     STATUS: 状态
     CREATE_TIME: 创建时间
     BILL: 总账单金额
-    SHOW_CANCELED_TENANT: 显示已删除用户
+    SHOW_CANCELED_TENANT: 显示已删除租户
     DELETE: 删除
     OPERATION: 操作
     CONFIRM_DELETE: 确认删除
