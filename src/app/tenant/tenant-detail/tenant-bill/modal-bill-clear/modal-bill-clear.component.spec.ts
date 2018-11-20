@@ -1,6 +1,6 @@
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { Observable } from 'rxjs/Observable';
+import { Observable, of } from 'rxjs';
 import { TuiModalService, TUI_MODAL_DATA, TuiModalRef } from 'tdc-ui';
 
 import { TenantService } from 'app/tenant/tenant.service';
@@ -13,7 +13,7 @@ class TuiModalServiceStub {
 
 class TenantServiceStub {
   clearBill() {
-    return Observable.of({
+    return of({
       data: {},
     });
   }

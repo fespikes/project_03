@@ -4,9 +4,8 @@ import {
 } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
-import { Observable } from 'rxjs/Observable';
+import { Observable, of } from 'rxjs';
 import { HttpClientModule } from '@angular/common/http';
-import 'rxjs/add/observable/combineLatest';
 import { TuiMessageService } from 'tdc-ui';
 import { OverlayModule } from '@angular/cdk/overlay';
 
@@ -41,8 +40,8 @@ describe('DiskPoolComponent', () => {
         {
           provide: ActivatedRoute,
           useValue: {
-            params: Observable.of({}),
-            queryParams: Observable.of({}),
+            params: of({}),
+            queryParams: of({}),
           },
         },
       ]

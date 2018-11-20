@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
-import { of } from 'rxjs';
+import { Observable ,  of } from 'rxjs';
 
 import { TecApiService } from '../shared';
 import { TicketFilter, Ticket } from './ticket.model';

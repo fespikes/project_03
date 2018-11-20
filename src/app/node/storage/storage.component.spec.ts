@@ -2,8 +2,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { Component, OnInit, HostBinding, OnDestroy, NO_ERRORS_SCHEMA } from '@angular/core';
 import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
 import { filter } from 'rxjs/operators';
-import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/observable/combineLatest';
+import { Observable, of } from 'rxjs';
 import { RouterTestingModule } from '@angular/router/testing';
 import { HttpClientModule } from '@angular/common/http';
 import { OverlayModule } from '@angular/cdk/overlay';
@@ -46,8 +45,8 @@ describe('StorageComponent', () => {
         {
           provide: ActivatedRoute,
           useValue: {
-            params: Observable.of({}),
-            queryParams: Observable.of({}),
+            params: of({}),
+            queryParams: of({}),
           },
         },
         {

@@ -11,7 +11,7 @@ import { HttpClientModule, HttpClient } from '@angular/common/http';
 
 import { OverlayModule } from '@angular/cdk/overlay';
 
-import { Observable } from 'rxjs/Observable';
+import { Observable, of } from 'rxjs';
 import { TuiMessageService } from 'tdc-ui';
 
 import { TasksService } from './tasks.service';
@@ -35,7 +35,7 @@ describe('TasksService', () => {
           provide: TranslateService,
           useValue: {
             get() {
-              return Observable.of();
+              return of();
             },
           },
         },

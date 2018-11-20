@@ -2,7 +2,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
-import { Observable } from 'rxjs/Observable';
+import { Observable, of } from 'rxjs';
 import { TabPaneDirective, TuiModalService } from 'tdc-ui';
 
 import { TenantDetailComponent } from './tenant-detail.component';
@@ -21,18 +21,18 @@ class TuiModalServiceStub {
 
 class TenantServiceStub {
   fetchAllTenants() {
-    return Observable.of([{
+    return of([{
       uid: 123,
     }]);
   }
   fetchTenantsCount() {
-    return Observable.of({
+    return of({
       count: 10,
       time: 0,
     });
   }
   fetchInfo() {
-    return Observable.of({
+    return of({
       name: 'tenant',
     });
   }
@@ -57,8 +57,8 @@ describe('TenantDetailComponent', () => {
         {
           provide: ActivatedRoute,
           useValue: {
-            params: Observable.of({}),
-            queryParams: Observable.of({}),
+            params: of({}),
+            queryParams: of({}),
           },
         },
         {

@@ -1,7 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Observable } from 'rxjs/Observable';
+import { Observable, of } from 'rxjs';
 import { TuiModalService } from 'tdc-ui';
 
 import { TranslateService } from 'app/i18n';
@@ -11,7 +11,7 @@ import { MockModule } from 'app/mock';
 
 class TenantServiceStub {
   fetchInstanceInfos() {
-    return Observable.of({
+    return of({
       data: [],
       pagination: {},
     });
@@ -37,7 +37,7 @@ describe('TenantInstanceComponent', () => {
         {
           provide: ActivatedRoute,
           useValue: {
-            params: Observable.of({ uid: 123 }),
+            params: of({ uid: 123 }),
           },
         },
         {

@@ -1,6 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
+import { Observable, of } from 'rxjs';
 
 import { TenantListComponent } from './tenant-list.component';
 import { TenantService } from '../tenant.service';
@@ -11,7 +11,7 @@ import { TranslatePipeStub, DefaultPipeStub, TranslateServiceMock } from 'app/mo
 
 class TenantServiceStub {
   fetchSummaries() {
-    return Observable.of({
+    return of({
       data: [],
       pagination: {},
     });
@@ -39,7 +39,7 @@ describe('TenantListComponent', () => {
           provide: TuiModalService,
           useValue: {
             open() {
-              return Observable.of();
+              return of();
             },
           },
         },
@@ -51,7 +51,7 @@ describe('TenantListComponent', () => {
           provide: TecApiService,
           useValue: {
             getFile() {
-              return Observable.of();
+              return of();
             },
           },
         },

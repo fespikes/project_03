@@ -1,14 +1,17 @@
+
+import {forkJoin as observableForkJoin, of as observableOf,  Observable } from 'rxjs';
+
+import {map} from 'rxjs/operators';
 import {
   Inject,
   Injectable,
   EventEmitter,
 } from '@angular/core';
 import { Http, Response } from '@angular/http';
-import { Observable } from 'rxjs/Observable';
 import merge from 'lodash-es/merge';
-import 'rxjs/add/operator/map';
-import 'rxjs/add/observable/of';
-import 'rxjs/add/observable/forkJoin';
+
+
+
 
 import { I18nLangService } from './i18n-lang.service';
 
@@ -71,20 +74,20 @@ export class TranslateService {
       const loaded = this.loadedI18n[this.lang][token];
       if (loaded) {
         this.activeI18n.add(token);
-        return Observable.of(this.store);
+        return observableOf(this.store);
       }
     } catch (e) {
       // noop
     }
-    return this.http.get(`${this.prefix}${this.lang}/${token}.json`)
-    .map((res: Response) => res.json())
-    .map((json) => {
+    return this.http.get(`${this.prefix}${this.lang}/${token}.json`).pipe(
+    map((res: Response) => res.json()),
+    map((json) => {
       this.loadedI18n[this.lang] = this.loadedI18n[this.lang] || {};
       this.loadedI18n[this.lang][token] = true;
       this.activeI18n.add(token);
       this.merge(this.lang, json);
       return this.store;
-    });
+    }));
   }
 
   /**
@@ -93,7 +96,7 @@ export class TranslateService {
    */
   use(lang) {
     this.lang = lang;
-    Observable.forkJoin(this.activeI18n.store.map((token: string) => this.load(token)))
+    observableForkJoin(this.activeI18n.store.map((token: string) => this.load(token)))
     .subscribe(() => {
       this.onLangChange.emit(this);
     });

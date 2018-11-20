@@ -1,13 +1,11 @@
+
+import {combineLatest as observableCombineLatest,  Observable ,  fromEvent } from 'rxjs';
 import {
   Component, OnInit,
   ElementRef, ViewChild,
   HostBinding, OnDestroy
 } from '@angular/core';
 import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
-
-import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/observable/combineLatest';
-import { fromEvent } from 'rxjs';
 import { map, filter, debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
 
 import {
@@ -58,7 +56,7 @@ export class LocalDiskComponent implements OnInit, OnDestroy {
       this.route.queryParams,
     ];
 
-    Observable.combineLatest(promises)
+    observableCombineLatest(promises)
     .subscribe(([pathParams, queryParams]) => {
       this.nodeName = pathParams['name'];
       this.fetchDisks();

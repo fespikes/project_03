@@ -1,8 +1,8 @@
 import { Injectable, EventEmitter } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
-import { Subject } from 'rxjs';
+import { Observable ,  Subject } from 'rxjs';
 import { TecApiService } from '../shared';
 import { NodeFilter } from './node.model';
+import { of } from 'rxjs';
 
 export class NodeServiceStub {
   private nodeDetails: Subject<any> = new Subject<any>();
@@ -12,40 +12,40 @@ export class NodeServiceStub {
     this.nodeDetails.next(node);
   }
   fetchNodeList() {
-    return Observable.of({
+    return of({
       options: {},
       pagination: {},
     });
   }
 
   fetchNodeSummary(): Observable<any> {
-    return Observable.of({
+    return of({
       pagination: {},
     });
   }
 
   addNodeLabel(): Observable<any> {
-    return Observable.of({});
+    return of({});
   }
 
   removeLabel(): Observable<any> {
-    return Observable.of({});
+    return of({});
   }
 
   getNodePool(): Observable<any> {
-    return Observable.of({});
+    return of({});
   }
 
   getNodeDisks(): Observable<any> {
-    return Observable.of({});
+    return of({});
   }
 
   getStoreDetails(): Observable<any> {
-    return Observable.of({});
+    return of({});
   }
 
   getLocalDisks(): Observable<any> {
-    return Observable.of({});
+    return of({});
   }
 
 }

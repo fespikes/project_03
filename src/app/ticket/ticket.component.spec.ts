@@ -9,7 +9,7 @@ import {
   Response,
   ResponseOptions,
 } from '@angular/http';
-import { Observable } from 'rxjs/Observable';
+import { Observable, of } from 'rxjs';
 import { HttpClientModule, HttpClient } from '@angular/common/http';
 
 import {
@@ -68,7 +68,7 @@ describe('TicketComponent', () => {
           provide: TranslateService,
           useValue: {
             get() {
-              return Observable.of();
+              return of();
             },
             translateKey() {},
           },

@@ -8,7 +8,7 @@ import {
   ResponseOptions,
 } from '@angular/http';
 
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { TranslatePipeStub, TranslateServiceMock } from '../../mock';
 import { TuiModule, TuiModalService, TuiModalRef, TUI_MODAL_DATA, TuiMessageService } from 'tdc-ui';
 

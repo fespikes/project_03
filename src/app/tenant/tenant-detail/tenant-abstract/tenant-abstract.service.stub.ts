@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
+import { Observable, of } from 'rxjs';
 
 import {
   TecApiService, TimeOption,
@@ -13,7 +13,7 @@ export class TenantAbstractServiceStub {
 
   getWithUID(...params) {
     const uid = sessionStorage.getItem('eco:tenant:detail:uid');
-    return Observable.of(params);
+    return of(params);
   }
 
   // 1.平台概览

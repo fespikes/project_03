@@ -12,7 +12,7 @@ import { SharedModule } from '../shared';
 import { NodeComponent } from './node.component';
 import { NodeService } from './node.service';
 
-import { Observable } from 'rxjs/Observable';
+import { Observable, of } from 'rxjs';
 import { TecApiService } from 'app/shared';
 import { TranslatePipeStub, DefaultPipeStub } from 'app/mock';
 import { NodeServiceStub } from './node.service.stub';
@@ -42,7 +42,7 @@ describe('NodeComponent', () => {
         {
           provide: ActivatedRoute,
           useValue: {
-            params: Observable.of({}),
+            params: of({}),
           },
         },
         {
@@ -55,7 +55,7 @@ describe('NodeComponent', () => {
         {
           provide: TecApiService,
           getFile() {
-            return Observable.of();
+            return of();
           },
         },
         {

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 
 import { TecApiService, ServiceList } from '../shared';
 import { TenantFilter, Instance, TenantAdminFilter, TenantAdmin } from './tenant-model';

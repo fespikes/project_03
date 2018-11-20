@@ -4,14 +4,12 @@ import {
   HostBinding,
   ViewChild, ElementRef,
 } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription } from 'rxjs';
 import { Pagination, SelectComponent } from 'tdc-ui';
 import { AbstractService } from './abstract.service';
 import {
   TecApiService, TimeOption, ChartWrapperComponent,
   TecUtilService, chartTypes, resourceTypes } from '../shared';
-import { hourlyDefaultFormat, xAxisCommon } from '../shared/patterns';
 import {
   BarChartConfig,
   BarChartData,

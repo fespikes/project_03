@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { TecApiService } from '../shared';
 import { TaskFilter } from './tasks.model';
 import { Task } from '../shared';

@@ -1,3 +1,5 @@
+
+import {map} from 'rxjs/operators';
 import { Component, OnInit, HostBinding, Inject } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 
@@ -33,13 +35,13 @@ export class ModalImageDetailComponent implements OnInit {
   }
 
   getServiceImage() {
-    return this.system.getServiceImages(this.service, this.microService, this.uid)
-    .map(result => {
+    return this.system.getServiceImages(this.service, this.microService, this.uid).pipe(
+    map(result => {
       this.image = Object.assign(result, {
         serviceName: this.service,
         microServiceName: this.microService,
       });
-    });
+    }));
   }
 
   confirm() {

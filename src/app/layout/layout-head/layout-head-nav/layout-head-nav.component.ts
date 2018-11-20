@@ -10,8 +10,7 @@ import {
 } from '@angular/core';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { Router } from '@angular/router';
-import { Subject } from 'rxjs';
-import { Subscription } from 'rxjs/Subscription';
+import { Subject ,  Subscription } from 'rxjs';
 
 import { TranslateService } from '../../../i18n';
 

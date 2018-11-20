@@ -10,7 +10,7 @@ import {
   Response,
   ResponseOptions,
 } from '@angular/http';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 
 import { TuiModalService, TuiModalRef, TuiMessageService } from 'tdc-ui';
 

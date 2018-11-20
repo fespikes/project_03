@@ -1,6 +1,5 @@
 import { TestBed, inject } from '@angular/core/testing';
-import { Observable } from 'rxjs/Observable';
-import { of } from 'rxjs';
+import { Observable ,  of } from 'rxjs';
 
 import { TenantService } from './tenant.service';
 import { Injectable } from '@angular/core';

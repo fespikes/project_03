@@ -1,10 +1,13 @@
+
+import {fromEvent as observableFromEvent,  Observable } from 'rxjs';
+
+import {throttleTime} from 'rxjs/operators';
 import {
   Component, OnInit,
   ViewChild, ElementRef, Input,
 } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/observable/fromEvent';
-import 'rxjs/add/operator/throttleTime';
+
+
 
 import {
   BarChartConfig, BarChartData, BarChart, BarChartBuilder,
@@ -52,8 +55,8 @@ export class ChartWrapperComponent implements OnInit {
     }
     Parent.drawing = true;
 
-    const resize = Observable.fromEvent(window, 'resize');
-    resize.throttleTime(500).subscribe(val => {
+    const resize = observableFromEvent(window, 'resize');
+    resize.pipe(throttleTime(500)).subscribe(val => {
       Parent.drawerMap.forEach(obj => {
         const {callback, chartType, chartConfig, chart, chartData} = obj;
         callback(chartType, chartConfig, chart, chartData);

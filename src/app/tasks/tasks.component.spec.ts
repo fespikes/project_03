@@ -13,7 +13,7 @@ import { TuiModule, TuiModalService, TuiMessageService } from 'tdc-ui';
 import { Overlay } from '@angular/cdk/overlay';
 
 import { TranslatePipeStub, DefaultPipeStub } from 'app/mock';
-import { Observable } from 'rxjs/Observable';
+import { Observable, of } from 'rxjs';
 import { TranslateService } from '../i18n';
 
 import { SharedModule, TecApiService } from '../shared';
@@ -58,7 +58,7 @@ describe('TasksComponent', () => {
           provide: TranslateService,
           useValue: {
             get() {
-              return Observable.of();
+              return of();
             },
             translateKey() {},
           },

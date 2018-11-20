@@ -1,3 +1,5 @@
+
+import {combineLatest as observableCombineLatest,  Observable } from 'rxjs';
 import { Component, OnInit, HostBinding, Injector } from '@angular/core';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import {
@@ -7,8 +9,7 @@ import {
   FormControl,
 } from '@angular/forms';
 import { switchMap } from 'rxjs/operators';
-import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/observable/combineLatest';
+
 
 import { TranslateService } from '../../i18n';
 import { SubmenuItem, TuiMessageService, TuiModalService } from 'tdc-ui';
@@ -86,7 +87,7 @@ export class TicketDetailsComponent implements OnInit {
     ];
     let id: string;
 
-    Observable.combineLatest(promises)
+    observableCombineLatest(promises)
     .subscribe(([pathParams, queryParams]) => {
       id = pathParams['id'];
       this.isResolved = (queryParams['isResolved'] === 'true');

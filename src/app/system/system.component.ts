@@ -1,4 +1,5 @@
 import { Component, OnInit, HostBinding } from '@angular/core';
+import { map } from 'rxjs/operators';
 
 import { Pagination, TuiModalService } from 'tdc-ui';
 import { TranslateService } from 'app/i18n';
@@ -43,24 +44,24 @@ export class SystemComponent implements OnInit {
   getServiceList() {
     this.loading = true;
     return this.system.getServiceList(this.filter, this.pagination)
-    .map(result => {
+    .pipe(map(result => {
       this.services = result.data;
       this.pagination = result.pagination;
       this.loading = false;
-    });
+    }));
   }
 
   getServiceLabels() {
     this.loading = true;
     return this.systemService.getServiceLabels()
-    .map(result => {
+    .pipe(map(result => {
       this.labels = result.map(label => {
         return {
           value: label,
           label: label,
         };
       });
-    });
+    }));
   }
 
   filterChange() {
