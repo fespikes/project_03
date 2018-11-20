@@ -27,21 +27,17 @@ const routes: Routes = [
         loadChildren: './abstract/abstract.module#AbstractModule',
       },
       {
-        path: 'node',
-        loadChildren: './node/node.module#NodeModule',
-      },
-      {
         path: 'tenant',
         loadChildren: './tenant/tenant.module#TenantModule',
       },
-      {
+/*       {
+        path: 'node',
+        loadChildren: './node/node.module#NodeModule',
+      }, */
+/*       {
         path: 'system',
         loadChildren: './system/system.module#SystemModule',
-      },
-      {
-        path: 'tickets',
-        loadChildren: './ticket/ticket.module#TicketModule',
-      },
+      }, */
       {
         path: 'message',
         loadChildren: './message/message.module#MessageModule',
@@ -63,8 +59,16 @@ const routes: Routes = [
         loadChildren: './account/account.module#AccountModule',
       },
       {
+        path: 'management',
+        loadChildren: './platform-management/platform-management.module#PlatformManagementModule',
+      },
+      {
         path: 'tasks',
         loadChildren: './tasks/tasks.module#TasksModule',
+      },
+      {
+        path: 'tickets',
+        loadChildren: './ticket/ticket.module#TicketModule',
       },
       {
         path: '',

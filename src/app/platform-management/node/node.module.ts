@@ -4,10 +4,9 @@ import { FormsModule } from '@angular/forms';
 // import { ReactiveFormsModule } from '@angular/forms';
 import { TuiModalService } from 'tdc-ui';
 
-import { SharedModule } from '../shared';
-import { I18nModule } from '../i18n';
+import { SharedModule } from 'app/shared';
+import { I18nModule } from 'app/i18n';
 
-import { NodeRoutingModule } from './node-routing.module';
 import { NodeComponent } from './node.component';
 // import { NodeAsideComponent } from './node-aside/node-aside.component';
 
@@ -21,8 +20,6 @@ import { LocalDiskComponent } from './storage/local-disk/local-disk.component';
   imports: [
     CommonModule,
     FormsModule,
-    // ReactiveFormsModule,
-    NodeRoutingModule,
     SharedModule,
     I18nModule,
   ],
@@ -32,7 +29,13 @@ import { LocalDiskComponent } from './storage/local-disk/local-disk.component';
     StorageComponent,
     DiskPoolComponent,
     LocalDiskComponent,
-    // NodeAsideComponent,
+  ],
+  exports: [
+    NodeComponent,
+    EditTagsComponent,
+    StorageComponent,
+    DiskPoolComponent,
+    LocalDiskComponent
   ],
   providers: [
     NodeService,

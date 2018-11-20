@@ -9,7 +9,7 @@ import {
 import { TuiMessageService, TuiModalRef, TUI_MODAL_DATA } from 'tdc-ui';
 
 import { NodeService } from '../node.service';
-import { TranslateService } from '../../i18n/translate.service';
+import { TranslateService } from 'app/i18n/translate.service';
 
 @Component({
   selector: 'tec-edit-tags',

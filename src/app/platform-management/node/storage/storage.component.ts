@@ -7,7 +7,7 @@ import { filter } from 'rxjs/operators';
 
 import { TuiModalService } from 'tdc-ui';
 import { NodeService } from '../node.service';
-import { TranslateService } from '../../i18n';
+import { TranslateService } from 'app/i18n';
 
 @Component({
   selector: 'tec-storage',

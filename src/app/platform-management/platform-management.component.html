@@ -1,0 +1,12 @@
+<div class="tui-layout-vertical">
+
+  <div class="tui-layout-main-container flex-auto">
+    <tui-tab
+      *ngIf="!loading"
+      [(selectedIndex)]="selectedIndex"
+      (selectedIndexChange)="tabIndexChange($event)"
+    >
+      <tec-node *tuiTabPane="'dddddddd' | translate"></tec-node>
+    </tui-tab>
+  </div>
+</div>

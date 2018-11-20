@@ -1,7 +1,7 @@
 import { Injectable, EventEmitter } from '@angular/core';
 import { Observable ,  Subject } from 'rxjs';
 
-import { TecApiService } from '../shared';
+import { TecApiService } from 'app/shared';
 
 import { NodeFilter } from './node.model';
 

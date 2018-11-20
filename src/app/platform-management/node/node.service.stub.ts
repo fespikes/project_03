@@ -1,7 +1,5 @@
-import { Injectable, EventEmitter } from '@angular/core';
 import { Observable ,  Subject } from 'rxjs';
-import { TecApiService } from '../shared';
-import { NodeFilter } from './node.model';
+import { TecApiService } from 'app/shared';
 import { of } from 'rxjs';
 
 export class NodeServiceStub {
@@ -11,6 +9,7 @@ export class NodeServiceStub {
   manipulateNodeDetails(node) {
     this.nodeDetails.next(node);
   }
+
   fetchNodeList() {
     return of({
       options: {},

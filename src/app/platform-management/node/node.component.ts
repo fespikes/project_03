@@ -17,9 +17,6 @@ const FileSaver = require('app/shared/FileSaver');
   styleUrls: ['./node.component.sass'],
 })
 export class NodeComponent implements OnInit {
-
-  @HostBinding('class.tui-layout-body') hostClass = true;
-
   loading = true;
 
   newAddedThisMonth: number;

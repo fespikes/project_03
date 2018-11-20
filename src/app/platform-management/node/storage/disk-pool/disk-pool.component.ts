@@ -9,9 +9,9 @@ import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
 import { filter } from 'rxjs/operators';
 
 
-import { DonutChart, DonutChartConfig } from '../../../chart/lib';
+import { DonutChart, DonutChartConfig } from 'app/chart/lib';
 import { NodeService } from '../../node.service';
-import { TranslateService } from '../../../i18n';
+import { TranslateService } from 'app/i18n';
 
 @Component({
   selector: 'tec-disk-pool',

@@ -10,9 +10,9 @@ import { map, filter, debounceTime, distinctUntilChanged, switchMap } from 'rxjs
 
 import {
   DonutChart, DonutChartData, DonutChartConfig
-} from '../../../chart/lib';
+} from 'app/chart/lib';
 import { NodeService } from '../../node.service';
-import { TranslateService } from '../../../i18n';
+import { TranslateService } from 'app/i18n';
 
 @Component({
   selector: 'tec-local-disk',

@@ -2,8 +2,7 @@ LAYOUT:
   MANAGEMENT_CENTER: 后台管理中心
   ABSTRACT: 概要信息
   TENANT: 租户
-  NODE: 主机
-  SYSTEM: 系统服务
+  MANAGEMENT: 平台管理
   TASKS: 任务
   TICKETS: 工单
   ORGANIZATION: 组织结构

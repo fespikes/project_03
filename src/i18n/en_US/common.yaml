@@ -2,8 +2,7 @@ LAYOUT:
   MANAGEMENT_CENTER: Management Center
   ABSTRACT: Abstract
   TENANT: Tenant
-  NODE: Node
-  SYSTEM: System Service
+  MANAGEMENT: Management
   TASKS: tasks
   TICKETS: Tickets
   ORGANIZATION: Organization
