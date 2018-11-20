@@ -13,7 +13,7 @@
     "icon": "node scripts/generateIconSymbol",
     "i18n": "node scripts/compileI18n",
     "test": "ng test --code-coverage",
-    "test:single": "ng test --single-run",
+    "test:single": "ng test --source-map=false",
     "lint": "ng lint --type-check --project=tdc-eco-frontend",
     "lint:fix": "ng lint --fix --type-check --project=tdc-eco-frontend",
     "e2e": "ng e2e"
