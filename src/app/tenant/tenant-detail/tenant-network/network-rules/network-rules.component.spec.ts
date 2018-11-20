@@ -13,7 +13,7 @@ import {
   Response,
 } from '@angular/http';
 import {MockBackend} from '@angular/http/testing';
-import { Observable } from 'rxjs/Observable';
+import { Observable, of } from 'rxjs';
 
 import { TranslatePipeStub, DefaultPipeStub } from 'app/mock';
 import { TecApiService, SharedModule } from 'app/shared';
@@ -30,7 +30,7 @@ class TenantServiceStub {
     return JSON.stringify([]);
   }
   getSecurityRules() {
-    return Observable.of({
+    return of({
       data: [],
       pagination: {},
     });
@@ -88,7 +88,7 @@ describe('NetworkRulesComponent', () => {
 
   beforeEach(() => {
     originalTime = jasmine.DEFAULT_TIMEOUT_INTERVAL;
-    jasmine.DEFAULT_TIMEOUT_INTERVAL = 50000;
+    jasmine.DEFAULT_TIMEOUT_INTERVAL = 500000;
 
     fixture = TestBed.createComponent(NetworkRulesComponent);
     component = fixture.componentInstance;

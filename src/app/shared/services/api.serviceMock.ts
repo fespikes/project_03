@@ -1,11 +1,11 @@
+
+import {throwError as observableThrowError,  Observable } from 'rxjs';
+
+import {map, catchError} from 'rxjs/operators';
 import * as path from 'path';
 import { Injectable } from '@angular/core';
 import { environment } from '../../../environments/environment';
 import { Headers, Http, Response, URLSearchParams, ResponseContentType } from '@angular/http';
-import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/operator/map';
-import 'rxjs/add/operator/catch';
-import 'rxjs/add/observable/throw';
 
 import { PartialCollection } from '../models';
 import { TuiMessageService  } from 'tdc-ui';
@@ -39,7 +39,7 @@ export class TecApiServiceMock {
     }
 
     this.message.error(data.message);
-    return Observable.throw(data);
+    return observableThrowError(data);
   }
 
   private formatResponse(res: Response, config = new ApiConfigMock()) {
@@ -52,15 +52,15 @@ export class TecApiServiceMock {
   }
 
   getInRoot(url: string, params: Object = {}, config?: ApiConfigMock): Observable<any> {
-    return this.http.get(url, { headers: this.headers, search: params })
-      .catch(this.formatErrors)
-      .map((res: Response) => this.formatResponse(res, config));
+    return this.http.get(url, { headers: this.headers, search: params }).pipe(
+      catchError(this.formatErrors),
+      map((res: Response) => this.formatResponse(res, config)));
   }
 
   get(url: string, params: Object = {}, config?: ApiConfigMock): Observable<any> {
-    return this.http.get(this.makeUrl(url), { headers: this.headers, search: params })
-      .catch(this.formatErrors)
-      .map((res: Response) => this.formatResponse(res, config));
+    return this.http.get(this.makeUrl(url), { headers: this.headers, search: params }).pipe(
+      catchError(this.formatErrors),
+      map((res: Response) => this.formatResponse(res, config)));
   }
 
   getAll(url: string, params: Object = {}, config?: ApiConfigMock): Observable<PartialCollection> {
@@ -76,9 +76,9 @@ export class TecApiServiceMock {
         headers: this.headers,
         search: params,
         responseType: ResponseContentType.Blob,
-      })
-      .map((res) => res.blob())
-      .catch(this.formatErrors);
+      }).pipe(
+      map((res) => res.blob()),
+      catchError(this.formatErrors));
   }
 
   put(url: string, body: Object = {}): Observable<any> {
@@ -86,9 +86,9 @@ export class TecApiServiceMock {
       this.makeUrl(url),
       JSON.stringify(body),
       { headers: this.headers },
-    )
-      .catch(this.formatErrors)
-      .map((res: Response) => this.formatResponse(res));
+    ).pipe(
+      catchError(this.formatErrors),
+      map((res: Response) => this.formatResponse(res)));
   }
 
   post(url: string, body: Object = {}): Observable<any> {
@@ -96,17 +96,17 @@ export class TecApiServiceMock {
       this.makeUrl(url),
       JSON.stringify(body),
       { headers: this.headers },
-    )
-      .catch(this.formatErrors)
-      .map((res: Response) => this.formatResponse(res));
+    ).pipe(
+      catchError(this.formatErrors),
+      map((res: Response) => this.formatResponse(res)));
   }
 
   delete(url): Observable<any> {
     return this.http.delete(
       this.makeUrl(url),
       { headers: this.headers },
-    )
-      .catch(this.formatErrors)
-      .map((res: Response) => this.formatResponse(res));
+    ).pipe(
+      catchError(this.formatErrors),
+      map((res: Response) => this.formatResponse(res)));
   }
 }

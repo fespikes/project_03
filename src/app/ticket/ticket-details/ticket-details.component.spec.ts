@@ -11,7 +11,7 @@ import {
   Response,
   ResponseOptions,
 } from '@angular/http';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { TranslatePipeStub, TranslateServiceMock } from '../../mock';
 
 import { TranslateDeactivator, TranslateResolver, TranslateToken } from '../../i18n';

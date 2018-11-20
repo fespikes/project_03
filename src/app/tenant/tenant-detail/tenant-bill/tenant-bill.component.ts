@@ -1,5 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { map } from 'rxjs/operators';
+
 import { Pagination, TuiModalService, TuiModalConfig } from 'tdc-ui';
 import { TranslateService } from 'app/i18n';
 import { TenantService } from 'app/tenant/tenant.service';
@@ -39,11 +41,11 @@ export class TenantBillComponent implements OnInit {
   fetchBills() {
     this.loading = true;
     return this.tenantService.fetchBills(this.uid, this.pagination, this.keyword)
-      .map((result) => {
+      .pipe(map((result) => {
         this.bills = result.data;
         this.pagination = result.pagination;
         this.loading = false;
-      });
+      }));
   }
 
   openClearBillModal(bill) {

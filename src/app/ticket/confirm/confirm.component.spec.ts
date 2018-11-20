@@ -8,7 +8,7 @@ import {
   ResponseOptions,
 } from '@angular/http';
 
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { TranslatePipeStub, TranslateServiceMock } from '../../mock';
 import { TuiModule, TuiModalService, TuiModalRef, TUI_MODAL_DATA, TuiMessageService } from 'tdc-ui';
 
@@ -73,7 +73,7 @@ describe('ConfirmComponent', () => {
 
   beforeEach(() => {
     originalTime = jasmine.DEFAULT_TIMEOUT_INTERVAL;
-    jasmine.DEFAULT_TIMEOUT_INTERVAL = 50000;
+    jasmine.DEFAULT_TIMEOUT_INTERVAL = 500000;
     fixture = TestBed.createComponent(ConfirmComponent);
     component = fixture.componentInstance;
     component.fields = {};

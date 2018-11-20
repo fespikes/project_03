@@ -1,6 +1,9 @@
+
+import {combineLatest as observableCombineLatest,  Observable } from 'rxjs';
 import { Component, OnInit, HostBinding } from '@angular/core';
 import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
 import { filter } from 'rxjs/operators';
+import { forkJoin } from 'rxjs';
 import { TuiModalService } from 'tdc-ui';
 
 import { TenantInfo, statuses } from '../tenant-model';
@@ -8,8 +11,7 @@ import { TenantService } from '../tenant.service';
 import { TranslateService } from 'app/i18n';
 import { FailureCourseComponent } from '../components/failure-course/failure-course.component';
 import { ModalDeleteTenantComponent } from '../components/modal/delete-tenant.component';
-import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/observable/combineLatest';
+
 
 @Component({
   templateUrl: './tenant-detail.component.html',
@@ -54,7 +56,7 @@ export class TenantDetailComponent implements OnInit {
       this.route.queryParams,
     ];
 
-    Observable.combineLatest(promises)
+    observableCombineLatest(promises)
     .subscribe(([pathParams, queryParams]) => {
       this.filter = {...this.filter, canceled: queryParams['canceled'] === 'true'};
       this.uid = pathParams['uid'];
@@ -77,7 +79,7 @@ export class TenantDetailComponent implements OnInit {
     ];
 
     this.loading = true;
-    Observable.forkJoin(promises)
+    forkJoin(promises)
     .subscribe(([tenant, count, tenantList]) => {
       this.tenant = tenant;
       this.tenantsCount = (count as any).count;

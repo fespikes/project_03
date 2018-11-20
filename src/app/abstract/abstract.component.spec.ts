@@ -1,6 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { DebugElement, ViewChild, NO_ERRORS_SCHEMA, ElementRef } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
+import { Observable, of } from 'rxjs';
 
 import { AbstractComponent } from './abstract.component';
 import { TranslatePipeStub, DefaultPipeStub } from 'app/mock';
@@ -44,7 +44,7 @@ describe('AbstractComponent', () => {
         provide: TranslateService,
         useValue: {
           get() {
-            return Observable.of();
+            return of();
           },
           translateKey() {},
         },

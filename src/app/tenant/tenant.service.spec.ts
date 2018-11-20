@@ -1,5 +1,5 @@
 import { TestBed, inject } from '@angular/core/testing';
-import { Observable } from 'rxjs/Observable';
+import { Observable, of } from 'rxjs';
 
 import { TenantService } from './tenant.service';
 import { TecApiService } from '../shared';
@@ -13,7 +13,7 @@ describe('TenantService', () => {
           provide: TecApiService,
           useValue: {
             get() {
-              return Observable.of();
+              return of();
             },
           },
         },

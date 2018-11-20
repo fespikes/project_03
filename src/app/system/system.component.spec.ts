@@ -1,6 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
+import { Observable, of } from 'rxjs';
 
 import {  MockModule } from 'app/mock';
 import { SystemComponent } from './system.component';
@@ -13,27 +13,27 @@ import { TranslateServiceMock } from 'app/mock';
 
 class SystemServiceStub {
   getServiceLabels() {
-    return Observable.of();
+    return of();
   }
   startService() {
-    return Observable.of();
+    return of();
   }
   stopService() {
-    return Observable.of();
+    return of();
   }
 }
 
 class ModalServiceStub {
   openPodModal() {
-    return Observable.of(true);
+    return of(true);
   }
 
   openImageModal() {
-    return Observable.of(true);
+    return of(true);
   }
 
   openYamlModal() {
-    return Observable.of(true);
+    return of(true);
   }
 }
 
@@ -71,7 +71,7 @@ describe('SystemComponent', () => {
           provide: SystemModuleService,
           useValue: {
             getServiceList() {
-              return Observable.of();
+              return of();
             },
           },
         },

@@ -1,3 +1,5 @@
+
+import {map} from 'rxjs/operators';
 import { Component, OnInit, Inject } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 
@@ -32,10 +34,10 @@ export class ModalYamlDetailComponent implements OnInit {
   }
 
   getServiceYaml() {
-    return this.system.getServiceYamls(this.serviceName, this.uid)
-    .map((result) => {
+    return this.system.getServiceYamls(this.serviceName, this.uid).pipe(
+    map((result) => {
       this.yamls = this.makeYamlTreeModel(result);
-    });
+    }));
   }
 
   highlightKeyword() {

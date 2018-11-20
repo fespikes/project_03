@@ -1,3 +1,5 @@
+
+import {combineLatest as observableCombineLatest,  Observable } from 'rxjs';
 import {
   Component, OnInit, HostBinding,
   ElementRef, ViewChild, OnDestroy
@@ -5,8 +7,7 @@ import {
 import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
 
 import { filter } from 'rxjs/operators';
-import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/observable/combineLatest';
+
 
 import { DonutChart, DonutChartConfig } from '../../../chart/lib';
 import { NodeService } from '../../node.service';
@@ -72,7 +73,7 @@ export class DiskPoolComponent implements OnInit, OnDestroy {
     ];
     this.refresh();
 
-    Observable.combineLatest(promises)
+    observableCombineLatest(promises)
     .subscribe(([pathParams, queryParams]) => {
       this.loading = true;
       this.nodeName = pathParams['name'];

@@ -11,7 +11,7 @@ import {
 } from '@angular/http';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { TenantService } from '../../tenant.service';
 import { TranslateService } from 'app/i18n';
 import { Pagination, TuiModalService, TuiModalRef, TuiMessageService } from 'tdc-ui';

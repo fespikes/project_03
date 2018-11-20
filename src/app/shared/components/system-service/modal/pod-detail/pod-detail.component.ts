@@ -1,3 +1,5 @@
+
+import {map} from 'rxjs/operators';
 import { Component, OnInit, Inject } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 
@@ -50,21 +52,21 @@ export class ModalPodDetailComponent implements OnInit {
   }
 
   getPodEvents() {
-    return this.system.getPodEvents(this.pod.name, this.uid)
-    .map(result => {
+    return this.system.getPodEvents(this.pod.name, this.uid).pipe(
+    map(result => {
       this.events = result;
-    });
+    }));
   }
 
   getPodLogs() {
-    return this.system.getPodLogs(this.pod.name, this.uid)
-    .map(result => {
+    return this.system.getPodLogs(this.pod.name, this.uid).pipe(
+    map(result => {
       this.logs = result;
       if (this.logs && this.logs.length > 0) {
         this.selectedLog = this.logs[0];
         this.renderedLog = this.selectedLog.logs.slice(0, LOG_TRUNCATE_LENGTH);
       }
-    });
+    }));
   }
 
   onSelectLog() {

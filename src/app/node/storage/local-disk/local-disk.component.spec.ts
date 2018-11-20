@@ -9,8 +9,7 @@ import { OverlayModule } from '@angular/cdk/overlay';
 
 import { TuiMessageService } from 'tdc-ui';
 import { filter } from 'rxjs/operators';
-import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/observable/combineLatest';
+import { Observable, of } from 'rxjs';
 
 import { DonutChart, DonutChartConfig } from '../../../chart/lib';
 import { NodeService } from '../../node.service';
@@ -44,8 +43,8 @@ describe('LocalDiskComponent', () => {
         {
           provide: ActivatedRoute,
           useValue: {
-            params: Observable.of({}),
-            queryParams: Observable.of({}),
+            params: of({}),
+            queryParams: of({}),
           },
         },
       ]

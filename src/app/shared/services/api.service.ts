@@ -1,12 +1,10 @@
+
 import * as path from 'path-browserify';
 import { Injectable } from '@angular/core';
 import { environment } from 'environments/environment';
 import { HttpClient, HttpParams, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
-import 'rxjs/add/operator/map';
-// import 'rxjs/add/operator/catch';
-// import 'rxjs/add/observable/throw';
-import { catchError } from 'rxjs/operators';
+import { map,  catchError } from 'rxjs/operators';
 
 import { TuiMessageService  } from 'tdc-ui';
 import { PartialCollection } from '../models';
@@ -46,7 +44,7 @@ export class TecApiService {
     return this.http.get(this.makeUrl(url), queryParams)
       .pipe(
         catchError(this.formatErrors),
-      ).map(res => this.dataAdjustment(res));
+      ).pipe(map(res => this.dataAdjustment(res)));
   }
 
   getUnformat(url: string, params: Object = {}): Observable<any> {

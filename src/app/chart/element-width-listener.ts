@@ -1,7 +1,7 @@
+
+import {interval as observableInterval,  Observable ,  Subscription } from 'rxjs';
 import { ElementRef } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
-import { Subscription } from 'rxjs/Subscription';
-import 'rxjs/add/observable/interval';
+
 import { filter } from 'rxjs/operators';
 
 export class ElementWidthListener {
@@ -17,7 +17,7 @@ export class ElementWidthListener {
   }
 
   startListen() {
-    return this.intervalSub = Observable.interval(this.timeInterval).pipe(filter(() => {
+    return this.intervalSub = observableInterval(this.timeInterval).pipe(filter(() => {
       const width = this.elementRef.nativeElement.offsetWidth;
       if (this.hostWidth !== width) {
         this.hostWidth = width;

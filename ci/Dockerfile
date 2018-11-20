@@ -1,6 +1,6 @@
 FROM 172.16.1.99/frontend/tdc-ui/build/ci-base-8.11:latest
 
-ARG NG_CLI_VERSION=6.0.8
+ARG NG_CLI_VERSION=7.0.6
 ARG USER_HOME_DIR="/tmp"
 ARG APP_DIR="/usr/src/app"
 ARG NPM_REGISTRY="http://172.16.1.161:30033/repository/npm-group/"
@@ -21,6 +21,7 @@ RUN set -xe \
   && (su node -c "npm config set registry $NPM_REGISTRY") \
   && (cd "/$USER_HOME_DIR"; su node -c "npm install -g @angular/cli@$NG_CLI_VERSION;") \
   && (cd "/$APP_DIR"; su node -c "yarn; yarn add node-sass;") \
-  && (su node -c "yarn cache clean; npm cache clean --force")
+  && (su node -c "yarn cache clean; npm cache clean --force") \
+  && (cd "/$APP_DIR"; su node -c "npm install")
 
 WORKDIR $APP_DIR

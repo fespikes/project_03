@@ -1,8 +1,10 @@
+
+import {map} from 'rxjs/operators';
 import { Inject, Injectable } from '@angular/core';
 import { Resolve } from '@angular/router';
 import { TranslateService } from './translate.service';
-import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/operator/map';
+import { Observable } from 'rxjs';
+
 
 import { TranslateToken } from '../i18n/translate-token';
 
@@ -15,7 +17,7 @@ export class TranslateResolver implements Resolve<Observable<Object>> {
   }
 
   resolve() {
-    return this.translate.load(this.translateToken)
-    .map(() => null);
+    return this.translate.load(this.translateToken).pipe(
+    map(() => null));
   }
 }

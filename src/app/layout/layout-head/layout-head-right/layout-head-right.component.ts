@@ -1,6 +1,7 @@
+
+import {forkJoin as observableForkJoin,  Observable } from 'rxjs';
 import { Component, OnInit } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/observable/forkJoin';
+
 
 import { LayoutService } from '../../layout.service';
 
@@ -42,7 +43,7 @@ export class LayoutHeadRightComponent implements OnInit {
       this.layoutService.getProfile(),
       this.layoutService.getEntrances(),
     ];
-    Observable.forkJoin(observables)
+    observableForkJoin(observables)
       .subscribe(([profile, entrances]) => {
         this.profile = profile || this.profile;
         this.entrances = entrances || this.entrances;

@@ -1,8 +1,9 @@
+
+import {combineLatest as observableCombineLatest,  Observable } from 'rxjs';
 import { Component, OnInit, HostBinding, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
 import { filter } from 'rxjs/operators';
-import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/observable/combineLatest';
+
 
 import { TuiModalService } from 'tdc-ui';
 import { NodeService } from '../node.service';
@@ -57,7 +58,7 @@ export class StorageComponent implements OnInit, OnDestroy {
       this.route.queryParams,
     ];
 
-    Observable.combineLatest(promises)
+    observableCombineLatest(promises)
       .subscribe(([pathParams, queryParams]) => {
         this.nodeName = pathParams['name'];
         const selectedTabIndex = queryParams['idx'];

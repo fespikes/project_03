@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-
+import { map } from 'rxjs/operators';
 import { TenantService } from 'app/tenant/tenant.service';
 import { Pagination, TuiModalService } from 'tdc-ui';
 
@@ -51,11 +51,11 @@ export class TenantInstanceComponent implements OnInit {
   fetchInstances() {
     this.loading = true;
     return this.tenantService.fetchInstanceInfos(this.uid, this.pagination, this.filter)
-      .map((result) => {
+      .pipe(map((result) => {
         this.instances = result.data;
         this.pagination = result.pagination;
         this.loading = false;
-      });
+      }));
   }
 
 }

@@ -1,6 +1,5 @@
 import { Injectable, EventEmitter } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
-import { Subject } from 'rxjs';
+import { Observable ,  Subject } from 'rxjs';
 
 import { TecApiService } from '../shared';
 
