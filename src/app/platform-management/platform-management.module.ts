@@ -15,6 +15,7 @@ import { I18nModule, TranslateService } from '../i18n';
 import { PlatformManagementRoutingModule } from './platform-management-routing.module';
 import { PlatformManagementComponent } from './platform-management.component';
 import { NodeModule } from './node/node.module';
+import { SystemModule } from './system/system.module';
 import { NetworkComponent } from './network/network.component';
 import { NetworkService } from './network/network.service';
 import { DetailsComponent } from './network/details/details.component';
@@ -33,6 +34,7 @@ import { AddComponent } from './network/add/add.component';
     PlatformManagementRoutingModule,
 
     NodeModule,
+    SystemModule
   ],
   declarations: [
     PlatformManagementComponent,

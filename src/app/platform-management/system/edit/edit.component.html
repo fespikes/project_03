@@ -5,20 +5,20 @@
     (ngSubmit)="onSubmit(myForm.value)"
     class="form-specific"
   >
-    <div [class.error]="!myForm.get('cidr').valid && myForm.get('cidr').touched">
+    <div [class.error]="!myForm.get('address').valid && myForm.get('address').touched">
       <div class="field-box">
         <label for="addressId"><span>*</span>{{'DETAILS.RELATIVE_NETWORK' | translate}}</label>
         <tui-select
           placeholder=" "
-          [formControl]="myForm.controls['cidr']"
+          [formControl]="myForm.controls['address']"
         >
-          <tui-select-option *ngFor="let option of networks" [value]="option.cidr">
-            {{(option.networkName + '(' + option.cidr + ')') | tuiDefault }}
+          <tui-select-option *ngFor="let option of networks" [value]="option.name">
+            {{(option.name + '(' + option.cird + ')') | tuiDefault }}
           </tui-select-option>
         </tui-select>
       </div>
       <div
-        *ngIf="myForm.controls['cidr'].hasError('required') && myForm.controls['cidr'].touched"
+        *ngIf="myForm.controls['address'].hasError('required') && myForm.controls['address'].touched"
         class="message"
       >{{'DETAILS.REQUIRED' | translate}}</div>
     </div>
@@ -95,7 +95,7 @@
       <button
         class="tui-btn-md tui-btn-primary tui-btn"
         type="submit"
-        [disabled]="(!myForm.valid || submitDisabled) ? 'disabled' : null"
+        [disabled]="!myForm.valid ? 'disabled' : null"
       >{{'DETAILS.CONFIRM' | translate}}</button>
       <button
         class="tui-btn-md tui-btn-default tui-btn"

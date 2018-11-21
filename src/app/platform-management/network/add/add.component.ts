@@ -20,6 +20,7 @@ export class AddComponent implements OnInit {
   networks: any[];
   policyTypes = ['ACCEPT', 'REJECT'];
   protocols = ['TCP', 'UDP'];
+  submitDisabled: boolean;
 
   constructor(
     @Inject(TUI_MODAL_DATA) data,
@@ -56,11 +57,13 @@ export class AddComponent implements OnInit {
 
   onSubmit(value: {[s: string]: string}) {
     const val: any = {...value};
-    this.myForm.reset();
+    this.submitDisabled = true;
     this.service.addSecurityRule(this.networkName, val)
       .subscribe(res => {
         this.message.success(res.message);
         this.modal.close('closed');
+      }, err => {
+        this.submitDisabled = false;
       });
   }
 

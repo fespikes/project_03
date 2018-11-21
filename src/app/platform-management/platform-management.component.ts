@@ -8,7 +8,7 @@ import { ActivatedRoute, Router, ParamMap, NavigationEnd } from '@angular/router
 })
 export class PlatformManagementComponent implements OnInit {
   @HostBinding('class.tui-layout-body') hostClass = true;
-  private selectedIndex = 1;
+  private selectedIndex = 2;
 
   constructor(
     private route: ActivatedRoute,
@@ -16,11 +16,12 @@ export class PlatformManagementComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.selectedIndex = +this.route.snapshot.queryParamMap.get('idx');
+    this.selectedIndex = +this.route.snapshot.queryParamMap.get('idx') || this.selectedIndex;
   }
 
   tabIndexChange(index: number) {
     this.selectedIndex = index;
     console.log(index);
   }
+
 }

@@ -3,6 +3,7 @@ import { map } from 'rxjs/operators';
 
 import { Pagination, TuiModalService } from 'tdc-ui';
 import { TranslateService } from 'app/i18n';
+import { EditComponent } from './edit/edit.component';
 
 import {
   SystemService,
@@ -20,9 +21,7 @@ import { SystemModuleService } from './system.service';
   styleUrls: ['./system.component.sass'],
 })
 export class SystemComponent implements OnInit {
-  @HostBinding('class.tui-layout-body') hostClass = true;
-
-  loading;
+  loading = false;
   labels = [];
   services: Service[];
   filter = new ServiceFilter();
@@ -135,6 +134,18 @@ export class SystemComponent implements OnInit {
 
   paginationChange() {
     this.getServiceList().subscribe();
+  }
+
+  openEditModal(size = 'lg') {
+    // TODO: i18n
+    return this.tuiModal.open(EditComponent, {
+      title: this.translate.translateKey('SYSTEM.EDIT_CONFIG'),
+      size,
+      data: {
+      }
+    }).subscribe((argu: string) => {
+      console.log(`Your word is: ${argu}`);
+    });
   }
 
 }

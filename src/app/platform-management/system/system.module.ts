@@ -6,20 +6,23 @@ import { SharedModule } from 'app/shared';
 import { I18nModule, TranslateService } from 'app/i18n';
 import { TuiModalService } from 'tdc-ui';
 
-import { SystemRoutingModule } from './system-routing.module';
 import { SystemComponent } from './system.component';
 import { SystemModuleService } from './system.service';
+import { EditComponent } from './edit/edit.component';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
-    SystemRoutingModule,
     SharedModule,
     I18nModule,
   ],
   declarations: [
     SystemComponent,
+    EditComponent,
+  ],
+  exports: [
+    SystemComponent
   ],
   providers: [
     TuiModalService,
