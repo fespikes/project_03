@@ -1,13 +1,22 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { I18nModule, TranslateDeactivator, TranslateResolver, TranslateToken } from '../i18n';
+import { TranslateDeactivator, TranslateResolver, TranslateToken } from '../i18n';
 
 import { PlatformManagementComponent } from './platform-management.component';
+import { DetailsComponent } from './network/details/details.component';
 
 const platformManagementRoutes: Routes = [
   {
     path: '',
+    redirectTo: 'list'
+  },
+  {
+    path: 'list',
     component: PlatformManagementComponent
+  },
+  {
+    path: 'detail/:name',
+    component: DetailsComponent
   }
 ];
 
@@ -22,14 +31,16 @@ const platformManagementRoutes: Routes = [
       }
     ])
   ],
-  exports: [RouterModule],
+  exports: [
+    RouterModule
+  ],
   providers: [
     TranslateResolver,
     TranslateDeactivator,
     {
       provide: TranslateToken,
       useValue: 'platformManagement',
-    },
-  ],
+    }
+  ]
 })
 export class PlatformManagementRoutingModule { }

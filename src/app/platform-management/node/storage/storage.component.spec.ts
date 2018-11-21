@@ -12,8 +12,8 @@ import { TranslatePipeStub, TranslateServiceMock } from 'app/mock';
 import { TuiModalService , TabPaneDirective, TuiMessageService } from 'tdc-ui';
 
 import { NodeService } from '../node.service';
-import { TranslateService } from '../../i18n';
-import { TecApiService } from '../../shared';
+import { TranslateService } from 'app/i18n';
+import { TecApiService } from 'app/shared';
 import { StorageComponent } from './storage.component';
 class RouterStub {
   events = new Subject();

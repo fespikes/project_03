@@ -1,0 +1,61 @@
+<tui-submenu [backUrl]="backUrl">
+  <tui-submenu-list menuTitle="{{'NETWORK.AMOUNT' | translate}}: {{amount}}" [items]="submenuItems"></tui-submenu-list>
+</tui-submenu>
+<div
+  class="tui-layout-vertical"
+  tccLoadingHeight="300px"
+>
+  <div class="tui-layout-main-container">
+    <div class="tui-layout-main-title">
+      <div class="left">
+        {{name}}
+      </div>
+      <!--TODO: i18n-->
+      <div class="right">
+        <button tuiBtn="primary" (click)="openAddModal()">
+          <svg tuiIcon="create"></svg>{{'新建规则' | translate}}
+        </button>
+        <tui-search
+          placeholder="{{'输入关键字' | translate}}"
+          [(ngModel)]="filter"
+          (ngModelChange)="fetchSecurityRules()"
+          style="width: 240px"
+        ></tui-search>
+      </div>
+    </div>
+
+    <!-- <div class="security-rules">
+      {{rules$ | async}}
+    </div> -->
+    <tui-table class="tui-table" [tuiTableFlex]="[2, 2, 1.5, 2, 3, 1]"  [tuiLoading]="loading">
+        <tui-table-head>
+          <div>{{'DETAILS.RELATIVE_NETWORK_NAME' | translate}}</div>
+          <div>{{'DETAILS.AUTH_STRATIGY' | translate}}</div>
+          <div>{{'DETAILS.PORT' | translate}}</div>
+          <div>{{'DETAILS.PROTOCAL_TYPE' | translate}}</div>
+          <div>{{'DETAILS.RULE_DESCRIPTION' | translate}}</div>
+          <div>{{'PLATFORM_MANAGEMENT.OPERATION' | translate}}</div>
+        </tui-table-head>
+        <tui-table-row *ngFor="let instance of rules; let idx=index;">
+          <div class="text-ellipsis">{{instance.networkName}}</div>
+          <div class="text-ellipsis">{{instance.policy}}</div>
+          <div class="text-ellipsis">{{instance.port}}</div>
+          <div class="text-ellipsis">{{instance.protocol}}</div>
+          <div>{{instance.description}}</div>
+          <div class="operation-td">
+            <span tuiTooltip="{{'DETAILS.REMOVE' | translate}}">
+              <svg
+                tuiIcon="trash"
+                (click)="removeRule(instance)"
+              ></svg>
+            </span>
+          </div>
+        </tui-table-row>
+      </tui-table>
+      
+      <div class="tui-layout-main-pagination-footer">
+        <tui-pagination [(pagination)]="pagination" (paginationChange)="fetchData()">
+        </tui-pagination>
+      </div>
+  </div>
+</div>

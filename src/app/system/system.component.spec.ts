@@ -2,13 +2,12 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { Observable, of } from 'rxjs';
 
-import {  MockModule } from 'app/mock';
 import { SystemComponent } from './system.component';
-import { SystemService, SystemModalService } from 'app/shared';
+import { SystemService, SystemModalService } from '../shared';
 import { SystemModuleService } from './system.service';
 import { TranslateService } from 'app/i18n';
 import { TuiModalService } from 'tdc-ui';
-import { TranslateServiceMock } from 'app/mock';
+import { MockModule, TranslateServiceMock } from 'app/mock';
 
 
 class SystemServiceStub {

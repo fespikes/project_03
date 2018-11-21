@@ -1,4 +1,5 @@
 import { Component, OnInit, HostBinding } from '@angular/core';
+import { ActivatedRoute, Router, ParamMap, NavigationEnd } from '@angular/router';
 
 @Component({
   selector: 'tec-platform-management',
@@ -7,11 +8,15 @@ import { Component, OnInit, HostBinding } from '@angular/core';
 })
 export class PlatformManagementComponent implements OnInit {
   @HostBinding('class.tui-layout-body') hostClass = true;
-  private selectedIndex = 0;
+  private selectedIndex = 1;
 
-  constructor() { }
+  constructor(
+    private route: ActivatedRoute,
+    private router: Router,
+  ) { }
 
   ngOnInit() {
+    this.selectedIndex = +this.route.snapshot.queryParamMap.get('idx');
   }
 
   tabIndexChange(index: number) {

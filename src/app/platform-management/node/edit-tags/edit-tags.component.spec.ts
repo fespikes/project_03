@@ -3,13 +3,13 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { OverlayModule } from '@angular/cdk/overlay';
 import { HttpClientModule, HttpClient } from '@angular/common/http';
 
-import { TranslatePipeStub, DefaultPipeStub } from 'app/mock';
+import { TranslatePipeStub, DefaultPipeStub } from '../../../mock';
 import { TuiModalRef,  } from 'tdc-ui';
 import { TuiMessageService, TUI_MODAL_DATA, TuiModalService } from 'tdc-ui';
-import { TecApiService } from '../../shared';
+import { TecApiService } from 'app/shared';
 import { NodeService } from '../node.service';
 import { EditTagsComponent } from './edit-tags.component';
-import { TranslateService } from '../../i18n';
+import { TranslateService } from 'app/i18n';
 
 describe('EditTagsComponent', () => {
   let component: EditTagsComponent;

@@ -4,8 +4,8 @@ import { map } from 'rxjs/operators';
 
 import { Pagination, TuiModalService, TuiModalConfig } from 'tdc-ui';
 import { TranslateService } from 'app/i18n';
-import { TenantService } from 'app/tenant/tenant.service';
-import { ModalBillClearComponent, ModalBillCorrectComponent } from './';
+import { TenantService } from '../../tenant.service';
+import { ModalBillClearComponent, ModalBillCorrectComponent } from '.';
 
 @Component({
   selector: 'tec-tenant-bill',

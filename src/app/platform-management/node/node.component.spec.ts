@@ -6,15 +6,15 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { ActivatedRoute, Router } from '@angular/router';
 
-import { TranslateService } from '../i18n';
+import { TranslateService } from 'app/i18n/';
 import { TuiModalService } from 'tdc-ui';
-import { SharedModule } from '../shared';
+import { SharedModule } from 'app/shared';
 import { NodeComponent } from './node.component';
 import { NodeService } from './node.service';
 
 import { Observable, of } from 'rxjs';
-import { TecApiService } from 'app/shared';
-import { TranslatePipeStub, DefaultPipeStub } from 'app/mock';
+import { TecApiService } from '../../shared';
+import { TranslatePipeStub, DefaultPipeStub } from '../../mock';
 import { NodeServiceStub } from './node.service.stub';
 
 describe('NodeComponent', () => {

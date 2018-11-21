@@ -28,7 +28,7 @@ const taskRoutes: Routes = [
     {
       provide: TranslateToken,
       useValue: 'tasks',
-    },
-  ],
+    }
+  ]
 })
 export class TasksRoutingModule { }

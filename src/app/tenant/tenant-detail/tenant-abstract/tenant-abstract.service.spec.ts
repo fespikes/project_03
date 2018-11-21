@@ -1,11 +1,11 @@
 import { TestBed, inject } from '@angular/core/testing';
 import { Observable, of } from 'rxjs';
 
-import { TecApiService } from '../../../shared';
-import { TranslateService } from '../../../i18n';
+import { TecApiService } from 'app/shared';
+import { TranslateService } from 'app/i18n';
 
 import { TenantAbstractService } from './tenant-abstract.service';
-import { DefaultPipeStub } from '../../../mock/';
+import { DefaultPipeStub } from 'app/mock';
 
 describe('TenantAbstractService', () => {
   beforeEach(() => {

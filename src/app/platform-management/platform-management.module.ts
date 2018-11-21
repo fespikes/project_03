@@ -10,11 +10,15 @@ import {
 } from 'tdc-ui';
 
 import { SharedModule } from '../shared';
-import { I18nModule } from '../i18n';
+import { I18nModule, TranslateService } from '../i18n';
 
 import { PlatformManagementRoutingModule } from './platform-management-routing.module';
 import { PlatformManagementComponent } from './platform-management.component';
 import { NodeModule } from './node/node.module';
+import { NetworkComponent } from './network/network.component';
+import { NetworkService } from './network/network.service';
+import { DetailsComponent } from './network/details/details.component';
+import { AddComponent } from './network/add/add.component';
 
 @NgModule({
   imports: [
@@ -24,14 +28,28 @@ import { NodeModule } from './node/node.module';
     TableModule,
     FormsModule,
     ReactiveFormsModule,
-    SharedModule,
     I18nModule,
+    SharedModule,
     PlatformManagementRoutingModule,
 
-    NodeModule
+    NodeModule,
   ],
   declarations: [
     PlatformManagementComponent,
+    NetworkComponent,
+    DetailsComponent,
+    AddComponent
+  ],
+  entryComponents: [
+    AddComponent
+  ],
+  exports: [
+    PlatformManagementComponent
+  ],
+  providers: [
+    TranslateService,
+    TuiModalService,
+    NetworkService
   ]
 })
 export class PlatformManagementModule { }
