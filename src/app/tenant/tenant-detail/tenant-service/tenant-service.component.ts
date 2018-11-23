@@ -6,9 +6,6 @@ import { TranslateService } from 'app/i18n';
 import { TenantService } from '../../tenant.service';
 
 import {
-  ModalYamlDetailComponent,
-  ModalImageDetailComponent,
-  ModalPodDetailComponent,
   Service,
   ServiceFilter,
   SystemService,

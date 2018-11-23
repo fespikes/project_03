@@ -179,3 +179,15 @@ TENANT:
     CORRECTION_TYPE: Type
     CORRECTION_AMOUNT: Amount
     CORRECTION_REASON: Reason
+
+DETAILS:
+  RELATIVE_NETWORK: Relative netword
+  RELATIVE_NETWORK_NAME: Relative network name
+  AUTH_STRATIGY: Auth stratigy
+  PORT: Port
+  PROTOCAL_TYPE: Protocol type
+  RULE_DESCRIPTION: Rule description
+  REMOVE: Remove
+  REQUIRED: The field is required
+  CONFIRM: Sure
+  RESET: Reset

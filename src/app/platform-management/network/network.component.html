@@ -15,7 +15,7 @@
 
   <tui-table class="tui-table" [tuiTableFlex]="[2, 2, 1.5, 2, 3, 1]"  [tuiLoading]="loading">
     <tui-table-head>
-      <div>{{'NETWORK.NAME' | translate}}</div>
+      <div>{{'NETWORK.NETWORK_NAME' | translate}}</div>
       <div>{{'NETWORK.CIDR' | translate}}</div>
       <div>{{'NETWORK.CREATOR' | translate}}</div>
       <div>{{'NETWORK.CREATE_TIME' | translate}}</div>
@@ -26,7 +26,7 @@
       <div class="text-ellipsis">{{instance.name}}</div>
       <div class="text-ellipsis">{{instance.cidr}}</div>
       <div class="text-ellipsis">{{instance.creator}}</div>
-      <div class="text-ellipsis">{{instance.createTime}}</div>
+      <div class="text-ellipsis">{{instance.createTime | date: 'yyyy/MM/dd h:mm a'}}</div>
       <div class="text-ellipsis">{{instance.description}}</div>
       <div class="operation-td">
         <span tuiTooltip="{{'NETWORK.VIEW_DETAILS' | translate}}">

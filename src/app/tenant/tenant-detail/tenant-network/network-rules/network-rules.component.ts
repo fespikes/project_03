@@ -4,7 +4,7 @@ import { TuiModalService } from 'tdc-ui';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TenantService } from '../../../tenant.service';
 import { Network } from '../tenant-network-model';
-import { AddComponent } from '../add/add.component';
+import { AddComponent } from 'app/shared';
 import { TranslateService } from '../../../../i18n';
 import { Pagination } from 'tdc-ui';
 import { NetworkRules } from '../../../tenant-model';
@@ -23,6 +23,7 @@ export class NetworkRulesComponent implements OnInit {
   backUrl = '../';
   pagination = new Pagination();
   networkRulesFilter: NetworkRules;
+  networks: any[];
 
   constructor(
     private route: ActivatedRoute,
@@ -33,12 +34,12 @@ export class NetworkRulesComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    const networks: any[] = JSON.parse(this.tenantService.networks);
+    this.networks = JSON.parse(this.tenantService.networks);
     const uid = this.tenantService.uid;
     this.loading = true;
     this.networkRulesFilter = new NetworkRules();
 
-    this.submenuItems = networks.map(network => ({
+    this.submenuItems = this.networks.map(network => ({
       name: network.name,
       url: `tenant/detail/${uid}/${network.name}`,
       icon: '',
@@ -62,6 +63,10 @@ export class NetworkRulesComponent implements OnInit {
     return this.modalService.open(AddComponent, {
       title: this.translateService.translateKey('TENANT.NETWORK.CREATE_NET_RULES'),
       size,
+      data: {
+        networkName: this.networkRulesFilter.networkName,
+        networks: this.networks
+      }
     })
     .subscribe((word: string) => {
       this.fetchSecurityRules();

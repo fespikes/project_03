@@ -17,11 +17,11 @@ export class DataService {
   }
 
   changeSharing(name: string, operation): Observable<any> {
-    return this.api.put(`services/data${name}`, {...operation});
+    return this.api.put(`services/data/${name}`, {...operation});
   }
 
   fetchUsingInstances(name: string, pagination: Pagination): Observable<any> {
-    console.log(pagination);
-    return this.api.get(`......`, {...pagination});
+    delete pagination.total;
+    return this.api.get(`services/data/${name}/instances`, {...pagination});
   }
 }

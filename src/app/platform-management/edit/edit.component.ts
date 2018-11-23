@@ -78,4 +78,8 @@ export class EditComponent implements OnInit {
       });
   }
 
+  close() {
+    this.modal.close();
+  }
+
 }

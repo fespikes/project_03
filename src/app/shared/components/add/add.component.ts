@@ -5,7 +5,7 @@ import {
   FormGroup,
   Validators,
 } from '@angular/forms';
-import { NetworkService } from '../network.service';
+import { AddService } from './add.service';
 import { TranslateService } from 'app/i18n/translate.service';
 
 @Component({
@@ -25,7 +25,7 @@ export class AddComponent implements OnInit {
     @Inject(TUI_MODAL_DATA) data,
     fb: FormBuilder,
     private modal: TuiModalRef,
-    private service: NetworkService,
+    private service: AddService,
     private message: TuiMessageService,
     private translater: TranslateService,
   ) {

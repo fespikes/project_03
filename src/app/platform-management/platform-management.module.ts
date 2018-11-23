@@ -19,7 +19,6 @@ import { SystemModule } from './system/system.module';
 import { NetworkComponent } from './network/network.component';
 import { NetworkService } from './network/network.service';
 import { DetailsComponent } from './network/details/details.component';
-import { AddComponent } from './network/add/add.component';
 import { DataComponent } from './data/data.component';
 import { DataService } from './data/data.service';
 import { EditComponent } from './edit/edit.component';
@@ -45,13 +44,11 @@ import { ShareComponent } from './data/share/share.component';
     PlatformManagementComponent,
     NetworkComponent,
     DetailsComponent,
-    AddComponent,
     DataComponent,
     EditComponent,
     ShareComponent
   ],
   entryComponents: [
-    AddComponent,
     EditComponent,
     ShareComponent
   ],

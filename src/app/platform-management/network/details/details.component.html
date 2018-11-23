@@ -15,10 +15,10 @@
         <button tuiBtn="primary" (click)="openAddModal()">
           <svg tuiIcon="create"></svg>{{'新建规则' | translate}}
         </button>
-        <!-- placeholder="{{'输入关键字' | translate}}" -->
         <tui-search
+          placeholder="{{'输入关键字' | translate}}"
           [(ngModel)]="filter"
-          (ngModelChange)="fetchSecurityRules()"
+          (ngModelChange)="fetchData()"
           style="width: 240px"
           ngDefaultControl
         ></tui-search>
@@ -28,7 +28,7 @@
     <!-- <div class="security-rules">
       {{rules$ | async}}
     </div> -->
-    <tui-table class="tui-table" [tuiTableFlex]="[2, 2, 1.5, 2, 3, 1]"  [tuiLoading]="loading">
+    <tui-table class="tui-table" [tuiTableFlex]="[2.5, 2, 1.5, 2, 3, 1]"  [tuiLoading]="loading">
         <tui-table-head>
           <div>{{'DETAILS.RELATIVE_NETWORK_NAME' | translate}}</div>
           <div>{{'DETAILS.AUTH_STRATIGY' | translate}}</div>
@@ -38,7 +38,7 @@
           <div>{{'PLATFORM_MANAGEMENT.OPERATION' | translate}}</div>
         </tui-table-head>
         <tui-table-row *ngFor="let instance of rules; let idx=index;">
-          <div class="text-ellipsis">{{instance.networkName}}</div>
+          <div class="text-ellipsis">{{instance.networkName + '(' + instance.cidr + ')'}}</div>
           <div class="text-ellipsis">{{instance.policy}}</div>
           <div class="text-ellipsis">{{instance.port}}</div>
           <div class="text-ellipsis">{{instance.protocol}}</div>

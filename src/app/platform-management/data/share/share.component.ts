@@ -29,7 +29,7 @@ export class ShareComponent implements OnInit {
     private translater: TranslateService,
   ) {
     this.service = data.service;
-    this.instances = data.service.usingInstances;
+    this.instances = data.service.usingInstances || [];
     this.pagination = {
       page: 1,
       size: 10,
@@ -39,14 +39,14 @@ export class ShareComponent implements OnInit {
 
   ngOnInit() {
     this.fetchUsingInstances();
-    this.cancelDisabled = this.service.usingInstances.length > 0 ? 'disabled' : '';
+    this.cancelDisabled = this.instances.length > 0 ? 'disabled' : '';
   }
 
   fetchUsingInstances() {
-    console.log(this.pagination);
     this.api.fetchUsingInstances(this.service.name, this.pagination)
       .subscribe( res => {
         this.instances = res.data;
+        this.pagination = res.pagination;
       });
   }
 
@@ -57,11 +57,6 @@ export class ShareComponent implements OnInit {
     } else {
       this.service.shareStatusAlias = '不共享';
     }
-
-    this.api.changeSharing(this.service.name, {
-      description: '',
-      status: 'SHARED'
-    });
   }
 
   submit(desc: HTMLInputElement) {
@@ -80,6 +75,10 @@ export class ShareComponent implements OnInit {
 
   paginationChange() {
     this.fetchUsingInstances();
+  }
+
+  close() {
+    this.modal.close();
   }
 
 }

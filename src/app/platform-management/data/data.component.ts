@@ -54,8 +54,6 @@ export class DataComponent implements OnInit {
     return this.systemService.getDataServiceLabels()
     .pipe(map(result => {
       this.labels = result;
-
-      console.log(this.labels);
     }));
   }
 
@@ -94,7 +92,9 @@ export class DataComponent implements OnInit {
       data: {
         service: service
       }
-    }).subscribe((argu: string) => {});
+    }).subscribe((argu: string) => {
+      this.getServiceList().subscribe();
+    });
   }
 
   toggleSubList(service) {

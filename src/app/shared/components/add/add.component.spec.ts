@@ -9,7 +9,7 @@ import {
   SystemModalService,
   TecApiService
 } from 'app/shared';
-import { NetworkService } from '../network.service';
+import { AddService } from './add.service';
 import { AddComponent } from './add.component';
 import { TranslateService } from 'app/i18n';
 import { TranslateServiceMock } from 'app/mock';
@@ -33,7 +33,7 @@ describe('AddComponent', () => {
         AddComponent
       ],
       providers: [
-        NetworkService,
+        AddService,
         SystemService,
         SystemModalService,
         TecApiService,

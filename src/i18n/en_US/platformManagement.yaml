@@ -1,6 +1,7 @@
 PLATFORM_MANAGEMENT:
-  NAME: '平台管理'
+  NAME: Platform Management
   OPERATION: Operation
+  PLACEHOLDER: Input key to search
 
 NODE:
   NAME: Node
@@ -35,6 +36,7 @@ NETWORK:
   CREATE_TIME: Create time
   DESCRIPTION: Description
   VIEW_DETAILS: View details
+  CREATE_NETWORK_RULE: Create Network Rule
 
 DETAILS:
   RELATIVE_NETWORK: Relative netword

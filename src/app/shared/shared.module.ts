@@ -21,6 +21,7 @@ import {
   OverflowContainerComponent,
   ServiceTagComponent,
   YamlTreeComponent,
+  AddComponent
 } from './components';
 
 import {
@@ -50,7 +51,8 @@ import {
     ServiceTagComponent,
     YamlTreeComponent,
 
-    ForbiddenValidatorDirective
+    ForbiddenValidatorDirective,
+    AddComponent
   ],
   providers: [
     SystemService,
@@ -75,12 +77,14 @@ import {
     YamlTreeComponent,
     HttpClientModule,
 
-    ForbiddenValidatorDirective
+    ForbiddenValidatorDirective,
+    AddComponent
   ],
   entryComponents: [
     ModalPodDetailComponent,
     ModalImageDetailComponent,
     ModalYamlDetailComponent,
+    AddComponent
   ],
 })
 export class SharedModule { }

@@ -13,17 +13,8 @@ export class NetworkService {
     return this.api.get(`networks`, {...filter, tenantUid: uid});
   }
 
-  fetchEnums(): Observable<any> {
-    const uid = sessionStorage.getItem('eco:tenant:detail:uid');
-    return this.api.get(`networks/options`);
-  }
-
   getNetworkSecurityRules(name, filter): Observable<any> {
-    return this.api.get(`networks/${name}/securityRules`, {...filter});
-  }
-
-  addSecurityRule(name, params): Observable<any> {
-    return this.api.post(`networks/${name}/securityRules`, {...params});
+    return this.api.get(`networks/${name}/securityRules`, {filter: filter});
   }
 
   removeSecurityRule(name, params): Observable<any> {

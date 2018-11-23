@@ -6,7 +6,7 @@ import { TranslateService } from 'app/i18n';
 import { Pagination, TuiModalService, TuiMessageService } from 'tdc-ui';
 import { XNetwork, XSecurityRule } from '../network.model';
 import { NetworkService } from '../network.service';
-import { AddComponent } from '../add/add.component';
+import { AddComponent } from 'app/shared';
 
 @Component({
   selector: 'tec-details',
@@ -22,7 +22,6 @@ export class DetailsComponent implements OnInit {
   loading = false;
   name: string;
   filter: string;
-  // rules$: Observable<any>;
   rules: XSecurityRule[];
   pagination: Pagination = new Pagination();
 
@@ -36,7 +35,6 @@ export class DetailsComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    // this.rules$ = this.route.paramMap.pipe(
     this.route.paramMap.pipe(
       switchMap((paramMap: ParamMap) => {
         this.name = paramMap.get('name');
@@ -58,6 +56,10 @@ export class DetailsComponent implements OnInit {
     return this.service.getNetworkSecurityRules(this.name, this.filter);
   }
 
+  fetchData() {
+    this.fetchSecurityRules()
+          .subscribe(this.refreshRules.bind(this));
+  }
   fetchNetworks() {
     this.service.fetchList({
       page: 0,
@@ -78,9 +80,8 @@ export class DetailsComponent implements OnInit {
   }
 
   openAddModal(size = 'lg') {
-    // TODO: i18n
     return this.modal.open(AddComponent, {
-      title: this.translateService.translateKey('新建网络规则'),
+      title: this.translateService.translateKey('NETWORK.CREATE_NETWORK_RULE'),
       size,
       data: {
         networkName: this.name,

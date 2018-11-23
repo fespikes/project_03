@@ -2,7 +2,6 @@
 
   <div class="tui-layout-main-container flex-auto">
     <tui-tab
-      *ngIf="!loading"
       [(selectedIndex)]="selectedIndex"
       (selectedIndexChange)="tabIndexChange($event)"
     >
