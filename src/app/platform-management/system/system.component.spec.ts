@@ -3,7 +3,7 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { Observable, of } from 'rxjs';
 
 import { SystemComponent } from './system.component';
-import { SystemService, SystemModalService } from '../shared';
+import { SystemService, SystemModalService } from 'app/shared';
 import { SystemModuleService } from './system.service';
 import { TranslateService } from 'app/i18n';
 import { TuiModalService } from 'tdc-ui';

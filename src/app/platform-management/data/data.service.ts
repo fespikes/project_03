@@ -19,4 +19,9 @@ export class DataService {
   changeSharing(name: string, operation): Observable<any> {
     return this.api.put(`services/data${name}`, {...operation});
   }
+
+  fetchUsingInstances(name: string, pagination: Pagination): Observable<any> {
+    console.log(pagination);
+    return this.api.get(`......`, {...pagination});
+  }
 }

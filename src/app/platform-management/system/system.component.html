@@ -13,6 +13,7 @@
         placeholder="{{'SYSTEM.INSTANCE.SELECT_TAG' | translate}}"
         style="margin-right: 30px; width: 132px;"
         allowClear
+        ngDefaultControl
       >
         <tui-select-option
           *ngFor="let label of labels"
@@ -22,7 +23,7 @@
           {{label.label | tuiDefault | translate}}
         </tui-select-option>
       </tui-select>
-      <tui-search [(ngModel)]="filter.service" (ngModelChange)="filterChange()">
+      <tui-search [(ngModel)]="filter.service" (ngModelChange)="filterChange()" ngDefaultControl>
       </tui-search>
       <button 
         class="edit" tuiBtn="primary" 

@@ -38,7 +38,16 @@ export class ShareComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.fetchUsingInstances();
     this.cancelDisabled = this.service.usingInstances.length > 0 ? 'disabled' : '';
+  }
+
+  fetchUsingInstances() {
+    console.log(this.pagination);
+    this.api.fetchUsingInstances(this.service.name, this.pagination)
+      .subscribe( res => {
+        this.instances = res.data;
+      });
   }
 
   changeSharingStatus(argu?) {
@@ -67,6 +76,10 @@ export class ShareComponent implements OnInit {
       }, err => {
         console.log('error happens');
       });
+  }
+
+  paginationChange() {
+    this.fetchUsingInstances();
   }
 
 }

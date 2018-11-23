@@ -1,20 +1,15 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import {
-  NO_ERRORS_SCHEMA
-} from '@angular/core';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { HttpClientModule } from '@angular/common/http';
 import { OverlayModule } from '@angular/cdk/overlay';
+import { of } from 'rxjs';
 
 import { TuiMessageService } from 'tdc-ui';
-import { filter } from 'rxjs/operators';
-import { Observable, of } from 'rxjs';
-
-import { DonutChart, DonutChartConfig } from '../../../chart/lib';
 import { NodeService } from '../../node.service';
-import { TecApiService } from '../../../shared';
-import { TranslateService } from '../../../i18n';
+import { TecApiService } from 'app/shared';
+import { TranslateService } from 'app/i18n';
 import { LocalDiskComponent } from './local-disk.component';
 
 describe('LocalDiskComponent', () => {

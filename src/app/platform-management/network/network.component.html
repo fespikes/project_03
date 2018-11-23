@@ -3,11 +3,12 @@
   <div class="maintain">
     <span class="tui-layout-main-title">{{'NETWORK.AMOUNT' | translate}} : {{pagination.total}}</span>
     <span class="right">
+      <!-- placeholder="{{'NETWORK.SEARCH_HOLDER' | translate}}" -->
       <tui-search
-        placeholder="{{'NETWORK.SEARCH_HOLDER' | translate}}"
         [(ngModel)]="filter.filter"
         (ngModelChange)="fetchData()"
         style="width: 280px"
+        ngDefaultControl
       ></tui-search>
     </span>
   </div>

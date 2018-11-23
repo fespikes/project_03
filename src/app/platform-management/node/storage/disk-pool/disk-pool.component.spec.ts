@@ -10,8 +10,8 @@ import { TuiMessageService } from 'tdc-ui';
 import { OverlayModule } from '@angular/cdk/overlay';
 
 import { NodeService } from '../../node.service';
-import { TecApiService } from '../../../shared';
-import { TranslateService } from '../../../i18n';
+import { TecApiService } from 'app/shared';
+import { TranslateService } from 'app/i18n';
 import { DiskPoolComponent } from './disk-pool.component';
 
 describe('DiskPoolComponent', () => {

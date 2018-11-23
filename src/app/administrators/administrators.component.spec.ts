@@ -33,14 +33,12 @@ export class AdministratorsServiceStub {
       },
     });
   }
-
   addAdministrator(params) {
     return of({});
   }
   deleteAdministrator(id: number) {
     return of({});
   }
-
 }
 
 describe('AdministratorsComponent', () => {

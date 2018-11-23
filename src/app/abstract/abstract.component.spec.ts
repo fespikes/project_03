@@ -6,7 +6,6 @@ import { AbstractComponent } from './abstract.component';
 import { TranslatePipeStub, DefaultPipeStub } from 'app/mock';
 
 import { TranslateService } from '../i18n';
-import { SelectComponent } from 'tdc-ui';
 import { AbstractService } from './abstract.service';
 import { AbstractServiceStub } from './abstract.service.stub';
 

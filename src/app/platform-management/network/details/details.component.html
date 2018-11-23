@@ -15,11 +15,12 @@
         <button tuiBtn="primary" (click)="openAddModal()">
           <svg tuiIcon="create"></svg>{{'新建规则' | translate}}
         </button>
+        <!-- placeholder="{{'输入关键字' | translate}}" -->
         <tui-search
-          placeholder="{{'输入关键字' | translate}}"
           [(ngModel)]="filter"
           (ngModelChange)="fetchSecurityRules()"
           style="width: 240px"
+          ngDefaultControl
         ></tui-search>
       </div>
     </div>

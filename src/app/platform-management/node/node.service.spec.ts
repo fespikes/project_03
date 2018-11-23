@@ -2,7 +2,7 @@ import { TestBed, inject } from '@angular/core/testing';
 import { Observable, of } from 'rxjs';
 
 import { NodeService } from './node.service';
-import { TecApiService } from '../shared';
+import { TecApiService } from 'app/shared';
 
 describe('NodeService', () => {
   beforeEach(() => {
