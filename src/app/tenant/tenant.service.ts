@@ -123,9 +123,9 @@ export class TenantService {
   }
 
   // 删除网络
-  deleteNetwork(networkName: string): Observable<any> {
-    return this.api.delete(`networks/${networkName}`);
-  }
+  // deleteNetwork(networkName: string): Observable<any> {
+  //   return this.api.delete(`networks/${networkName}`);
+  // }
 
   // 删除网络规则
   deleteSecurityRule(networkName: string, body: any): Observable<any> {

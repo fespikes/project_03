@@ -1,0 +1,121 @@
+PLATFORM_MANAGEMENT:
+  NAME: Platform Management
+  OPERATION: Operation
+  PLACEHOLDER: Input key to search
+
+NODE:
+  NAME: Node
+
+  TOTALNODES: 'nodes amount:'
+  EXPORT: Export
+  STATUS: status
+  MEMORYUSED: memory used
+  STORAGEUSED: storage used
+  CPUUSED: CPU used
+  MICROSERVICE: micro service
+  IP: IP
+  JOINTIME: join time
+
+  FILTER_CONDITION: filter condition
+
+  CLEAN_ALL: clean all
+  RUN_SMOOTHLY: run smoothly
+  RUN_FAULT: run faulty
+  RUN_RISKY: run risky
+  CHANG_STATUS: change status
+  NEW_JOINED_CUR_MONTH: joined current month
+  CORE: core
+
+NETWORK:
+  NAME: Network
+  AMOUNT: Amount
+  SEARCH_HOLDER: 'Network name, Cird, creator, description'
+  NETWORK_NAME: Network name
+  CIDR: CIDR
+  CREATOR: Creator
+  CREATE_TIME: Create time
+  DESCRIPTION: Description
+  VIEW_DETAILS: View details
+  CREATE_NETWORK_RULE: Create Network Rule
+
+DETAILS:
+  RELATIVE_NETWORK: Relative netword
+  RELATIVE_NETWORK_NAME: Relative network name
+  AUTH_STRATIGY: Auth stratigy
+  PORT: Port
+  PROTOCAL_TYPE: Protocol type
+  RULE_DESCRIPTION: Rule description
+  REMOVE: Remove
+  REQUIRED: The field is required
+  CONFIRM: Sure
+  RESET: Reset
+
+SYSTEM:
+  NAME: System Service
+  NO_CONTENT: No Content
+  EDIT_CONFIG: Edit Config
+
+  INSTANCE:
+    TOATAL: System Service Number
+    NAME: Service Name
+    STATUS: Status
+    VERSION: Version
+    TAG: Label
+    IMAGE: Container Image
+    HEALTH: Health
+    ERROR: Error
+    MICRO_SERVICE: Micro Service Name
+    SHARE_DESC: Share Description
+    SHARE_STATUS: Share Status
+    STATE: State
+    START_TIME: Start Time
+    SELECT_TAG: Select Label
+    SERVICE_TYPE: Service Type
+
+  TOOLTIP:
+    VIEW_POD: View Pod Detail
+    VIEW_IMAGE: View Image
+    VIEW_YAML: View Yaml
+    START_SERVICE: Start Service
+    STOP_SERVICE: Stop Service
+    CANNOT_OPERATE_SERVICE: Cannot Start/Stop Service
+
+  POPUP:
+    YAML_FILE: YAML File
+    CLOSE: Close
+    CONFIRM: Confirm
+    CANCEL: Cancel
+    IMAGE_INFO: Image Info
+    IMAGE_ADDRESS: Image Address
+    IMAGE_ADDRESS_INITIAL: Initial Image Address
+    NEW_IMAGE_ADDRESS: New Image Address
+    NEW_IMAGE_ADDRESS_INITIAL: New Initial Image Address
+    COPY_IMAGE_ADDRESS: Copy Image Address
+    COPY_IMAGE_ADDRESS_INITIAL: Copy Initial Image Address
+    CHANGE_IMAGE_MESSAGE: Change image address may take a long time
+    COPIED: Copied
+    COPY_FAILED: Copy Failed
+    POD_DETAIL: Pod Detail
+    CREATE_TIME: Create Time
+    CONTAINER: Container
+    EVENT: Event
+    LOG: Log
+    CONTAINER_NAME: Container Name
+    HEALTHY_STATE: Healthy State
+    INFO: Info
+    LAST_APPEAR: Last Appear
+    REASON: Reason
+    NUMBER: Number
+    LOAD_COMPLETE_LOG: Load Complete Log
+    SERVICE_SHARE: Service Share
+
+DATA:
+  NAME: Data Service
+  USERS_TABLE: Users Table
+  INSTANCE_NAME: Instance Name
+  DESCRIPTION: Deacription
+  TENANT: Tenant
+  STATUS: Status
+  VERSION: Version
+  NODE: Node
+  CANCEL_SHARING: Cancel Sharing

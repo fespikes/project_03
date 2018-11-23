@@ -29,7 +29,6 @@ import { TenantStatusIconComponent } from './components/status-icon/status-icon.
 import { ModalBillClearComponent } from './tenant-detail/tenant-bill/modal-bill-clear/modal-bill-clear.component';
 import { ModalBillCorrectComponent } from './tenant-detail/tenant-bill/modal-bill-correct/modal-bill-correct.component';
 import { NetworkRulesComponent } from './tenant-detail/tenant-network/network-rules/network-rules.component';
-import { AddComponent } from './tenant-detail/tenant-network/add/add.component';
 import { ModalDeleteTenantComponent } from './components/modal/delete-tenant.component';
 import { OverviewComponent } from './overview/overview.component';
 import { TenantAdminComponent } from './tenant-admin/tenant-admin.component';
@@ -66,7 +65,6 @@ import { FailureCourseComponent } from './components/failure-course/failure-cour
     ModalBillClearComponent,
     ModalBillCorrectComponent,
     NetworkRulesComponent,
-    AddComponent,
     TenantStatusIconComponent,
     OverviewComponent,
     TenantAdminComponent,
@@ -82,7 +80,6 @@ import { FailureCourseComponent } from './components/failure-course/failure-cour
   entryComponents: [
     ModalBillClearComponent,
     ModalBillCorrectComponent,
-    AddComponent,
     ModalDeleteTenantComponent,
     TenantAdminAddComponent,
     SendRegisterLinkComponent,

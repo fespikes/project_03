@@ -6,4 +6,4 @@ export * from './system-service/components';
 export * from './system-service/modal';
 export * from  './system-service/service';
 export * from './system-service/model';
-
+export * from './add/add.component';

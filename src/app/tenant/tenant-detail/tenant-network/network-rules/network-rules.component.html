@@ -31,21 +31,23 @@
         </span>
       </div>
 
-      <tui-table class="tui-table" [tuiTableFlex]="[1,1,1,1,1,1]" [loading]="loading">
+      <tui-table class="tui-table" [tuiTableFlex]="[1, 1,1,1,1,1,1]" [loading]="loading">
 
         <tui-table-head>
+          <div>{{'TENANT.NETWORK.RELATIVE_NETWORK_NAME' | translate}}</div>
           <div>{{'TENANT.NETWORK.POLICY' | translate}}</div>
-          <div>{{'TENANT.NETWORK.PROTOCOL' | translate}}</div>
           <div>{{'TENANT.NETWORK.PORT' | translate}}</div>
+          <div>{{'TENANT.NETWORK.PROTOCOL' | translate}}</div>
           <div>{{'TENANT.NETWORK.ADDRESS' | translate}}</div>
           <div>{{'TENANT.NETWORK.DESCRIPTION' | translate}}</div>
           <div>{{'TENANT.NETWORK.ACTIONS' | translate}}</div>
         </tui-table-head>
 
         <tui-table-row *ngFor="let instance of networkRules">
+          <div class="text-ellipsis">{{instance.networkName + '(' + instance.cidr + ')'}}</div>
           <div class="text-ellipsis">{{instance.policy}}</div>
-          <div class="text-ellipsis">{{instance.protocol}}</div>
           <div>{{instance.port}}</div>
+          <div class="text-ellipsis">{{instance.protocol}}</div>
           <div>{{instance.address}}</div>
           <div>{{instance.description}}</div>
           <div>

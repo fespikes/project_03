@@ -1,0 +1,14 @@
+<div class="tui-layout-vertical">
+
+  <div class="tui-layout-main-container flex-auto">
+    <tui-tab
+      [(selectedIndex)]="selectedIndex"
+      (selectedIndexChange)="tabIndexChange($event)"
+    >
+      <tec-node *tuiTabPane="'NODE.NAME' | translate"></tec-node>
+      <tec-network *tuiTabPane="'NETWORK.NAME' | translate"></tec-network>
+      <tec-system *tuiTabPane="'SYSTEM.NAME' | translate"></tec-system>
+      <tec-data *tuiTabPane="'DATA.NAME' | translate"></tec-data>
+    </tui-tab>
+  </div>
+</div>

@@ -1,0 +1,123 @@
+PLATFORM_MANAGEMENT:
+  NAME: '平台管理'
+  OPERATION: 操作
+  PLACEHOLDER: 输入关键字
+
+NODE:
+  NAME: 主机
+
+  TOTALNODES: '主机总计：'
+  EXPORT: 导出
+  STATUS: 状态
+  MEMORYUSED: 使用内存
+  STORAGEUSED: 使用硬盘
+  CPUUSED: 使用CPU
+  MICROSERVICE: 微服务
+  IP: IP
+  JOINTIME: 加入集群时间
+
+  FILTER_CONDITION: 筛选条件
+
+  CLEAN_ALL: 清除全部
+  RUN_SMOOTHLY: 运行健康
+  RUN_FAULT: 运行故障
+  RUN_RISKY: 运行有隐患
+  CHANG_STATUS: 变化情况
+  NEW_JOINED_CUR_MONTH: 本月新增主机
+  CORE: 内核
+
+NETWORK:
+  NAME: 网络
+  AMOUNT: 网络总计
+  SEARCH_HOLDER: '网络名称，CIDR，创建者，描述'
+  NETWORK_NAME: 网络名
+  CIDR: CIDR
+  CREATOR: 创建者
+  CREATE_TIME: 创建时间
+  DESCRIPTION: 描述
+  VIEW_DETAILS: 查看网络规则
+  CREATE_NETWORK_RULE: 新建网络规则
+
+DETAILS:
+  RELATIVE_NETWORK: 关联网络
+  RELATIVE_NETWORK_NAME: 关联网络名
+  AUTH_STRATIGY: 授权策略
+  PORT: 端口
+  PROTOCAL_TYPE: 协议类型
+  RULE_DESCRIPTION: 规则描述
+  REMOVE: 删除
+  REQUIRED: 该字段为必填
+  CONFIRM: 确定
+  RESET: 取消
+
+SYSTEM:
+  NAME: 系统服务
+  NO_CONTENT: 没有内容
+  EDIT_CONFIG: 编辑配额
+
+  INSTANCE:
+    TOTAL: 系统服务数量
+    NAME: 服务名
+    STATUS: 状况
+    VERSION: 版本号
+    TAG: 标签
+    IMAGE: 容器镜像
+    HEALTH: 健康
+    ERROR: 故障
+    MICRO_SERVICE: 微服务名
+    SHARE_DESC: 共享描述
+    SHARE_STATUS: 共享状态
+    STATE: 状态
+    START_TIME: 启动时间
+    SELECT_TAG: 选择标签
+    SERVICE_TYPE: 服务类别
+
+  TOOLTIP:
+    VIEW_POD: 查看Pod详情
+    VIEW_IMAGE: 查看镜像
+    VIEW_YAML: 查看YAML文件
+    START_SERVICE: 启动服务
+    STOP_SERVICE: 暂停服务
+    CANNOT_OPERATE_SERVICE: 不能启动/暂停服务
+
+  POPUP:
+    YAML_FILE: YAML文件
+    CLOSE: 关闭
+    CONFIRM: 确定
+    CANCEL: 取消
+    IMAGE_INFO: 镜像信息
+    IMAGE_ADDRESS: 镜像地址
+    IMAGE_ADDRESS_INITIAL: 初始镜像地址
+    NEW_IMAGE_ADDRESS: 新镜像地址
+    NEW_IMAGE_ADDRESS_INITIAL: 新初始镜像地址
+    COPY_IMAGE_ADDRESS: 复制镜像地址
+    COPY_IMAGE_ADDRESS_INITIAL: 复制初始镜像地址
+    CHANGE_IMAGE: 更换镜像
+    CHANGE_IMAGE_MESSAGE: 更换镜像地址可能用时较长
+    COPIED: 已复制
+    COPY_FAILED: 复制失败
+    POD_DETAIL: Pod详情
+    CREATE_TIME: 创建时间
+    CONTAINER: 容器
+    EVENT: 事件
+    LOG: 日志
+    CONTAINER_NAME: 容器名
+    HEALTHY_STATE: 健康状态
+    INFO: 信息
+    LAST_APPEAR: 最后出现
+    REASON: 原因
+    NUMBER: 数量
+    LOAD_COMPLETE_LOG: 加载完整的日志
+    SERVICE_SHARE: 服务共享
+
+DATA:
+  NAME: 数据服务
+  USERS_TABLE: 使用者实例列表
+  INSTANCE_NAME: 实例名
+  DESCRIPTION: 描述
+  TENANT: 租户
+  STATUS: 状态
+  VERSION: 版本
+  NODE: 主机
+  CANCEL_SHARING: 取消共享
+  

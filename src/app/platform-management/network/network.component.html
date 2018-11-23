@@ -1,0 +1,48 @@
+<div class="tui-layout-main-container" style="min-height:100%">
+
+  <div class="maintain">
+    <span class="tui-layout-main-title">{{'NETWORK.AMOUNT' | translate}} : {{pagination.total}}</span>
+    <span class="right">
+      <!-- placeholder="{{'NETWORK.SEARCH_HOLDER' | translate}}" -->
+      <tui-search
+        [(ngModel)]="filter.filter"
+        (ngModelChange)="fetchData()"
+        style="width: 280px"
+        ngDefaultControl
+      ></tui-search>
+    </span>
+  </div>
+
+  <tui-table class="tui-table" [tuiTableFlex]="[2, 2, 1.5, 2, 3, 1]"  [tuiLoading]="loading">
+    <tui-table-head>
+      <div>{{'NETWORK.NETWORK_NAME' | translate}}</div>
+      <div>{{'NETWORK.CIDR' | translate}}</div>
+      <div>{{'NETWORK.CREATOR' | translate}}</div>
+      <div>{{'NETWORK.CREATE_TIME' | translate}}</div>
+      <div>{{'NETWORK.DESCRIPTION' | translate}}</div>
+      <div>{{'PLATFORM_MANAGEMENT.OPERATION' | translate}}</div>
+    </tui-table-head>
+    <tui-table-row *ngFor="let instance of list; let idx=index;">
+      <div class="text-ellipsis">{{instance.name}}</div>
+      <div class="text-ellipsis">{{instance.cidr}}</div>
+      <div class="text-ellipsis">{{instance.creator}}</div>
+      <div class="text-ellipsis">{{instance.createTime | date: 'yyyy/MM/dd h:mm a'}}</div>
+      <div class="desc" tuiTooltip="{{instance.description}}">
+        <span class="text-ellipsis">{{instance.description}}</span>
+      </div>
+      <div class="operation-td">
+        <span tuiTooltip="{{'NETWORK.VIEW_DETAILS' | translate}}">
+          <a [routerLink]="'/management/detail/' + instance.name">
+            <svg tuiIcon="search-square"></svg>
+          </a>
+        </span>
+      </div>
+    </tui-table-row>
+  </tui-table>
+  
+  <div class="tui-layout-main-pagination-footer">
+    <tui-pagination [(pagination)]="pagination" (paginationChange)="fetchData()">
+    </tui-pagination>
+  </div>
+
+</div>

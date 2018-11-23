@@ -1,0 +1,75 @@
+@import '../../shared/components/system-service/style/system-service'
+
+\:host
+  height: calc(100vh - 165px)
+
+
+// S:common
+.icon-img
+  width: 16px
+  height: 16px
+// E:common
+.tui-layout-body
+  width: 100%
+
+.tui-layout-main-container
+  display: flex
+  flex-direction: column
+  justify-content: space-between
+  align-items: stretch
+  min-height: 100%
+  padding-top: 0.5rem
+
+.maintain
+  height: 52px
+  display: flex
+  align-items: center
+  justify-content: space-between
+
+  .right
+    padding-right: 20px
+    height: 52px
+    line-height: 52px
+    font-size: 14px
+
+    .message
+      font-size: 14px
+    .added
+      margin-left: 5px
+      margin-right: 30px
+      
+
+    button
+      overflow: hidden
+      display: inline-flex
+      align-items: center
+      vertical-align: middle
+
+      > svg
+        margin-right: 2px
+
+    .tui-search
+      margin-right: 30px
+      vertical-align: middle
+
+.tui-table
+  height: calc(100vh - 264px)
+  overflow: auto
+  flex: 1
+  font-size: 13px
+
+  .tui-table-row
+    &>div
+      line-height: 52px
+
+    .text-ellipsis
+      p.names
+      .system-service-tag
+        margin: 0
+        padding: 0
+
+    .operation-td
+
+      span:last-child
+        position: relative
+        left: 20px

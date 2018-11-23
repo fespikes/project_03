@@ -106,12 +106,12 @@ TENANT:
 
   NETWORK:
     NAME: 网络名
-    GATEWAY: 网关
     CREATER: 创建者
     CREATED_DATE: 创建时间
     LIMIT: 带宽上限
-    IP: IP
+    CIDR: CIDR
     ACTIONS: 操作
+    RELATIVE_NETWORK_NAME: 关联网络名
     POLICY: 授权策略
     POLICY_TIP: '授权策略为必填且必属于:'
     PROTOCOL: 协议类型
@@ -126,6 +126,7 @@ TENANT:
     FINANCIAL: 金融租户
     CREATE: 新建规则
     CREATE_NET_RULES: 新建网络规则
+    VIEW_NET_RULES: 查看网络规则
 
   ERROR:
     LEVEL: 等级
@@ -180,4 +181,14 @@ TENANT:
     CORRECTION_AMOUNT: 补账金额
     CORRECTION_REASON: 补账原因
 
-
+DETAILS:
+  RELATIVE_NETWORK: 关联网络
+  RELATIVE_NETWORK_NAME: 关联网络名
+  AUTH_STRATIGY: 授权策略
+  PORT: 端口
+  PROTOCAL_TYPE: 协议类型
+  RULE_DESCRIPTION: 规则描述
+  REMOVE: 删除
+  REQUIRED: 该字段为必填
+  CONFIRM: 确定
+  RESET: 取消

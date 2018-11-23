@@ -32,7 +32,7 @@ describe('AddComponent', () => {
         TuiMessageService,
         AdministratorsService,
         TecApiService,
-      ],
+      ]
     })
     .compileComponents();
   }));

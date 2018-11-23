@@ -1,0 +1,106 @@
+
+<div class="container">
+  <form
+    [formGroup]="myForm"
+    (ngSubmit)="onSubmit(myForm.value)"
+    class="form-specific"
+  >
+    <div [class.error]="!myForm.get('cidr').valid && myForm.get('cidr').touched">
+      <div class="field-box">
+        <label for="addressId"><span>*</span>{{'DETAILS.RELATIVE_NETWORK' | translate}}</label>
+        <tui-select
+          placeholder=" "
+          [formControl]="myForm.controls['cidr']"
+        >
+          <tui-select-option *ngFor="let option of networks" [value]="option.cidr">
+            {{(option.networkName + '(' + option.cidr + ')') | tuiDefault }}
+          </tui-select-option>
+        </tui-select>
+      </div>
+      <div
+        *ngIf="myForm.controls['cidr'].hasError('required') && myForm.controls['cidr'].touched"
+        class="message"
+      >{{'DETAILS.REQUIRED' | translate}}</div>
+    </div>
+
+    <div [class.error]="!myForm.get('policy').valid && myForm.get('policy').touched">
+      <div class="field-box">
+        <label for="policyId"><span>*</span>{{'DETAILS.AUTH_STRATIGY' | translate}}</label>
+        <tui-select
+          placeholder=" "
+          [formControl]="myForm.controls['policy']"
+        >
+          <tui-select-option *ngFor="let option of policyTypes" [value]="option">
+            {{option | tuiDefault }}
+          </tui-select-option>
+        </tui-select>
+      </div>
+      <div
+        *ngIf="myForm.controls['policy'].hasError('required') && myForm.controls['policy'].touched"
+        class="message"
+      >{{'DETAILS.REQUIRED' | translate}}</div>
+    </div>
+
+    <div [class.error]="!myForm.get('port').valid && myForm.get('port').touched">
+      <div class="field-box">
+        <label for="portId"><span>*</span>{{'DETAILS.PORT' | translate}}</label>
+        <input
+          class="field"
+          type="text"
+          placeholder="{{' ' | translate}}"
+          id="portId"
+          [formControl]="myForm.controls['port']"
+        />
+      </div>
+      <div
+        *ngIf="myForm.controls['port'].hasError('required') && myForm.controls['port'].touched"
+        class="message"
+      >{{'DETAILS.REQUIRED' | translate}}</div>
+    </div>
+
+    <div
+      [class.error]="!myForm.get('protocol').valid && myForm.get('protocol').touched"
+    >
+      <div class="field-box">
+        <label for="protocolId"><span>*</span>{{'DETAILS.PROTOCAL_TYPE' | translate}}</label>
+        <tui-select
+          placeholder=" "
+          [formControl]="myForm.controls['protocol']"
+        >
+          <tui-select-option *ngFor="let option of protocols" [value]="option">
+            {{option | tuiDefault }}
+          </tui-select-option>
+        </tui-select>
+      </div>
+      <div
+        *ngIf="myForm.controls['protocol'].hasError('required') && myForm.controls['protocol'].touched"
+        class="message"
+      >{{'DETAILS.REQUIRED' | translate}}</div>
+    </div>
+
+    <div>
+      <div class="field-box">
+        <label for="descriptionId">{{'DETAILS.RULE_DESCRIPTION' | translate}}</label>
+        <textarea rows="3" cols="20"
+          class="field"
+          placeholder=""
+          id="descriptionId"
+          [formControl]="myForm.controls['description']"
+        >
+        </textarea>
+      </div>
+    </div>
+
+    <div class="buttons">
+      <button
+        class="tui-btn-md tui-btn-primary tui-btn"
+        type="submit"
+        [disabled]="(!myForm.valid || submitDisabled) ? 'disabled' : null"
+      >{{'DETAILS.CONFIRM' | translate}}</button>
+      <button
+        class="tui-btn-md tui-btn-default tui-btn"
+        type="reset"
+      >{{'DETAILS.RESET' | translate}}</button>
+    </div>
+  </form>
+</div>

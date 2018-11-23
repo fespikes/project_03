@@ -106,12 +106,12 @@ TENANT:
 
   NETWORK:
     NAME: Network Name
-    GATEWAY: Gateway
     CREATER: Created User
     CREATED_DATE: Created Date
     LIMIT: Network Limit
-    IP: IP
+    CIDR: CIDR
     ACTIONS: Actions
+    RELATIVE_NETWORK_NAME: Relative Network Name
     POLICY: Policy
     POLICY_TIP: 'Policy is required and must belongs to:'
     PROTOCOL: Protocol
@@ -126,6 +126,7 @@ TENANT:
     FINANCIAL: Financial Tenant
     CREATE: Create Rule
     CREATE_NET_RULES: Create Network Rules
+    VIEW_NET_RULES: View Network Rules
 
   ERROR:
     LEVEL: Level
@@ -179,3 +180,15 @@ TENANT:
     CORRECTION_TYPE: Type
     CORRECTION_AMOUNT: Amount
     CORRECTION_REASON: Reason
+
+DETAILS:
+  RELATIVE_NETWORK: Relative netword
+  RELATIVE_NETWORK_NAME: Relative network name
+  AUTH_STRATIGY: Auth stratigy
+  PORT: Port
+  PROTOCAL_TYPE: Protocol type
+  RULE_DESCRIPTION: Rule description
+  REMOVE: Remove
+  REQUIRED: The field is required
+  CONFIRM: Sure
+  RESET: Reset
