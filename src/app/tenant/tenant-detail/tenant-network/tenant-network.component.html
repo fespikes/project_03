@@ -6,15 +6,15 @@
     ></tui-search>
   </div>
   <tui-table
-    [tuiTableFlex]="[1,2,1,1,1.5,1]"
+    [tuiTableFlex]="[1,1,1,1,2,1]"
     [(tuiTableData)]="tableData"
   >
     <tui-table-head>
       <div>{{'TENANT.NETWORK.NAME' | translate}}</div>
-      <div>{{'TENANT.NETWORK.IP' | translate}}</div>
-      <div>{{'TENANT.NETWORK.GATEWAY' | translate}}</div>
+      <div>{{'TENANT.NETWORK.CIDR' | translate}}</div>
       <div>{{'TENANT.NETWORK.CREATER' | translate}}</div>
       <div>{{'TENANT.NETWORK.CREATED_DATE' | translate}}</div>
+      <div>{{'TENANT.OVERVIEW.DESC' | translate}}</div>
       <div class="actions">{{'TENANT.NETWORK.ACTIONS' | translate}}</div>
     </tui-table-head>
     <tui-table-row
@@ -23,18 +23,19 @@
     >
       <div><strong>{{datum.name || ''}}</strong></div>
       <div>{{datum.cidr || ''}}</div>
-      <div>{{datum.gateway || ''}}</div>
       <div>{{datum.created_by || ''}}</div>
       <div>{{datum.created_at || ''}}</div>
+      <div class="desc" tuiTooltip="{{datum.description}}">
+        <span class="text-ellipsis">{{datum.description || ''}}</span>
+      </div>
       <div class="actions">
-        <svg
-          tuiIcon="pencil-square"
-          (click)="onViewDetails(datum)"
-        ></svg>
-        <svg
+        <span tuiTooltip="{{'TENANT.NETWORK.VIEW_NET_RULES' | translate}}">
+          <svg tuiIcon="search-square" (click)="onViewDetails(datum)"></svg>
+        </span>
+<!--         <svg
           tuiIcon="trash"
           (click)="onDelete(datum)"
-        ></svg>
+        ></svg> -->
       </div>
     </tui-table-row>
   </tui-table>

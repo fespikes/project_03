@@ -27,7 +27,9 @@
       <div class="text-ellipsis">{{instance.cidr}}</div>
       <div class="text-ellipsis">{{instance.creator}}</div>
       <div class="text-ellipsis">{{instance.createTime | date: 'yyyy/MM/dd h:mm a'}}</div>
-      <div class="text-ellipsis">{{instance.description}}</div>
+      <div class="desc" tuiTooltip="{{instance.description}}">
+        <span class="text-ellipsis">{{instance.description}}</span>
+      </div>
       <div class="operation-td">
         <span tuiTooltip="{{'NETWORK.VIEW_DETAILS' | translate}}">
           <a [routerLink]="'/management/detail/' + instance.name">

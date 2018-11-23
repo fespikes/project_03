@@ -45,13 +45,13 @@ export class TenantNetworkComponent implements OnInit {
     });
   }
 
-  onDelete(datum: Network) {
+/*   onDelete(datum: Network) {
     this.loading = true;
     this.tenantService.deleteNetwork(datum.name).subscribe(res => {
       this.loading = false;
       this.getNetworks();
     });
-  }
+  } */
 
   onSearch(fromStart = false) {
     if (!this.search) {

@@ -50,6 +50,7 @@ export class NetworkRulesComponent implements OnInit {
 
   fetchSecurityRules() {
     this.route.params.subscribe(params => {
+      this.loading = true;
       this.networkRulesFilter.networkName = params['networkName'];
       this.tenantService.getSecurityRules(this.networkRulesFilter).subscribe(res => {
         this.networkRules = res.data;
