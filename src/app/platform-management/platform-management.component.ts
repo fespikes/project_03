@@ -8,7 +8,7 @@ import { ActivatedRoute, Router, ParamMap, NavigationEnd } from '@angular/router
 })
 export class PlatformManagementComponent implements OnInit {
   @HostBinding('class.tui-layout-body') hostClass = true;
-  private selectedIndex = 2;
+  private selectedIndex = 3;
 
   constructor(
     private route: ActivatedRoute,

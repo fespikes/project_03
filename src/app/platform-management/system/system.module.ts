@@ -8,7 +8,6 @@ import { TuiModalService } from 'tdc-ui';
 
 import { SystemComponent } from './system.component';
 import { SystemModuleService } from './system.service';
-import { EditComponent } from './edit/edit.component';
 
 @NgModule({
   imports: [
@@ -19,7 +18,6 @@ import { EditComponent } from './edit/edit.component';
   ],
   declarations: [
     SystemComponent,
-    EditComponent,
   ],
   exports: [
     SystemComponent

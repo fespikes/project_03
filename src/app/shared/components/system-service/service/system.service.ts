@@ -23,6 +23,10 @@ export class SystemService {
     return this.api.get(`services/labels`, !uid ? {} : {uid: uid});
   }
 
+  getDataServiceLabels(uid = null) {
+    return this.api.get(`services/data/labels`, !uid ? {} : {uid: uid});
+  }
+
   getServicePods(serviceName: string, uid = null) {
     return this.api.get(`services/${serviceName}/pods`, !uid ? {} : {uid: uid});
   }

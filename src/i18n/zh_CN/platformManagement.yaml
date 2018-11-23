@@ -63,6 +63,8 @@ SYSTEM:
     HEALTH: 健康
     ERROR: 故障
     MICRO_SERVICE: 微服务名
+    SHARE_DESC: 共享描述
+    SHARE_STATUS: 共享状态
     STATE: 状态
     START_TIME: 启动时间
     SELECT_TAG: 选择标签
@@ -104,8 +106,16 @@ SYSTEM:
     REASON: 原因
     NUMBER: 数量
     LOAD_COMPLETE_LOG: 加载完整的日志
+    SERVICE_SHARE: 服务共享
 
-
-
-
+DATA:
+  NAME: 数据服务
+  USERS_TABLE: 使用者实例列表
+  INSTANCE_NAME: 实例名
+  DESCRIPTION: 描述
+  TENANT: 租户
+  STATUS: 状态
+  VERSION: 版本
+  NODE: 主机
+  CANCEL_SHARING: 取消共享
   

@@ -1,0 +1,50 @@
+
+<div class="container">
+  <form
+    [formGroup]="myForm"
+    (ngSubmit)="onSubmit()"
+    class="form-quotas"
+  >
+    <div *ngFor="let item of quotas">
+      <div class="field-box" formGroupName="{{item.name}}">
+        <h4>{{item.nameAlias}}</h4>
+        <div>
+          <label>
+            <span class="left">{{item.cpu.nameAlias}}</span>
+            <input
+              class="field"
+              type="text"
+              placeholder="{{'' | translate}}"
+              id="portId"
+              formControlName="cpu"
+            />
+            <span class="unit">{{(item.cpu.unit || 'core')}}</span>
+          </label>
+          <label>
+            <span class="left">{{item.memory.nameAlias}}</span>
+            <input
+              class="field"
+              type="text"
+              placeholder="{{'' | translate}}"
+              id="portId"
+              formControlName="memory"
+            />
+            <span class="unit">{{item.memory.unit}}</span>
+          </label>
+        </div>
+      </div>
+    </div>
+
+    <div class="buttons">
+      <button
+        class="tui-btn-md tui-btn-primary tui-btn"
+        type="submit"
+        [disabled]="!myForm.valid ? 'disabled' : null"
+      >{{'DETAILS.CONFIRM' | translate}}</button>
+      <button
+        class="tui-btn-md tui-btn-default tui-btn"
+        type="reset"
+      >{{'DETAILS.RESET' | translate}}</button>
+    </div>
+  </form>
+</div>

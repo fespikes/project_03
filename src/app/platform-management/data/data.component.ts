@@ -3,7 +3,6 @@ import { map } from 'rxjs/operators';
 
 import { Pagination, TuiModalService } from 'tdc-ui';
 import { TranslateService } from 'app/i18n';
-import { EditComponent } from '../edit/edit.component';
 
 import {
   SystemService,
@@ -12,15 +11,16 @@ import {
   ServiceFilter,
   ServiceList,
 } from 'app/shared';
-
-import { SystemModuleService } from './system.service';
+import { DataService } from './data.service';
+import { ShareComponent } from './share/share.component';
+import { EditComponent } from '../edit/edit.component';
 
 @Component({
-  selector: 'tec-system',
-  templateUrl: './system.component.html',
-  styleUrls: ['./system.component.sass'],
+  selector: 'tec-data',
+  templateUrl: './data.component.html',
+  styleUrls: ['./data.component.sass']
 })
-export class SystemComponent implements OnInit {
+export class DataComponent implements OnInit {
   loading = false;
   labels = [];
   services: Service[];
@@ -28,13 +28,13 @@ export class SystemComponent implements OnInit {
   pagination = new Pagination();
 
   constructor(
-    private system: SystemModuleService,
+    private service: DataService,
     private systemService: SystemService,
     private systemModal: SystemModalService,
     private translate: TranslateService,
     private tuiModal: TuiModalService,
   ) { }
-
+  // TODO: optimization of below code
   ngOnInit() {
     this.getServiceLabels().subscribe();
     this.getServiceList().subscribe();
@@ -42,7 +42,7 @@ export class SystemComponent implements OnInit {
 
   getServiceList() {
     this.loading = true;
-    return this.system.getServiceList(this.filter, this.pagination)
+    return this.service.getServiceList(this.filter, this.pagination)
     .pipe(map(result => {
       this.services = result.data;
       this.pagination = result.pagination;
@@ -51,15 +51,11 @@ export class SystemComponent implements OnInit {
   }
 
   getServiceLabels() {
-    this.loading = true;
-    return this.systemService.getServiceLabels()
+    return this.systemService.getDataServiceLabels()
     .pipe(map(result => {
-      this.labels = result.map(label => {
-        return {
-          value: label,
-          label: label,
-        };
-      });
+      this.labels = result;
+
+      console.log(this.labels);
     }));
   }
 
@@ -91,6 +87,16 @@ export class SystemComponent implements OnInit {
     });
   }
 
+  shareService(service, size = 'lg') {
+    return this.tuiModal.open(ShareComponent, {
+      title: this.translate.translateKey('SYSTEM.POPUP.SERVICE_SHARE'),
+      size,
+      data: {
+        service: service
+      }
+    }).subscribe((argu: string) => {});
+  }
+
   toggleSubList(service) {
     service.showSubList = !service.showSubList;
     this.getServicePods(service);
@@ -101,11 +107,11 @@ export class SystemComponent implements OnInit {
   }
 
   viewImage(service, microService) {
-    this.systemModal.openImageModal(service, microService);
+    this.systemModal.openImageModal(service, microService, (service.category || {}).uid);
   }
 
   viewYaml(service) {
-    this.systemModal.openYamlModal(service);
+    this.systemModal.openYamlModal(service, (service.category || {}).uid);
   }
 
   mergeServicePods(serviceName, microServicePods) {
@@ -141,6 +147,7 @@ export class SystemComponent implements OnInit {
       title: this.translate.translateKey('SYSTEM.EDIT_CONFIG'),
       size,
       data: {
+        from: 'data'
       }
     }).subscribe((argu: string) => {});
   }

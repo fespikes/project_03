@@ -20,6 +20,11 @@ import { NetworkComponent } from './network/network.component';
 import { NetworkService } from './network/network.service';
 import { DetailsComponent } from './network/details/details.component';
 import { AddComponent } from './network/add/add.component';
+import { DataComponent } from './data/data.component';
+import { DataService } from './data/data.service';
+import { EditComponent } from './edit/edit.component';
+import { EditService } from './edit/edit.service';
+import { ShareComponent } from './data/share/share.component';
 
 @NgModule({
   imports: [
@@ -40,10 +45,15 @@ import { AddComponent } from './network/add/add.component';
     PlatformManagementComponent,
     NetworkComponent,
     DetailsComponent,
-    AddComponent
+    AddComponent,
+    DataComponent,
+    EditComponent,
+    ShareComponent
   ],
   entryComponents: [
-    AddComponent
+    AddComponent,
+    EditComponent,
+    ShareComponent
   ],
   exports: [
     PlatformManagementComponent
@@ -51,7 +61,9 @@ import { AddComponent } from './network/add/add.component';
   providers: [
     TranslateService,
     TuiModalService,
-    NetworkService
+    NetworkService,
+    DataService,
+    EditService
   ]
 })
 export class PlatformManagementModule { }

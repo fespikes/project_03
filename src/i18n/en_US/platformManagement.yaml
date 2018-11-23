@@ -63,6 +63,8 @@ SYSTEM:
     HEALTH: Health
     ERROR: Error
     MICRO_SERVICE: Micro Service Name
+    SHARE_DESC: Share Description
+    SHARE_STATUS: Share Status
     STATE: State
     START_TIME: Start Time
     SELECT_TAG: Select Label
@@ -103,4 +105,15 @@ SYSTEM:
     REASON: Reason
     NUMBER: Number
     LOAD_COMPLETE_LOG: Load Complete Log
+    SERVICE_SHARE: Service Share
 
+DATA:
+  NAME: Data Service
+  USERS_TABLE: Users Table
+  INSTANCE_NAME: Instance Name
+  DESCRIPTION: Deacription
+  TENANT: Tenant
+  STATUS: Status
+  VERSION: Version
+  NODE: Node
+  CANCEL_SHARING: Cancel Sharing

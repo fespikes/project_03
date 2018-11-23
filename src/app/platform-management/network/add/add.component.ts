@@ -1,10 +1,9 @@
 import { Component, OnInit, Inject } from '@angular/core';
-import { TuiModalService, TuiModalRef, TUI_MODAL_DATA, TuiMessageService } from 'tdc-ui';
+import { TuiModalRef, TUI_MODAL_DATA, TuiMessageService } from 'tdc-ui';
 import {
   FormBuilder,
   FormGroup,
   Validators,
-  FormControl,
 } from '@angular/forms';
 import { NetworkService } from '../network.service';
 import { TranslateService } from 'app/i18n/translate.service';

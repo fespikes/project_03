@@ -2,7 +2,7 @@
   <div class="tui-layout-main-title">
 
     <span class="left">
-      <span>{{'SYSTEM.NAME' | translate}}:</span>
+      <span>{{'DATA.NAME' | translate}}:</span>
     <span>{{pagination.total}}</span>
     </span>
 
@@ -16,10 +16,9 @@
       >
         <tui-select-option
           *ngFor="let label of labels"
-          [value]="label.value"
-          [label]="label.label"
+          [value]="label"
         >
-          {{label.label | tuiDefault | translate}}
+          {{label | tuiDefault | translate}}
         </tui-select-option>
       </tui-select>
       <tui-search [(ngModel)]="filter.service" (ngModelChange)="filterChange()">
@@ -36,20 +35,42 @@
   </div>
 
   <div class="container-content">
-    <tui-table [tuiTableFlex]="[2.5, 1, 1, 1, 1, 2, 0.5]" [loading]="loading">
+    <tui-table [tuiTableFlex]="[2.5, 1, 1, 1, 0.5, 1, 2, 1]" [loading]="loading">
       <tui-table-head>
         <div>{{'SYSTEM.INSTANCE.NAME' | translate}}</div>
+        <div>{{'SYSTEM.INSTANCE.SHARE_DESC' | translate}}</div>
+        <div>{{'SYSTEM.INSTANCE.SHARE_STATUS' | translate}}</div>
         <div>{{'SYSTEM.INSTANCE.STATE' | translate}}</div>
         <div>{{'SYSTEM.INSTANCE.VERSION' | translate}}</div>
         <div>{{'SYSTEM.INSTANCE.START_TIME' | translate}}</div>
-        <div>{{'SYSTEM.INSTANCE.SERVICE_TYPE' | translate}}</div>
         <div>{{'SYSTEM.INSTANCE.TAG' | translate}}</div>
         <div>{{'PLATFORM_MANAGEMENT.OPERATION' | translate}}</div>
       </tui-table-head>
       <ng-container *ngFor="let service of services">
         <tui-table-row>
-          <div class="text-ellipsis instance-name" tuiTooltip="{{'SYSTEM.INSTANCE.NAME' | translate}}" (click)="toggleSubList(service)">
+          <div
+            class="text-ellipsis instance-name"
+            tuiTooltip="{{'SYSTEM.INSTANCE.NAME' | translate}}"
+            (click)="toggleSubList(service)">
             <svg class="toggle-icon" tuiIcon="caret-right" [ngClass]="{open: service.showSubList}"></svg>{{service.name}}
+          </div>
+          <div class="text-ellipsis">{{service.shareDesc}}</div>
+          <div class="text-ellipsis">
+            <span class="share-icon">
+              <img
+                *ngIf="service.shareStatus==='NOT_SHARED'"
+                class="icon-img share-status"
+                tecImgSrc="share-status.svg"
+                tecImgPrefix="/assets/svg"
+              />
+              <img
+                *ngIf="service.shareStatus!=='NOT_SHARED'"
+                class="icon-img share-status"
+                tecImgSrc="share-status-green.svg"
+                tecImgPrefix="/assets/svg"
+              />
+            </span>
+            {{service.shareStatusAlias}}
           </div>
           <div class="status-td">
             <span [ngClass]="{'error': service.status === 'ERROR'}">
@@ -58,7 +79,6 @@
           </div>
           <div class="text-ellipsis">{{service.edition}}</div>
           <div>{{service.createTime | date:'yy-MM-dd HH:mm'}}</div>
-          <div class="text-ellipsis">{{service.category['nameAlias']}}</div>
           <div class="text-ellipsis system-service-tag">
             <tec-system-service-tag [tags]="service.labels" [tuiPopover]="tooltip_label"></tec-system-service-tag>
             <tui-popover #tooltip_label placement="right">
@@ -78,6 +98,12 @@
             <span tuiTooltip="{{'SYSTEM.TOOLTIP.VIEW_YAML' | translate}}">
               <svg tuiIcon="yaml" (click)="viewYaml(service)"></svg>
             </span>
+            <img
+              class="icon-img share-set"
+              tecImgSrc="share-set.svg"
+              tecImgPrefix="/assets/svg"
+              (click)="shareService(service)"
+            />
           </div>
         </tui-table-row>
         <tui-table *ngIf="service?.showSubList && service.serviceInfos?.length > 0" class="tui-table-tree" [tuiTableFlex]="[1,1,1,1]">

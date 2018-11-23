@@ -1,0 +1,102 @@
+<div>
+  <ul>
+    <li>
+      <span class="label">服务名：</span><span class="flex-1">{{service.name}}</span>
+    </li>
+    <li>
+      <span class="label">共享状态：</span>
+      <span class="share-status">
+        <img
+          *ngIf="service.shareStatus==='NOT_SHARED'"
+          class="icon-img share-status"
+          tecImgSrc="share-status.svg"
+          tecImgPrefix="/assets/svg"
+        />
+        <img
+          *ngIf="service.shareStatus==='SHARED'"
+          class="icon-img share-status"
+          tecImgSrc="share-status-green.svg"
+          tecImgPrefix="/assets/svg"
+        />
+        {{service.shareStatusAlias}}
+      </span>
+      <button
+        *ngIf="service.shareStatus==='SHARED' && cancelDisabled"
+        class="cancel-btn"
+        tuiBtn="primary"
+        tuiBtnOutline
+        disabled
+        (click)="changeSharingStatus('NOT_SHARED')"
+      >{{'DATA.CANCEL_SHARING' | translate}}</button>
+      <button
+        *ngIf="service.shareStatus==='SHARED' && !cancelDisabled"
+        class="cancel-btn"
+        tuiBtn="primary"
+        tuiBtnOutline
+        (click)="changeSharingStatus('NOT_SHARED')"
+      >{{'DATA.CANCEL_SHARING' | translate}}</button>
+      <button
+        *ngIf="service.shareStatus==='NOT_SHARED'"
+        class="reopen-btn"
+        tuiBtn="primary"
+        (click)="changeSharingStatus('SHARED')"
+      >{{'开启共享' | translate}}</button>
+      <span *ngIf="service.shareStatus==='SHARED' && cancelDisabled"
+        class="tips red"
+      >共享组件有使用者时无法取消共享</span>
+    </li>
+    <li>
+      <span class="label">共享描述：</span>
+      <textarea
+      class="description"
+      #description
+      >{{service.shareDesc}}</textarea>
+    </li>
+  </ul>
+
+  <ng-container *ngIf="service.shareStatus==='SHARED'">
+    <h4>{{'DATA.USERS_TABLE' | translate}}</h4>
+    <tui-table
+      class="share-instances"
+      [tuiTableFlex]="[2.5, 2, 2, 1, 1, 1]" 
+      [loading]="loading"
+    >
+      <tui-table-head>
+        <div>{{'DATA.INSTANCE_NAME' | translate}}</div>
+        <div>{{'DATA.DESCRIPTION' | translate}}</div>
+        <div>{{'DATA.TENANT' | translate}}</div>
+        <div>{{'DATA.STATUS' | translate}}</div>
+        <div>{{'DATA.VERSION' | translate}}</div>
+        <div>{{'DATA.NODE' | translate}}</div>
+      </tui-table-head>
+      <tui-table-row *ngFor="let item of instances;">
+        <div
+          class="text-ellipsis"
+          tuiTooltip="{{item.name}}"
+        >{{item.name}}</div>
+        <div class="text-ellipsis">{{item.description}}</div>
+        <div class="text-ellipsis">{{item.tenantName}}</div>
+        <div class="text-ellipsis">{{item.status}}</div>
+        <div class="text-ellipsis">{{item.version}}</div>
+        <div class="text-ellipsis">{{item.nodeNum}}</div>
+      </tui-table-row>
+    </tui-table>
+  
+    <div class="tui-layout-main-pagination-footer">
+      <tui-pagination [(pagination)]="pagination" (paginationChange)="paginationChange()">
+      </tui-pagination>
+    </div>
+  </ng-container>
+
+  <div class="buttons">
+    <button
+      class="tui-btn-md tui-btn-primary tui-btn"
+      (click)="submit(description)"
+      type="submit"
+    >{{'DETAILS.CONFIRM' | translate}}</button>
+    <button
+      class="tui-btn-md tui-btn-default tui-btn"
+      type="reset"
+    >{{'DETAILS.RESET' | translate}}</button>
+  </div>
+</div>
