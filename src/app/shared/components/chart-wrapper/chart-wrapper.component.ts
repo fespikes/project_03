@@ -182,7 +182,7 @@ export class ChartWrapperComponent implements OnInit {
         },
         this.data.wrapperName );
 
-        if (typeof data.showSum === 'function' && adjustedData.totalCount) {
+        if (typeof data.showSum === 'function') {
           data.showSum(this.chartData.totalCount);
         }
       },
