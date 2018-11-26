@@ -43,15 +43,18 @@
         <dl>
           <dt><span>组件</span><span>配额</span></dt>
         </dl>
-        <dl>
+        <!-- <dl>
           <dt><span>组件</span><span>配额</span></dt>
-        </dl>
+        </dl> -->
         <dl class="box">
+          <dd *ngFor="let item of components"><span>{{item.name}}</span><span>{{stringify(item.resources)}}</span></dd>
+        </dl>
+<!--         <dl class="box">
           <dd *ngFor="let item of componentsLeft"><span>{{item.name}}</span><span>{{stringify(item.resources)}}</span></dd>
-        </dl>
-        <dl class="box">
+        </dl> -->
+<!--         <dl class="box">
           <dd *ngFor="let item of componentsRight"><span>{{item.name}}</span><span>{{stringify(item.resources)}}</span></dd>
-        </dl>
+        </dl> -->
       </div>
     </div>
   </div>
