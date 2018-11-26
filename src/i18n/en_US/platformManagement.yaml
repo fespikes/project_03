@@ -9,6 +9,7 @@ NODE:
   TOTALNODES: 'nodes amount:'
   EXPORT: Export
   STATUS: status
+  ALL_STATUS: All status
   MEMORYUSED: memory used
   STORAGEUSED: storage used
   CPUUSED: CPU used
