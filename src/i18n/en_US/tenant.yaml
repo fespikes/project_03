@@ -20,7 +20,7 @@ TENANT:
     DEPARTMENT: Department
     QUIT: Quit
     REQUIRED: This field is required
-    LIMITS: No amount limit by default
+    LIMITS: The limit is 10 by default
     REG_TYPE: Register method
     NOTIFY_TYPE: Notify type
     PHONE: Phone

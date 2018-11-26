@@ -14,8 +14,9 @@ import { AccountService } from '../account.service';
 export class LicenseComponent implements OnInit {
   // @HostBinding('class.tui-layout-body') hostClass = true;
   license: any = {};
-  componentsLeft: any[] = [];
-  componentsRight: any[] = [];
+  // componentsLeft: any[] = [];
+  // componentsRight: any[] = [];
+  components: any[] = [];
 
   constructor(
     private service: AccountService,
@@ -30,14 +31,15 @@ export class LicenseComponent implements OnInit {
   }
 
   fetchData() {
-    const components = [];
-    let len = 0;
+    // const components = [];
+    // let len = 0;
     this.service.fetchLicenseDetails()
       .subscribe(res => {
         this.license = res;
-        len = Math.floor(res.components.length / 2) + 1;
-        this.componentsLeft = res.components.slice(0, len);
-        this.componentsRight = res.components.slice(len, res.components.length);
+        // len = Math.floor(res.components.length / 2) + 1;
+        this.components = res.components;
+        // this.componentsLeft = res.components.slice(0, len);
+        // this.componentsRight = res.components.slice(len, res.components.length);
       });
   }
 
