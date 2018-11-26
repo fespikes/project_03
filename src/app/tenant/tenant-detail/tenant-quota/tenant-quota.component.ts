@@ -48,6 +48,8 @@ export class TenantQuotaComponent implements OnInit {
       limit: quota['limit'],
     }).subscribe(res => {
       this.loading = false;
+    }, err => {
+      this.fetchQuotas();
     });
   }
 
