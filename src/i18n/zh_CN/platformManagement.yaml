@@ -9,6 +9,7 @@ NODE:
   TOTALNODES: '主机总计：'
   EXPORT: 导出
   STATUS: 状态
+  ALL_STATUS: 全部状态
   MEMORYUSED: 使用内存
   STORAGEUSED: 使用硬盘
   CPUUSED: 使用CPU
