@@ -3,6 +3,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { patterns } from '../shared';
+import { forbiddenEmailValidator } from 'app/shared';
 
 export enum addingTypes {
   email = 'email',
@@ -12,6 +13,7 @@ const emailFields = {
   'userEmail': ['', Validators.compose([
     Validators.required,
     Validators.pattern(patterns.email),
+    forbiddenEmailValidator(patterns.notAllowedEmailPattern)
   ])],
 };
 const phoneFields = {

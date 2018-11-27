@@ -12,7 +12,9 @@ export class NodeServiceStub {
 
   fetchNodeList() {
     return of({
-      options: {},
+      options: {
+        unit: {}
+      },
       pagination: {},
     });
   }

@@ -85,7 +85,7 @@
 
     <div
       *ngIf="addType==='email'"
-      [class.error]="!myForm.get('userEmail').valid && myForm.get('userEmail').touched"
+      [class.error]="!myForm.get('userEmail').valid && (myForm.get('userEmail').dirty || myForm.get('userEmail').touched)"
     >
       <div class="field-box">
         <label for="userEmailId"><span>*</span>{{'TENANT.TENANT_ADMIN.EMAIL' | translate}}</label>
@@ -106,6 +106,10 @@
         *ngIf="myForm.controls['userEmail'].hasError('pattern') && myForm.controls['userEmail'].touched"
         class="message"
       >{{'TENANT.FORMAT_ERROR' | translate}}</div>
+      <div
+        *ngIf="myForm.controls['userEmail'].errors?.forbiddenEmail && myForm.controls['userEmail'].touched"
+        class="message"
+      >{{'TENANT.EMAIL_NOT_ALLOWED' | translate}}</div>
     </div>
     <div
       *ngIf="addType!=='email'"

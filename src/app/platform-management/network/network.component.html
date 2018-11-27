@@ -27,7 +27,17 @@
       <div class="text-ellipsis">{{instance.cidr}}</div>
       <div class="text-ellipsis">{{instance.creator}}</div>
       <div class="text-ellipsis">{{instance.createTime | date: 'yyyy/MM/dd h:mm a'}}</div>
-      <div class="desc" tuiTooltip="{{instance.description}}">
+      <div
+        *ngIf="!!instance.description && ((instance.description + '').length>35)"
+        class="desc" 
+        tuiTooltip="{{instance.description}}"
+      >
+        <span class="text-ellipsis">{{instance.description}}</span>
+      </div>
+      <div
+        *ngIf="!instance.description || (instance.description + '').length<=35"
+        class="desc"
+      >
         <span class="text-ellipsis">{{instance.description}}</span>
       </div>
       <div class="operation-td">
@@ -39,7 +49,7 @@
       </div>
     </tui-table-row>
   </tui-table>
-  
+
   <div class="tui-layout-main-pagination-footer">
     <tui-pagination [(pagination)]="pagination" (paginationChange)="fetchData()">
     </tui-pagination>
