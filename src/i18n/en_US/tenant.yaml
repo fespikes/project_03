@@ -5,6 +5,7 @@ TENANT:
   CLOSE: Close
   PWD_PLACEHOLDER: Must have 8-20 characters, only letters number and symbol
   FORMAT_ERROR: Formatting error
+  EMAIL_NOT_ALLOWED: Email not allowed
 
   TENANT_ADMIN:
     NAME: Tenant Admin

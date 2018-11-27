@@ -14,14 +14,14 @@
         (ngModelChange)="filterChange()"
         placeholder="{{'全部状态' | translate}}"
         style="margin-right: 30px; width: 132px;"
-        allowClear
-      >
+        >
+        <!-- allowClear -->
         <tui-select-option
           *ngFor="let item of statusOptions"
           [value]="item.status"
           [label]="item.statusAlias"
         >
-          {{item.statusAlias | tuiDefault | translate}}
+          {{item.statusAlias | tuiDefault}}
         </tui-select-option>
       </tui-select>
 

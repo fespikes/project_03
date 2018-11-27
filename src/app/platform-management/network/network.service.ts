@@ -10,7 +10,8 @@ export class NetworkService {
 
   fetchList(filter?: Filter): Observable<any> {
     const uid = sessionStorage.getItem('eco:tenant:detail:uid');
-    return this.api.get(`networks`, {...filter, tenantUid: uid});
+    filter.uid = uid;
+    return this.api.get(`networks`, filter);
   }
 
   getNetworkSecurityRules(name, filter): Observable<any> {

@@ -133,7 +133,7 @@ export class NodeComponent implements OnInit {
   }
 
   toStorageDetails(node, idx) {
-    this.router.navigate([`/node/storage/${node.name}`], {
+    this.router.navigate([`/management/storage/${node.name}`], {
       queryParams: {
         idx: 0,
       }

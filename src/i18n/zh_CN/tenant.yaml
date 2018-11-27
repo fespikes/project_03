@@ -5,6 +5,7 @@ TENANT:
   CLOSE: 关闭
   PWD_PLACEHOLDER: 密码必须由8-20位字母, 数字或符号组成
   FORMAT_ERROR: 格式错误
+  EMAIL_NOT_ALLOWED: 请输入符合要求的Email
 
   TENANT_ADMIN:
     NAME: 租户管理员

@@ -5,6 +5,7 @@ export class Filter {
   coreNum?: number;
   filter?: string;
   tenantUid?: string;
+  uid?: any;
 }
 
 export class XNetwork {

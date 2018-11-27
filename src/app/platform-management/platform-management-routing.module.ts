@@ -4,6 +4,7 @@ import { TranslateDeactivator, TranslateResolver, TranslateToken } from '../i18n
 
 import { PlatformManagementComponent } from './platform-management.component';
 import { DetailsComponent } from './network/details/details.component';
+import { StorageComponent } from './node/storage/storage.component';
 
 const platformManagementRoutes: Routes = [
   {
@@ -13,6 +14,10 @@ const platformManagementRoutes: Routes = [
   {
     path: 'list',
     component: PlatformManagementComponent
+  },
+  {
+    path: 'storage/:name',
+    component: StorageComponent
   },
   {
     path: 'detail/:name',
