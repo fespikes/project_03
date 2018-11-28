@@ -25,6 +25,8 @@ TENANT:
     REG_TYPE: Register method
     NOTIFY_TYPE: Notify type
     PHONE: Phone
+    NO_DELETION: Not allowed to delete
+    BE_READY: Please delete the administrator created tenants first
 
   OVERVIEW:
     TOTAL: All Tenants

@@ -1,0 +1,26 @@
+<div class="delete-tenant">
+  <div class="delete-tenant-icon">
+    <svg tuiIcon="trash" size="lg"></svg>
+  </div>
+  <div class="delete-tenant-text">
+    <p *ngIf="canDelete">
+      <span>{{'TENANT.OVERVIEW.CONFIRM_DELETE' | translate}}{{'TENANT.TENANT_ADMIN.NAME' | translate}}</span>
+      <span> {{tenant.fullName}}</span> ?
+    </p>
+    <p *ngIf="!canDelete">
+      <span>{{'TENANT.TENANT_ADMIN.NO_DELETION' | translate}}</span>
+      <span> {{tenant.fullName}}</span> ?
+    </p>
+    <p *ngIf="!canDelete">
+      <span>{{'TENANT.TENANT_ADMIN.BE_READY' | translate}}</span>
+    </p>
+  </div>
+</div>
+
+<div class="tui-modal-foot" *ngIf="canDelete">
+  <button tuiBtn="primary" (click)="confirm()" [disabled]="">{{'TUI.MODAL.CONFIRM' | translate}}</button>
+  <button tuiBtn="default" (click)="cancel()">{{'TUI.MODAL.CANCEL' | translate}}</button>
+</div>
+<div class="tui-modal-foot" *ngIf="!canDelete">
+  <button tuiBtn="default" (click)="cancel()">{{'TENANT.CLOSE' | translate}}</button>
+</div>
