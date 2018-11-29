@@ -128,7 +128,7 @@ export class TecApiService {
     };
     if (p) {
       Object.keys(p).map((key) => {
-        if (!!p[key]) {
+        if (typeof p[key] !== 'undefined' && p[key] !== null ) {
           const element = p[key];
           obj.params = obj.params.set(key, element);
         }
