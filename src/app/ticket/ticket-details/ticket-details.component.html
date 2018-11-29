@@ -45,7 +45,7 @@
             </div>
           </div>
           <tui-property icon="user-slash" label="{{'TICKET.CREATOR' | translate}}" [value]="ticket.submitter"></tui-property>
-          <div class="tui-property">
+          <div class="tui-property" *ngIf="ticket.serviceType!=='TENANT'">
             <img class="icon-img" tecImgSrc="talent.svg" tecImgPrefix="/assets/svg" />
             <div>
               <div class="value">{{ticket.tenant}}</div>
@@ -61,13 +61,23 @@
               <div class="label">{{'TICKET.CATEGORY' | translate}}</div>
             </div>
           </div>
-          <tui-property class="flex2" icon="clock" label="{{'TICKET.TIME_SCOPE' | translate}}" [value]="(ticket.createdTime | date:'y/M/d') + ' - ' + (ticket.modifiedTime | date:'y/M/d')"></tui-property>
+          <tui-property
+            *ngIf="ticket.serviceType==='TENANT'"
+            icon="clock" label="{{'TICKET.CREATE_TIME' | translate}}"
+            [value]="ticket.createdTime | date:'y/M/d'"></tui-property>
+          <tui-property
+            *ngIf="ticket.serviceType!=='TENANT'"
+            class="flex2"
+            icon="clock"
+            label="{{'TICKET.TIME_SCOPE' | translate}}"
+            [value]="(ticket.createdTime | date:'y/M/d') + ' - ' + (ticket.modifiedTime | date:'y/M/d')"
+          ></tui-property>
         </div>
       </div>
     </div>
 
     <!--S: 申请资源-->
-    <div *ngIf="!!appliedResource" class="application ticket-parts">
+    <div *ngIf="!!appliedResource && (ticket.serviceType!=='TENANT')" class="application ticket-parts">
       <h4 class="title">{{'TICKET.APPLIED_RESOURCE' | translate}}</h4>
       <dl class="resource-dl">
         <dd *ngFor="let item of appliedResource">
@@ -78,6 +88,19 @@
           <span>&nbsp;&nbsp;&nbsp;&nbsp;配额总计:</span>
           <span class="highlight">&nbsp;{{(+item.total).toFixed(2)}}</span>
           <span>&nbsp;{{item.displayUnit || ''}}</span>
+        </dd>
+      </dl>
+    </div>
+    <!--S: 申请租户数量-->
+    <div *ngIf="!!appliedResource && (ticket.serviceType==='TENANT')" class="application ticket-parts">
+      <h4 class="title">{{'TICKET.APPLIED_TENANT_AMOUNT' | translate}}</h4>
+      <dl class="resource-dl">
+        <dd>
+          <!--TODO: i18n-->
+          <span>{{'TICKET.CURRENT_MAX' | translate}}: </span>
+          <span class="highlight">&nbsp;{{+appliedResource.applyMaxTenantQuantity}}</span>
+          <span>&nbsp;&nbsp;&nbsp;&nbsp;{{'TICKET.ADDED_TO' | translate}}:</span>
+          <span class="highlight">&nbsp;{{+appliedResource.currentMaxTenantQuantity}}</span>
         </dd>
       </dl>
     </div>
@@ -115,7 +138,7 @@
     </div>
 
     <!--S: attachments-->
-    <div *ngIf="!!appliedResource" class="application ticket-parts">
+    <div *ngIf="!!appliedResource && attachments.length>0" class="application ticket-parts">
       <h4 class="title">{{'TICKET.ATTACHMENT' | translate}}</h4>
       <div class="attachments">
         <span *ngFor="let item of attachments">

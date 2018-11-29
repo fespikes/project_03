@@ -25,6 +25,8 @@ TENANT:
     REG_TYPE: 注册方式
     NOTIFY_TYPE: 通知方式
     PHONE: 手机
+    NO_DELETION: 无法删除租户管理员
+    BE_READY: 请先删除由此租户管理员创建的租户
 
   OVERVIEW:
     TOTAL: 租户总计

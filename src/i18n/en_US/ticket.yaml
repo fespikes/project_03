@@ -20,6 +20,9 @@ TICKET:
   ATTACHMENT: Attachment
   APPLIED_DATA: Application Record
   APPLIED_RESOURCE: Applied Resource
+  APPLIED_TENANT_AMOUNT: Applied Tenant Amount
+  CURRENT_MAX: The Max Allowed Amount
+  ADDED_TO: Added Together is
   TABLES: Tables
   COLUMNS: Columns
   FILTER_PARAM: Filter Condition

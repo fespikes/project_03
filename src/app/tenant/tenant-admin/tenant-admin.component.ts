@@ -8,7 +8,7 @@ import { TenantAdminFilter, TenantAdmin } from '../tenant-model';
 
 import { AddComponent } from './add/add.component';
 import { SendRegisterLinkComponent } from './send-register-link/send-register-link.component';
-
+import { DeleteComponent } from './delete/delete.component';
 
 @Component({
   selector: 'tec-tenant-admin',
@@ -57,8 +57,10 @@ export class TenantAdminComponent implements OnInit {
       title: this.translateService.translateKey('TENANT.TENANT_ADMIN.ADD'),
       size,
     })
-    .subscribe((word: string) => {
-      this.getTenantAdmins();
+    .subscribe((refresh: boolean) => {
+      if (refresh) {
+        this.getTenantAdmins();
+      }
     });
   }
 
@@ -98,6 +100,20 @@ export class TenantAdminComponent implements OnInit {
           item.usedTenantQuantity + ', ' +
           this.translateService.translateKey('TENANT.ERROR.BLANK_MEANS'));
     }
+  }
+
+  delete(tenant) {
+    const config = {
+      title: this.translateService.translateKey('TENANT.OVERVIEW.CONFIRM_DELETE'),
+      size: 'md',
+      data: tenant,
+    };
+    this.modalService.open(DeleteComponent, config)
+    .subscribe((refresh: boolean) => {
+      if (refresh) {
+        this.getTenantAdmins();
+      }
+    });
   }
 
 }

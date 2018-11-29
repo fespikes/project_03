@@ -20,7 +20,7 @@
 </div>
 
 <div class="container-content">
-  <tui-table [tuiTableFlex]="[1,2,1,1.5,1,1,1]" [loading]="loading">
+  <tui-table [tuiTableFlex]="[1,2,1,1.5,1,1,1,0.6]" [loading]="loading">
     <tui-table-head>
       <div>{{'TENANT.TENANT_ADMIN.USER_NAME' | translate}}</div>
       <div>{{'TENANT.TENANT_ADMIN.EMAIL' | translate}}</div>
@@ -29,6 +29,7 @@
       <div>{{'TENANT.TENANT_ADMIN.FULL_NAME' | translate}}</div>
       <div>{{'TENANT.TENANT_ADMIN.COMPANY' | translate}}</div>
       <div>{{'TENANT.TENANT_ADMIN.DEPARTMENT' | translate}}</div>
+      <div>{{'TENANT.DETAIL.OP' | translate}}</div>
     </tui-table-head>
     <tui-table-row *ngFor="let item of TenantAdmins; let i=index;">
       <div class="text-ellipsis">{{item.username}}</div>
@@ -53,6 +54,11 @@
       <div>{{item.fullName}}</div>
       <div class="text-ellipsis">{{item.company}}</div>
       <div class="text-ellipsis">{{item.department}}</div>
+      <div>
+        <span tuiTooltip="{{'TENANT.DETAIL.DELETE' | translate}}">
+          <svg tuiIcon="trash" (click)="delete(item)"></svg>
+        </span>
+      </div>
     </tui-table-row>
   </tui-table>
 </div>

@@ -45,7 +45,7 @@
           [sortMode]="sortMode"
           (sortChange)="fetchData($event)"
         >
-          <tui-table-head-cell sortKey="id">{{'TASKS.ID' | translate}}</tui-table-head-cell>
+          <tui-table-head-cell sortKey="id">{{'TICKET.ID' | translate}}</tui-table-head-cell>
           <tui-table-head-cell sortKey="priority">{{'TICKET.PRIORITY' | translate}}</tui-table-head-cell>
           <div>{{'TICKET.TITLE' | translate}}</div>
           <div>{{'TICKET.STATUS' | translate}}</div>
@@ -72,7 +72,8 @@
           <div>{{item.serviceTypeAlias}}</div>
           <div>{{item.submitter}}</div>
           <div>{{item.createdTime | date: 'yyyy/MM/dd h:mm a'}}</div>
-          <div class="text-ellipsis">{{item.dueDate | date: 'yyyy/MM/dd h:mm a'}}</div>
+          <div class="text-ellipsis" *ngIf="!!item.dueDate">{{item.dueDate | date: 'yyyy/MM/dd h:mm a'}}</div>
+          <div class="text-ellipsis" *ngIf="!item.dueDate && item.serviceType === 'TENANT'"> - </div>
           <div class="operation">
             <span
               tuiTooltip="{{'TICKET.VIEW_DETAILS' | translate}}"

@@ -160,4 +160,8 @@ export class TenantService {
     return this.api.put(`managers/${username}/quantities`, {quantity: quantity});
   }
 
+  deleteTenantAdmin(name: string): Observable<any> {
+    return this.api.delete(`managers/${name}`);
+  }
+
 }
