@@ -54,11 +54,11 @@ export class NodeComponent implements OnInit {
       this.newAddedThisMonth = resOptions.addedCount;
       this.units = resOptions.unit;
       this.coreOptions = resOptions.coreOptions;
-      this.statusOptions = resOptions.statusOptions;
-      this.statusOptions.unshift({
-        status: '',
-        statusAlias: this.translateService.translateKey('NODE.ALL_STATUS')
-      });
+
+      if (this.statusOptions.length === 0) {
+        this.statusOptions = resOptions.statusOptions;
+      }
+
       this.tableData = response.data;
       this.pagination = response.pagination;
       this.loading = false;
