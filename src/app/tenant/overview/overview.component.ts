@@ -8,7 +8,7 @@ import { Component, OnInit, HostBinding } from '@angular/core';
 export class OverviewComponent implements OnInit {
   @HostBinding('class.tui-layout-body') hostClass = true;
 
-  selectedIndex = 1;
+  selectedIndex = 0;
   loading: false;
 
   constructor() { }

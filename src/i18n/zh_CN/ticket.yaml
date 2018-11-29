@@ -20,6 +20,9 @@ TICKET:
   ATTACHMENT: 附件
   APPLIED_DATA: 申请数据
   APPLIED_RESOURCE: 申请资源
+  APPLIED_TENANT_AMOUNT: 申请租户数量
+  CURRENT_MAX: 当前最多可创建租户数
+  ADDED_TO: 申请增加至
   TABLES: 数据表
   COLUMNS: 选择列
   FILTER_PARAM: 过滤条件
