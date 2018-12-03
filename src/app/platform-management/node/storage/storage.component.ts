@@ -17,7 +17,7 @@ import { TranslateService } from 'app/i18n';
 export class StorageComponent implements OnInit, OnDestroy {
   @HostBinding('class.tui-layout-body') hostClass = true;
   loading = false;
-  backUrl = '/node';
+  backUrl = '/management/list';
   submenuItems: any[] = [];
   selectedTabIndex = 0;
   nodeName: string;
