@@ -1,11 +1,5 @@
 /// <reference path="../../../../node_modules/@types/jasmine/index.d.ts" />
-import { Router } from '@angular/router';
 import { Component } from '@angular/core';
-import {
-  tick,
-  TestBed,
-  ComponentFixture,
- } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import * as path from 'path';
 
@@ -89,17 +83,3 @@ export class BlankComponent {
 export class RootComponent {
 }
 
-export function advance(fixture: ComponentFixture<any>): void {
-  tick();
-  fixture.detectChanges();
-}
-
-export function createRoot(router: Router,
-                           componentType: any): ComponentFixture<any> {
-  const f = TestBed.createComponent(componentType);
-  advance(f);
-  (<any>router).initialNavigation();
-  console.log('router after initial:', router);
-  // advance(f);
-  return f;
-}

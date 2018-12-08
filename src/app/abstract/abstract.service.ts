@@ -33,7 +33,7 @@ export class AbstractService {
     });
   }
 
-  adaptLoadSummary(quantitySummary) {
+  public adaptLoadSummary(quantitySummary) {
     const obj = {...quantitySummary};
     const result: Donut[] = [];
     const alias: any = obj.alias;
@@ -75,7 +75,7 @@ export class AbstractService {
     });
   }
 
-  adaptToSingleLineData(data) {
+  public adaptToSingleLineData(data) {
     const arr: LinePoint[] = [];
     let result: LineChartData[] ;
 
@@ -99,7 +99,7 @@ export class AbstractService {
     });
   }
 
-  adaptToMultipleCurveData(data) {
+  public adaptToMultipleCurveData(data) {
     const load = {...data.loads[0]};
     const alias: any = data.alias;
     delete load.time;
@@ -145,7 +145,7 @@ export class AbstractService {
     });
   }
 
-  adaptInstancesTemplatesCountData(data) {
+  public adaptInstancesTemplatesCountData(data) {
     const counts = [...data.counts];
     const templateCounts = [...data.counts[0].templateCounts];
     const xs: string[] = [];
@@ -193,7 +193,7 @@ export class AbstractService {
     });
   }
 
-  adaptToMultipleBrokenLineData(data) {
+  public adaptToMultipleBrokenLineData(data) {
     const result: MultipleBrokenLine[] = [];
 
     data.forEach(item => {
@@ -225,7 +225,7 @@ export class AbstractService {
     });
   }
 
-  adaptTenantsConsumptionData(data) {
+  public adaptTenantsConsumptionData(data) {
     const xs: any[] = [];
     const consumptions = [...data.consumptions];
 
