@@ -6,7 +6,7 @@ import { TranslateService } from './translate.service';
 import { Observable } from 'rxjs';
 
 
-import { TranslateToken } from '../i18n/translate-token';
+import { TranslateToken } from './translate-token';
 
 @Injectable()
 export class TranslateResolver implements Resolve<Observable<Object>> {
