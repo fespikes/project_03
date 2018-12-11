@@ -80,6 +80,7 @@ SYSTEM:
     START_SERVICE: 启动服务
     STOP_SERVICE: 暂停服务
     CANNOT_OPERATE_SERVICE: 不能启动/暂停服务
+    SHARE_SERVICE: 服务共享
 
   POPUP:
     YAML_FILE: YAML文件

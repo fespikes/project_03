@@ -52,6 +52,7 @@ export class DonutChartExampleComponent implements OnDestroy, AfterViewInit {
 
     this.donutChartDataJson = jsonStringify(this.donutChartData);
     this.donutChartConfigJson = jsonStringify(this.donutChartConfig);
+    // this.donutChartDataJson = `{'donuts':[{'state':'CPU','columns':['已使用(22.02)core','配额(1040)core','上限(1040)core'],'parts':[22.02,1017.98]},{'state':'内存','columns':['已使用(87)Gi','配额(991.32)Gi','上限(991.32)Gi'],'parts':[87,904.32]},{'state':'硬盘','columns':['已使用(null)Gi','配额(null)Gi','上限(null)Gi'],'parts':[null,0]}]}`);
   }
 
   ngAfterViewInit() {
@@ -85,7 +86,7 @@ export class DonutChartExampleComponent implements OnDestroy, AfterViewInit {
 
     const config = DonutChartConfig.from(this.donutChartConfig);
 
-    this.donut.setConfig(config).datum(JSON.parse(this.donutChartDataJson));
+    this.donut.setConfig(config).datum(JSON.parse(`{"donuts":[{"state":"CPU负载","columns":["used","unused"],"parts":[0.1659,0.8341]},{"state":"内存负载","columns":["used","unused"],"parts":[0.6923,0.3077]},{"state":"磁盘负载","columns":["used","unused"],"parts":[0.127,0.873]}]}`));
 
     this.donut.draw();
   }

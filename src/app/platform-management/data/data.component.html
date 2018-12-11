@@ -102,12 +102,14 @@
             <span tuiTooltip="{{'SYSTEM.TOOLTIP.VIEW_YAML' | translate}}">
               <svg tuiIcon="yaml" (click)="viewYaml(service)"></svg>
             </span>
-            <img
-              class="icon-img share-set"
-              tecImgSrc="share-set.svg"
-              tecImgPrefix="/assets/svg"
-              (click)="shareService(service)"
-            />
+            <span tuiTooltip="{{'SYSTEM.TOOLTIP.SHARE_SERVICE' | translate}}">
+              <img
+                class="icon-img share-set"
+                tecImgSrc="share-set.svg"
+                tecImgPrefix="/assets/svg"
+                (click)="shareService(service)"
+              />
+            </span>
           </div>
         </tui-table-row>
         <tui-table *ngIf="service?.showSubList && service.serviceInfos?.length > 0" class="tui-table-tree" [tuiTableFlex]="[1,1,1,1]">
